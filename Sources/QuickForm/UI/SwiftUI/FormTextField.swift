@@ -28,21 +28,15 @@ public struct FormTextField: View {
     }
 }
 
-struct FormTextField_Previews: PreviewProvider {
-    struct PreviewWrapper: View {
-        @State var viewModel = FormFieldViewModel(
-            value: "Rasa",
-            title: "Name",
-            placeholder: "John",
-            isReadOnly: false
-        )
+#Preview {
+    @Previewable @State var viewModel = FormFieldViewModel(
+        value: "Rasa",
+        title: "Name",
+        placeholder: "John",
+        isReadOnly: false
+    )
 
-        var body: some View {
-            FormTextField(viewModel)
-        }
-    }
-
-    static var previews: some View {
-        PreviewWrapper()
+    Form {
+        FormTextField(viewModel)
     }
 }

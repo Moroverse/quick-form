@@ -18,20 +18,14 @@ public struct FormToggleField: View {
     }
 }
 
-struct FormToggleField_Previews: PreviewProvider {
-    struct PreviewWrapper: View {
-        @State var viewModel = FormFieldViewModel(
-            value: false,
-            title: "Established",
-            isReadOnly: false
-        )
+#Preview {
+    @Previewable @State var viewModel = FormFieldViewModel(
+        value: false,
+        title: "Established",
+        isReadOnly: false
+    )
 
-        var body: some View {
-            FormToggleField(viewModel)
-        }
-    }
-
-    static var previews: some View {
-        PreviewWrapper()
+    Form {
+        FormToggleField(viewModel)
     }
 }

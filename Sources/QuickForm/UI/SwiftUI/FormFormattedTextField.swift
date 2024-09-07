@@ -31,3 +31,15 @@ public struct FormFormattedTextField<F>: View where F: ParseableFormatStyle, F.F
         }
     }
 }
+
+#Preview {
+    @Previewable @State var viewModel = FormattedFieldViewModel(
+        value: 123,
+        format: .currency(code: "USD"),
+        title: "Amount:"
+    )
+
+    Form {
+        FormFormattedTextField(viewModel)
+    }
+}

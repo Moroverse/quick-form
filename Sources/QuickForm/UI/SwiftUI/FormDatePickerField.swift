@@ -27,20 +27,14 @@ public struct FormDatePickerField<S: DatePickerStyle>: View {
     }
 }
 
-struct FormDatePickerField_Previews: PreviewProvider {
-    struct PreviewWrapper: View {
-        @State var viewModel = FormFieldViewModel(
-            value: Date(),
-            title: "Birthday",
-            isReadOnly: false
-        )
+#Preview {
+    @Previewable @State var viewModel = FormFieldViewModel(
+        value: Date(),
+        title: "Birthday",
+        isReadOnly: false
+    )
 
-        var body: some View {
-            FormDatePickerField(viewModel, style: .compact)
-        }
-    }
-
-    static var previews: some View {
-        PreviewWrapper()
+    Form {
+        FormDatePickerField(viewModel)
     }
 }
