@@ -1,14 +1,11 @@
-//
-//  ToggleView.swift
-//
-//
-//  Created by Daliborka Randjelovic on 7.2.23..
-//
+// FormToggleField.swift
+// Copyright (c) 2024 Moroverse
+// Created by Daniel Moro on 2024-09-07 18:36 GMT.
 
 import SwiftUI
 
-public struct ToggleView: View {
-    @Bindable private var viewModel: PropertyViewModel<Bool>
+public struct FormToggleField: View {
+    @Bindable private var viewModel: FormFieldViewModel<Bool>
 
     public var body: some View {
         Toggle(viewModel.title, isOn: $viewModel.value)
@@ -16,21 +13,21 @@ public struct ToggleView: View {
             .disabled(viewModel.isReadOnly)
     }
 
-    public init(_ viewModel: PropertyViewModel<Bool>) {
+    public init(_ viewModel: FormFieldViewModel<Bool>) {
         self.viewModel = viewModel
     }
 }
 
-struct ToggleView_Previews: PreviewProvider {
+struct FormToggleField_Previews: PreviewProvider {
     struct PreviewWrapper: View {
-        @State var viewModel = PropertyViewModel(
+        @State var viewModel = FormFieldViewModel(
             value: false,
             title: "Established",
             isReadOnly: false
         )
 
         var body: some View {
-            ToggleView(viewModel)
+            FormToggleField(viewModel)
         }
     }
 

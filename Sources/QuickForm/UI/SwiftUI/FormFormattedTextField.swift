@@ -1,15 +1,15 @@
-// FormattedTextFieldFormView.swift
+// FormFormattedTextField.swift
 // Copyright (c) 2024 Moroverse
-// Created by Daniel Moro on 2024-09-07 17:15 GMT.
+// Created by Daniel Moro on 2024-09-07 18:36 GMT.
 
 import SwiftUI
 
-public struct FormattedTextFieldView<F>: View where F: ParseableFormatStyle, F.FormatOutput == String {
+public struct FormFormattedTextField<F>: View where F: ParseableFormatStyle, F.FormatOutput == String {
     @FocusState private var isFocused: Bool
     @State private var alignment: TextAlignment = .trailing
-    @Bindable private var viewModel: FormattedPropertyViewModel<F>
+    @Bindable private var viewModel: FormattedFieldViewModel<F>
 
-    public init(_ viewModel: FormattedPropertyViewModel<F>) {
+    public init(_ viewModel: FormattedFieldViewModel<F>) {
         self.viewModel = viewModel
         isFocused = false
     }
@@ -23,9 +23,9 @@ public struct FormattedTextFieldView<F>: View where F: ParseableFormatStyle, F.F
                 value: $viewModel.value,
                 format: viewModel.format
             )
-                .focused($isFocused)
-                .multilineTextAlignment(alignment)
-                .disabled(viewModel.isReadOnly)
+            .focused($isFocused)
+            .multilineTextAlignment(alignment)
+            .disabled(viewModel.isReadOnly)
         }.onChange(of: isFocused) {
             alignment = isFocused ? .leading : .trailing
         }

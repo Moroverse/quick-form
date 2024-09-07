@@ -2,9 +2,9 @@
 // Copyright (c) 2024 Moroverse
 // Created by Daniel Moro on 2024-09-07 11:54 GMT.
 
+import Foundation
 import Observation
 @preconcurrency import QuickForm
-import Foundation
 
 @QuickForm(Person.self)
 class PersonForm {
@@ -17,8 +17,7 @@ class PersonForm {
     @PropertyEditor(keyPath: \Person.dateOfBirth)
     var birthday = PropertyViewModel(value: Date(), title: "Birthday:", placeholder: "1980-01-01")
 
-    var personNameComponents:PersonNameComponents {
+    var personNameComponents: PersonNameComponents {
         PersonNameComponents(givenName: firstName.value, familyName: lastName.value)
     }
-
 }

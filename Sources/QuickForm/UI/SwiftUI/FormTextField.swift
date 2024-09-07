@@ -1,18 +1,15 @@
-//
-//  File.swift
-//
-//
-//  Created by Daliborka Randjelovic on 5.1.23..
-//
+// FormTextField.swift
+// Copyright (c) 2024 Moroverse
+// Created by Daniel Moro on 2024-09-07 18:36 GMT.
 
 import SwiftUI
 
-public struct TextFieldView: View {
+public struct FormTextField: View {
     @FocusState private var isFocused: Bool
     @State private var alignment: TextAlignment = .trailing
-    @Bindable private var viewModel: PropertyViewModel<String>
+    @Bindable private var viewModel: FormFieldViewModel<String>
 
-    public init(_ viewModel: PropertyViewModel<String>) {
+    public init(_ viewModel: FormFieldViewModel<String>) {
         self.viewModel = viewModel
         isFocused = false
     }
@@ -31,9 +28,9 @@ public struct TextFieldView: View {
     }
 }
 
-struct TextFieldView_Previews: PreviewProvider {
+struct FormTextField_Previews: PreviewProvider {
     struct PreviewWrapper: View {
-        @State var viewModel = PropertyViewModel(
+        @State var viewModel = FormFieldViewModel(
             value: "Rasa",
             title: "Name",
             placeholder: "John",
@@ -41,7 +38,7 @@ struct TextFieldView_Previews: PreviewProvider {
         )
 
         var body: some View {
-            TextFieldView(viewModel)
+            FormTextField(viewModel)
         }
     }
 

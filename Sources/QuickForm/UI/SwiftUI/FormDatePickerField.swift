@@ -1,16 +1,16 @@
-// DatePickerFormView.swift
+// FormDatePickerField.swift
 // Copyright (c) 2024 Moroverse
-// Created by Daniel Moro on 2024-09-07 17:15 GMT.
+// Created by Daniel Moro on 2024-09-07 18:36 GMT.
 
 import SwiftUI
 
-public struct DatePickerView<S: DatePickerStyle>: View {
-    @Bindable private var viewModel: PropertyViewModel<Date>
+public struct FormDatePickerField<S: DatePickerStyle>: View {
+    @Bindable private var viewModel: FormFieldViewModel<Date>
     private let displayedComponents: DatePickerComponents
     private var style: S
 
     public init(
-        _ viewModel: PropertyViewModel<Date>,
+        _ viewModel: FormFieldViewModel<Date>,
         displayedComponents: DatePickerComponents = [.date],
         style: S = DefaultDatePickerStyle.automatic
     ) {
@@ -27,16 +27,16 @@ public struct DatePickerView<S: DatePickerStyle>: View {
     }
 }
 
-struct DatePickerView_Previews: PreviewProvider {
+struct FormDatePickerField_Previews: PreviewProvider {
     struct PreviewWrapper: View {
-        @State var viewModel = PropertyViewModel(
+        @State var viewModel = FormFieldViewModel(
             value: Date(),
             title: "Birthday",
             isReadOnly: false
         )
 
         var body: some View {
-            DatePickerView(viewModel, style: .compact)
+            FormDatePickerField(viewModel, style: .compact)
         }
     }
 

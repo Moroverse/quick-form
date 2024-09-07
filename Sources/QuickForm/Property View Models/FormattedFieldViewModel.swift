@@ -2,7 +2,7 @@ import Foundation
 import Observation
 
 @Observable
-public final class FormattedPropertyViewModel<F>: ValueEditor where F: ParseableFormatStyle, F.FormatOutput == String {
+public final class FormattedFieldViewModel<F>: ValueEditor where F: ParseableFormatStyle, F.FormatOutput == String {
     public var title: String
     public var placeholder: String?
     public var format: F

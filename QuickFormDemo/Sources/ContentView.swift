@@ -19,7 +19,6 @@ struct ContentView: View {
             TextFieldView(quickForm.firstName)
             TextFieldView(quickForm.lastName)
             DatePickerView(quickForm.birthday)
-            
         }
         EmptyView()
     }
