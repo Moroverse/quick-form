@@ -4,25 +4,55 @@
 
 import Foundation
 
-public struct Person: Equatable {
-    public enum Sex: Equatable {
+struct Person: Equatable {
+    enum Sex: Equatable, CaseIterable {
         case male
         case female
         case nonBinary
         case other
     }
 
-    public var givenName: String
-    public var familyName: String
-    public var dateOfBirth: Date
-    public var sex: Sex
-    public var phone: String?
+    var givenName: String
+    var familyName: String
+    var dateOfBirth: Date
+    var sex: Sex
+    var phone: String?
+    var salary: Double
+    var weight: Measurement<UnitMass>
+    var isEstablished: Bool
 
-    public init(givenName: String, familyName: String, dateOfBirth: Date, sex: Sex, phone: String? = nil) {
+    init(
+        givenName: String,
+        familyName: String,
+        dateOfBirth: Date,
+        sex: Sex,
+        phone: String? = nil,
+        salary: Double = 0,
+        weight: Measurement<UnitMass> = .init(value: 0, unit: .kilograms),
+        isEstablished: Bool = true
+    ) {
         self.givenName = givenName
         self.familyName = familyName
         self.dateOfBirth = dateOfBirth
         self.sex = sex
         self.phone = phone
+        self.salary = salary
+        self.weight = weight
+        self.isEstablished = isEstablished
+    }
+}
+
+extension Person.Sex: CustomStringConvertible {
+    var description: String {
+        switch self {
+        case .male:
+            "Male"
+        case .female:
+            "Female"
+        case .nonBinary:
+            "Non-Binary"
+        case .other:
+            "Other"
+        }
     }
 }

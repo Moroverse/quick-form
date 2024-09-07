@@ -14,19 +14,28 @@ struct ContentView: View {
 
     var body: some View {
         Form {
-            Text(quickForm.personNameComponents.formatted())
-                .padding()
-            TextFieldView(quickForm.firstName)
-            TextFieldView(quickForm.lastName)
-            DatePickerView(quickForm.birthday)
+            FormTextField(quickForm.firstName)
+            FormTextField(quickForm.lastName)
+            FormDatePickerField(quickForm.birthday)
+            FormPickerField(quickForm.sex)
+            FormValueUnitField(quickForm.weight)
+            FormFormattedTextField(quickForm.salary)
+            FormToggleField(quickForm.isEstablished)
         }
-        EmptyView()
+        .navigationTitle(quickForm.personNameComponents.formatted())
     }
 }
 
 struct ContentView_Previews: PreviewProvider {
     struct PreviewWrapper: View {
-        @State var form = PersonForm(model: Person(givenName: "Angelina", familyName: "Jolie", dateOfBirth: Date(), sex: .female))
+        @State var form = PersonForm(
+            model: Person(
+                givenName: "Angelina",
+                familyName: "Jolie",
+                dateOfBirth: Date(),
+                sex: .female
+            )
+        )
 
         var body: some View {
             ContentView(quickForm: form)
@@ -34,6 +43,8 @@ struct ContentView_Previews: PreviewProvider {
     }
 
     static var previews: some View {
-        PreviewWrapper()
+        NavigationStack {
+            PreviewWrapper()
+        }
     }
 }

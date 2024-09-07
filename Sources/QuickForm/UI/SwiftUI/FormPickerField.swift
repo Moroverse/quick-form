@@ -4,11 +4,11 @@
 
 import SwiftUI
 
-struct FormPickerField<Property: Hashable & CustomStringConvertible, S: PickerStyle>: View {
+public struct FormPickerField<Property: Hashable & CustomStringConvertible, S: PickerStyle>: View {
     @Bindable private var viewModel: PickerFieldViewModel<Property>
     private let pickerStyle: S
 
-    init(
+    public init(
         _ viewModel: PickerFieldViewModel<Property>,
         pickerStyle: S = DefaultPickerStyle.automatic
     ) {
@@ -16,11 +16,14 @@ struct FormPickerField<Property: Hashable & CustomStringConvertible, S: PickerSt
         self.pickerStyle = pickerStyle
     }
 
-    var body: some View {
-        Picker(viewModel.title, selection: $viewModel.value) {
+    public var body: some View {
+        Picker(selection: $viewModel.value) {
             ForEach(viewModel.allValues, id: \.self) { itemCase in
                 Text(itemCase.description)
             }
+        } label: {
+            Text(viewModel.title)
+                .font(.headline)
         }
         .pickerStyle(pickerStyle)
         .disabled(viewModel.isReadOnly)
