@@ -3,20 +3,23 @@ import Observation
 
 @Observable
 public final class FormattedPropertyViewModel<F>: ValueEditor where F: ParseableFormatStyle, F.FormatOutput == String {
-    var title: String
-    var placeholder: String?
-    var format: F
+    public var title: String
+    public var placeholder: String?
+    public var format: F
     public var value: F.FormatInput
+    public var isReadOnly: Bool
 
     public init(
         value: F.FormatInput,
         format: F,
         title: String = "",
-        placeholder: String? = nil
+        placeholder: String? = nil,
+        isReadOnly: Bool = false
     ) {
         self.value = value
         self.format = format
         self.title = title
         self.placeholder = placeholder
+        self.isReadOnly = isReadOnly
     }
 }

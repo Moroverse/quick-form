@@ -14,9 +14,12 @@ struct ContentView: View {
 
     var body: some View {
         Form {
-            Text(quickForm.model.givenName)
+            Text(quickForm.personNameComponents.formatted())
                 .padding()
-            TextField(quickForm.firstName.title, text: $quickForm.firstName.value)
+            TextFieldFormView(quickForm.firstName)
+            TextFieldFormView(quickForm.lastName)
+            DatePickerFormView(quickForm.birthday)
+            
         }
         EmptyView()
     }

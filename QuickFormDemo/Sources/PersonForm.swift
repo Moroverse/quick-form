@@ -4,6 +4,7 @@
 
 import Observation
 @preconcurrency import QuickForm
+import Foundation
 
 @QuickForm(Person.self)
 class PersonForm {
@@ -13,7 +14,11 @@ class PersonForm {
     @PropertyEditor(keyPath: \Person.familyName)
     var lastName = PropertyViewModel(value: "", title: "Last Name:", placeholder: "Anderson")
 
-//    public convenience init(model2: Person) {
-//        self.init(model: model2)  // Calls the macro-generated initializer
-//    }
+    @PropertyEditor(keyPath: \Person.dateOfBirth)
+    var birthday = PropertyViewModel(value: Date(), title: "Birthday:", placeholder: "1980-01-01")
+
+    var personNameComponents:PersonNameComponents {
+        PersonNameComponents(givenName: firstName.value, familyName: lastName.value)
+    }
+
 }

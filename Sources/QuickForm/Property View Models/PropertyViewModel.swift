@@ -9,14 +9,17 @@ public final class PropertyViewModel<Property>: ValueEditor {
     public var title: String
     public var placeholder: String?
     public var value: Property
+    public var isReadOnly: Bool
 
     public init(
         value: Property,
         title: String = "",
-        placeholder: String? = nil
+        placeholder: String? = nil,
+        isReadOnly: Bool = false
     ) {
         self.value = value
         self.title = title
         self.placeholder = placeholder
+        self.isReadOnly = isReadOnly
     }
 }
