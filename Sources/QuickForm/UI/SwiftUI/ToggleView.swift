@@ -7,16 +7,16 @@
 
 import SwiftUI
 
-struct ToggleView: View {
+public struct ToggleView: View {
     @Bindable private var viewModel: PropertyViewModel<Bool>
 
-    var body: some View {
+    public var body: some View {
         Toggle(viewModel.title, isOn: $viewModel.value)
             .font(.headline)
             .disabled(viewModel.isReadOnly)
     }
 
-    init(viewModel: PropertyViewModel<Bool>) {
+    public init(_ viewModel: PropertyViewModel<Bool>) {
         self.viewModel = viewModel
     }
 }
@@ -30,7 +30,7 @@ struct ToggleView_Previews: PreviewProvider {
         )
 
         var body: some View {
-            ToggleView(viewModel: viewModel)
+            ToggleView(viewModel)
         }
     }
 

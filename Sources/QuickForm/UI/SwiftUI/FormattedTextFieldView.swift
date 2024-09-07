@@ -9,7 +9,7 @@ public struct FormattedTextFieldView<F>: View where F: ParseableFormatStyle, F.F
     @State private var alignment: TextAlignment = .trailing
     @Bindable private var viewModel: FormattedPropertyViewModel<F>
 
-    init(viewModel: FormattedPropertyViewModel<F>) {
+    public init(_ viewModel: FormattedPropertyViewModel<F>) {
         self.viewModel = viewModel
         isFocused = false
     }

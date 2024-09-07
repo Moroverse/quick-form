@@ -16,9 +16,9 @@ struct ContentView: View {
         Form {
             Text(quickForm.personNameComponents.formatted())
                 .padding()
-            TextFieldFormView(quickForm.firstName)
-            TextFieldFormView(quickForm.lastName)
-            DatePickerFormView(quickForm.birthday)
+            TextFieldView(quickForm.firstName)
+            TextFieldView(quickForm.lastName)
+            DatePickerView(quickForm.birthday)
             
         }
         EmptyView()
@@ -27,7 +27,7 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     struct PreviewWrapper: View {
-        @State var form = PersonForm(model: Person(givenName: "", familyName: "", dateOfBirth: Date(), sex: .female))
+        @State var form = PersonForm(model: Person(givenName: "Angelina", familyName: "Jolie", dateOfBirth: Date(), sex: .female))
 
         var body: some View {
             ContentView(quickForm: form)

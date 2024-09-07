@@ -9,10 +9,10 @@ public struct DatePickerView<S: DatePickerStyle>: View {
     private let displayedComponents: DatePickerComponents
     private var style: S
 
-    init(
-        viewModel: PropertyViewModel<Date>,
+    public init(
+        _ viewModel: PropertyViewModel<Date>,
         displayedComponents: DatePickerComponents = [.date],
-        style: S
+        style: S = DefaultDatePickerStyle.automatic
     ) {
         self.viewModel = viewModel
         self.displayedComponents = displayedComponents
@@ -36,7 +36,7 @@ struct DatePickerView_Previews: PreviewProvider {
         )
 
         var body: some View {
-            DatePickerView(viewModel: viewModel, style: .compact)
+            DatePickerView(viewModel, style: .compact)
         }
     }
 

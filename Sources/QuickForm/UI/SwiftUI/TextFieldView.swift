@@ -7,17 +7,17 @@
 
 import SwiftUI
 
-struct TextFieldView: View {
+public struct TextFieldView: View {
     @FocusState private var isFocused: Bool
     @State private var alignment: TextAlignment = .trailing
     @Bindable private var viewModel: PropertyViewModel<String>
 
-    init(viewModel: PropertyViewModel<String>) {
+    public init(_ viewModel: PropertyViewModel<String>) {
         self.viewModel = viewModel
         isFocused = false
     }
 
-    var body: some View {
+    public var body: some View {
         HStack(spacing: 10) {
             Text(viewModel.title)
                 .font(.headline)
@@ -41,7 +41,7 @@ struct TextFieldView_Previews: PreviewProvider {
         )
 
         var body: some View {
-            TextFieldView(viewModel: viewModel)
+            TextFieldView(viewModel)
         }
     }
 
