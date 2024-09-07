@@ -4,7 +4,7 @@
 
 import Observation
 
-func observe(apply: @escaping @Sendable () -> Void) {
+public func observe(apply: @escaping @Sendable () -> Void) {
     onChange(apply: apply)
 }
 

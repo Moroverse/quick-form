@@ -7,7 +7,7 @@ import SwiftUI
 
 @main
 struct QuickFormDemoApp: App {
-    @State var form: QuickForm = .init(
+    @State var form: PersonForm = .init(
         model: .init(
             givenName: "Marko",
             familyName: "Grlic",
@@ -17,7 +17,7 @@ struct QuickFormDemoApp: App {
     )
     var body: some Scene {
         WindowGroup {
-            ContentView(quickForm: form)
+           // ContentView(quickForm: form)
         }
     }
 }

@@ -5,34 +5,35 @@
 import QuickForm
 import SwiftUI
 
-public struct ContentView: View {
-    @Bindable var quickForm: QuickForm
+struct ContentView: View {
+//    @Bindable var quickForm: PersonForm
+//
+//    init(quickForm: PersonForm) {
+//        self.quickForm = quickForm
+//    }
 
-    public init(quickForm: QuickForm) {
-        self.quickForm = quickForm
-    }
-
-    public var body: some View {
-        Form {
-            Text(quickForm.model.givenName)
-                .padding()
-                .onAppear {
-                    quickForm.firstName.value = "Jovanka"
-                }
-            TextField(quickForm.firstName.title, text: $quickForm.firstName.value)
-        }
+    var body: some View {
+//        Form {
+//            Text(quickForm.model.givenName)
+//                .padding()
+//                .onAppear {
+//                    quickForm.firstName.value = "Jovanka"
+//                }
+//            TextField(quickForm.firstName.title, text: $quickForm.firstName.value)
+//        }
+        EmptyView()
     }
 }
 
-#Preview {
-    @Previewable @State var form = QuickForm(
-        model: .init(
-            givenName: "Marko",
-            familyName: "Grlic",
-            dateOfBirth: Date(),
-            sex: .male
-        )
-    )
-
-    ContentView(quickForm: form)
-}
+//#Preview {
+//    @Previewable @State var form = PersonForm(
+//        model: .init(
+//            givenName: "Marko",
+//            familyName: "Grlic",
+//            dateOfBirth: Date(),
+//            sex: .male
+//        )
+//    )
+//
+//    ContentView(quickForm: form)
+//}

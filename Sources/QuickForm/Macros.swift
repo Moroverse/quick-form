@@ -5,5 +5,5 @@
 @attached(member, names: named(model), named(init), named(track))
 public macro QuickForm<T>(_ type: T.Type) = #externalMacro(module: "QuickFormMacros", type: "QuickFormMacro")
 
-@attached(accessor)
+@attached(accessor, names: named(willSet))
 public macro PropertyEditor(keyPath: Any) = #externalMacro(module: "QuickFormMacros", type: "PropertyEditorMacro")

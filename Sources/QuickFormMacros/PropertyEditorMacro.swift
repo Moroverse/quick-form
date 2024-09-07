@@ -7,12 +7,26 @@ import SwiftSyntaxBuilder
 import SwiftSyntaxMacros
 
 public struct PropertyEditorMacro: AccessorMacro {
-    public static func expansion(
+    public static func expansion<
+        Context: MacroExpansionContext,
+        Declaration: DeclSyntaxProtocol
+    >(
         of node: AttributeSyntax,
-        providingAccessorsOf declaration: some DeclSyntaxProtocol,
-        in context: some MacroExpansionContext
+        providingAccessorsOf declaration: Declaration,
+        in context: Context
     ) throws -> [AccessorDeclSyntax] {
-        // This macro doesn't need to add any accessors
-        []
+        return []
     }
+
+//    public static func expansion(
+//        of node: AttributeSyntax,
+//        providingAttributesFor declaration: some DeclGroupSyntax,
+//        in context: some MacroExpansionContext
+//    ) throws -> [AttributeSyntax] {
+//        return [
+//            AttributeSyntax(
+//                attributeName: IdentifierTypeSyntax(name: .identifier("Observable"))
+//            )
+//        ]
+//    }
 }

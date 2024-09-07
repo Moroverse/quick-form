@@ -24,11 +24,10 @@ public struct QuickFormMacro: MemberMacro {
 
         let modelVar = "public var model: \(modelType)"
 
-        let propertyEditors = classDecl.memberBlock.members.compactMap { member -> (String, String, String)? in
+        let propertyEditors = classDecl.memberBlock.members.compactMap { member -> (String, String)? in
             guard let varDecl = member.decl.as(VariableDeclSyntax.self),
                   let binding = varDecl.bindings.first,
                   let identifier = binding.pattern.as(IdentifierPatternSyntax.self)?.identifier.text,
-//                  let initializer = binding.initializer?.value.as(FunctionCallExprSyntax.self),
                   let propertyEditorAttr = varDecl.attributes.first(where: { $0.as(AttributeSyntax.self)?.attributeName.as(IdentifierTypeSyntax.self)?.name.text == "PropertyEditor" })
             else { return nil }
 
@@ -37,10 +36,10 @@ public struct QuickFormMacro: MemberMacro {
                   let keyPath = keyPathArg.components.last?.component.as(KeyPathPropertyComponentSyntax.self)?.declName.baseName.text
             else { return nil }
 
-            return (identifier, "\\\\(raw: modelType).\(keyPath)", keyPath)
+            return (identifier, "\\\(modelType).\(keyPath)")
         }
 
-        let initializerContent = propertyEditors.map { identifier, keyPath, _ in
+        let initializerContent = propertyEditors.map { identifier, keyPath in
             """
             \(identifier).value = model[keyPath: \(keyPath)]
             track(keyPath: \(keyPath), editor: \(identifier))
