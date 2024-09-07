@@ -6,7 +6,7 @@ import SwiftSyntax
 import SwiftSyntaxBuilder
 import SwiftSyntaxMacros
 
-public struct QuickFormMacro: MemberMacro {
+public struct QuickFormMacro: MemberMacro, ExtensionMacro {
     public static func expansion(
         of node: AttributeSyntax,
         providingMembersOf declaration: some DeclGroupSyntax,
@@ -21,8 +21,6 @@ public struct QuickFormMacro: MemberMacro {
               let modelType = firstArg.base?.as(DeclReferenceExprSyntax.self)?.baseName.text else {
             throw MacroError.invalidArguments
         }
-
-        let modelVar = "public var model: \(modelType)"
 
         let propertyEditors = classDecl.memberBlock.members.compactMap { member -> (String, String)? in
             guard let varDecl = member.decl.as(VariableDeclSyntax.self),
@@ -39,15 +37,20 @@ public struct QuickFormMacro: MemberMacro {
             return (identifier, "\\\(modelType).\(keyPath)")
         }
 
+        // Determine the visibility of the class
+        let classVisibility = classDecl.modifiers.first { $0.name.text == "public" || $0.name.text == "internal" }?.name.text ?? "internal"
+
+        let modelVar = "\(classVisibility) var model: \(modelType)"
+
         let initializerContent = propertyEditors.map { identifier, keyPath in
             """
             \(identifier).value = model[keyPath: \(keyPath)]
             track(keyPath: \(keyPath), editor: \(identifier))
             """
-        }.joined(separator: "\n        ")
+        }.joined(separator: "\n")
 
         let initializer = """
-        public init(model: \(modelType)) {
+        \(classVisibility) init(model: \(modelType)) {
             self.model = model
 
             \(initializerContent)
@@ -62,11 +65,46 @@ public struct QuickFormMacro: MemberMacro {
         }
         """
 
+        let observationRegistrar = """
+        private let _$observationRegistrar = Observation.ObservationRegistrar()
+        """
+
+        let accessMethod = """
+        internal nonisolated func access<Member>(
+            keyPath: KeyPath<\(classDecl.name), Member>
+        ) {
+            _$observationRegistrar.access(self, keyPath: keyPath)
+        }
+        """
+
+        let withMutationMethod = """
+        internal nonisolated func withMutation<Member, MutationResult>(
+            keyPath: KeyPath<\(classDecl.name), Member>,
+            _ mutation: () throws -> MutationResult
+        ) rethrows -> MutationResult {
+            try _$observationRegistrar.withMutation(of: self, keyPath: keyPath, mutation)
+        }
+        """
+
         return [
             DeclSyntax(stringLiteral: modelVar),
             DeclSyntax(stringLiteral: initializer),
-            DeclSyntax(stringLiteral: trackMethod)
+            DeclSyntax(stringLiteral: trackMethod),
+            DeclSyntax(stringLiteral: observationRegistrar),
+            DeclSyntax(stringLiteral: accessMethod),
+            DeclSyntax(stringLiteral: withMutationMethod)
         ]
+    }
+
+    public static func expansion(
+        of node: AttributeSyntax,
+        attachedTo declaration: some DeclGroupSyntax,
+        providingExtensionsOf type: some TypeSyntaxProtocol,
+        conformingTo protocols: [TypeSyntax],
+        in context: some MacroExpansionContext
+    ) throws -> [ExtensionDeclSyntax] {
+        let observableConformance = try ExtensionDeclSyntax("extension \(type): Observable { }")
+        return [observableConformance]
     }
 }
 

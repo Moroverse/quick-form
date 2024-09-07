@@ -6,27 +6,67 @@ import SwiftSyntax
 import SwiftSyntaxBuilder
 import SwiftSyntaxMacros
 
-public struct PropertyEditorMacro: AccessorMacro {
-    public static func expansion<
-        Context: MacroExpansionContext,
-        Declaration: DeclSyntaxProtocol
-    >(
+public struct PropertyEditorMacro: AccessorMacro, PeerMacro {
+    public static func expansion(
         of node: AttributeSyntax,
-        providingAccessorsOf declaration: Declaration,
-        in context: Context
+        providingAccessorsOf declaration: some DeclSyntaxProtocol,
+        in context: some MacroExpansionContext
     ) throws -> [AccessorDeclSyntax] {
-        return []
+        guard let varDecl = declaration.as(VariableDeclSyntax.self),
+              let binding = varDecl.bindings.first,
+              let identifier = binding.pattern.as(IdentifierPatternSyntax.self)?.identifier.text,
+              let initializer = binding.initializer?.value else {
+            throw MacroError.invalidDeclaration
+        }
+
+        let accessors: [AccessorDeclSyntax] = [
+            """
+            @storageRestrictions(initializes: _\(raw: identifier))
+            init(initialValue) {
+                _\(raw: identifier) = initialValue
+            }
+            """,
+            """
+            get {
+                access(keyPath: \\.\(raw: identifier))
+                return _\(raw: identifier)
+            }
+            """,
+            """
+            set {
+                withMutation(keyPath: \\.\(raw: identifier)) {
+                    _\(raw: identifier) = newValue
+                }
+            }
+            """,
+            """
+            _modify {
+                access(keyPath: \\.\(raw: identifier))
+                _$observationRegistrar.willSet(self, keyPath: \\.\(raw: identifier))
+                defer {
+                    _$observationRegistrar.didSet(self, keyPath: \\.\(raw: identifier))
+                }
+                yield &_\(raw: identifier)
+            }
+            """
+        ]
+
+        return accessors
     }
 
-//    public static func expansion(
-//        of node: AttributeSyntax,
-//        providingAttributesFor declaration: some DeclGroupSyntax,
-//        in context: some MacroExpansionContext
-//    ) throws -> [AttributeSyntax] {
-//        return [
-//            AttributeSyntax(
-//                attributeName: IdentifierTypeSyntax(name: .identifier("Observable"))
-//            )
-//        ]
-//    }
+    public static func expansion(
+        of node: AttributeSyntax,
+        providingPeersOf declaration: some DeclSyntaxProtocol,
+        in context: some MacroExpansionContext
+    ) throws -> [DeclSyntax] {
+        guard let varDecl = declaration.as(VariableDeclSyntax.self),
+              let binding = varDecl.bindings.first,
+              let identifier = binding.pattern.as(IdentifierPatternSyntax.self)?.identifier.text,
+              let initializer = binding.initializer?.value else {
+            throw MacroError.invalidDeclaration
+        }
+
+        let peerDecl: DeclSyntax = "private var _\(raw: identifier) = \(initializer)"
+        return [peerDecl]
+    }
 }

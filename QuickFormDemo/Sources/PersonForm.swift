@@ -1,12 +1,9 @@
-//
-//  PersonForm.swift
-//  QuickFormDemo
-//
-//  Created by Daniel Moro on 7.9.24..
-//
+// PersonForm.swift
+// Copyright (c) 2024 Moroverse
+// Created by Daniel Moro on 2024-09-07 11:54 GMT.
 
-@preconcurrency import QuickForm
 import Observation
+@preconcurrency import QuickForm
 
 @QuickForm(Person.self)
 class PersonForm {
@@ -15,4 +12,8 @@ class PersonForm {
 
     @PropertyEditor(keyPath: \Person.familyName)
     var lastName = PropertyViewModel(value: "", title: "Last Name:", placeholder: "Anderson")
+
+//    public convenience init(model2: Person) {
+//        self.init(model: model2)  // Calls the macro-generated initializer
+//    }
 }

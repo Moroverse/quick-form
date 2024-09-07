@@ -17,7 +17,7 @@ struct QuickFormDemoApp: App {
     )
     var body: some Scene {
         WindowGroup {
-           // ContentView(quickForm: form)
+            ContentView(quickForm: form)
         }
     }
 }

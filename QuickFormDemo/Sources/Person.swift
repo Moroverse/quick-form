@@ -1,13 +1,8 @@
-//
-//  Person.swift
-//  QuickFormDemo
-//
-//  Created by Daniel Moro on 7.9.24..
-//
-
+// Person.swift
+// Copyright (c) 2024 Moroverse
+// Created by Daniel Moro on 2024-09-07 11:54 GMT.
 
 import Foundation
-
 
 public struct Person: Equatable {
     public enum Sex: Equatable {
