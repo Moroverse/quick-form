@@ -19,7 +19,7 @@ public struct PropertyEditorMacro: AccessorMacro, PeerMacro {
             throw MacroError.invalidDeclaration
         }
 
-        let accessors: [AccessorDeclSyntax] = [
+        return [
             """
             @storageRestrictions(initializes: _\(raw: identifier))
             init(initialValue) {
@@ -49,9 +49,7 @@ public struct PropertyEditorMacro: AccessorMacro, PeerMacro {
                 yield &_\(raw: identifier)
             }
             """
-        ]
-
-        return accessors
+        ] as [AccessorDeclSyntax]
     }
 
     public static func expansion(
