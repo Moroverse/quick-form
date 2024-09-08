@@ -41,18 +41,3 @@ struct Person: Equatable {
         self.isEstablished = isEstablished
     }
 }
-
-extension Person.Sex: CustomStringConvertible {
-    var description: String {
-        switch self {
-        case .male:
-            "Male"
-        case .female:
-            "Female"
-        case .nonBinary:
-            "Non-Binary"
-        case .other:
-            "Other"
-        }
-    }
-}

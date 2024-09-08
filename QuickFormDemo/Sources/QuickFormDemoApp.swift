@@ -7,7 +7,7 @@ import SwiftUI
 
 @main
 struct QuickFormDemoApp: App {
-    @State var form: PersonForm = .init(
+    @State var form: PersonEditModel = .init(
         model: .init(
             givenName: "Marko",
             familyName: "Grlic",

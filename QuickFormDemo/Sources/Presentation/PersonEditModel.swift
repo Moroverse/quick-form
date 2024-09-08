@@ -1,4 +1,4 @@
-// PersonForm.swift
+// PersonEditModel.swift
 // Copyright (c) 2024 Moroverse
 // Created by Daniel Moro on 2024-09-07 11:54 GMT.
 
@@ -7,7 +7,7 @@ import Observation
 @preconcurrency import QuickForm
 
 @QuickForm(Person.self)
-class PersonForm {
+class PersonEditModel {
     @PropertyEditor(keyPath: \Person.givenName)
     var firstName = FormFieldViewModel(value: "", title: "First Name:", placeholder: "John")
 

@@ -6,9 +6,9 @@ import QuickForm
 import SwiftUI
 
 struct ContentView: View {
-    @Bindable var quickForm: PersonForm
+    @Bindable var quickForm: PersonEditModel
 
-    init(quickForm: PersonForm) {
+    init(quickForm: PersonEditModel) {
         self.quickForm = quickForm
     }
 
@@ -28,7 +28,7 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     struct PreviewWrapper: View {
-        @State var form = PersonForm(
+        @State var form = PersonEditModel(
             model: Person(
                 givenName: "Angelina",
                 familyName: "Jolie",
