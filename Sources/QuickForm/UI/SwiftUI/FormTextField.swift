@@ -4,12 +4,12 @@
 
 import SwiftUI
 
-public struct FormTextField: View {
+public struct FormTextField<S>: View {
     @FocusState private var isFocused: Bool
     @State private var alignment: TextAlignment = .trailing
-    @Bindable private var viewModel: FormFieldViewModel<String>
+    @Bindable private var viewModel: FormFieldViewModel<S>
 
-    public init(_ viewModel: FormFieldViewModel<String>) {
+    public init(_ viewModel: FormFieldViewModel<S>) {
         self.viewModel = viewModel
         isFocused = false
     }
@@ -18,12 +18,27 @@ public struct FormTextField: View {
         HStack(spacing: 10) {
             Text(viewModel.title)
                 .font(.headline)
-            TextField(viewModel.placeholder ?? "", text: $viewModel.value)
+            TextField(viewModel.placeholder ?? "", text: textBinding())
                 .focused($isFocused)
                 .multilineTextAlignment(alignment)
                 .disabled(viewModel.isReadOnly)
         }.onChange(of: isFocused) {
             alignment = isFocused ? .leading : .trailing
+        }
+    }
+
+    private func textBinding() -> Binding<String> where S == String {
+        $viewModel.value
+    }
+
+    private func textBinding() -> Binding<String> where S == String? {
+        $viewModel.value.unwrapped(defaultValue: "")
+    }
+
+    private func textBinding() -> Binding<String> {
+        Binding {
+            ""
+        } set: { _ in
         }
     }
 }
