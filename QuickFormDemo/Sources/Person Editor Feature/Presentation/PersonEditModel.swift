@@ -76,6 +76,14 @@ class PersonEditModel {
         title: "Care Team"
     )
 
+    @PropertyEditor(keyPath: \Person.phone)
+    var phone = FormattedFieldViewModel(
+        value: "",
+        format: OptionalFormat(format: .usPhoneNumber(.parentheses)),
+        title: "Phone:",
+        placeholder: "(123) 456-7890"
+    )
+
     // 5. decorations in the class
     var personNameComponents: PersonNameComponents {
         PersonNameComponents(givenName: firstName.value, familyName: lastName.value)
