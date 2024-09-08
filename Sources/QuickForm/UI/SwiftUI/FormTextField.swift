@@ -18,7 +18,7 @@ public struct FormTextField: View {
         HStack(spacing: 10) {
             Text(viewModel.title)
                 .font(.headline)
-            TextField(viewModel.placeholder ?? "", text: $viewModel.value)
+            TextField(String(localized: viewModel.placeholder ?? ""), text: $viewModel.value)
                 .focused($isFocused)
                 .multilineTextAlignment(alignment)
                 .disabled(viewModel.isReadOnly)
@@ -42,7 +42,7 @@ public struct FormOptionalTextField: View {
         HStack(spacing: 10) {
             Text(viewModel.title)
                 .font(.headline)
-            TextField(viewModel.placeholder ?? "", text: $viewModel.value.unwrapped(defaultValue: ""))
+            TextField(String(localized: viewModel.placeholder ?? ""), text: $viewModel.value.unwrapped(defaultValue: ""))
                 .focused($isFocused)
                 .multilineTextAlignment(alignment)
                 .disabled(viewModel.isReadOnly)

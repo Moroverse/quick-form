@@ -28,7 +28,7 @@ public struct FormCollectionSection<Property: Identifiable, Content: View>: View
                     await viewModel.insert()
                 }
             } label: {
-                Label(viewModel.title, systemImage: "plus.circle.fill")
+                Label(String(localized: viewModel.insertionTitle), systemImage: "plus.circle.fill")
             }
         } header: {
             Text(viewModel.title)
@@ -41,8 +41,8 @@ public struct FormCollectionSection<Property: Identifiable, Content: View>: View
     }
 }
 
-extension FormCollectionSection {
-    public func configure(_ configuration: @escaping (FormCollectionViewModel<Property>) -> Void) -> Self {
+public extension FormCollectionSection {
+    func configure(_ configuration: @escaping (FormCollectionViewModel<Property>) -> Void) -> Self {
         configuration(viewModel)
         return self
     }

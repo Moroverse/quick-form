@@ -1,16 +1,14 @@
-//
-//  FormFieldViewModel 2.swift
-//  quick-form
-//
-//  Created by Daniel Moro on 8.9.24..
-//
+// FormCollectionViewModel.swift
+// Copyright (c) 2024 Moroverse
+// Created by Daniel Moro on 2024-09-07 07:45 GMT.
 
 import Observation
 import Foundation
 
 @Observable
 public final class FormCollectionViewModel<Property: Identifiable>: ValueEditor {
-    public var title: String
+    public var title: LocalizedStringResource
+    public var insertionTitle: LocalizedStringResource
     public var value: [Property] {
         didSet {
             if let collectionChanged = collectionChanged {
@@ -24,11 +22,13 @@ public final class FormCollectionViewModel<Property: Identifiable>: ValueEditor 
 
     public init(
         value: [Property],
-        title: String = "",
+        title: LocalizedStringResource = "",
+        insertionTitle: LocalizedStringResource = "Add",
         isReadOnly: Bool = false
     ) {
         _value = value
         self.title = title
+        self.insertionTitle = insertionTitle
         self.isReadOnly = isReadOnly
     }
 

@@ -8,7 +8,7 @@ public struct FormToggleField: View {
     @Bindable private var viewModel: FormFieldViewModel<Bool>
 
     public var body: some View {
-        Toggle(viewModel.title, isOn: $viewModel.value)
+        Toggle(String(localized: viewModel.title), isOn: $viewModel.value)
             .font(.headline)
             .disabled(viewModel.isReadOnly)
     }

@@ -41,7 +41,7 @@ public struct FormValueUnitField<T: Dimension, S: PickerStyle>: View where T: Al
         HStack {
             Text(viewModel.title)
                 .font(.headline)
-            TextField(viewModel.placeholder ?? "", value: $viewModel.value.value, format: .number)
+            TextField(String(localized: viewModel.placeholder ?? ""), value: $viewModel.value.value, format: .number)
                 .multilineTextAlignment(.trailing)
                 .disabled(viewModel.isReadOnly)
             let binding = Binding(get: {

@@ -19,7 +19,7 @@ public struct FormFormattedTextField<F>: View where F: ParseableFormatStyle, F.F
             Text(viewModel.title)
                 .font(.headline)
             TextField(
-                viewModel.placeholder ?? "",
+                String(localized: viewModel.placeholder ?? ""),
                 value: $viewModel.value,
                 format: viewModel.format
             )

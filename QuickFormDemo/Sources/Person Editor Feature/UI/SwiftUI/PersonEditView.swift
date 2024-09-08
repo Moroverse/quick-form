@@ -5,8 +5,6 @@
 import QuickForm
 import SwiftUI
 
-
-
 struct PersonEditView: View {
     @Bindable var quickForm: PersonEditModel
     let delegate: PersonEditorDelegate?
@@ -35,7 +33,7 @@ struct PersonEditView: View {
             }
             .configure { viewModel in
                 viewModel.onInsert {
-                    return await withCheckedContinuation { continuation in
+                    await withCheckedContinuation { continuation in
                         delegate?.didTapOnAddTeamMember? { personInfo in
                             continuation.resume(returning: personInfo)
                         }
@@ -43,14 +41,16 @@ struct PersonEditView: View {
                 }
             }
 
+            Button("Deactivate", role: .destructive) {
+                delegate?.didTapOnDeactivate?()
+            }
+            
             Section {
                 TextEditor(text: .constant(info))
                     .frame(height: 300)
                     .disabled(true)
             }
-            Button("Deactivate", role: .destructive) {
-                delegate?.didTapOnDeactivate?()
-            }
+
         }
         .navigationTitle(quickForm.personNameComponents.formatted())
         .onChange(of: quickForm.model) {
@@ -63,16 +63,21 @@ struct ContentView_Previews: PreviewProvider {
     struct PreviewWrapper: View {
         @State var form = PersonEditModel(
             model: Person(
-                givenName: "Angelina",
-                familyName: "Jolie",
-                dateOfBirth: Date(),
+                givenName: "Olivia",
+                familyName: "Chen",
+                dateOfBirth: Date(timeIntervalSince1970: 707_443_200), // September 3, 1992
                 sex: .female,
-                address: .init(
-                    line1: "Milana Delica 32",
-                    city: "Belgrade",
-                    zipCode: "11000",
-                    country: .brazil,
-                    state: nil
+                phone: "+1 (555) 123-4567",
+                salary: 75000.00,
+                weight: Measurement(value: 58.5, unit: UnitMass.kilograms),
+                isEstablished: true,
+                address: Address(
+                    line1: "742 Evergreen Terrace",
+                    line2: "Apartment 3B",
+                    city: "Springfield",
+                    zipCode: "12345",
+                    country: .unitedStates,
+                    state: .unitedStates(.california)
                 )
             )
         )

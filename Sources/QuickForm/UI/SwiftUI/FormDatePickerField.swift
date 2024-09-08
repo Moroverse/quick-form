@@ -20,7 +20,7 @@ public struct FormDatePickerField<S: DatePickerStyle>: View {
     }
 
     public var body: some View {
-        DatePicker(viewModel.title, selection: $viewModel.value, displayedComponents: displayedComponents)
+        DatePicker(String(localized: viewModel.title), selection: $viewModel.value, displayedComponents: displayedComponents)
             .font(.headline)
             .datePickerStyle(style)
             .disabled(viewModel.isReadOnly)

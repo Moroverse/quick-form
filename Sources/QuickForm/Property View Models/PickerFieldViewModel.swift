@@ -1,15 +1,13 @@
-//
-//  PickerFieldViewModel.swift
-//  quick-form
-//
-//  Created by Daniel Moro on 7.9.24..
-//
+// PickerFieldViewModel.swift
+// Copyright (c) 2024 Moroverse
+// Created by Daniel Moro on 2024-09-07 07:45 GMT.
 
 import Observation
+import Foundation
 
 @Observable
 public final class PickerFieldViewModel<Property: Hashable & CustomStringConvertible>: ValueEditor {
-    public var title: String
+    public var title: LocalizedStringResource
     public var allValues: [Property]
     public var value: Property {
         didSet {
@@ -23,7 +21,7 @@ public final class PickerFieldViewModel<Property: Hashable & CustomStringConvert
     public init(
         value: Property,
         allValues: [Property],
-        title: String = "",
+        title: LocalizedStringResource = "",
         isReadOnly: Bool = false
     ) {
         self.value = value
