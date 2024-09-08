@@ -23,7 +23,8 @@ let project = Project(
             sources: ["Sources/**"],
             resources: ["Resources/**"],
             dependencies: [
-                .external(name: "QuickForm")
+                .external(name: "QuickForm"),
+                .external(name: "UIKitNavigation")
             ],
             settings: .settings(
                 base: [

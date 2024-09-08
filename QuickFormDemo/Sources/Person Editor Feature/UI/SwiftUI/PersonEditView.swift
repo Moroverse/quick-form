@@ -1,15 +1,19 @@
-// ContentView.swift
+// PersonEditView.swift
 // Copyright (c) 2024 Moroverse
 // Created by Daniel Moro on 2024-09-07 07:45 GMT.
 
 import QuickForm
 import SwiftUI
 
-struct ContentView: View {
-    @Bindable var quickForm: PersonEditModel
 
-    init(quickForm: PersonEditModel) {
+
+struct PersonEditView: View {
+    @Bindable var quickForm: PersonEditModel
+    let delegate: PersonEditorDelegate?
+
+    init(quickForm: PersonEditModel, delegate: PersonEditorDelegate? = nil) {
         self.quickForm = quickForm
+        self.delegate = delegate
     }
 
     @State var info: String = "None"
@@ -29,10 +33,23 @@ struct ContentView: View {
             FormCollectionSection(quickForm.careTeam) { personInfo in
                 Text(personInfo.name)
             }
+            .configure { viewModel in
+                viewModel.onInsert {
+                    return await withCheckedContinuation { continuation in
+                        delegate?.didTapOnAddTeamMember? { personInfo in
+                            continuation.resume(returning: personInfo)
+                        }
+                    }
+                }
+            }
+
             Section {
                 TextEditor(text: .constant(info))
                     .frame(height: 300)
                     .disabled(true)
+            }
+            Button("Deactivate", role: .destructive) {
+                delegate?.didTapOnDeactivate?()
             }
         }
         .navigationTitle(quickForm.personNameComponents.formatted())
@@ -61,7 +78,7 @@ struct ContentView_Previews: PreviewProvider {
         )
 
         var body: some View {
-            ContentView(quickForm: form)
+            PersonEditView(quickForm: form)
         }
     }
 

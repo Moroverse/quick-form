@@ -20,7 +20,7 @@ public final class FormCollectionViewModel<Property: Identifiable>: ValueEditor 
     }
     public var isReadOnly: Bool
     private var collectionChanged: ((CollectionDifference<Property>) -> Void)?
-    private var insertValue: (() async -> Property)?
+    private var insertValue: (() async -> Property?)?
 
     public init(
         value: [Property],
@@ -34,7 +34,9 @@ public final class FormCollectionViewModel<Property: Identifiable>: ValueEditor 
 
     public func insert() async {
         if let insertValue = insertValue {
-            await value.append(insertValue())
+            if let personInfo = await insertValue() {
+                value.append(personInfo)
+            }
         }
     }
 
@@ -49,7 +51,7 @@ public final class FormCollectionViewModel<Property: Identifiable>: ValueEditor 
     }
 
     @discardableResult
-    public func onInsert(_ insert: @escaping () async -> Property) -> Self {
+    public func onInsert(_ insert: @escaping () async -> Property?) -> Self {
         insertValue = insert
         return self
     }

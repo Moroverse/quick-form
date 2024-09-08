@@ -6,9 +6,12 @@ import Foundation
 import Observation
 @preconcurrency import QuickForm
 
+//1. QuickForm macro
 @QuickForm(Person.self)
 class PersonEditModel {
+    //2.Property Editor Macro
     @PropertyEditor(keyPath: \Person.givenName)
+    //3. Out-of box view models
     var firstName = FormFieldViewModel(
         value: "",
         title: "First Name:",
@@ -58,6 +61,7 @@ class PersonEditModel {
     )
 
     @PropertyEditor(keyPath: \Person.address)
+    //4. Custom view models using ValueEditor Protocol
     var address = AddressEditModel(address: .init(
         line1: "",
         city: "",
@@ -72,6 +76,7 @@ class PersonEditModel {
         title: "Care Team"
     )
 
+    //5. decorations in the class
     var personNameComponents: PersonNameComponents {
         PersonNameComponents(givenName: firstName.value, familyName: lastName.value)
     }

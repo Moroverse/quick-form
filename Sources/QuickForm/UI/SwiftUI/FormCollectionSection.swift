@@ -41,6 +41,13 @@ public struct FormCollectionSection<Property: Identifiable, Content: View>: View
     }
 }
 
+extension FormCollectionSection {
+    public func configure(_ configuration: @escaping (FormCollectionViewModel<Property>) -> Void) -> Self {
+        configuration(viewModel)
+        return self
+    }
+}
+
 struct SimplePerson: Identifiable {
     let id = UUID()
     let name: String

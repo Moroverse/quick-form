@@ -12,6 +12,7 @@
 let package = Package(
     name: "Demo",
     dependencies: [
-        .package(path: "../.")
+        .package(path: "../."),
+        .package(url: "https://github.com/pointfreeco/swift-navigation.git", from: "2.2.0")
     ]
 )
