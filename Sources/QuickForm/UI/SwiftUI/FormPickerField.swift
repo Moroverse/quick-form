@@ -10,7 +10,7 @@ public struct FormPickerField<Property: Hashable & CustomStringConvertible, S: P
 
     public init(
         _ viewModel: PickerFieldViewModel<Property>,
-        pickerStyle: S = DefaultPickerStyle.automatic
+        pickerStyle: S = .menu
     ) {
         self.viewModel = viewModel
         self.pickerStyle = pickerStyle
@@ -26,6 +26,7 @@ public struct FormPickerField<Property: Hashable & CustomStringConvertible, S: P
                 .font(.headline)
         }
         .pickerStyle(pickerStyle)
+        .fixedSize()
         .disabled(viewModel.isReadOnly)
     }
 }
@@ -36,7 +37,7 @@ public struct FormOptionalPickerField<Property: Hashable & CustomStringConvertib
 
     public init(
         _ viewModel: OptionalPickerFieldViewModel<Property>,
-        pickerStyle: S = DefaultPickerStyle.automatic
+        pickerStyle: S = .menu
     ) {
         self.viewModel = viewModel
         self.pickerStyle = pickerStyle
@@ -55,6 +56,7 @@ public struct FormOptionalPickerField<Property: Hashable & CustomStringConvertib
                 .font(.headline)
         }
         .pickerStyle(pickerStyle)
+        .fixedSize()
         .disabled(viewModel.isReadOnly)
     }
 }

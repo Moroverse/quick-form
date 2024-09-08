@@ -64,7 +64,7 @@ public struct FormValueUnitField<T: Dimension, S: PickerStyle>: View where T: Al
 
     public init(
         _ viewModel: FormFieldViewModel<Measurement<T>>,
-        pickerStyle: S = DefaultPickerStyle.automatic
+        pickerStyle: S = .menu
     ) {
         self.viewModel = viewModel
         self.pickerStyle = pickerStyle
