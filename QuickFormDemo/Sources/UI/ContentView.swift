@@ -26,6 +26,9 @@ struct ContentView: View {
             Section {
                 AddressEditView(quickForm: quickForm.address)
             }
+            FormCollectionSection(quickForm.careTeam) { personInfo in
+                Text(personInfo.name)
+            }
             Section {
                 TextEditor(text: .constant(info))
                     .frame(height: 300)

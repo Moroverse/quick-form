@@ -66,6 +66,12 @@ class PersonEditModel {
         state: .unitedStates(.california)
     ))
 
+    @PropertyEditor(keyPath: \Person.careTeam)
+    var careTeam = FormCollectionViewModel(
+        value: [PersonInfo](),
+        title: "Care Team"
+    )
+
     var personNameComponents: PersonNameComponents {
         PersonNameComponents(givenName: firstName.value, familyName: lastName.value)
     }

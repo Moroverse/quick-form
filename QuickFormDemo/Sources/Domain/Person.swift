@@ -4,6 +4,11 @@
 
 import Foundation
 
+struct PersonInfo: Equatable, Identifiable {
+    var id: Int
+    var name: String
+}
+
 struct Person: Equatable {
     enum Sex: Equatable, CaseIterable {
         case male
@@ -21,6 +26,7 @@ struct Person: Equatable {
     var weight: Measurement<UnitMass>
     var isEstablished: Bool
     var address: Address
+    var careTeam: [PersonInfo]
 
     init(
         givenName: String,
@@ -31,7 +37,8 @@ struct Person: Equatable {
         salary: Double = 0,
         weight: Measurement<UnitMass> = .init(value: 0, unit: .kilograms),
         isEstablished: Bool = true,
-        address: Address
+        address: Address,
+        careTeam: [PersonInfo] = []
     ) {
         self.givenName = givenName
         self.familyName = familyName
@@ -42,5 +49,6 @@ struct Person: Equatable {
         self.weight = weight
         self.isEstablished = isEstablished
         self.address = address
+        self.careTeam = careTeam
     }
 }
