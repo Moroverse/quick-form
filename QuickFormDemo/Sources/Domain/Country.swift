@@ -2,84 +2,48 @@
 // Copyright (c) 2024 Moroverse
 // Created by Daniel Moro on 2024-09-08 04:33 GMT.
 
-struct CountryState: Identifiable, Equatable {
-    let id: String
-    let name: String
 
-    init(id: String, name: String) {
-        self.id = id
-        self.name = name
-    }
-}
 
 enum Country: String, CaseIterable, Identifiable {
-    case unitedStates = "United States"
-    case canada = "Canada"
-    case unitedKingdom = "United Kingdom"
-    case australia = "Australia"
-    case germany = "Germany"
-    case france = "France"
-    case japan = "Japan"
-    case china = "China"
-    case india = "India"
-    case brazil = "Brazil"
+    case unitedStates
+    case canada
+    case unitedKingdom
+    case australia
+    case germany
+    case france
+    case japan
+    case china
+    case india
+    case brazil
     // Add more countries as needed
 
-    var id: String { rawValue }
+    public var id: Self { self }
+}
 
-    var hasStates: Bool {
+extension Country {
+    public var hasStates: Bool {
         switch self {
         case .unitedStates, .canada, .australia, .india, .brazil:
-            true
+            return true
         default:
-            false
+            return false
         }
     }
 
-    var states: [CountryState] {
+    public var states: [CountryState] {
         switch self {
         case .unitedStates:
-            [
-                CountryState(id: "NY", name: "New York"),
-                CountryState(id: "CA", name: "California"),
-                CountryState(id: "TX", name: "Texas")
-                // Add more states...
-            ]
-
+            return USState.allCases.map { CountryState.unitedStates($0) }
         case .canada:
-            [
-                CountryState(id: "ON", name: "Ontario"),
-                CountryState(id: "QC", name: "Quebec"),
-                CountryState(id: "BC", name: "British Columbia")
-                // Add more provinces...
-            ]
-
+            return CanadaProvince.allCases.map { CountryState.canada($0) }
         case .australia:
-            [
-                CountryState(id: "NSW", name: "New South Wales"),
-                CountryState(id: "VIC", name: "Victoria"),
-                CountryState(id: "QLD", name: "Queensland")
-                // Add more states...
-            ]
-
+            return AustraliaState.allCases.map { CountryState.australia($0) }
         case .india:
-            [
-                CountryState(id: "MH", name: "Maharashtra"),
-                CountryState(id: "DL", name: "Delhi"),
-                CountryState(id: "KA", name: "Karnataka")
-                // Add more states...
-            ]
-
+            return IndiaState.allCases.map { CountryState.india($0) }
         case .brazil:
-            [
-                CountryState(id: "SP", name: "São Paulo"),
-                CountryState(id: "RJ", name: "Rio de Janeiro"),
-                CountryState(id: "MG", name: "Minas Gerais")
-                // Add more states...
-            ]
-
+            return BrazilState.allCases.map { CountryState.brazil($0) }
         default:
-            []
+            return []
         }
     }
 }

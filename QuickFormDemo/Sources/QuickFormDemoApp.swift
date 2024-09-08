@@ -12,7 +12,14 @@ struct QuickFormDemoApp: App {
             givenName: "Marko",
             familyName: "Grlic",
             dateOfBirth: Date(),
-            sex: .male
+            sex: .male,
+            address: .init(
+                line1: "Milana Delica 32",
+                city: "Belgrade",
+                zipCode: "11000",
+                country: .brazil,
+                state: nil
+            )
         )
     )
     var body: some Scene {

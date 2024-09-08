@@ -20,6 +20,7 @@ struct Person: Equatable {
     var salary: Double
     var weight: Measurement<UnitMass>
     var isEstablished: Bool
+    var address: Address
 
     init(
         givenName: String,
@@ -29,7 +30,8 @@ struct Person: Equatable {
         phone: String? = nil,
         salary: Double = 0,
         weight: Measurement<UnitMass> = .init(value: 0, unit: .kilograms),
-        isEstablished: Bool = true
+        isEstablished: Bool = true,
+        address: Address
     ) {
         self.givenName = givenName
         self.familyName = familyName
@@ -39,5 +41,6 @@ struct Person: Equatable {
         self.salary = salary
         self.weight = weight
         self.isEstablished = isEstablished
+        self.address = address
     }
 }

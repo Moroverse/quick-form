@@ -4,12 +4,12 @@
 
 import SwiftUI
 
-public struct FormTextField<S>: View {
+public struct FormTextField: View {
     @FocusState private var isFocused: Bool
     @State private var alignment: TextAlignment = .trailing
-    @Bindable private var viewModel: FormFieldViewModel<S>
+    @Bindable private var viewModel: FormFieldViewModel<String>
 
-    public init(_ viewModel: FormFieldViewModel<S>) {
+    public init(_ viewModel: FormFieldViewModel<String>) {
         self.viewModel = viewModel
         isFocused = false
     }
@@ -18,7 +18,7 @@ public struct FormTextField<S>: View {
         HStack(spacing: 10) {
             Text(viewModel.title)
                 .font(.headline)
-            TextField(viewModel.placeholder ?? "", text: textBinding())
+            TextField(viewModel.placeholder ?? "", text: $viewModel.value)
                 .focused($isFocused)
                 .multilineTextAlignment(alignment)
                 .disabled(viewModel.isReadOnly)
@@ -26,19 +26,28 @@ public struct FormTextField<S>: View {
             alignment = isFocused ? .leading : .trailing
         }
     }
+}
 
-    private func textBinding() -> Binding<String> where S == String {
-        $viewModel.value
+public struct FormOptionalTextField: View {
+    @FocusState private var isFocused: Bool
+    @State private var alignment: TextAlignment = .trailing
+    @Bindable private var viewModel: FormFieldViewModel<String?>
+
+    public init(_ viewModel: FormFieldViewModel<String?>) {
+        self.viewModel = viewModel
+        isFocused = false
     }
 
-    private func textBinding() -> Binding<String> where S == String? {
-        $viewModel.value.unwrapped(defaultValue: "")
-    }
-
-    private func textBinding() -> Binding<String> {
-        Binding {
-            ""
-        } set: { _ in
+    public var body: some View {
+        HStack(spacing: 10) {
+            Text(viewModel.title)
+                .font(.headline)
+            TextField(viewModel.placeholder ?? "", text: $viewModel.value.unwrapped(defaultValue: ""))
+                .focused($isFocused)
+                .multilineTextAlignment(alignment)
+                .disabled(viewModel.isReadOnly)
+        }.onChange(of: isFocused) {
+            alignment = isFocused ? .leading : .trailing
         }
     }
 }

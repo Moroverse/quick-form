@@ -29,7 +29,25 @@ class PersonEditModel {
     @PropertyEditor(keyPath: \Person.isEstablished)
     var isEstablished = FormFieldViewModel(value: false, title: "Established:")
 
+    @PropertyEditor(keyPath: \Person.address)
+    var address = AddressEditModel(address: .init(
+        line1: "",
+        city: "",
+        zipCode: "",
+        country: .brazil,
+        state: nil
+    ))
+
     var personNameComponents: PersonNameComponents {
         PersonNameComponents(givenName: firstName.value, familyName: lastName.value)
+    }
+}
+
+extension PersonEditModel {
+    func updateFirstName(_ newValue: String) {
+        print("Updating model firstName to: \(newValue)")
+        model.givenName = newValue
+        // Manually trigger observation
+       // self.objectWillChange.send()
     }
 }

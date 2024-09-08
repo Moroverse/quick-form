@@ -8,8 +8,13 @@ import Observation
 public final class FormFieldViewModel<Property>: ValueEditor {
     public var title: String
     public var placeholder: String?
-    public var value: Property
+    public var value: Property {
+        didSet {
+            valueChanged?(value)
+        }
+    }
     public var isReadOnly: Bool
+    private var valueChanged: ((Property) -> Void)?
 
     public init(
         value: Property,
@@ -17,9 +22,15 @@ public final class FormFieldViewModel<Property>: ValueEditor {
         placeholder: String? = nil,
         isReadOnly: Bool = false
     ) {
-        self.value = value
+        _value = value
         self.title = title
         self.placeholder = placeholder
         self.isReadOnly = isReadOnly
+    }
+
+    @discardableResult
+    public func onValueChanged(_ change: @escaping (Property) -> Void) -> Self {
+        valueChanged = change
+        return self
     }
 }

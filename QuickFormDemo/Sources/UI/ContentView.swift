@@ -12,8 +12,11 @@ struct ContentView: View {
         self.quickForm = quickForm
     }
 
+    @State var info: String = "None"
+
     var body: some View {
         Form {
+            let _ = Self._printChanges()
             FormTextField(quickForm.firstName)
             FormTextField(quickForm.lastName)
             FormDatePickerField(quickForm.birthday)
@@ -21,8 +24,19 @@ struct ContentView: View {
             FormValueUnitField(quickForm.weight)
             FormFormattedTextField(quickForm.salary)
             FormToggleField(quickForm.isEstablished)
+            Section {
+                AddressEditView(quickForm: quickForm.address)
+            }
+            Section {
+                TextEditor(text: .constant(info))
+                    .frame(height: 300)
+                    .disabled(true)
+            }
         }
         .navigationTitle(quickForm.personNameComponents.formatted())
+        .onChange(of: quickForm.model) {
+            info = String(describing: quickForm.model)
+        }
     }
 }
 
@@ -33,7 +47,14 @@ struct ContentView_Previews: PreviewProvider {
                 givenName: "Angelina",
                 familyName: "Jolie",
                 dateOfBirth: Date(),
-                sex: .female
+                sex: .female,
+                address: .init(
+                    line1: "Milana Delica 32",
+                    city: "Belgrade",
+                    zipCode: "11000",
+                    country: .brazil,
+                    state: nil
+                )
             )
         )
 

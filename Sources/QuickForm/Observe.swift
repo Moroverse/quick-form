@@ -5,15 +5,14 @@
 import Observation
 
 public func observe(apply: @escaping @Sendable () -> Void) {
-    onChange(apply: apply)
-}
-
-func onChange(apply: @escaping @Sendable () -> Void) {
-    withObservationTracking {
-        apply()
-    } onChange: {
-        Task { @MainActor in
-            onChange(apply: apply)
+    func observeAndReapply() {
+        withObservationTracking {
+            apply()
+        } onChange: {
+            Task { @MainActor in
+                observeAndReapply()
+            }
         }
     }
+    observeAndReapply()
 }
