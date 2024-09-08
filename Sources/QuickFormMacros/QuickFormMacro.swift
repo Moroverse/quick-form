@@ -59,11 +59,8 @@ public struct QuickFormMacro: MemberMacro, ExtensionMacro {
 
         let trackMethod = """
         func track<Property>(keyPath: WritableKeyPath<\(modelType), Property>, editor: any ValueEditor<Property>) {
-           print("Setting up observation for \\(keyPath)")
            observe { [weak self] in
-               print("Observation triggered for \\(keyPath)")
                self?.model[keyPath: keyPath] = editor.value
-               print("Model updated: \\(String(describing: self?.model))")
             }
         }
         """

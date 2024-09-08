@@ -43,11 +43,3 @@ class PersonEditModel {
     }
 }
 
-extension PersonEditModel {
-    func updateFirstName(_ newValue: String) {
-        print("Updating model firstName to: \(newValue)")
-        model.givenName = newValue
-        // Manually trigger observation
-       // self.objectWillChange.send()
-    }
-}
