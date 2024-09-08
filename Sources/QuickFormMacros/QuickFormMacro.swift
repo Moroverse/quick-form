@@ -40,7 +40,20 @@ public struct QuickFormMacro: MemberMacro, ExtensionMacro {
         // Determine the visibility of the class
         let classVisibility = classDecl.modifiers.first { $0.name.text == "public" || $0.name.text == "internal" }?.name.text ?? "internal"
 
-        let modelVar = "\(classVisibility) var model: \(modelType)"
+        let modelVar = """
+        \(classVisibility) var model: \(modelType) {
+            get {
+                access(keyPath: \\.model)
+                return _model
+            }
+            set {
+                withMutation(keyPath: \\.model) {
+                    _model = newValue
+                }
+            }
+        }
+        private var _model: \(modelType)
+        """
 
         let initializerContent = propertyEditors.map { identifier, keyPath in
             """
@@ -51,7 +64,7 @@ public struct QuickFormMacro: MemberMacro, ExtensionMacro {
 
         let initializer = """
         \(classVisibility) init(model: \(modelType)) {
-            self.model = model
+            self._model = model
 
             \(initializerContent)
         }
