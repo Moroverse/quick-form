@@ -11,7 +11,7 @@ public final class FormCollectionViewModel<Property: Identifiable>: ValueEditor 
     public var insertionTitle: LocalizedStringResource
     public var value: [Property] {
         didSet {
-            if let collectionChanged = collectionChanged {
+            if let collectionChanged {
                 collectionChanged(value.difference(from: oldValue) { $0.id == $1.id })
             }
         }
@@ -33,7 +33,7 @@ public final class FormCollectionViewModel<Property: Identifiable>: ValueEditor 
     }
 
     public func insert() async {
-        if let insertValue = insertValue {
+        if let insertValue {
             if let personInfo = await insertValue() {
                 value.append(personInfo)
             }

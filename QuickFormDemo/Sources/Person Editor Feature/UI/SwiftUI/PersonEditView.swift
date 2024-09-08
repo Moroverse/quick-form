@@ -44,13 +44,12 @@ struct PersonEditView: View {
             Button("Deactivate", role: .destructive) {
                 delegate?.didTapOnDeactivate?()
             }
-            
+
             Section {
                 TextEditor(text: .constant(info))
                     .frame(height: 300)
                     .disabled(true)
             }
-
         }
         .navigationTitle(quickForm.personNameComponents.formatted())
         .onChange(of: quickForm.model) {
@@ -68,7 +67,7 @@ struct ContentView_Previews: PreviewProvider {
                 dateOfBirth: Date(timeIntervalSince1970: 707_443_200), // September 3, 1992
                 sex: .female,
                 phone: "+1 (555) 123-4567",
-                salary: 75000.00,
+                salary: 75_000.00,
                 weight: Measurement(value: 58.5, unit: UnitMass.kilograms),
                 isEstablished: true,
                 address: Address(

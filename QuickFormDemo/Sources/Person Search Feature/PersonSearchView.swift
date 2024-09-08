@@ -14,7 +14,7 @@ struct PersonSearchViewDelegate {
 enum PersonSearch {
     @MainActor
     static func personSearch(delegate: PersonSearchViewDelegate) -> UIViewController {
-        let controller = UIHostingController(rootView:PersonSearchView(people: people, delegate: delegate))
+        let controller = UIHostingController(rootView: PersonSearchView(people: people, delegate: delegate))
         let navigationController = UINavigationController(rootViewController: controller)
         navigationController.modalPresentationStyle = .formSheet
         return navigationController
@@ -73,7 +73,7 @@ struct PersonSearchView: View {
         .listStyle(.plain)
         .onChange(of: selectedID) { _, newValue in
             if let newValue, let delegate {
-                if let selected = people.first(where: {$0.id == newValue}) {
+                if let selected = people.first(where: { $0.id == newValue }) {
                     delegate.didSelectPerson?(selected)
                 }
             }

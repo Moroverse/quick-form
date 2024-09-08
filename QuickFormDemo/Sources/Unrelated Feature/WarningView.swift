@@ -15,7 +15,7 @@ enum WarningOptions {
         let closeButton = UIBarButtonItem(systemItem: .close, primaryAction: UIAction(handler: { _ in
             controller.dismiss(animated: true, completion: nil)
         }))
-        controller.navigationItem.leftBarButtonItem = closeButton
+        controller.navigationItem.rightBarButtonItem = closeButton
         return navigationController
     }
 }

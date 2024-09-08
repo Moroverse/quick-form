@@ -7,12 +7,16 @@ extension CountryState: CustomStringConvertible {
         switch self {
         case let .unitedStates(state):
             state.description
+
         case let .canada(state):
             state.description
+
         case let .australia(state):
             state.description
+
         case let .india(state):
             state.description
+
         case let .brazil(state):
             state.description
         }

@@ -15,7 +15,7 @@ enum Country: String, CaseIterable, Identifiable {
     case brazil
     // Add more countries as needed
 
-    public var id: Self { self }
+    var id: Self { self }
 }
 
 extension Country {
@@ -23,6 +23,7 @@ extension Country {
         switch self {
         case .unitedStates, .canada, .australia, .india, .brazil:
             true
+
         default:
             false
         }
@@ -32,14 +33,19 @@ extension Country {
         switch self {
         case .unitedStates:
             USState.allCases.map { CountryState.unitedStates($0) }
+
         case .canada:
             CanadaProvince.allCases.map { CountryState.canada($0) }
+
         case .australia:
             AustraliaState.allCases.map { CountryState.australia($0) }
+
         case .india:
             IndiaState.allCases.map { CountryState.india($0) }
+
         case .brazil:
             BrazilState.allCases.map { CountryState.brazil($0) }
+
         default:
             []
         }

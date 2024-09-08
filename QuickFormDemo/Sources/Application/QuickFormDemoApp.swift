@@ -25,6 +25,20 @@ let fakePerson = Person(
     )
 )
 
+private final class PresentationDelegate: NSObject, UIAdaptivePresentationControllerDelegate {
+    let didDismiss: () -> Void
+
+    init(didDismiss: @escaping () -> Void) {
+        self.didDismiss = didDismiss
+    }
+
+    func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
+        didDismiss()
+    }
+
+    static let observeTokenKey = malloc(1)!
+}
+
 @MainActor
 func initialController() -> UIViewController {
     let navigationController = UINavigationController()
@@ -37,6 +51,12 @@ func initialController() -> UIViewController {
             navigationController.dismiss(animated: true)
         }
         let personSearch = PersonSearch.personSearch(delegate: delegate)
+        let presentationDelegate = PresentationDelegate(didDismiss: {
+            completion(nil)
+        })
+        objc_setAssociatedObject(personSearch, PresentationDelegate.observeTokenKey, presentationDelegate, .OBJC_ASSOCIATION_RETAIN)
+
+        personSearch.presentationController?.delegate = presentationDelegate
         navigationController.present(personSearch, animated: true)
     }
 

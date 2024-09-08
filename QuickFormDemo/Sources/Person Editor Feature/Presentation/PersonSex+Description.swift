@@ -7,10 +7,13 @@ extension Person.Sex: CustomStringConvertible {
         switch self {
         case .male:
             "Male"
+
         case .female:
             "Female"
+
         case .nonBinary:
             "Non-Binary"
+
         case .other:
             "Other"
         }
