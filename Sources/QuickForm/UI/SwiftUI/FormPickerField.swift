@@ -45,7 +45,7 @@ public struct FormOptionalPickerField<Property: Hashable & CustomStringConvertib
     public var body: some View {
         Picker(selection: $viewModel.value) {
             Text("None")
-                .tag(Optional<Property>.none)
+                .tag(Property?.none)
             ForEach(viewModel.allValues, id: \.self) { itemCase in
                 Text(itemCase.description)
             }

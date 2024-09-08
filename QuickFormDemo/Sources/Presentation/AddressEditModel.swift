@@ -27,11 +27,10 @@ class AddressEditModel {
 
     convenience init(address: Address) {
         self.init(model: address)
-        country.onValueChanged {[weak self] newValue in
+        country.onValueChanged { [weak self] newValue in
             self?.state.allValues = newValue.states
         }
     }
-
 }
 
 extension AddressEditModel: ValueEditor {

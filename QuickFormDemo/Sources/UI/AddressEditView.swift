@@ -1,9 +1,6 @@
-//
-//  AddressEditView.swift
-//  QuickFormDemo
-//
-//  Created by Daniel Moro on 8.9.24..
-//
+// AddressEditView.swift
+// Copyright (c) 2024 Moroverse
+// Created by Daniel Moro on 2024-09-08 08:55 GMT.
 
 import QuickForm
 import SwiftUI
@@ -18,7 +15,7 @@ struct AddressEditView: View {
     func info() -> String {
         let country = quickForm.country.value
         let state = quickForm.state.value
-        
+
         return "\(country.description) \(state?.description ?? "")"
     }
 
@@ -63,7 +60,7 @@ struct AddressEditView: View {
         .navigationTitle(info())
     }
 
-    private func safeCountryColumns<S: View>(content: S) -> some View {
+    private func safeCountryColumns(content: some View) -> some View {
         if quickForm.country.value.hasStates {
             content
                 .gridCellColumns(2)

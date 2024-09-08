@@ -1,9 +1,6 @@
-//
-//  Country+Description.swift
-//  QuickFormDemo
-//
-//  Created by Daniel Moro on 8.9.24..
-//
+// Country+Description.swift
+// Copyright (c) 2024 Moroverse
+// Created by Daniel Moro on 2024-09-08 08:55 GMT.
 
 extension Country: CustomStringConvertible {
     var description: String {

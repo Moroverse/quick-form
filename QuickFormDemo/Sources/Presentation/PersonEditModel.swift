@@ -42,4 +42,3 @@ class PersonEditModel {
         PersonNameComponents(givenName: firstName.value, familyName: lastName.value)
     }
 }
-

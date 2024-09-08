@@ -1,9 +1,6 @@
-//
-//  CountryState.swift
-//  QuickFormDemo
-//
-//  Created by Daniel Moro on 8.9.24..
-//
+// CountryState.swift
+// Copyright (c) 2024 Moroverse
+// Created by Daniel Moro on 2024-09-08 08:55 GMT.
 
 enum CountryState: Identifiable, Hashable, Equatable {
     case unitedStates(USState)
