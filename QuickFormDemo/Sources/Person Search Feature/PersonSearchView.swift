@@ -48,23 +48,34 @@ struct PersonSearchView: View {
     let people: [PersonInfo]
     let delegate: PersonSearchViewDelegate?
     @State var searchText = ""
-    @State var selectedIndex: Int?
+    @State var selectedID: Int?
+
+    var filteredPeople: [PersonInfo] {
+        if self.searchText.isEmpty {
+            return people
+        }
+        return people.filter { person in
+            person.name.lowercased().contains(searchText.lowercased())
+        }
+    }
 
     init(people: [PersonInfo], delegate: PersonSearchViewDelegate? = nil) {
         self.people = people
         self.delegate = delegate
     }
     var body: some View {
-        List(selection: $selectedIndex) {
-            ForEach(people) { person in
+        List(selection: $selectedID) {
+            ForEach(filteredPeople) { person in
                 Text(person.name)
             }
         }
         .searchable(text: $searchText)
         .listStyle(.plain)
-        .onChange(of: selectedIndex) { _, newValue in
+        .onChange(of: selectedID) { _, newValue in
             if let newValue, let delegate {
-                delegate.didSelectPerson?(people[newValue])
+                if let selected = people.first(where: {$0.id == newValue}) {
+                    delegate.didSelectPerson?(selected)
+                }
             }
         }
     }

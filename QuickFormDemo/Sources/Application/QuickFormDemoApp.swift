@@ -25,27 +25,33 @@ let fakePerson = Person(
     )
 )
 
+@MainActor
+func initialController() -> UIViewController {
+    let navigationController = UINavigationController()
+    let delegate = PersonEditorDelegate {
+        let warning = WarningOptions.warning()
+        navigationController.present(warning, animated: true)
+    } didTapOnAddTeamMember: { completion in
+        let delegate = PersonSearchViewDelegate { personInfo in
+            completion(personInfo)
+            navigationController.dismiss(animated: true)
+        }
+        let personSearch = PersonSearch.personSearch(delegate: delegate)
+        navigationController.present(personSearch, animated: true)
+    }
+
+    let editor = PersonEditor.personEditor(for: fakePerson, delegate: delegate)
+    navigationController.pushViewController(editor, animated: false)
+    return navigationController
+}
+
 @main
 struct QuickFormDemoApp: App {
+    @State var controller = initialController()
     var body: some Scene {
         WindowGroup {
             UIViewControllerRepresenting {
-                let navigationController = UINavigationController()
-                let delegate = PersonEditorDelegate {
-                    let warning = WarningOptions.warning()
-                    navigationController.present(warning, animated: true)
-                } didTapOnAddTeamMember: { completion in
-                    let delegate = PersonSearchViewDelegate { personInfo in
-                        completion(personInfo)
-                        navigationController.dismiss(animated: true)
-                    }
-                    let personSearch = PersonSearch.personSearch(delegate: delegate)
-                    navigationController.present(personSearch, animated: true)
-                }
-
-                let editor = PersonEditor.personEditor(for: fakePerson, delegate: delegate)
-                navigationController.pushViewController(editor, animated: false)
-                return navigationController
+                controller
             }
         }
     }
