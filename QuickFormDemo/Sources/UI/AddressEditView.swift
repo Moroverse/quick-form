@@ -12,61 +12,31 @@ struct AddressEditView: View {
         self.quickForm = quickForm
     }
 
-    func info() -> String {
-        let country = quickForm.country.value
-        let state = quickForm.state.value
-
-        return "\(country.description) \(state?.description ?? "")"
-    }
-
     var body: some View {
-        Grid {
-            GridRow {
-                FormTextField(quickForm.line1)
-                    .gridCellColumns(2)
-            }
-
+        VStack {
+            FormTextField(quickForm.line1)
+                .padding(.vertical, 4)
+            Divider()
+            FormOptionalTextField(quickForm.line2)
+                .padding(.vertical, 4)
             Divider()
 
-            GridRow {
-                FormOptionalTextField(quickForm.line2)
-                    .gridCellColumns(2)
-            }
-
-            Divider()
-
-            GridRow {
+            HStack {
                 FormTextField(quickForm.city)
-                Rectangle()
-                    .foregroundStyle(.tertiary)
-                    .frame(width: 1)
-                    .gridCellUnsizedAxes([.horizontal, .vertical])
+                Divider()
                 FormTextField(quickForm.zipCode)
             }
 
             Divider()
 
-            GridRow {
-                safeCountryColumns(content: FormPickerField(quickForm.country))
+            HStack {
+                FormPickerField(quickForm.country)
+                    .buttonStyle(.plain)
                 if quickForm.country.value.hasStates {
-                    Rectangle()
-                        .foregroundStyle(.tertiary)
-                        .frame(width: 1)
-                        .gridCellUnsizedAxes([.horizontal, .vertical])
+                    Divider()
                     FormOptionalPickerField(quickForm.state)
                 }
             }
-        }
-        .navigationTitle(info())
-    }
-
-    private func safeCountryColumns(content: some View) -> some View {
-        if quickForm.country.value.hasStates {
-            content
-                .gridCellColumns(2)
-        } else {
-            content
-                .gridCellColumns(1)
         }
     }
 }

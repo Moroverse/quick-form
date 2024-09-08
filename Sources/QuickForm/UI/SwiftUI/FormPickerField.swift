@@ -48,6 +48,7 @@ public struct FormOptionalPickerField<Property: Hashable & CustomStringConvertib
                 .tag(Property?.none)
             ForEach(viewModel.allValues, id: \.self) { itemCase in
                 Text(itemCase.description)
+                    .tag(Optional(itemCase))
             }
         } label: {
             Text(viewModel.title)
