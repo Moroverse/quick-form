@@ -6,6 +6,14 @@ import SwiftSyntax
 import SwiftSyntaxBuilder
 import SwiftSyntaxMacros
 
+// QuickFormMacro.swift
+// Copyright (c) 2024 Moroverse
+// Created by Daniel Moro on 2024-09-07 07:45 GMT.
+
+import SwiftSyntax
+import SwiftSyntaxBuilder
+import SwiftSyntaxMacros
+
 public struct QuickFormMacro: MemberMacro, ExtensionMacro {
     public static func expansion(
         of node: AttributeSyntax,
@@ -55,18 +63,25 @@ public struct QuickFormMacro: MemberMacro, ExtensionMacro {
         private var _model: \(modelType)
         """
 
-        let initializerContent = propertyEditors.map { identifier, keyPath in
+        let updateMethodContent = propertyEditors.map { identifier, keyPath in
             """
-            \(identifier).value = model[keyPath: \(keyPath)]
-            track(keyPath: \(keyPath), editor: \(identifier))
+            \(identifier).value = _model[keyPath: \(keyPath)]
             """
         }.joined(separator: "\n")
+
+        let updateMethod = """
+        \(classVisibility) func update() {
+            \(updateMethodContent)
+        }
+        """
 
         let initializer = """
         \(classVisibility) init(model: \(modelType)) {
             self._model = model
-
-            \(initializerContent)
+            update()
+            \(propertyEditors.map { identifier, keyPath in
+                "track(keyPath: \(keyPath), editor: \(identifier))"
+            }.joined(separator: "\n"))
         }
         """
 
@@ -101,6 +116,7 @@ public struct QuickFormMacro: MemberMacro, ExtensionMacro {
 
         return [
             DeclSyntax(stringLiteral: modelVar),
+            DeclSyntax(stringLiteral: updateMethod),
             DeclSyntax(stringLiteral: initializer),
             DeclSyntax(stringLiteral: trackMethod),
             DeclSyntax(stringLiteral: observationRegistrar),

@@ -41,6 +41,7 @@ extension AddressEditModel: ValueEditor {
         }
         set(newValue) {
             model = newValue
+            update()
         }
     }
 }
