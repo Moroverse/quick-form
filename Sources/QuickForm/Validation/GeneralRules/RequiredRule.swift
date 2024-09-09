@@ -1,10 +1,6 @@
-//
-//  RequiredRule.swift
-//  quick-form
-//
-//  Created by Daniel Moro on 9.9.24..
-//
-
+// RequiredRule.swift
+// Copyright (c) 2024 Moroverse
+// Created by Daniel Moro on 2024-09-09 19:08 GMT.
 
 public struct RequiredRule<T>: ValidationRule {
     public func validate(_ value: T?) -> ValidationResult {

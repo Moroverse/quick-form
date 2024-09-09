@@ -47,7 +47,7 @@ public final class OptionalPickerFieldViewModel<Property: Hashable & CustomStrin
             validate()
         }
     }
-    
+
     public var isReadOnly: Bool
     public var validation: AnyValidationRule<Property?>?
 

@@ -10,25 +10,28 @@ class AddressEditModel {
     @PropertyEditor(keyPath: \Address.line1)
     var line1 = FormFieldViewModel(
         value: "",
-        title: "Address Line 1:"
+        placeholder: "Address Line 1",
+        validation: .of(.notEmpty)
     )
 
     @PropertyEditor(keyPath: \Address.line2)
     var line2 = FormFieldViewModel(
         value: String?.none,
-        title: "Address Line 2:"
+        placeholder: "Address Line 2"
     )
 
     @PropertyEditor(keyPath: \Address.city)
     var city = FormFieldViewModel(
         value: "",
-        title: "City:"
+        title: "City:",
+        validation: .of(.notEmpty)
     )
 
     @PropertyEditor(keyPath: \Address.zipCode)
     var zipCode = FormFieldViewModel(
         value: "",
-        title: "Zip Code:"
+        title: "Zip Code:",
+        validation: .combined(.notEmpty, .usZipCode)
     )
 
     @PropertyEditor(keyPath: \Address.country)

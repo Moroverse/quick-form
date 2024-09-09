@@ -24,7 +24,7 @@ public struct AnyValidationRule<Value>: ValidationRule {
         var packed: [any ValidationRule<Value>] = []
 
         func add(element: some ValidationRule) {
-            if let e = element as? any ValidationRule<Value>  {
+            if let e = element as? any ValidationRule<Value> {
                 packed.append(e)
             }
         }
