@@ -7,7 +7,7 @@ import SwiftUI
 public struct FormFormattedTextField<F>: View where F: ParseableFormatStyle, F.FormatOutput == String {
     @FocusState private var isFocused: Bool
     @State private var alignment: TextAlignment = .trailing
-    @State private var editingText: String = ""
+    @State private var editingText = ""
     @State private var originalValue: F.FormatInput?
     @Bindable private var viewModel: FormattedFieldViewModel<F>
 
