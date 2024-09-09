@@ -1,11 +1,15 @@
+// PersonEditor.swift
+// Copyright (c) 2024 Moroverse
+// Created by Daniel Moro on 2024-09-08 17:09 GMT.
+
 //
 //  PersonEditor.swift
 //  QuickFormDemo
 //
 //  Created by Daniel Moro on 8.9.24..
 //
-import UIKit
 import SwiftUI
+import UIKit
 
 struct PersonEditorDelegate {
     var didTapOnDeactivate: (() -> Void)?

@@ -1,3 +1,7 @@
+// OptionalFormat.swift
+// Copyright (c) 2024 Moroverse
+// Created by Daniel Moro on 2024-09-08 04:33 GMT.
+
 import Foundation
 
 public struct OptionalFormat<Value, F>: ParseableFormatStyle where F: ParseableFormatStyle, F.FormatInput == Value, F.FormatOutput == String {

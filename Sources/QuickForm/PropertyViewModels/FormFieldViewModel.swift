@@ -2,8 +2,8 @@
 // Copyright (c) 2024 Moroverse
 // Created by Daniel Moro on 2024-09-07 07:45 GMT.
 
-import Observation
 import Foundation
+import Observation
 
 @Observable
 public final class FormFieldViewModel<Property>: ValueEditor {
@@ -14,6 +14,7 @@ public final class FormFieldViewModel<Property>: ValueEditor {
             valueChanged?(value)
         }
     }
+
     public var isReadOnly: Bool
     private var valueChanged: ((Property) -> Void)?
 

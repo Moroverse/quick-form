@@ -1,9 +1,6 @@
-//
-//  PersonSearchView.swift
-//  QuickFormDemo
-//
-//  Created by Daniel Moro on 8.9.24..
-//
+// PersonSearchView.swift
+// Copyright (c) 2024 Moroverse
+// Created by Daniel Moro on 2024-09-08 17:09 GMT.
 
 import SwiftUI
 
@@ -51,7 +48,7 @@ struct PersonSearchView: View {
     @State var selectedID: Int?
 
     var filteredPeople: [PersonInfo] {
-        if self.searchText.isEmpty {
+        if searchText.isEmpty {
             return people
         }
         return people.filter { person in
@@ -63,6 +60,7 @@ struct PersonSearchView: View {
         self.people = people
         self.delegate = delegate
     }
+
     var body: some View {
         List(selection: $selectedID) {
             ForEach(filteredPeople) { person in

@@ -1,9 +1,9 @@
 // FormCollectionViewModel.swift
 // Copyright (c) 2024 Moroverse
-// Created by Daniel Moro on 2024-09-07 07:45 GMT.
+// Created by Daniel Moro on 2024-09-08 13:42 GMT.
 
-import Observation
 import Foundation
+import Observation
 
 @Observable
 public final class FormCollectionViewModel<Property: Identifiable>: ValueEditor {
@@ -16,6 +16,7 @@ public final class FormCollectionViewModel<Property: Identifiable>: ValueEditor 
             }
         }
     }
+
     public var isReadOnly: Bool
     private var collectionChanged: ((CollectionDifference<Property>) -> Void)?
     private var insertValue: (() async -> Property?)?
