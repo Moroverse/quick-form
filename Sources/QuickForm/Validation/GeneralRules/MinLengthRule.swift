@@ -14,7 +14,7 @@ public struct MinLengthRule: ValidationRule {
     }
 }
 
-public extension ValidationRule {
+public extension ValidationRule where Self == MinLengthRule {
     static func minLength(_ length: Int) -> MinLengthRule {
         MinLengthRule(length: length)
     }

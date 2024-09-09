@@ -14,7 +14,7 @@ public struct MaxLengthRule: ValidationRule {
     }
 }
 
-public extension ValidationRule {
+public extension ValidationRule where Self == MaxLengthRule {
     static func maxLength(_ length: Int) -> MaxLengthRule {
         MaxLengthRule(length: length)
     }
