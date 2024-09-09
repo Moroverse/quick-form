@@ -7,11 +7,27 @@ import SwiftUI
 public struct FormFormattedTextField<F>: View where F: ParseableFormatStyle, F.FormatOutput == String {
     @FocusState private var isFocused: Bool
     @State private var alignment: TextAlignment = .trailing
+    @State private var editingText: String = ""
+    @State private var originalValue: F.FormatInput?
     @Bindable private var viewModel: FormattedFieldViewModel<F>
 
     public init(_ viewModel: FormattedFieldViewModel<F>) {
         self.viewModel = viewModel
         isFocused = false
+    }
+
+    func safeExtract() -> String {
+        if _isOptional(type(of: viewModel.value)) {
+            var optional = String(describing: viewModel.value)
+            if optional == "nil" {
+                return ""
+            }
+            optional.trimPrefix("Optional(\"")
+            let result = optional.split(separator: "\"")
+            return String(result[0])
+        } else {
+            return String(describing: viewModel.value)
+        }
     }
 
     public var body: some View {
@@ -20,14 +36,31 @@ public struct FormFormattedTextField<F>: View where F: ParseableFormatStyle, F.F
                 .font(.headline)
             TextField(
                 String(localized: viewModel.placeholder ?? ""),
-                value: $viewModel.value,
-                format: viewModel.format
+                text: $editingText
             )
             .focused($isFocused)
             .multilineTextAlignment(alignment)
             .disabled(viewModel.isReadOnly)
-        }.onChange(of: isFocused) {
-            alignment = isFocused ? .leading : .trailing
+            .onAppear {
+                editingText = viewModel.format.format(viewModel.value)
+            }
+            .onChange(of: isFocused) { _, newValue in
+                alignment = newValue ? .leading : .trailing
+                if newValue {
+                    // Entering edit mode: remove formatting
+                    editingText = safeExtract()
+                    originalValue = viewModel.value
+                } else {
+                    // Exiting edit mode: apply formatting
+                    if let parsedValue = try? viewModel.format.parseStrategy.parse(editingText) {
+                        viewModel.value = parsedValue
+                        editingText = viewModel.format.format(viewModel.value)
+                    } else if let originalValue {
+                        viewModel.value = originalValue
+                        editingText = viewModel.format.format(viewModel.value)
+                    }
+                }
+            }
         }
     }
 }
