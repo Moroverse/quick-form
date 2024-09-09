@@ -20,9 +20,19 @@ public struct AnyValidationRule<Value>: ValidationRule {
     }
 
     // Factory method for combining rules
-    public static func combined(_ rules: any ValidationRule<Value>...) -> AnyValidationRule<Value> {
-        AnyValidationRule { value in
-            for rule in rules {
+    public static func combined<each Rule: ValidationRule>(_ rules: repeat each Rule) -> AnyValidationRule<Value> {
+        var packed: [any ValidationRule<Value>] = []
+
+        func add(element: some ValidationRule) {
+            if let e = element as? any ValidationRule<Value>  {
+                packed.append(e)
+            }
+        }
+
+        repeat add(element: each rules)
+
+        return AnyValidationRule { value in
+            for rule in packed {
                 let anyRule = AnyValidationRule(rule)
                 switch anyRule.validate(value) {
                 case .success:

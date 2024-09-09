@@ -15,16 +15,16 @@ class PersonEditModel {
     var firstName = FormFieldViewModel(
         value: "",
         title: "First Name:",
-        placeholder: "John" // ,
-//        validation: .combined(.maxLength(2), .minLength(2))
+        placeholder: "John",
+        validation: .combined(.notEmpty, .minLength(2), .maxLength(50))
     )
 
     @PropertyEditor(keyPath: \Person.familyName)
     var lastName = FormFieldViewModel(
         value: "",
         title: "Last Name:",
-        placeholder: "Anderson" // ,
-//        validation: .combined(.notEmpty, .minLength(2), .maxLength(50))
+        placeholder: "Anderson",
+        validation: .combined(.notEmpty, .minLength(2), .maxLength(50))
     )
 
     @PropertyEditor(keyPath: \Person.dateOfBirth)
