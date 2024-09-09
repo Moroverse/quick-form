@@ -42,18 +42,52 @@ public final class PickerFieldViewModel<Property: Hashable & CustomStringConvert
 public final class OptionalPickerFieldViewModel<Property: Hashable & CustomStringConvertible>: ValueEditor {
     public var title: String
     public var allValues: [Property]
-    public var value: Property?
+    public var value: Property? {
+        didSet {
+            validate()
+        }
+    }
+    
     public var isReadOnly: Bool
+    public var validation: AnyValidationRule<Property?>?
+
+    private var validationResult: ValidationResult = .success
+
+    public var isValid: Bool {
+        switch validationResult {
+        case .success:
+            true
+
+        case .failure:
+            false
+        }
+    }
+
+    public var errorMessage: LocalizedStringResource? {
+        switch validationResult {
+        case .success:
+            nil
+
+        case let .failure(error):
+            error
+        }
+    }
 
     public init(
         value: Property?,
         allValues: [Property],
         title: String = "",
-        isReadOnly: Bool = false
+        isReadOnly: Bool = false,
+        validation: AnyValidationRule<Property?>? = nil
     ) {
         self.value = value
         self.allValues = allValues
         self.title = title
         self.isReadOnly = isReadOnly
+        self.validation = validation
+    }
+
+    private func validate() {
+        validationResult = validation?.validate(value) ?? .success
     }
 }

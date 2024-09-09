@@ -50,6 +50,12 @@ class AddressEditModel {
         country.onValueChanged { [weak self] newValue in
             self?.state.allValues = newValue.states
             self?.state.value = nil
+            // Set conditional validation
+            if self?.state.allValues.isEmpty == true {
+                self?.state.validation = nil
+            } else {
+                self?.state.validation = .of(RequiredRule())
+            }
         }
     }
 }

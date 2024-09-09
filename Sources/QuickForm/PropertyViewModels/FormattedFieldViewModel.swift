@@ -40,7 +40,7 @@ public final class FormattedFieldViewModel<F>: ValueEditor where F: ParseableFor
     }
 
     private var valueChanged: ((F.FormatInput) -> Void)?
-    private let validation: AnyValidationRule<F.FormatInput>?
+    private let validation: AnyValidationRule<F.FormatInput?>?
     private var validationResult: ValidationResult = .success
 
     public init(
@@ -49,7 +49,7 @@ public final class FormattedFieldViewModel<F>: ValueEditor where F: ParseableFor
         title: LocalizedStringResource = "",
         placeholder: LocalizedStringResource? = nil,
         isReadOnly: Bool = false,
-        validation: AnyValidationRule<F.FormatInput>? = nil
+        validation: AnyValidationRule<F.FormatInput?>? = nil
     ) {
         self.value = value
         self.format = format

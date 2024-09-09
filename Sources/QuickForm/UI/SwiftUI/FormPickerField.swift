@@ -44,20 +44,27 @@ public struct FormOptionalPickerField<Property: Hashable & CustomStringConvertib
     }
 
     public var body: some View {
-        Picker(selection: $viewModel.value) {
-            Text("None")
-                .tag(Property?.none)
-            ForEach(viewModel.allValues, id: \.self) { itemCase in
-                Text(itemCase.description)
-                    .tag(Optional(itemCase))
+        VStack(alignment: .leading, spacing: 5) {
+            Picker(selection: $viewModel.value) {
+                Text("None")
+                    .tag(Property?.none)
+                ForEach(viewModel.allValues, id: \.self) { itemCase in
+                    Text(itemCase.description)
+                        .tag(Optional(itemCase))
+                }
+            } label: {
+                Text(viewModel.title)
+                    .font(.headline)
             }
-        } label: {
-            Text(viewModel.title)
-                .font(.headline)
+            .pickerStyle(pickerStyle)
+            .fixedSize()
+            .disabled(viewModel.isReadOnly)
+            if !viewModel.isValid {
+                Text(viewModel.errorMessage ?? "Invalid input")
+                    .font(.caption)
+                    .foregroundColor(.red)
+            }
         }
-        .pickerStyle(pickerStyle)
-        .fixedSize()
-        .disabled(viewModel.isReadOnly)
     }
 }
 

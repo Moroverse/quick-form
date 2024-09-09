@@ -15,13 +15,20 @@ public struct FormTextField: View {
     }
 
     public var body: some View {
-        HStack(spacing: 10) {
-            Text(viewModel.title)
-                .font(.headline)
-            TextField(String(localized: viewModel.placeholder ?? ""), text: $viewModel.value)
-                .focused($isFocused)
-                .multilineTextAlignment(alignment)
-                .disabled(viewModel.isReadOnly)
+        VStack(alignment: .leading, spacing: 5) {
+            HStack(spacing: 10) {
+                Text(viewModel.title)
+                    .font(.headline)
+                TextField(String(localized: viewModel.placeholder ?? ""), text: $viewModel.value)
+                    .focused($isFocused)
+                    .multilineTextAlignment(alignment)
+                    .disabled(viewModel.isReadOnly)
+            }
+            if !viewModel.isValid {
+                Text(viewModel.errorMessage ?? "Invalid input")
+                    .font(.caption)
+                    .foregroundColor(.red)
+            }
         }.onChange(of: isFocused) {
             alignment = isFocused ? .leading : .trailing
         }
@@ -39,14 +46,22 @@ public struct FormOptionalTextField: View {
     }
 
     public var body: some View {
-        HStack(spacing: 10) {
-            Text(viewModel.title)
-                .font(.headline)
-            TextField(String(localized: viewModel.placeholder ?? ""), text: $viewModel.value.unwrapped(defaultValue: ""))
-                .focused($isFocused)
-                .multilineTextAlignment(alignment)
-                .disabled(viewModel.isReadOnly)
-        }.onChange(of: isFocused) {
+        VStack(alignment: .leading, spacing: 5) {
+            HStack(spacing: 10) {
+                Text(viewModel.title)
+                    .font(.headline)
+                TextField(String(localized: viewModel.placeholder ?? ""), text: $viewModel.value.unwrapped(defaultValue: ""))
+                    .focused($isFocused)
+                    .multilineTextAlignment(alignment)
+                    .disabled(viewModel.isReadOnly)
+            }
+            if !viewModel.isValid {
+                Text(viewModel.errorMessage ?? "Invalid input")
+                    .font(.caption)
+                    .foregroundColor(.red)
+            }
+        }
+        .onChange(of: isFocused) {
             alignment = isFocused ? .leading : .trailing
         }
     }
