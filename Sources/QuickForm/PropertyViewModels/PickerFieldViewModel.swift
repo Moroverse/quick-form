@@ -39,12 +39,13 @@ public final class PickerFieldViewModel<Property: Hashable & CustomStringConvert
 }
 
 @Observable
-public final class OptionalPickerFieldViewModel<Property: Hashable & CustomStringConvertible>: ValueEditor {
+public final class OptionalPickerFieldViewModel<Property: Hashable & CustomStringConvertible>:
+    ValueEditor, Validatable {
     public var title: String
     public var allValues: [Property]
     public var value: Property? {
         didSet {
-            validate()
+            validationResult = validate()
         }
     }
 
@@ -52,26 +53,6 @@ public final class OptionalPickerFieldViewModel<Property: Hashable & CustomStrin
     public var validation: AnyValidationRule<Property?>?
 
     private var validationResult: ValidationResult = .success
-
-    public var isValid: Bool {
-        switch validationResult {
-        case .success:
-            true
-
-        case .failure:
-            false
-        }
-    }
-
-    public var errorMessage: LocalizedStringResource? {
-        switch validationResult {
-        case .success:
-            nil
-
-        case let .failure(error):
-            error
-        }
-    }
 
     public init(
         value: Property?,
@@ -85,9 +66,10 @@ public final class OptionalPickerFieldViewModel<Property: Hashable & CustomStrin
         self.title = title
         self.isReadOnly = isReadOnly
         self.validation = validation
+        validationResult = validate()
     }
 
-    private func validate() {
-        validationResult = validation?.validate(value) ?? .success
+    public func validate() -> ValidationResult {
+        validation?.validate(value) ?? .success
     }
 }

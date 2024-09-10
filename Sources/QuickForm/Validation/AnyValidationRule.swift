@@ -24,19 +24,20 @@ public struct AnyValidationRule<Value>: ValidationRule {
         var packed: [any ValidationRule<Value>] = []
 
         func add(element: some ValidationRule) {
-            if let e = element as? any ValidationRule<Value> {
-                packed.append(e)
+            if let validationElement = element as? any ValidationRule<Value> {
+                packed.append(validationElement)
             }
         }
 
         repeat add(element: each rules)
 
-        return AnyValidationRule { value in
+        return Self { value in
             for rule in packed {
-                let anyRule = AnyValidationRule(rule)
+                let anyRule = Self(rule)
                 switch anyRule.validate(value) {
                 case .success:
                     continue
+
                 case let .failure(error):
                     return .failure(error)
                 }
@@ -47,6 +48,6 @@ public struct AnyValidationRule<Value>: ValidationRule {
 
     // Factory method for single rule
     public static func of<R: ValidationRule>(_ rule: R) -> AnyValidationRule<Value> where R.Value == Value {
-        AnyValidationRule(rule)
+        Self(rule)
     }
 }

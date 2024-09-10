@@ -41,9 +41,19 @@ public struct QuickFormMacro: MemberMacro, ExtensionMacro {
             return (identifier, "\\\(modelType).\(keyPath)")
         }
 
-        // Determine the visibility of the class
+        let conformsToValidatable = classDecl.inheritanceClause?.inheritedTypes.contains { type in
+            type.type.as(IdentifierTypeSyntax.self)?.name.text == "Validatable"
+        } ?? false
+
+        let conformsToCustomValidatable = classDecl.inheritanceClause?.inheritedTypes.contains { type in
+            type.type.as(IdentifierTypeSyntax.self)?.name.text == "CustomValidatable"
+        } ?? false
+
         let classVisibility = classDecl.modifiers.first { $0.name.text == "public" || $0.name.text == "internal" }?.name.text ?? "internal"
 
+        var declarations: [DeclSyntax] = []
+
+        // Add model property
         let modelVar = """
         \(classVisibility) var model: \(modelType) {
             get {
@@ -58,7 +68,9 @@ public struct QuickFormMacro: MemberMacro, ExtensionMacro {
         }
         private var _model: \(modelType)
         """
+        declarations.append(DeclSyntax(stringLiteral: modelVar))
 
+        // Add update method
         let updateMethodContent = propertyEditors.map { identifier, keyPath in
             """
             \(identifier).value = _model[keyPath: \(keyPath)]
@@ -70,7 +82,9 @@ public struct QuickFormMacro: MemberMacro, ExtensionMacro {
             \(updateMethodContent)
         }
         """
+        declarations.append(DeclSyntax(stringLiteral: updateMethod))
 
+        // Add initializer
         let initializer = """
         \(classVisibility) init(model: \(modelType)) {
             self._model = model
@@ -80,19 +94,15 @@ public struct QuickFormMacro: MemberMacro, ExtensionMacro {
             }.joined(separator: "\n"))
         }
         """
+        declarations.append(DeclSyntax(stringLiteral: initializer))
 
-        let trackMethod = """
-        func track<Property>(keyPath: WritableKeyPath<\(modelType), Property>, editor: any ValueEditor<Property>) {
-           observe { [weak self] in
-               self?.model[keyPath: keyPath] = editor.value
-            }
-        }
-        """
-
+        // Add observation registrar
         let observationRegistrar = """
         private let _$observationRegistrar = Observation.ObservationRegistrar()
         """
+        declarations.append(DeclSyntax(stringLiteral: observationRegistrar))
 
+        // Add access method
         let accessMethod = """
         internal nonisolated func access<Member>(
             keyPath: KeyPath<\(classDecl.name), Member>
@@ -100,7 +110,9 @@ public struct QuickFormMacro: MemberMacro, ExtensionMacro {
             _$observationRegistrar.access(self, keyPath: keyPath)
         }
         """
+        declarations.append(DeclSyntax(stringLiteral: accessMethod))
 
+        // Add withMutation method
         let withMutationMethod = """
         internal nonisolated func withMutation<Member, MutationResult>(
             keyPath: KeyPath<\(classDecl.name), Member>,
@@ -109,16 +121,75 @@ public struct QuickFormMacro: MemberMacro, ExtensionMacro {
             try _$observationRegistrar.withMutation(of: self, keyPath: keyPath, mutation)
         }
         """
+        declarations.append(DeclSyntax(stringLiteral: withMutationMethod))
 
-        return [
-            DeclSyntax(stringLiteral: modelVar),
-            DeclSyntax(stringLiteral: updateMethod),
-            DeclSyntax(stringLiteral: initializer),
-            DeclSyntax(stringLiteral: trackMethod),
-            DeclSyntax(stringLiteral: observationRegistrar),
-            DeclSyntax(stringLiteral: accessMethod),
-            DeclSyntax(stringLiteral: withMutationMethod)
-        ]
+        if conformsToValidatable || conformsToCustomValidatable {
+            // Add private validationResult property
+            let validationResultProperty = """
+            private var _validationResult: ValidationResult = .success {
+                didSet {
+                    if oldValue != _validationResult {
+                        _$observationRegistrar.willSet(self, keyPath: \\.validationResult)
+                        _$observationRegistrar.didSet(self, keyPath: \\.validationResult)
+                    }
+                }
+            }
+            """
+            declarations.append(DeclSyntax(stringLiteral: validationResultProperty))
+
+            // Add public computed validationResult property
+            let computedValidationResultProperty = """
+            \(classVisibility) var validationResult: ValidationResult {
+                get {
+                    access(keyPath: \\.validationResult)
+                    return _validationResult
+                }
+            }
+            """
+            declarations.append(DeclSyntax(stringLiteral: computedValidationResultProperty))
+
+            // Add validate method
+            let validateMethod = """
+            \(classVisibility) func validate() -> ValidationResult {
+                let results = [\(propertyEditors.map { identifier, _ in
+                    "\(identifier).validate()"
+                }.joined(separator: ", "))]
+
+                for result in results {
+                    if case .failure(let error) = result {
+                        return .failure(error)
+                    }
+                }
+
+                if let customValidation = (self as? CustomValidatable)?.customValidation {
+                    return customValidation(.success)
+                }
+
+                return .success
+            }
+            """
+            declarations.append(DeclSyntax(stringLiteral: validateMethod))
+
+            // Modify track method to update _validationResult
+            let trackMethod = """
+            func track<Property>(keyPath: WritableKeyPath<\(modelType), Property>, editor: any ValueEditor<Property>) {
+               observe { [weak self] in
+                   self?.model[keyPath: keyPath] = editor.value
+                   self?._validationResult = self?.validate() ?? .success
+                }
+            }
+            """
+            declarations.append(DeclSyntax(stringLiteral: trackMethod))
+        }
+
+        if conformsToCustomValidatable {
+            let customValidationProperty = """
+            public var customValidation: ((ValidationResult) -> ValidationResult)?
+            """
+            declarations.append(DeclSyntax(stringLiteral: customValidationProperty))
+        }
+
+        return declarations
     }
 
     public static func expansion(

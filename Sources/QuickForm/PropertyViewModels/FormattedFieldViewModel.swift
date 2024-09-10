@@ -6,38 +6,19 @@ import Foundation
 import Observation
 
 @Observable
-public final class FormattedFieldViewModel<F>: ValueEditor where F: ParseableFormatStyle, F.FormatOutput == String {
+public final class FormattedFieldViewModel<F>: ValueEditor, Validatable
+    where F: ParseableFormatStyle, F.FormatOutput == String {
     public var title: LocalizedStringResource
     public var placeholder: LocalizedStringResource?
     public var format: F
     public var value: F.FormatInput {
         didSet {
             valueChanged?(value)
-            validate()
+            validationResult = validate()
         }
     }
 
     public var isReadOnly: Bool
-
-    public var isValid: Bool {
-        switch validationResult {
-        case .success:
-            true
-
-        case .failure:
-            false
-        }
-    }
-
-    public var errorMessage: LocalizedStringResource? {
-        switch validationResult {
-        case .success:
-            nil
-
-        case let .failure(error):
-            error
-        }
-    }
 
     private var valueChanged: ((F.FormatInput) -> Void)?
     private let validation: AnyValidationRule<F.FormatInput?>?
@@ -57,7 +38,7 @@ public final class FormattedFieldViewModel<F>: ValueEditor where F: ParseableFor
         self.placeholder = placeholder
         self.isReadOnly = isReadOnly
         self.validation = validation
-        validate()
+        validationResult = validate()
     }
 
     @discardableResult
@@ -66,7 +47,7 @@ public final class FormattedFieldViewModel<F>: ValueEditor where F: ParseableFor
         return self
     }
 
-    private func validate() {
-        validationResult = validation?.validate(value) ?? .success
+    public func validate() -> ValidationResult {
+        validation?.validate(value) ?? .success
     }
 }

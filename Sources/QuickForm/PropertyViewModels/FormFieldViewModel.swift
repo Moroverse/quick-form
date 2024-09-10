@@ -6,37 +6,17 @@ import Foundation
 import Observation
 
 @Observable
-public final class FormFieldViewModel<Property>: ValueEditor {
+public final class FormFieldViewModel<Property>: ValueEditor, Validatable {
     public var title: LocalizedStringResource
     public var placeholder: LocalizedStringResource?
     public var value: Property {
         didSet {
             valueChanged?(value)
-            validate()
+            validationResult = validate()
         }
     }
 
     public var isReadOnly: Bool
-
-    public var isValid: Bool {
-        switch validationResult {
-        case .success:
-            true
-
-        case .failure:
-            false
-        }
-    }
-
-    public var errorMessage: LocalizedStringResource? {
-        switch validationResult {
-        case .success:
-            nil
-
-        case let .failure(error):
-            error
-        }
-    }
 
     private var valueChanged: ((Property) -> Void)?
     private let validation: AnyValidationRule<Property>?
@@ -54,7 +34,7 @@ public final class FormFieldViewModel<Property>: ValueEditor {
         self.placeholder = placeholder
         self.isReadOnly = isReadOnly
         self.validation = validation
-        validate()
+        validationResult = validate()
     }
 
     @discardableResult
@@ -63,7 +43,7 @@ public final class FormFieldViewModel<Property>: ValueEditor {
         return self
     }
 
-    private func validate() {
-        validationResult = validation?.validate(value) ?? .success
+    public func validate() -> ValidationResult {
+        validation?.validate(value) ?? .success
     }
 }
