@@ -18,6 +18,11 @@ struct PersonEditView: View {
 
     var body: some View {
         Form {
+            if !quickForm.isValid {
+                Text("Person is not valid")
+                    .font(.caption)
+                    .foregroundColor(.red)
+            }
             FormTextField(quickForm.firstName)
             FormTextField(quickForm.lastName)
             FormDatePickerField(quickForm.birthday)

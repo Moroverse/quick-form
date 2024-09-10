@@ -8,7 +8,7 @@ import Observation
 
 // 1. QuickForm macro
 @QuickForm(Person.self)
-class PersonEditModel {
+class PersonEditModel: Validatable, CustomValidatable {
     // 2.Property Editor Macro
     @PropertyEditor(keyPath: \Person.givenName)
     // 3. Out-of box view models

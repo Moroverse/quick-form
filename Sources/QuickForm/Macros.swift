@@ -4,7 +4,21 @@
 
 import Observation
 
-@attached(member, names: named(model), named(init), named(track), named(_$observationRegistrar), named(access), named(withMutation), named(_model), named(update))
+@attached(
+    member,
+    names: named(init),
+    named(model),
+    named(_model),
+    named(track),
+    named(_$observationRegistrar),
+    named(access),
+    named(withMutation),
+    named(update),
+    named(validationResult),
+    named(_validationResult),
+    named(validate),
+    named(customValidation)
+)
 @attached(extension, conformances: Observable)
 public macro QuickForm<T>(_ type: T.Type) = #externalMacro(module: "QuickFormMacros", type: "QuickFormMacro")
 

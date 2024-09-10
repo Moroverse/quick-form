@@ -124,46 +124,56 @@ public struct QuickFormMacro: MemberMacro, ExtensionMacro {
         declarations.append(DeclSyntax(stringLiteral: withMutationMethod))
 
         if conformsToValidatable || conformsToCustomValidatable {
-            // Add private validationResult property
+            // Add observable validationResult property
             let validationResultProperty = """
-            private var _validationResult: ValidationResult = .success {
-                didSet {
-                    if oldValue != _validationResult {
-                        _$observationRegistrar.willSet(self, keyPath: \\.validationResult)
-                        _$observationRegistrar.didSet(self, keyPath: \\.validationResult)
-                    }
-                }
-            }
-            """
-            declarations.append(DeclSyntax(stringLiteral: validationResultProperty))
-
-            // Add public computed validationResult property
-            let computedValidationResultProperty = """
-            \(classVisibility) var validationResult: ValidationResult {
+            \(classVisibility) private(set) var validationResult: ValidationResult {
                 get {
                     access(keyPath: \\.validationResult)
                     return _validationResult
                 }
+                set {
+                    withMutation(keyPath: \\.validationResult) {
+                        _validationResult = newValue
+                    }
+                }
             }
+            private var _validationResult: ValidationResult = .success
             """
-            declarations.append(DeclSyntax(stringLiteral: computedValidationResultProperty))
 
+            declarations.append(DeclSyntax(stringLiteral: validationResultProperty))
+
+            //custom validation
+            let customValidation: String
+            if conformsToCustomValidatable {
+                customValidation = """
+                if let customValidation {
+                    return customValidation()
+                }
+                """
+            } else {
+                customValidation = ""
+            }
             // Add validate method
             let validateMethod = """
             \(classVisibility) func validate() -> ValidationResult {
-                let results = [\(propertyEditors.map { identifier, _ in
-                    "\(identifier).validate()"
+                let editors: [Any] =  [\(propertyEditors.map { identifier, _ in
+                    "\(identifier)"
                 }.joined(separator: ", "))]
-
+                let results = editors.compactMap {
+                    if let validator = $0 as? Validatable {
+                        return validator.validate()
+                    } else {
+                        return nil
+                    }
+                }
+                
                 for result in results {
                     if case .failure(let error) = result {
                         return .failure(error)
                     }
                 }
 
-                if let customValidation = (self as? CustomValidatable)?.customValidation {
-                    return customValidation(.success)
-                }
+                \(customValidation)
 
                 return .success
             }
@@ -175,7 +185,17 @@ public struct QuickFormMacro: MemberMacro, ExtensionMacro {
             func track<Property>(keyPath: WritableKeyPath<\(modelType), Property>, editor: any ValueEditor<Property>) {
                observe { [weak self] in
                    self?.model[keyPath: keyPath] = editor.value
-                   self?._validationResult = self?.validate() ?? .success
+                   self?.validationResult = self?.validate() ?? .success
+                }
+            }
+            """
+            declarations.append(DeclSyntax(stringLiteral: trackMethod))
+        } else {
+            //add original track
+            let trackMethod = """
+            func track<Property>(keyPath: WritableKeyPath<\(modelType), Property>, editor: any ValueEditor<Property>) {
+               observe { [weak self] in
+                   self?.model[keyPath: keyPath] = editor.value
                 }
             }
             """
@@ -184,7 +204,7 @@ public struct QuickFormMacro: MemberMacro, ExtensionMacro {
 
         if conformsToCustomValidatable {
             let customValidationProperty = """
-            public var customValidation: ((ValidationResult) -> ValidationResult)?
+            public var customValidation: (() -> ValidationResult)?
             """
             declarations.append(DeclSyntax(stringLiteral: customValidationProperty))
         }

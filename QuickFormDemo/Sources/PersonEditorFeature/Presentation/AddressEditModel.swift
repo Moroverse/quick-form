@@ -6,7 +6,7 @@ import Observation
 @preconcurrency import QuickForm
 
 @QuickForm(Address.self)
-class AddressEditModel {
+class AddressEditModel: Validatable {
     @PropertyEditor(keyPath: \Address.line1)
     var line1 = FormFieldViewModel(
         value: "",

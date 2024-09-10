@@ -12,7 +12,7 @@ public protocol Validatable {
 }
 
 public protocol CustomValidatable: Validatable {
-    var customValidation: ((ValidationResult) -> ValidationResult)? { get set }
+    var customValidation: (() -> ValidationResult)? { get set }
 }
 
 public extension Validatable {
