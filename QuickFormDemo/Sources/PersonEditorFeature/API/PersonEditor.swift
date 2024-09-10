@@ -20,6 +20,7 @@ enum PersonEditor {
     @MainActor
     static func personEditor(for person: Person, delegate: PersonEditorDelegate?) -> UIViewController {
         let viewModel = PersonEditModel(model: person)
+        viewModel.addCustomValidationRule(AgeValidationRule())
         let view = PersonEditView(quickForm: viewModel, delegate: delegate)
         return UIHostingController(rootView: view)
     }

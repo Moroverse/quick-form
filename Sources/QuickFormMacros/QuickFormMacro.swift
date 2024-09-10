@@ -45,10 +45,6 @@ public struct QuickFormMacro: MemberMacro, ExtensionMacro {
             type.type.as(IdentifierTypeSyntax.self)?.name.text == "Validatable"
         } ?? false
 
-        let conformsToCustomValidatable = classDecl.inheritanceClause?.inheritedTypes.contains { type in
-            type.type.as(IdentifierTypeSyntax.self)?.name.text == "CustomValidatable"
-        } ?? false
-
         let classVisibility = classDecl.modifiers.first { $0.name.text == "public" || $0.name.text == "internal" }?.name.text ?? "internal"
 
         var declarations: [DeclSyntax] = []
@@ -123,7 +119,7 @@ public struct QuickFormMacro: MemberMacro, ExtensionMacro {
         """
         declarations.append(DeclSyntax(stringLiteral: withMutationMethod))
 
-        if conformsToValidatable || conformsToCustomValidatable {
+        if conformsToValidatable {
             // Add observable validationResult property
             let validationResultProperty = """
             \(classVisibility) private(set) var validationResult: ValidationResult {
@@ -142,17 +138,6 @@ public struct QuickFormMacro: MemberMacro, ExtensionMacro {
 
             declarations.append(DeclSyntax(stringLiteral: validationResultProperty))
 
-            //custom validation
-            let customValidation: String
-            if conformsToCustomValidatable {
-                customValidation = """
-                if let customValidation {
-                    return customValidation()
-                }
-                """
-            } else {
-                customValidation = ""
-            }
             // Add validate method
             let validateMethod = """
             \(classVisibility) func validate() -> ValidationResult {
@@ -172,8 +157,6 @@ public struct QuickFormMacro: MemberMacro, ExtensionMacro {
                         return .failure(error)
                     }
                 }
-
-                \(customValidation)
 
                 return .success
             }
@@ -202,12 +185,14 @@ public struct QuickFormMacro: MemberMacro, ExtensionMacro {
             declarations.append(DeclSyntax(stringLiteral: trackMethod))
         }
 
-        if conformsToCustomValidatable {
-            let customValidationProperty = """
-            public var customValidation: (() -> ValidationResult)?
+        let customValidationRules = """
+            private var customValidationRules: [any ValidationRule<\(modelType)>] = []
+            
+            \(classVisibility) func addCustomValidationRule(_ rule: some ValidationRule<\(modelType)>) {
+                customValidationRules.append(rule)
+            }
             """
-            declarations.append(DeclSyntax(stringLiteral: customValidationProperty))
-        }
+        declarations.append(DeclSyntax(stringLiteral: customValidationRules))
 
         return declarations
     }

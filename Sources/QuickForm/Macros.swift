@@ -17,7 +17,8 @@ import Observation
     named(validationResult),
     named(_validationResult),
     named(validate),
-    named(customValidation)
+    named(customValidationRules),
+    named(addCustomValidationRule)
 )
 @attached(extension, conformances: Observable)
 public macro QuickForm<T>(_ type: T.Type) = #externalMacro(module: "QuickFormMacros", type: "QuickFormMacro")

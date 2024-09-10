@@ -11,10 +11,6 @@ public protocol Validatable {
     func validate() -> ValidationResult
 }
 
-public protocol CustomValidatable: Validatable {
-    var customValidation: (() -> ValidationResult)? { get set }
-}
-
 public extension Validatable {
     var isValid: Bool {
         switch validate() {
