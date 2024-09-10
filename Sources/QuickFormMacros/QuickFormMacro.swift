@@ -141,24 +141,40 @@ public struct QuickFormMacro: MemberMacro, ExtensionMacro {
             // Add validate method
             let validateMethod = """
             \(classVisibility) func validate() -> ValidationResult {
-                let editors: [Any] =  [\(propertyEditors.map { identifier, _ in
-                    "\(identifier)"
+                let editors: [(String, Any)] =  [\(propertyEditors.map { identifier, _ in
+                    "(\"\(identifier)\", \(identifier))"
                 }.joined(separator: ", "))]
                 let results = editors.compactMap {
-                    if let validator = $0 as? Validatable {
-                        return validator.validate()
+                    if let validator = $0.1 as? Validatable {
+                        return ($0.0, validator.validate())
                     } else {
                         return nil
                     }
                 }
                 
-                for result in results {
+                var errors: [LocalizedStringResource] = []
+                for (name, result) in results {
                     if case .failure(let error) = result {
-                        return .failure(error)
+                        let namedError: LocalizedStringResource = "\\(name) \\(error)"
+                        errors.append(namedError)
                     }
                 }
-
-                return .success
+            
+                // Apply custom validation rules
+                for rule in customValidationRules {
+                    let result = rule.validate(_model)
+                    if case .failure(let error) = result {
+                         errors.append(error)
+                    }
+                }
+            
+                if errors.isEmpty {
+                    return .success
+                } else {
+                    let list = errors.map{" - " + String(localized:$0)}.joined(separator: ",\\n")
+                    let error: LocalizedStringResource = "Object has invalid fields:\\n\\(list)"
+                    return .failure(error)
+                }
             }
             """
             declarations.append(DeclSyntax(stringLiteral: validateMethod))

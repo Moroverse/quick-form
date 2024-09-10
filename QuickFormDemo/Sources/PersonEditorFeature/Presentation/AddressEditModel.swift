@@ -3,6 +3,7 @@
 // Created by Daniel Moro on 2024-09-08 04:33 GMT.
 
 import Observation
+import Foundation
 @preconcurrency import QuickForm
 
 @QuickForm(Address.self)

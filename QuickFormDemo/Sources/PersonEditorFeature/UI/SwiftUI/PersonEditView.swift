@@ -15,14 +15,10 @@ struct PersonEditView: View {
     }
 
     @State var info: String = "None"
+    @State private var showAlert = false
 
     var body: some View {
         Form {
-            if !quickForm.isValid {
-                Text("Person is not valid")
-                    .font(.caption)
-                    .foregroundColor(.red)
-            }
             FormTextField(quickForm.firstName)
             FormTextField(quickForm.lastName)
             FormDatePickerField(quickForm.birthday)
@@ -60,6 +56,23 @@ struct PersonEditView: View {
         .navigationTitle(quickForm.personNameComponents.formatted())
         .onChange(of: quickForm.model) {
             info = String(describing: quickForm.model)
+        }
+        .toolbar {
+            if !quickForm.isValid {
+                ToolbarItem(placement: .navigation) {
+                    Button(action: {
+                        showAlert.toggle()
+                    }, label: {
+                        Image(systemName: "exclamationmark.triangle")
+                    })
+                    .foregroundStyle(.red)
+                    .popover(isPresented: $showAlert) {
+                        Text(quickForm.errorMessage ?? "Person is not valid")
+                            .foregroundStyle(.red)
+                            .padding()
+                    }
+                }
+            }
         }
     }
 }
