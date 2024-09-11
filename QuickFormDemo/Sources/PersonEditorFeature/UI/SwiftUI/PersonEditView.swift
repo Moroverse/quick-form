@@ -34,7 +34,7 @@ struct PersonEditView: View {
                 Text(personInfo.name)
             }
             .configure { viewModel in
-                viewModel.onInsert {
+                viewModel.onInsert = {
                     await withCheckedContinuation { continuation in
                         delegate?.didTapOnAddTeamMember? { personInfo in
                             continuation.resume(returning: personInfo)

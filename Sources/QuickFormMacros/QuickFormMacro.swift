@@ -151,7 +151,7 @@ public struct QuickFormMacro: MemberMacro, ExtensionMacro {
                         return nil
                     }
                 }
-                
+
                 var errors: [LocalizedStringResource] = []
                 for (name, result) in results {
                     if case .failure(let error) = result {
@@ -159,7 +159,7 @@ public struct QuickFormMacro: MemberMacro, ExtensionMacro {
                         errors.append(namedError)
                     }
                 }
-            
+
                 // Apply custom validation rules
                 for rule in customValidationRules {
                     let result = rule.validate(_model)
@@ -167,7 +167,7 @@ public struct QuickFormMacro: MemberMacro, ExtensionMacro {
                          errors.append(error)
                     }
                 }
-            
+
                 if errors.isEmpty {
                     return .success
                 } else {
@@ -190,7 +190,7 @@ public struct QuickFormMacro: MemberMacro, ExtensionMacro {
             """
             declarations.append(DeclSyntax(stringLiteral: trackMethod))
         } else {
-            //add original track
+            // add original track
             let trackMethod = """
             func track<Property>(keyPath: WritableKeyPath<\(modelType), Property>, editor: any ValueEditor<Property>) {
                observe { [weak self] in
@@ -202,12 +202,12 @@ public struct QuickFormMacro: MemberMacro, ExtensionMacro {
         }
 
         let customValidationRules = """
-            private var customValidationRules: [any ValidationRule<\(modelType)>] = []
-            
-            \(classVisibility) func addCustomValidationRule(_ rule: some ValidationRule<\(modelType)>) {
-                customValidationRules.append(rule)
-            }
-            """
+        private var customValidationRules: [any ValidationRule<\(modelType)>] = []
+
+        \(classVisibility) func addCustomValidationRule(_ rule: some ValidationRule<\(modelType)>) {
+            customValidationRules.append(rule)
+        }
+        """
         declarations.append(DeclSyntax(stringLiteral: customValidationRules))
 
         return declarations

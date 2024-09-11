@@ -1,9 +1,6 @@
-//
-//  Validatable.swift
-//  quick-form
-//
-//  Created by Daniel Moro on 10.9.24..
-//
+// Validatable.swift
+// Copyright (c) 2024 Moroverse
+// Created by Daniel Moro on 2024-09-10 17:44 GMT.
 
 import Foundation
 

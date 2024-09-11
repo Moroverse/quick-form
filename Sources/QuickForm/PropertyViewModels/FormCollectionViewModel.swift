@@ -5,21 +5,35 @@
 import Foundation
 import Observation
 
+public struct CollectionManager<Property> {
+    public var canInsert: () -> Bool = { true }
+    public var canDelete: (_ atOffsets: IndexSet) -> Bool = { _ in true }
+    public var canMove: (_ fromSource: IndexSet, _ toDestination: Int) -> Bool = { _, _ in true }
+
+    public var onChange: ((CollectionDifference<Property>) -> Void)?
+    public var onSelect: ((Property?) -> Void)?
+    public var onInsert: (() async -> Property?)?
+}
+
 @Observable
 public final class FormCollectionViewModel<Property: Identifiable>: ValueEditor {
     public var title: LocalizedStringResource
     public var insertionTitle: LocalizedStringResource
     public var value: [Property] {
         didSet {
-            if let collectionChanged {
+            if let collectionChanged = onChange {
                 collectionChanged(value.difference(from: oldValue) { $0.id == $1.id })
             }
         }
     }
 
     public var isReadOnly: Bool
-    private var collectionChanged: ((CollectionDifference<Property>) -> Void)?
-    private var insertValue: (() async -> Property?)?
+    public var onCanInsert: () -> Bool = { true }
+    public var onCanDelete: (_ atOffsets: IndexSet) -> Bool = { _ in true }
+    public var onCanMove: (_ fromSource: IndexSet, _ toDestination: Int) -> Bool = { _, _ in true }
+    public var onInsert: (() async -> Property?)?
+    public var onChange: ((CollectionDifference<Property>) -> Void)?
+    public var onSelect: ((Property?) -> Void)?
 
     public init(
         value: [Property],
@@ -33,27 +47,31 @@ public final class FormCollectionViewModel<Property: Identifiable>: ValueEditor 
         self.isReadOnly = isReadOnly
     }
 
+    public func canInsert() -> Bool {
+        onCanInsert()
+    }
+
     public func insert() async {
-        if let insertValue {
-            if let personInfo = await insertValue() {
+        if let insertion = onInsert {
+            if let personInfo = await insertion() {
                 value.append(personInfo)
             }
         }
     }
 
-    func delete(at offsets: IndexSet) {
+    public func canDelete(at offsets: IndexSet) -> Bool {
+        onCanDelete(offsets)
+    }
+
+    public func delete(at offsets: IndexSet) {
         value.remove(atOffsets: offsets)
     }
 
-    @discardableResult
-    public func onCollectionChanged(_ change: @escaping (CollectionDifference<Property>) -> Void) -> Self {
-        collectionChanged = change
-        return self
+    public func canMove(from source: IndexSet, to destination: Int) -> Bool {
+        onCanMove(source, destination)
     }
 
-    @discardableResult
-    public func onInsert(_ insert: @escaping () async -> Property?) -> Self {
-        insertValue = insert
-        return self
+    public func move(from source: IndexSet, to destination: Int) {
+        value.move(fromOffsets: source, toOffset: destination)
     }
 }

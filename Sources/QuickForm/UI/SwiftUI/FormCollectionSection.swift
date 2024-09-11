@@ -19,16 +19,25 @@ public struct FormCollectionSection<Property: Identifiable, Content: View>: View
             ForEach(viewModel.value) { item in
                 content(item)
             }
+            .onMove { from, to in
+                if viewModel.canMove(from: from, to: to) {
+                    viewModel.move(from: from, to: to)
+                }
+            }
             .onDelete { offsets in
-                viewModel.delete(at: offsets)
+                if viewModel.canDelete(at: offsets) {
+                    viewModel.delete(at: offsets)
+                }
             }
 //            }
-            Button {
-                Task {
-                    await viewModel.insert()
+            if viewModel.canInsert() {
+                Button {
+                    Task {
+                        await viewModel.insert()
+                    }
+                } label: {
+                    Label(String(localized: viewModel.insertionTitle), systemImage: "plus.circle.fill")
                 }
-            } label: {
-                Label(String(localized: viewModel.insertionTitle), systemImage: "plus.circle.fill")
             }
         } header: {
             Text(viewModel.title)

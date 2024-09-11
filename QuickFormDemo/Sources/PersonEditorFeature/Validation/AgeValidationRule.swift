@@ -1,12 +1,9 @@
-//
-//  AgeValidationRule.swift
-//  QuickFormDemo
-//
-//  Created by Daniel Moro on 10.9.24..
-//
+// AgeValidationRule.swift
+// Copyright (c) 2024 Moroverse
+// Created by Daniel Moro on 2024-09-10 19:44 GMT.
 
-import QuickForm
 import Foundation
+import QuickForm
 
 struct AgeValidationRule: ValidationRule {
     let minimumAge: Int
