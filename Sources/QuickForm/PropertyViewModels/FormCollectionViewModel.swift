@@ -5,16 +5,6 @@
 import Foundation
 import Observation
 
-public struct CollectionManager<Property> {
-    public var canInsert: () -> Bool = { true }
-    public var canDelete: (_ atOffsets: IndexSet) -> Bool = { _ in true }
-    public var canMove: (_ fromSource: IndexSet, _ toDestination: Int) -> Bool = { _, _ in true }
-
-    public var onChange: ((CollectionDifference<Property>) -> Void)?
-    public var onSelect: ((Property?) -> Void)?
-    public var onInsert: (() async -> Property?)?
-}
-
 @Observable
 public final class FormCollectionViewModel<Property: Identifiable>: ValueEditor {
     public var title: LocalizedStringResource
