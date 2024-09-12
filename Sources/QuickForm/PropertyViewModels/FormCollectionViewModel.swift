@@ -11,20 +11,20 @@ public final class FormCollectionViewModel<Property: Identifiable>: ValueEditor 
     public var insertionTitle: LocalizedStringResource
     public var value: [Property] {
         didSet {
-            if let collectionChanged = onChange {
+            if let collectionChanged = _onChange {
                 collectionChanged(value.difference(from: oldValue) { $0.id == $1.id })
             }
         }
     }
 
     public var isReadOnly: Bool
-    public var onCanSelect: (Property) -> Bool = { _ in true }
-    public var onCanInsert: () -> Bool = { true }
-    public var onCanDelete: (_ atOffsets: IndexSet) -> Bool = { _ in true }
-    public var onCanMove: (_ fromSource: IndexSet, _ toDestination: Int) -> Bool = { _, _ in true }
-    public var onInsert: (() async -> Property?)?
-    public var onChange: ((CollectionDifference<Property>) -> Void)?
-    public var onSelect: ((Property?) -> Void)?
+    private var onCanSelect: (Property) -> Bool = { _ in true }
+    private var onCanInsert: () -> Bool = { true }
+    private var onCanDelete: (_ atOffsets: IndexSet) -> Bool = { _ in true }
+    private var onCanMove: (_ fromSource: IndexSet, _ toDestination: Int) -> Bool = { _, _ in true }
+    private var _onInsert: (() async -> Property?)?
+    private var _onChange: ((CollectionDifference<Property>) -> Void)?
+    private var _onSelect: ((Property?) -> Void)?
 
     public init(
         value: [Property],
@@ -43,7 +43,7 @@ public final class FormCollectionViewModel<Property: Identifiable>: ValueEditor 
     }
 
     public func insert() async {
-        if let insertion = onInsert {
+        if let insertion = _onInsert {
             if let personInfo = await insertion() {
                 value.append(personInfo)
             }
@@ -55,7 +55,7 @@ public final class FormCollectionViewModel<Property: Identifiable>: ValueEditor 
     }
 
     public func select(item: Property?) {
-        onSelect?(item)
+        _onSelect?(item)
     }
 
     public func canDelete(at offsets: IndexSet) -> Bool {
@@ -72,5 +72,23 @@ public final class FormCollectionViewModel<Property: Identifiable>: ValueEditor 
 
     public func move(from source: IndexSet, to destination: Int) {
         value.move(fromOffsets: source, toOffset: destination)
+    }
+
+    @discardableResult
+    public func onInsert(action: @escaping (() async -> Property?)) -> Self {
+        _onInsert = action
+        return self
+    }
+
+    @discardableResult
+    public func _onChange(action: ((CollectionDifference<Property>) -> Void)?) -> Self {
+        _onChange = action
+        return self
+    }
+
+    @discardableResult
+    public func _onSelect(action: ((Property?) -> Void)?) -> Self {
+        _onSelect = action
+        return self
     }
 }
