@@ -18,7 +18,13 @@ public struct FormCollectionSection<Property: Identifiable, Content: View>: View
 //            } else {
             ForEach(viewModel.value) { item in
                 content(item)
+                    .onTapGesture {
+                        if let onSelect = viewModel.onSelect {
+                            onSelect(item)
+                        }
+                    }
             }
+
             .onMove { from, to in
                 if viewModel.canMove(from: from, to: to) {
                     viewModel.move(from: from, to: to)
