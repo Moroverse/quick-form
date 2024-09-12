@@ -45,19 +45,21 @@ public struct FormFormattedTextField<F>: View where F: ParseableFormatStyle, F.F
                 editingText = viewModel.format.format(viewModel.value)
             }
             .onChange(of: isFocused) { _, newValue in
-                alignment = newValue ? .leading : .trailing
-                if newValue {
-                    // Entering edit mode: remove formatting
-                    editingText = safeExtract()
-                    originalValue = viewModel.value
-                } else {
-                    // Exiting edit mode: apply formatting
-                    if let parsedValue = try? viewModel.format.parseStrategy.parse(editingText) {
-                        viewModel.value = parsedValue
-                        editingText = viewModel.format.format(viewModel.value)
-                    } else if let originalValue {
-                        viewModel.value = originalValue
-                        editingText = viewModel.format.format(viewModel.value)
+                withAnimation {
+                    alignment = newValue ? .leading : .trailing
+                    if newValue {
+                        // Entering edit mode: remove formatting
+                        editingText = safeExtract()
+                        originalValue = viewModel.value
+                    } else {
+                        // Exiting edit mode: apply formatting
+                        if let parsedValue = try? viewModel.format.parseStrategy.parse(editingText) {
+                            viewModel.value = parsedValue
+                            editingText = viewModel.format.format(viewModel.value)
+                        } else if let originalValue {
+                            viewModel.value = originalValue
+                            editingText = viewModel.format.format(viewModel.value)
+                        }
                     }
                 }
             }

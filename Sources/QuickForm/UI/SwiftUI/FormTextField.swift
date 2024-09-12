@@ -30,7 +30,9 @@ public struct FormTextField: View {
                     .foregroundColor(.red)
             }
         }.onChange(of: isFocused) {
-            alignment = isFocused ? .leading : .trailing
+            withAnimation {
+                alignment = isFocused ? .leading : .trailing
+            }
         }
     }
 }
