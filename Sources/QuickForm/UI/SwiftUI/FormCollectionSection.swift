@@ -19,8 +19,8 @@ public struct FormCollectionSection<Property: Identifiable, Content: View>: View
             ForEach(viewModel.value) { item in
                 content(item)
                     .onTapGesture {
-                        if let onSelect = viewModel.onSelect {
-                            onSelect(item)
+                        if viewModel.canSelect(item: item) {
+                            viewModel.select(item: item)
                         }
                     }
             }

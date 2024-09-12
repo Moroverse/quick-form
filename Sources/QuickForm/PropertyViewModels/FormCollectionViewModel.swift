@@ -18,6 +18,7 @@ public final class FormCollectionViewModel<Property: Identifiable>: ValueEditor 
     }
 
     public var isReadOnly: Bool
+    public var onCanSelect: (Property) -> Bool = { _ in true }
     public var onCanInsert: () -> Bool = { true }
     public var onCanDelete: (_ atOffsets: IndexSet) -> Bool = { _ in true }
     public var onCanMove: (_ fromSource: IndexSet, _ toDestination: Int) -> Bool = { _, _ in true }
@@ -47,6 +48,14 @@ public final class FormCollectionViewModel<Property: Identifiable>: ValueEditor 
                 value.append(personInfo)
             }
         }
+    }
+
+    public func canSelect(item: Property) -> Bool {
+        onCanSelect(item)
+    }
+
+    public func select(item: Property?) {
+        onSelect?(item)
     }
 
     public func canDelete(at offsets: IndexSet) -> Bool {
