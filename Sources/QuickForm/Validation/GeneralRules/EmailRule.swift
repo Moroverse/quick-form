@@ -13,7 +13,7 @@ import Foundation
 //
 //    public init() {}
 // }
-
+//
 // public extension ValidationRule where Self == EmailRule {
 //    static var email: EmailRule { EmailRule() }
 // }
