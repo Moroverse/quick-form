@@ -126,6 +126,7 @@ public struct FormOptionalPickerField<Property: Hashable & CustomStringConvertib
         self.viewModel = viewModel
         self.pickerStyle = pickerStyle
     }
+
     /// The body of the `FormOptionalPickerField` view.
     ///
     /// This view consists of:
@@ -164,7 +165,6 @@ public struct FormOptionalPickerField<Property: Hashable & CustomStringConvertib
                     .font(.caption)
                     .foregroundColor(.red)
             }
-
         }
     }
 

@@ -21,7 +21,7 @@ public struct FormTextField: View {
 
     public init(_ viewModel: FormFieldViewModel<String>) {
         self.viewModel = viewModel
-        self.resolvedAlignment = viewModel.alignment.textAlignment
+        resolvedAlignment = viewModel.alignment.textAlignment
         isFocused = false
     }
 
@@ -133,7 +133,7 @@ public struct FormOptionalTextField: View {
     /// - Parameter viewModel: The view model that manages the state of this text field.
     public init(_ viewModel: FormFieldViewModel<String?>) {
         self.viewModel = viewModel
-        self.resolvedAlignment = viewModel.alignment.textAlignment
+        resolvedAlignment = viewModel.alignment.textAlignment
         isFocused = false
     }
 
@@ -203,7 +203,7 @@ public struct FormOptionalTextField: View {
             return true
         }
     }
-    
+
     private var hasTitle: Bool {
         let value = String(localized: viewModel.title)
         return value.isEmpty == false

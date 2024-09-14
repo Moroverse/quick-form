@@ -4,6 +4,7 @@
 
 import Foundation
 import Observation
+
 /// A view model for managing a collection of items in a form.
 ///
 /// `FormCollectionViewModel` is a generic class that handles the data and interaction logic
@@ -62,6 +63,7 @@ public final class FormCollectionViewModel<Property: Identifiable>: ValueEditor 
             }
         }
     }
+
     /// A boolean indicating whether the collection is read-only.
     public var isReadOnly: Bool
     private var onCanSelect: (Property) -> Bool = { _ in true }
@@ -89,12 +91,14 @@ public final class FormCollectionViewModel<Property: Identifiable>: ValueEditor 
         self.insertionTitle = insertionTitle
         self.isReadOnly = isReadOnly
     }
+
     /// Checks if a new item can be inserted into the collection.
     ///
     /// - Returns: A boolean indicating whether insertion is allowed.
     public func canInsert() -> Bool {
         onCanInsert()
     }
+
     /// Attempts to insert a new item into the collection.
     ///
     /// This method calls the async closure set by `onInsert(_:)` to create a new item.
@@ -106,6 +110,7 @@ public final class FormCollectionViewModel<Property: Identifiable>: ValueEditor 
             }
         }
     }
+
     /// Checks if the given item can be selected.
     ///
     /// - Parameter item: The item to check for selectability.
@@ -113,12 +118,14 @@ public final class FormCollectionViewModel<Property: Identifiable>: ValueEditor 
     public func canSelect(item: Property) -> Bool {
         onCanSelect(item)
     }
+
     /// Selects the given item or deselects if nil is provided.
     ///
     /// - Parameter item: The item to select, or nil to deselect.
     public func select(item: Property?) {
         _onSelect?(item)
     }
+
     /// Checks if items at the given offsets can be deleted.
     ///
     /// - Parameter offsets: The offsets of items to check for deletion.
@@ -126,12 +133,14 @@ public final class FormCollectionViewModel<Property: Identifiable>: ValueEditor 
     public func canDelete(at offsets: IndexSet) -> Bool {
         onCanDelete(offsets)
     }
+
     /// Deletes items at the given offsets from the collection.
     ///
     /// - Parameter offsets: The offsets of items to delete.
     public func delete(at offsets: IndexSet) {
         value.remove(atOffsets: offsets)
     }
+
     /// Checks if items can be moved from the source offsets to the destination index.
     ///
     /// - Parameters:
@@ -141,6 +150,7 @@ public final class FormCollectionViewModel<Property: Identifiable>: ValueEditor 
     public func canMove(from source: IndexSet, to destination: Int) -> Bool {
         onCanMove(source, destination)
     }
+
     /// Moves items from the source offsets to the destination index.
     ///
     /// - Parameters:
@@ -149,6 +159,7 @@ public final class FormCollectionViewModel<Property: Identifiable>: ValueEditor 
     public func move(from source: IndexSet, to destination: Int) {
         value.move(fromOffsets: source, toOffset: destination)
     }
+
     /// Sets the closure to be called when attempting to insert a new item.
     ///
     /// - Parameter action: An async closure that returns an optional new item.
@@ -158,6 +169,7 @@ public final class FormCollectionViewModel<Property: Identifiable>: ValueEditor 
         _onInsert = action
         return self
     }
+
     /// Sets the closure to be called when the collection changes.
     ///
     /// - Parameter action: A closure that takes a `CollectionDifference<Property>` as its parameter.
@@ -167,6 +179,7 @@ public final class FormCollectionViewModel<Property: Identifiable>: ValueEditor 
         _onChange = action
         return self
     }
+
     /// Sets the closure to be called when an item is selected or deselected.
     ///
     /// - Parameter action: A closure that takes an optional `Property` as its parameter.

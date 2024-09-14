@@ -59,6 +59,7 @@ public final class FormFieldViewModel<Property>: ValueEditor, Validatable {
             validationResult = validate()
         }
     }
+
     /// A boolean indicating whether the field is read-only.
     public var isReadOnly: Bool
 
@@ -104,6 +105,7 @@ public final class FormFieldViewModel<Property>: ValueEditor, Validatable {
         valueChanged = change
         return self
     }
+
     /// Performs validation on the current value.
     ///
     /// - Returns: A `ValidationResult` indicating whether the validation succeeded or failed.

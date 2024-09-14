@@ -3,6 +3,7 @@
 // Created by Daniel Moro on 2024-09-09 05:25 GMT.
 
 import Foundation
+
 /// A type-erasing wrapper for validation rules.
 ///
 /// `AnyValidationRule` allows you to use different validation rules interchangeably,
@@ -60,6 +61,7 @@ public struct AnyValidationRule<Value>: ValidationRule {
     private init(validate: @escaping (Value) -> ValidationResult) {
         _validate = validate
     }
+
     /// Validates the given value using the wrapped validation rule.
     ///
     /// - Parameter value: The value to validate.

@@ -3,6 +3,7 @@
 // Created by Daniel Moro on 2024-09-07 18:36 GMT.
 
 import SwiftUI
+
 /// A SwiftUI view that represents a toggle switch in a form.
 ///
 /// `FormToggleField` is designed to work with `FormFieldViewModel<Bool>` to provide
@@ -40,6 +41,7 @@ public struct FormToggleField: View {
             .font(.headline)
             .disabled(viewModel.isReadOnly)
     }
+
     /// Initializes a new `FormToggleField`.
     ///
     /// - Parameter viewModel: The view model that manages the state of this toggle field.

@@ -72,6 +72,7 @@ public struct FormValueUnitField<T: Dimension, S: PickerStyle>: View where T: Al
             .disabled(viewModel.isReadOnly)
         }
     }
+
     /// Initializes a new `FormValueUnitField`.
     ///
     /// - Parameters:

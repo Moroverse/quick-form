@@ -1,9 +1,6 @@
-//
-//  ClearValueMode.swift
-//  quick-form
-//
-//  Created by Daniel Moro on 14.9.24..
-//
+// ClearValueMode.swift
+// Copyright (c) 2024 Moroverse
+// Created by Daniel Moro on 2024-09-14 14:58 GMT.
 
 public enum ClearValueMode {
     case never

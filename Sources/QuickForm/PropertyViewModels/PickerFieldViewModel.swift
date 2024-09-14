@@ -51,6 +51,7 @@ public final class PickerFieldViewModel<Property: Hashable & CustomStringConvert
             valueChanged?(value)
         }
     }
+
     /// A boolean indicating whether the field is read-only.
     public var isReadOnly: Bool
 
@@ -73,6 +74,7 @@ public final class PickerFieldViewModel<Property: Hashable & CustomStringConvert
         self.title = title
         self.isReadOnly = isReadOnly
     }
+
     /// Sets a closure to be called when the selected value changes.
     ///
     /// - Parameter change: A closure that takes the new selected value as its parameter.
@@ -138,6 +140,7 @@ public final class OptionalPickerFieldViewModel<Property: Hashable & CustomStrin
             validationResult = validate()
         }
     }
+
     /// A boolean indicating whether the field is read-only.
     public var isReadOnly: Bool
     public var clearValueMode: ClearValueMode
@@ -170,6 +173,7 @@ public final class OptionalPickerFieldViewModel<Property: Hashable & CustomStrin
         self.validation = validation
         validationResult = validate()
     }
+
     /// Performs validation on the current value.
     ///
     /// - Returns: A `ValidationResult` indicating whether the validation succeeded or failed.

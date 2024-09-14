@@ -3,6 +3,7 @@
 // Created by Daniel Moro on 2024-09-08 13:42 GMT.
 
 import SwiftUI
+
 /// A SwiftUI view that represents a section for managing a collection of items in a form.
 ///
 /// `FormCollectionSection` is designed to work with `FormCollectionViewModel<Property>` to provide
@@ -90,6 +91,7 @@ public struct FormCollectionSection<Property: Identifiable, Content: View>: View
             Text(viewModel.title)
         }
     }
+
     /// Initializes a new `FormCollectionSection`.
     ///
     /// - Parameters:

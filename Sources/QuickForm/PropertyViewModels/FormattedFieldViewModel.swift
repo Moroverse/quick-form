@@ -57,6 +57,7 @@ public final class FormattedFieldViewModel<F>: ValueEditor, Validatable
             validationResult = validate()
         }
     }
+
     /// A boolean indicating whether the field is read-only.
     public var isReadOnly: Bool
     public var alignment: ValueAlignment
@@ -94,6 +95,7 @@ public final class FormattedFieldViewModel<F>: ValueEditor, Validatable
         self.validation = validation
         validationResult = validate()
     }
+
     /// Sets a closure to be called when the value changes.
     ///
     /// - Parameter change: A closure that takes the new value as its parameter.
@@ -103,6 +105,7 @@ public final class FormattedFieldViewModel<F>: ValueEditor, Validatable
         valueChanged = change
         return self
     }
+
     /// Performs validation on the current value.
     ///
     /// - Returns: A `ValidationResult` indicating whether the validation succeeded or failed.
