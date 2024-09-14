@@ -63,7 +63,7 @@ public final class FormFieldViewModel<Property>: ValueEditor, Validatable {
     public var isReadOnly: Bool
 
     public var alignment: ValueAlignment
-    public var clearButtonMode: ClearButtonMode
+    public var clearValueMode: ClearValueMode
 
     private var valueChanged: ((Property) -> Void)?
     private let validation: AnyValidationRule<Property>?
@@ -82,7 +82,7 @@ public final class FormFieldViewModel<Property>: ValueEditor, Validatable {
         placeholder: LocalizedStringResource? = nil,
         isReadOnly: Bool = false,
         alignment: ValueAlignment = .trailing,
-        clearButtonMode: ClearButtonMode = .never,
+        clearValueMode: ClearValueMode = .never,
         validation: AnyValidationRule<Property>? = nil
     ) {
         _value = value
@@ -90,7 +90,7 @@ public final class FormFieldViewModel<Property>: ValueEditor, Validatable {
         self.placeholder = placeholder
         self.isReadOnly = isReadOnly
         self.alignment = alignment
-        self.clearButtonMode = clearButtonMode
+        self.clearValueMode = clearValueMode
         self.validation = validation
         validationResult = validate()
     }

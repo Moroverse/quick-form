@@ -60,7 +60,7 @@ public final class FormattedFieldViewModel<F>: ValueEditor, Validatable
     /// A boolean indicating whether the field is read-only.
     public var isReadOnly: Bool
     public var alignment: ValueAlignment
-    public var clearButtonMode: ClearButtonMode
+    public var clearValueMode: ClearValueMode
 
     private var valueChanged: ((F.FormatInput) -> Void)?
     private let validation: AnyValidationRule<F.FormatInput?>?
@@ -81,7 +81,7 @@ public final class FormattedFieldViewModel<F>: ValueEditor, Validatable
         placeholder: LocalizedStringResource? = nil,
         isReadOnly: Bool = false,
         alignment: ValueAlignment = .trailing,
-        clearButtonMode: ClearButtonMode = .never,
+        clearValueMode: ClearValueMode = .never,
         validation: AnyValidationRule<F.FormatInput?>? = nil
     ) {
         self.value = value
@@ -90,7 +90,7 @@ public final class FormattedFieldViewModel<F>: ValueEditor, Validatable
         self.placeholder = placeholder
         self.isReadOnly = isReadOnly
         self.alignment = alignment
-        self.clearButtonMode = clearButtonMode
+        self.clearValueMode = clearValueMode
         self.validation = validation
         validationResult = validate()
     }
