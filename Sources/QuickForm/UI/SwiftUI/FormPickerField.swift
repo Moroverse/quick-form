@@ -135,25 +135,49 @@ public struct FormOptionalPickerField<Property: Hashable & CustomStringConvertib
     /// The picker's style can be customized through the `pickerStyle` parameter in the initializer.
     public var body: some View {
         VStack(alignment: .leading, spacing: 5) {
-            Picker(selection: $viewModel.value) {
-                Text("None")
-                    .tag(Property?.none)
-                ForEach(viewModel.allValues, id: \.self) { itemCase in
-                    Text(itemCase.description)
-                        .tag(Optional(itemCase))
+            HStack {
+                Picker(selection: $viewModel.value) {
+                    Text("None")
+                        .tag(Property?.none)
+                    ForEach(viewModel.allValues, id: \.self) { itemCase in
+                        Text(itemCase.description)
+                            .tag(Optional(itemCase))
+                    }
+                } label: {
+                    Text(viewModel.title)
+                        .font(.headline)
                 }
-            } label: {
-                Text(viewModel.title)
-                    .font(.headline)
+                .pickerStyle(pickerStyle)
+                .fixedSize()
+                .disabled(viewModel.isReadOnly)
+                if shouldDisplayClearButton {
+                    Button {
+                        viewModel.value = nil
+                    } label: {
+                        Image(systemName: "xmark.circle.fill")
+                    }
+                    .buttonStyle(.borderless)
+                }
             }
-            .pickerStyle(pickerStyle)
-            .fixedSize()
-            .disabled(viewModel.isReadOnly)
             if !viewModel.isValid {
                 Text(viewModel.errorMessage ?? "Invalid input")
                     .font(.caption)
                     .foregroundColor(.red)
             }
+
+        }
+    }
+
+    private var shouldDisplayClearButton: Bool {
+        if viewModel.isReadOnly {
+            return false
+        }
+
+        switch viewModel.clearValueMode {
+        case .never:
+            return false
+        default:
+            return true
         }
     }
 }

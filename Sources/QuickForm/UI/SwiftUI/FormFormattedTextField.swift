@@ -46,7 +46,7 @@ public struct FormFormattedTextField<F>: View where F: ParseableFormatStyle, F.F
 
     public init(_ viewModel: FormattedFieldViewModel<F>) {
         self.viewModel = viewModel
-        self.resolvedAlignment = viewModel.alignment.textAlignment
+        resolvedAlignment = viewModel.alignment.textAlignment
         isFocused = false
     }
 
@@ -109,6 +109,31 @@ public struct FormFormattedTextField<F>: View where F: ParseableFormatStyle, F.F
                     }
                 }
             }
+            if shouldDisplayClearButton {
+                Button {
+                    editingText = ""
+                } label: {
+                    Image(systemName: "xmark.circle.fill")
+                }
+                .buttonStyle(.borderless)
+            }
+        }
+    }
+
+    private var shouldDisplayClearButton: Bool {
+        if viewModel.isReadOnly {
+            return false
+        }
+
+        switch viewModel.clearValueMode {
+        case .never:
+            return false
+        case .whileEditing:
+            return isFocused == true
+        case .unlessEditing:
+            return isFocused == false
+        case .always:
+            return true
         }
     }
 
@@ -157,11 +182,24 @@ public struct FormFormattedTextField<F>: View where F: ParseableFormatStyle, F.F
 
 #Preview("Placeholder") {
     @Previewable @State var viewModel = FormattedFieldViewModel(
-        value: Optional<Double>.none,
+        value: Double?.none,
         format: OptionalFormat(format: .currency(code: "USD")),
         title: "",
         placeholder: "234000",
         alignment: .leading
+    )
+
+    Form {
+        FormFormattedTextField(viewModel)
+    }
+}
+
+#Preview("Clear Value") {
+    @Previewable @State var viewModel = FormattedFieldViewModel(
+        value: 123,
+        format: .currency(code: "USD"),
+        title: "Amount:",
+        clearValueMode: .whileEditing
     )
 
     Form {

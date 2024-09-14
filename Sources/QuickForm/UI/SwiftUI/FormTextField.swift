@@ -57,6 +57,31 @@ public struct FormTextField: View {
                 }
             }
         }
+        if shouldDisplayClearButton {
+            Button {
+                viewModel.value = ""
+            } label: {
+                Image(systemName: "xmark.circle.fill")
+            }
+            .buttonStyle(.borderless)
+        }
+    }
+
+    private var shouldDisplayClearButton: Bool {
+        if viewModel.isReadOnly {
+            return false
+        }
+
+        switch viewModel.clearValueMode {
+        case .never:
+            return false
+        case .whileEditing:
+            return isFocused == true
+        case .unlessEditing:
+            return isFocused == false
+        case .always:
+            return true
+        }
     }
 
     private var hasTitle: Bool {
@@ -152,8 +177,33 @@ public struct FormOptionalTextField: View {
                 }
             }
         }
+        if shouldDisplayClearButton {
+            Button {
+                viewModel.value = nil
+            } label: {
+                Image(systemName: "xmark.circle.fill")
+            }
+            .buttonStyle(.borderless)
+        }
     }
 
+    private var shouldDisplayClearButton: Bool {
+        if viewModel.isReadOnly {
+            return false
+        }
+
+        switch viewModel.clearValueMode {
+        case .never:
+            return false
+        case .whileEditing:
+            return isFocused == true
+        case .unlessEditing:
+            return isFocused == false
+        case .always:
+            return true
+        }
+    }
+    
     private var hasTitle: Bool {
         let value = String(localized: viewModel.title)
         return value.isEmpty == false
