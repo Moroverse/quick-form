@@ -39,13 +39,14 @@ import SwiftUI
 /// ```
 public struct FormFormattedTextField<F>: View where F: ParseableFormatStyle, F.FormatOutput == String {
     @FocusState private var isFocused: Bool
-    @State private var alignment: TextAlignment = .trailing
+    @State private var resolvedAlignment: TextAlignment
     @State private var editingText = ""
     @State private var originalValue: F.FormatInput?
     @Bindable private var viewModel: FormattedFieldViewModel<F>
 
     public init(_ viewModel: FormattedFieldViewModel<F>) {
         self.viewModel = viewModel
+        self.resolvedAlignment = viewModel.alignment.textAlignment
         isFocused = false
     }
 
@@ -65,26 +66,31 @@ public struct FormFormattedTextField<F>: View where F: ParseableFormatStyle, F.F
 
     public var body: some View {
         HStack(spacing: 10) {
-            Text(viewModel.title)
-                .font(.headline)
+            if hasTitle {
+                Text(viewModel.title)
+                    .font(.headline)
+            }
             TextField(
                 String(localized: viewModel.placeholder ?? ""),
                 text: $editingText
             )
             .focused($isFocused)
-            .multilineTextAlignment(alignment)
+            .multilineTextAlignment(resolvedAlignment)
             .disabled(viewModel.isReadOnly)
             .onAppear {
                 editingText = viewModel.format.format(viewModel.value)
             }
             .onChange(of: isFocused) { _, newValue in
                 withAnimation {
-                    alignment = newValue ? .leading : .trailing
                     if newValue {
+                        // Entering edit mode: enforce leading
+                        resolvedAlignment = .leading
                         // Entering edit mode: remove formatting
                         editingText = safeExtract()
                         originalValue = viewModel.value
                     } else {
+                        // Entering edit mode: restore alignment
+                        resolvedAlignment = viewModel.alignment.textAlignment
                         // Exiting edit mode: apply formatting
                         if let parsedValue = try? viewModel.format.parseStrategy.parse(editingText) {
                             viewModel.value = parsedValue
@@ -96,15 +102,66 @@ public struct FormFormattedTextField<F>: View where F: ParseableFormatStyle, F.F
                     }
                 }
             }
+            .onChange(of: viewModel.alignment) {
+                if !isFocused {
+                    withAnimation {
+                        resolvedAlignment = viewModel.alignment.textAlignment
+                    }
+                }
+            }
         }
+    }
+
+    private var hasTitle: Bool {
+        let value = String(localized: viewModel.title)
+        return value.isEmpty == false
     }
 }
 
-#Preview {
+#Preview("Default") {
     @Previewable @State var viewModel = FormattedFieldViewModel(
         value: 123,
         format: .currency(code: "USD"),
         title: "Amount:"
+    )
+
+    Form {
+        FormFormattedTextField(viewModel)
+    }
+}
+
+#Preview("No Title") {
+    @Previewable @State var viewModel = FormattedFieldViewModel(
+        value: 123,
+        format: .currency(code: "USD"),
+        title: ""
+    )
+
+    Form {
+        FormFormattedTextField(viewModel)
+    }
+}
+
+#Preview("Alignment") {
+    @Previewable @State var viewModel = FormattedFieldViewModel(
+        value: 123,
+        format: .currency(code: "USD"),
+        title: "",
+        alignment: .leading
+    )
+
+    Form {
+        FormFormattedTextField(viewModel)
+    }
+}
+
+#Preview("Placeholder") {
+    @Previewable @State var viewModel = FormattedFieldViewModel(
+        value: Optional<Double>.none,
+        format: OptionalFormat(format: .currency(code: "USD")),
+        title: "",
+        placeholder: "234000",
+        alignment: .leading
     )
 
     Form {
