@@ -61,6 +61,7 @@ public final class FormFieldViewModel<Property>: ValueEditor, Validatable {
     }
     /// A boolean indicating whether the field is read-only.
     public var isReadOnly: Bool
+    public var alignment: ValueAlignment
 
     private var valueChanged: ((Property) -> Void)?
     private let validation: AnyValidationRule<Property>?
@@ -78,12 +79,14 @@ public final class FormFieldViewModel<Property>: ValueEditor, Validatable {
         title: LocalizedStringResource = "",
         placeholder: LocalizedStringResource? = nil,
         isReadOnly: Bool = false,
+        alignment: ValueAlignment = .trailing,
         validation: AnyValidationRule<Property>? = nil
     ) {
         _value = value
         self.title = title
         self.placeholder = placeholder
         self.isReadOnly = isReadOnly
+        self.alignment = alignment
         self.validation = validation
         validationResult = validate()
     }

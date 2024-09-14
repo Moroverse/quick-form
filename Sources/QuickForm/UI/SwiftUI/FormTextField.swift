@@ -4,24 +4,37 @@
 
 import SwiftUI
 
+extension ValueAlignment {
+    var textAlignment: TextAlignment {
+        switch self {
+        case .leading: .leading
+        case .center: .center
+        case .trailing: .trailing
+        }
+    }
+}
+
 public struct FormTextField: View {
     @FocusState private var isFocused: Bool
-    @State private var alignment: TextAlignment = .trailing
     @Bindable private var viewModel: FormFieldViewModel<String>
+    @State private var resolvedAlignment: TextAlignment
 
     public init(_ viewModel: FormFieldViewModel<String>) {
         self.viewModel = viewModel
+        self.resolvedAlignment = viewModel.alignment.textAlignment
         isFocused = false
     }
 
     public var body: some View {
         VStack(alignment: .leading, spacing: 5) {
             HStack(spacing: 10) {
-                Text(viewModel.title)
-                    .font(.headline)
+                if hasTitle {
+                    Text(viewModel.title)
+                        .font(.headline)
+                }
                 TextField(String(localized: viewModel.placeholder ?? ""), text: $viewModel.value)
                     .focused($isFocused)
-                    .multilineTextAlignment(alignment)
+                    .multilineTextAlignment(resolvedAlignment)
                     .disabled(viewModel.isReadOnly)
             }
             if !viewModel.isValid {
@@ -29,11 +42,26 @@ public struct FormTextField: View {
                     .font(.caption)
                     .foregroundColor(.red)
             }
-        }.onChange(of: isFocused) {
-            withAnimation {
-                alignment = isFocused ? .leading : .trailing
+        }
+        .onChange(of: isFocused) {
+            if viewModel.alignment != .leading {
+                withAnimation {
+                    resolvedAlignment = isFocused ? .leading : viewModel.alignment.textAlignment
+                }
             }
         }
+        .onChange(of: viewModel.alignment) {
+            if !isFocused {
+                withAnimation {
+                    resolvedAlignment = viewModel.alignment.textAlignment
+                }
+            }
+        }
+    }
+
+    private var hasTitle: Bool {
+        let value = String(localized: viewModel.title)
+        return value.isEmpty == false
     }
 }
 
@@ -72,14 +100,15 @@ public struct FormTextField: View {
 /// ```
 public struct FormOptionalTextField: View {
     @FocusState private var isFocused: Bool
-    @State private var alignment: TextAlignment = .trailing
     @Bindable private var viewModel: FormFieldViewModel<String?>
+    @State private var resolvedAlignment: TextAlignment
 
     /// Initializes a new `FormOptionalTextField`.
     ///
     /// - Parameter viewModel: The view model that manages the state of this text field.
     public init(_ viewModel: FormFieldViewModel<String?>) {
         self.viewModel = viewModel
+        self.resolvedAlignment = viewModel.alignment.textAlignment
         isFocused = false
     }
 
@@ -94,11 +123,13 @@ public struct FormOptionalTextField: View {
     public var body: some View {
         VStack(alignment: .leading, spacing: 5) {
             HStack(spacing: 10) {
-                Text(viewModel.title)
-                    .font(.headline)
+                if hasTitle {
+                    Text(viewModel.title)
+                        .font(.headline)
+                }
                 TextField(String(localized: viewModel.placeholder ?? ""), text: $viewModel.value.unwrapped(defaultValue: ""))
                     .focused($isFocused)
-                    .multilineTextAlignment(alignment)
+                    .multilineTextAlignment(resolvedAlignment)
                     .disabled(viewModel.isReadOnly)
             }
             if !viewModel.isValid {
@@ -108,17 +139,61 @@ public struct FormOptionalTextField: View {
             }
         }
         .onChange(of: isFocused) {
-            alignment = isFocused ? .leading : .trailing
+            if viewModel.alignment != .leading {
+                withAnimation {
+                    resolvedAlignment = isFocused ? .leading : viewModel.alignment.textAlignment
+                }
+            }
         }
+        .onChange(of: viewModel.alignment) {
+            if !isFocused {
+                withAnimation {
+                    resolvedAlignment = viewModel.alignment.textAlignment
+                }
+            }
+        }
+    }
+
+    private var hasTitle: Bool {
+        let value = String(localized: viewModel.title)
+        return value.isEmpty == false
     }
 }
 
-#Preview {
+#Preview("Default") {
     @Previewable @State var viewModel = FormFieldViewModel(
         value: "Rasa",
         title: "Name",
         placeholder: "John",
         isReadOnly: false
+    )
+
+    Form {
+        FormTextField(viewModel)
+    }
+}
+
+#Preview("Alignment") {
+    @Previewable @State var viewModel = FormFieldViewModel(
+        value: "Rasa",
+        title: "Name",
+        placeholder: "John",
+        isReadOnly: false,
+        alignment: .leading
+    )
+
+    Form {
+        FormTextField(viewModel)
+    }
+}
+
+#Preview("Not Title") {
+    @Previewable @State var viewModel = FormFieldViewModel(
+        value: "Rasa",
+        title: "",
+        placeholder: "John",
+        isReadOnly: false,
+        alignment: .leading
     )
 
     Form {
