@@ -43,9 +43,11 @@ public struct FormFormattedTextField<F>: View where F: ParseableFormatStyle, F.F
     @State private var editingText = ""
     @State private var originalValue: F.FormatInput?
     @Bindable private var viewModel: FormattedFieldViewModel<F>
+    @State private var hasError: Bool
 
     public init(_ viewModel: FormattedFieldViewModel<F>) {
         self.viewModel = viewModel
+        hasError = viewModel.errorMessage != nil
         resolvedAlignment = viewModel.alignment.textAlignment
         isFocused = false
     }
@@ -65,57 +67,70 @@ public struct FormFormattedTextField<F>: View where F: ParseableFormatStyle, F.F
     }
 
     public var body: some View {
-        HStack(spacing: 10) {
-            if hasTitle {
-                Text(viewModel.title)
-                    .font(.headline)
-            }
-            TextField(
-                String(localized: viewModel.placeholder ?? ""),
-                text: $editingText
-            )
-            .focused($isFocused)
-            .multilineTextAlignment(resolvedAlignment)
-            .disabled(viewModel.isReadOnly)
-            .onAppear {
-                editingText = viewModel.format.format(viewModel.value)
-            }
-            .onChange(of: isFocused) { _, newValue in
-                withAnimation {
-                    if newValue {
-                        // Entering edit mode: enforce leading
-                        resolvedAlignment = .leading
-                        // Entering edit mode: remove formatting
-                        editingText = safeExtract()
-                        originalValue = viewModel.value
-                    } else {
-                        // Entering edit mode: restore alignment
-                        resolvedAlignment = viewModel.alignment.textAlignment
-                        // Exiting edit mode: apply formatting
-                        if let parsedValue = try? viewModel.format.parseStrategy.parse(editingText) {
-                            viewModel.value = parsedValue
-                            editingText = viewModel.format.format(viewModel.value)
-                        } else if let originalValue {
-                            viewModel.value = originalValue
-                            editingText = viewModel.format.format(viewModel.value)
+        VStack {
+            HStack(spacing: 10) {
+                if hasTitle {
+                    Text(viewModel.title)
+                        .font(.headline)
+                }
+                TextField(
+                    String(localized: viewModel.placeholder ?? ""),
+                    text: $editingText
+                )
+                .focused($isFocused)
+                .multilineTextAlignment(resolvedAlignment)
+                .disabled(viewModel.isReadOnly)
+                .onAppear {
+                    editingText = viewModel.format.format(viewModel.value)
+                }
+                .onChange(of: isFocused) { _, newValue in
+                    withAnimation {
+                        if newValue {
+                            // Entering edit mode: enforce leading
+                            resolvedAlignment = .leading
+                            // Entering edit mode: remove formatting
+                            editingText = safeExtract()
+                            originalValue = viewModel.value
+                        } else {
+                            // Entering edit mode: restore alignment
+                            resolvedAlignment = viewModel.alignment.textAlignment
+                            // Exiting edit mode: apply formatting
+                            if let parsedValue = try? viewModel.format.parseStrategy.parse(editingText) {
+                                viewModel.value = parsedValue
+                                editingText = viewModel.format.format(viewModel.value)
+                            } else if let originalValue {
+                                viewModel.value = originalValue
+                                editingText = viewModel.format.format(viewModel.value)
+                            }
                         }
                     }
                 }
-            }
-            .onChange(of: viewModel.alignment) {
-                if !isFocused {
-                    withAnimation {
-                        resolvedAlignment = viewModel.alignment.textAlignment
+                .onChange(of: viewModel.alignment) {
+                    if !isFocused {
+                        withAnimation {
+                            resolvedAlignment = viewModel.alignment.textAlignment
+                        }
                     }
                 }
-            }
-            if shouldDisplayClearButton {
-                Button {
-                    editingText = ""
-                } label: {
-                    Image(systemName: "xmark.circle.fill")
+                .onChange(of: viewModel.errorMessage) { _, newValue in
+                    withAnimation {
+                        hasError = newValue != nil
+                    }
                 }
-                .buttonStyle(.borderless)
+
+                if shouldDisplayClearButton {
+                    Button {
+                        editingText = ""
+                    } label: {
+                        Image(systemName: "xmark.circle.fill")
+                    }
+                    .buttonStyle(.borderless)
+                }
+            }
+            if hasError {
+                Text(viewModel.errorMessage ?? "Invalid input")
+                    .font(.caption)
+                    .foregroundColor(.red)
             }
         }
     }

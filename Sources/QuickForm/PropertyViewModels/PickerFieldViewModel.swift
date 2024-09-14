@@ -131,7 +131,9 @@ public final class PickerFieldViewModel<Property: Hashable & CustomStringConvert
 public final class OptionalPickerFieldViewModel<Property: Hashable & CustomStringConvertible>:
     ValueEditor, Validatable {
     /// The title of the picker field.
-    public var title: String
+    public var title: LocalizedStringResource
+    /// An optional placeholder text for the form field.
+    public var placeholder: LocalizedStringResource?
     /// An array of all available values for the picker.
     public var allValues: [Property]
     /// The currently selected value, which can be nil.
@@ -160,7 +162,8 @@ public final class OptionalPickerFieldViewModel<Property: Hashable & CustomStrin
     public init(
         value: Property?,
         allValues: [Property],
-        title: String = "",
+        title: LocalizedStringResource = "",
+        placeholder: LocalizedStringResource? = nil,
         isReadOnly: Bool = false,
         clearValueMode: ClearValueMode = .never,
         validation: AnyValidationRule<Property?>? = nil
@@ -168,6 +171,7 @@ public final class OptionalPickerFieldViewModel<Property: Hashable & CustomStrin
         self.value = value
         self.allValues = allValues
         self.title = title
+        self.placeholder = placeholder
         self.isReadOnly = isReadOnly
         self.clearValueMode = clearValueMode
         self.validation = validation

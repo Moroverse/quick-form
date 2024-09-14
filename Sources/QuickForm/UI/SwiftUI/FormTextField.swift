@@ -18,9 +18,11 @@ public struct FormTextField: View {
     @FocusState private var isFocused: Bool
     @Bindable private var viewModel: FormFieldViewModel<String>
     @State private var resolvedAlignment: TextAlignment
+    @State private var hasError: Bool
 
     public init(_ viewModel: FormFieldViewModel<String>) {
         self.viewModel = viewModel
+        hasError = viewModel.errorMessage != nil
         resolvedAlignment = viewModel.alignment.textAlignment
         isFocused = false
     }
@@ -37,7 +39,7 @@ public struct FormTextField: View {
                     .multilineTextAlignment(resolvedAlignment)
                     .disabled(viewModel.isReadOnly)
             }
-            if !viewModel.isValid {
+            if hasError {
                 Text(viewModel.errorMessage ?? "Invalid input")
                     .font(.caption)
                     .foregroundColor(.red)
@@ -57,6 +59,12 @@ public struct FormTextField: View {
                 }
             }
         }
+        .onChange(of: viewModel.errorMessage) { _, newValue in
+            withAnimation {
+                hasError = newValue != nil
+            }
+        }
+
         if shouldDisplayClearButton {
             Button {
                 viewModel.value = ""
@@ -127,12 +135,14 @@ public struct FormOptionalTextField: View {
     @FocusState private var isFocused: Bool
     @Bindable private var viewModel: FormFieldViewModel<String?>
     @State private var resolvedAlignment: TextAlignment
+    @State private var hasError: Bool
 
     /// Initializes a new `FormOptionalTextField`.
     ///
     /// - Parameter viewModel: The view model that manages the state of this text field.
     public init(_ viewModel: FormFieldViewModel<String?>) {
         self.viewModel = viewModel
+        hasError = viewModel.errorMessage != nil
         resolvedAlignment = viewModel.alignment.textAlignment
         isFocused = false
     }
@@ -157,7 +167,7 @@ public struct FormOptionalTextField: View {
                     .multilineTextAlignment(resolvedAlignment)
                     .disabled(viewModel.isReadOnly)
             }
-            if !viewModel.isValid {
+            if hasError {
                 Text(viewModel.errorMessage ?? "Invalid input")
                     .font(.caption)
                     .foregroundColor(.red)
@@ -177,6 +187,12 @@ public struct FormOptionalTextField: View {
                 }
             }
         }
+        .onChange(of: viewModel.errorMessage) { _, newValue in
+            withAnimation {
+                hasError = newValue != nil
+            }
+        }
+
         if shouldDisplayClearButton {
             Button {
                 viewModel.value = nil

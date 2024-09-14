@@ -63,12 +63,18 @@ public struct FormPickerField<Property: Hashable & CustomStringConvertible, S: P
                 Text(itemCase.description)
             }
         } label: {
-            Text(viewModel.title)
-                .font(.headline)
+            if hasTitle {
+                Text(viewModel.title)
+                    .font(.headline)
+            }
         }
         .pickerStyle(pickerStyle)
-        .fixedSize()
         .disabled(viewModel.isReadOnly)
+    }
+
+    private var hasTitle: Bool {
+        let value = String(localized: viewModel.title)
+        return value.isEmpty == false
     }
 }
 
@@ -113,6 +119,7 @@ public struct FormPickerField<Property: Hashable & CustomStringConvertible, S: P
 /// ```
 public struct FormOptionalPickerField<Property: Hashable & CustomStringConvertible, S: PickerStyle>: View {
     @Bindable private var viewModel: OptionalPickerFieldViewModel<Property>
+    @State private var hasError: Bool
     private let pickerStyle: S
     /// Initializes a new `FormOptionalPickerField`.
     ///
@@ -125,6 +132,7 @@ public struct FormOptionalPickerField<Property: Hashable & CustomStringConvertib
     ) {
         self.viewModel = viewModel
         self.pickerStyle = pickerStyle
+        hasError = viewModel.errorMessage != nil
     }
 
     /// The body of the `FormOptionalPickerField` view.
@@ -145,11 +153,18 @@ public struct FormOptionalPickerField<Property: Hashable & CustomStringConvertib
                             .tag(Optional(itemCase))
                     }
                 } label: {
-                    Text(viewModel.title)
-                        .font(.headline)
+                    if hasTitle {
+                        Text(viewModel.title)
+                            .font(.headline)
+                    } else {
+                        if shouldDisplayPlaceholder {
+                            Text(viewModel.placeholder ?? "")
+                                .font(.callout)
+                                .foregroundStyle(.secondary)
+                        }
+                    }
                 }
                 .pickerStyle(pickerStyle)
-                .fixedSize()
                 .disabled(viewModel.isReadOnly)
                 if shouldDisplayClearButton {
                     Button {
@@ -160,11 +175,25 @@ public struct FormOptionalPickerField<Property: Hashable & CustomStringConvertib
                     .buttonStyle(.borderless)
                 }
             }
-            if !viewModel.isValid {
+
+            if hasError {
                 Text(viewModel.errorMessage ?? "Invalid input")
                     .font(.caption)
                     .foregroundColor(.red)
             }
+        }
+        .onChange(of: viewModel.errorMessage) { _, newValue in
+            withAnimation {
+                hasError = newValue != nil
+            }
+        }
+    }
+
+    private var shouldDisplayPlaceholder: Bool {
+        if case .none = viewModel.value {
+            hasPlaceholder
+        } else {
+            false
         }
     }
 
@@ -177,8 +206,18 @@ public struct FormOptionalPickerField<Property: Hashable & CustomStringConvertib
         case .never:
             return false
         default:
-            return true
+            return viewModel.value != nil
         }
+    }
+
+    private var hasTitle: Bool {
+        let value = String(localized: viewModel.title)
+        return value.isEmpty == false
+    }
+
+    private var hasPlaceholder: Bool {
+        let value = String(localized: viewModel.placeholder ?? "")
+        return value.isEmpty == false
     }
 }
 
