@@ -11,7 +11,7 @@ let fakePerson = Person(
     familyName: "Chen",
     dateOfBirth: Date(timeIntervalSince1970: 707_443_200), // September 3, 1992
     sex: .female,
-    phone: "15551234567",
+    phone: "5551234567",
     salary: 75000.00,
     weight: Measurement(value: 58.5, unit: UnitMass.kilograms),
     isEstablished: true,

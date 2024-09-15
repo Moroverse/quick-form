@@ -85,4 +85,3 @@ public final class PickerFieldViewModel<Property: Hashable & CustomStringConvert
         return self
     }
 }
-

@@ -1,9 +1,6 @@
-//
-//  that.swift
-//  quick-form
-//
-//  Created by Daniel Moro on 15.9.24..
-//
+// OptionalPickerFieldViewModel.swift
+// Copyright (c) 2024 Moroverse
+// Created by Daniel Moro on 2024-09-07 07:45 GMT.
 
 import Foundation
 import Observation

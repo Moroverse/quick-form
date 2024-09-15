@@ -19,8 +19,41 @@ struct PersonEditView: View {
 
     var body: some View {
         Form {
-            FormTextField(quickForm.firstName, autocapitalizationType: .words)
-            FormTextField(quickForm.lastName, autocapitalizationType: .words)
+            HStack(alignment: .center) {
+                FormAsyncPickerField(quickForm.avatar, clearValueMode: .always) { selection in
+                    if let selection {
+                        Image(selection.imageName)
+                            .resizable()
+                            .frame(width: 88, height: 88)
+                            .clipShape(Circle())
+                    } else {
+                        VStack {
+                            Image(systemName: "person.crop.circle")
+                                .resizable()
+                                .frame(width: 88, height: 88)
+                            Spacer()
+                            Text("No Person Avatar Selected")
+                        }
+                    }
+                } pickerContent: { avatar in
+                    HStack {
+                        Image(avatar.imageName)
+                            .resizable()
+                            .frame(width: 88, height: 88)
+                        Text(avatar.id.formatted())
+                    }
+                }
+                Divider()
+                VStack {
+                    FormTextField(quickForm.firstName, autocapitalizationType: .words)
+                        .frame(minHeight: 44)
+
+                    Divider()
+                    FormTextField(quickForm.lastName, autocapitalizationType: .words)
+                        .frame(minHeight: 44)
+                }
+            }
+
             FormDatePickerField(quickForm.birthday, style: .compact)
             FormPickerField(quickForm.sex)
             FormValueUnitField(quickForm.weight)
@@ -90,7 +123,7 @@ struct ContentView_Previews: PreviewProvider {
                 familyName: "Chen",
                 dateOfBirth: Date(timeIntervalSince1970: 707_443_200), // September 3, 1992
                 sex: .female,
-                phone: "15551234567",
+                phone: "5551234567",
                 salary: 75000.00,
                 weight: Measurement(value: 58.5, unit: UnitMass.kilograms),
                 isEstablished: true,

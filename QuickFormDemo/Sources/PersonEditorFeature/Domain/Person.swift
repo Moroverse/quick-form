@@ -9,6 +9,11 @@ struct PersonInfo: Equatable, Identifiable {
     var name: String
 }
 
+struct Avatar: Identifiable, Equatable {
+    var id: Int
+    var imageName: String
+}
+
 struct Person: Equatable {
     enum Sex: Equatable, CaseIterable {
         case male
@@ -29,6 +34,7 @@ struct Person: Equatable {
     var careTeam: [PersonInfo]
     var password: String
     var passwordReentry: String
+    var avatar: Avatar?
 
     init(
         givenName: String,
@@ -42,7 +48,8 @@ struct Person: Equatable {
         address: Address,
         careTeam: [PersonInfo] = [],
         password: String = "",
-        passwordReentry: String = ""
+        passwordReentry: String = "",
+        avatar: Avatar? = nil
     ) {
         self.givenName = givenName
         self.familyName = familyName
@@ -56,5 +63,6 @@ struct Person: Equatable {
         self.careTeam = careTeam
         self.password = password
         self.passwordReentry = passwordReentry
+        self.avatar = avatar
     }
 }

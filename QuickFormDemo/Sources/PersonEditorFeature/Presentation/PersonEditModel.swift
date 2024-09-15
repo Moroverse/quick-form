@@ -101,6 +101,13 @@ class PersonEditModel: Validatable {
         placeholder: "P@$$w0rd"
     )
 
+    @PropertyEditor(keyPath: \Person.avatar)
+    var avatar = AsyncPickerFieldViewModel(value: nil, title: "Avatar:") { query in
+        try await AvatarFetcher.shared.fetchAvatar(query: query)
+    } queryBuilder: { text in
+        text
+    }
+
     // 5. decorations in the class
     var personNameComponents: PersonNameComponents {
         PersonNameComponents(givenName: firstName.value, familyName: lastName.value)
