@@ -44,19 +44,19 @@ public struct FormFormattedTextField<F>: View where F: ParseableFormatStyle, F.F
     @State private var originalValue: F.FormatInput?
     @Bindable private var viewModel: FormattedFieldViewModel<F>
     @State private var hasError: Bool
-    let alignment: ValueAlignment
+    let alignment: TextAlignment
     let clearValueMode: ClearValueMode
 
     public init(
         _ viewModel: FormattedFieldViewModel<F>,
-        alignment: ValueAlignment = .trailing,
+        alignment: TextAlignment = .trailing,
         clearValueMode: ClearValueMode = .never
     ) {
         self.viewModel = viewModel
         self.clearValueMode = clearValueMode
         self.alignment = alignment
         hasError = viewModel.errorMessage != nil
-        resolvedAlignment = alignment.textAlignment
+        resolvedAlignment = alignment
         isFocused = false
     }
 
@@ -104,7 +104,7 @@ public struct FormFormattedTextField<F>: View where F: ParseableFormatStyle, F.F
                             originalValue = viewModel.value
                         } else {
                             // Entering edit mode: restore alignment
-                            resolvedAlignment = alignment.textAlignment
+                            resolvedAlignment = alignment
                             // Exiting edit mode: apply formatting
                             if let parsedValue = try? viewModel.format.parseStrategy.parse(editingText) {
                                 viewModel.value = parsedValue

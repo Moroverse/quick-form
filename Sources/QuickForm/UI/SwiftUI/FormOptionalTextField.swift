@@ -42,25 +42,25 @@ public struct FormOptionalTextField: View {
     @Bindable private var viewModel: FormFieldViewModel<String?>
     @State private var resolvedAlignment: TextAlignment
     @State private var hasError: Bool
-    let alignment: ValueAlignment
+    let alignment: TextAlignment
     let clearValueMode: ClearValueMode
-    let autocapitalizationType: AutocapitalizationType
+    let autocapitalizationType: TextInputAutocapitalization
 
     /// Initializes a new `FormOptionalTextField`.
     ///
     /// - Parameter viewModel: The view model that manages the state of this text field.
     public init(
         _ viewModel: FormFieldViewModel<String?>,
-        alignment: ValueAlignment = .trailing,
+        alignment: TextAlignment = .trailing,
         clearValueMode: ClearValueMode = .never,
-        autocapitalizationType: AutocapitalizationType = .never
+        autocapitalizationType: TextInputAutocapitalization = .never
     ) {
         self.viewModel = viewModel
         self.clearValueMode = clearValueMode
         self.alignment = alignment
         self.autocapitalizationType = autocapitalizationType
         hasError = viewModel.errorMessage != nil
-        resolvedAlignment = alignment.textAlignment
+        resolvedAlignment = alignment
         isFocused = false
     }
 
@@ -80,6 +80,7 @@ public struct FormOptionalTextField: View {
                         .font(.headline)
                 }
                 TextField(String(localized: viewModel.placeholder ?? ""), text: $viewModel.value.unwrapped(defaultValue: ""))
+                    .textInputAutocapitalization(autocapitalizationType)
                     .focused($isFocused)
                     .multilineTextAlignment(resolvedAlignment)
                     .disabled(viewModel.isReadOnly)
@@ -96,7 +97,7 @@ public struct FormOptionalTextField: View {
         .onChange(of: isFocused) {
             if alignment != .leading {
                 withAnimation {
-                    resolvedAlignment = isFocused ? .leading : alignment.textAlignment
+                    resolvedAlignment = isFocused ? .leading : alignment
                 }
             }
         }

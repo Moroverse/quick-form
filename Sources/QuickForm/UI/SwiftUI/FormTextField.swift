@@ -4,48 +4,27 @@
 
 import SwiftUI
 
-extension ValueAlignment {
-    var textAlignment: TextAlignment {
-        switch self {
-        case .leading: .leading
-        case .center: .center
-        case .trailing: .trailing
-        }
-    }
-}
-
-extension TextInputAutocapitalization {
-    init(_ type: AutocapitalizationType) {
-        switch type {
-        case .words: self = .words
-        case .sentences: self = .sentences
-        case .never: self = .never
-        case .characters: self = .characters
-        }
-    }
-}
-
 public struct FormTextField: View {
     @FocusState private var isFocused: Bool
     @Bindable private var viewModel: FormFieldViewModel<String>
     @State private var resolvedAlignment: TextAlignment
     @State private var hasError: Bool
-    let alignment: ValueAlignment
+    let alignment: TextAlignment
     let clearValueMode: ClearValueMode
-    let autocapitalizationType: AutocapitalizationType
+    let autocapitalizationType: TextInputAutocapitalization
 
     public init(
         _ viewModel: FormFieldViewModel<String>,
-        alignment: ValueAlignment = .trailing,
+        alignment: TextAlignment = .trailing,
         clearValueMode: ClearValueMode = .never,
-        autocapitalizationType: AutocapitalizationType = .never
+        autocapitalizationType: TextInputAutocapitalization = .never
     ) {
         self.viewModel = viewModel
         self.clearValueMode = clearValueMode
         self.alignment = alignment
         self.autocapitalizationType = autocapitalizationType
         hasError = viewModel.errorMessage != nil
-        resolvedAlignment = alignment.textAlignment
+        resolvedAlignment = alignment
         isFocused = false
     }
 
@@ -60,7 +39,7 @@ public struct FormTextField: View {
                     .focused($isFocused)
                     .multilineTextAlignment(resolvedAlignment)
                     .disabled(viewModel.isReadOnly)
-                    .textInputAutocapitalization(TextInputAutocapitalization(autocapitalizationType))
+                    .textInputAutocapitalization(autocapitalizationType)
                     .onSubmit {
                         isFocused = false
                     }
@@ -74,7 +53,7 @@ public struct FormTextField: View {
         .onChange(of: isFocused) {
             if alignment != .leading {
                 withAnimation {
-                    resolvedAlignment = isFocused ? .leading : alignment.textAlignment
+                    resolvedAlignment = isFocused ? .leading : alignment
                 }
             }
         }

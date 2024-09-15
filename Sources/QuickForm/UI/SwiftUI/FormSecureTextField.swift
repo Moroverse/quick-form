@@ -9,7 +9,7 @@ public struct FormSecureTextField: View {
     @Bindable private var viewModel: FormFieldViewModel<String>
     @State private var resolvedAlignment: TextAlignment
     @State private var hasError: Bool
-    let alignment: ValueAlignment
+    let alignment: TextAlignment
     let clearValueMode: ClearValueMode
 
     /// Initializes a new `FormOptionalTextField`.
@@ -17,14 +17,14 @@ public struct FormSecureTextField: View {
     /// - Parameter viewModel: The view model that manages the state of this text field.
     public init(
         _ viewModel: FormFieldViewModel<String>,
-        alignment: ValueAlignment = .trailing,
+        alignment: TextAlignment = .trailing,
         clearValueMode: ClearValueMode = .never
     ) {
         self.viewModel = viewModel
         self.clearValueMode = clearValueMode
         self.alignment = alignment
         hasError = viewModel.errorMessage != nil
-        resolvedAlignment = alignment.textAlignment
+        resolvedAlignment = alignment
         isFocused = false
     }
 
@@ -60,7 +60,7 @@ public struct FormSecureTextField: View {
         .onChange(of: isFocused) {
             if alignment != .leading {
                 withAnimation {
-                    resolvedAlignment = isFocused ? .leading : alignment.textAlignment
+                    resolvedAlignment = isFocused ? .leading : alignment
                 }
             }
         }
