@@ -58,7 +58,7 @@ public struct FormValueUnitField<T: Dimension, S: PickerStyle>: View where T: Al
                 .multilineTextAlignment(.trailing)
                 .disabled(viewModel.isReadOnly)
                 .onSubmit {
-                   isFocused = false
+                    isFocused = false
                 }
             let binding = Binding(get: {
                 viewModel.value.unit
@@ -89,7 +89,7 @@ public struct FormValueUnitField<T: Dimension, S: PickerStyle>: View where T: Al
     ) {
         self.viewModel = viewModel
         self.pickerStyle = pickerStyle
-        self.isFocused = false
+        isFocused = false
     }
 }
 

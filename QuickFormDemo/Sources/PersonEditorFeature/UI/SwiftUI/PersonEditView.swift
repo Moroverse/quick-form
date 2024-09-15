@@ -43,6 +43,11 @@ struct PersonEditView: View {
                 }
             }
 
+            Section("Security") {
+                FormSecureTextField(quickForm.password)
+                FormSecureTextField(quickForm.passwordReentry)
+            }
+
             Button("Deactivate", role: .destructive) {
                 delegate?.didTapOnDeactivate?()
             }

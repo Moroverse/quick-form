@@ -27,6 +27,8 @@ struct Person: Equatable {
     var isEstablished: Bool
     var address: Address
     var careTeam: [PersonInfo]
+    var password: String
+    var passwordReentry: String
 
     init(
         givenName: String,
@@ -38,7 +40,9 @@ struct Person: Equatable {
         weight: Measurement<UnitMass> = .init(value: 0, unit: .kilograms),
         isEstablished: Bool = true,
         address: Address,
-        careTeam: [PersonInfo] = []
+        careTeam: [PersonInfo] = [],
+        password: String = "",
+        passwordReentry: String = ""
     ) {
         self.givenName = givenName
         self.familyName = familyName
@@ -50,5 +54,7 @@ struct Person: Equatable {
         self.isEstablished = isEstablished
         self.address = address
         self.careTeam = careTeam
+        self.password = password
+        self.passwordReentry = passwordReentry
     }
 }

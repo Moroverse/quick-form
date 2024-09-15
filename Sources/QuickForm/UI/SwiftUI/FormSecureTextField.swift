@@ -1,25 +1,18 @@
-// FormTextField.swift
+// FormSecureTextField.swift
 // Copyright (c) 2024 Moroverse
-// Created by Daniel Moro on 2024-09-07 18:36 GMT.
+// Created by Daniel Moro on 2024-09-15 05:19 GMT.
 
 import SwiftUI
 
-extension ValueAlignment {
-    var textAlignment: TextAlignment {
-        switch self {
-        case .leading: .leading
-        case .center: .center
-        case .trailing: .trailing
-        }
-    }
-}
-
-public struct FormTextField: View {
+public struct FormSecureTextField: View {
     @FocusState private var isFocused: Bool
     @Bindable private var viewModel: FormFieldViewModel<String>
     @State private var resolvedAlignment: TextAlignment
     @State private var hasError: Bool
 
+    /// Initializes a new `FormOptionalTextField`.
+    ///
+    /// - Parameter viewModel: The view model that manages the state of this text field.
     public init(_ viewModel: FormFieldViewModel<String>) {
         self.viewModel = viewModel
         hasError = viewModel.errorMessage != nil
@@ -27,6 +20,14 @@ public struct FormTextField: View {
         isFocused = false
     }
 
+    /// The body of the `FormOptionalTextField` view.
+    ///
+    /// This view consists of:
+    /// - A title label
+    /// - An optional text field
+    /// - An error message (if validation fails)
+    ///
+    /// The text field's alignment changes based on whether it's focused or not.
     public var body: some View {
         VStack(alignment: .leading, spacing: 5) {
             HStack(spacing: 10) {
@@ -34,7 +35,7 @@ public struct FormTextField: View {
                     Text(viewModel.title)
                         .font(.headline)
                 }
-                TextField(String(localized: viewModel.placeholder ?? ""), text: $viewModel.value)
+                SecureField(String(localized: viewModel.placeholder ?? ""), text: $viewModel.value)
                     .focused($isFocused)
                     .multilineTextAlignment(resolvedAlignment)
                     .disabled(viewModel.isReadOnly)
@@ -103,41 +104,13 @@ public struct FormTextField: View {
 
 #Preview("Default") {
     @Previewable @State var viewModel = FormFieldViewModel(
-        value: "Rasa",
-        title: "Name",
-        placeholder: "John",
+        value: "",
+        title: "Password",
+        placeholder: "P@$$w0rd",
         isReadOnly: false
     )
 
     Form {
-        FormTextField(viewModel)
-    }
-}
-
-#Preview("Alignment") {
-    @Previewable @State var viewModel = FormFieldViewModel(
-        value: "Rasa",
-        title: "Name",
-        placeholder: "John",
-        isReadOnly: false,
-        alignment: .leading
-    )
-
-    Form {
-        FormTextField(viewModel)
-    }
-}
-
-#Preview("Not Title") {
-    @Previewable @State var viewModel = FormFieldViewModel(
-        value: "Rasa",
-        title: "",
-        placeholder: "John",
-        isReadOnly: false,
-        alignment: .leading
-    )
-
-    Form {
-        FormTextField(viewModel)
+        FormSecureTextField(viewModel)
     }
 }

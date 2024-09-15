@@ -86,6 +86,21 @@ class PersonEditModel: Validatable {
         placeholder: "(123) 456-7890"
     )
 
+    @PropertyEditor(keyPath: \Person.password)
+    var password = FormFieldViewModel(
+        value: "",
+        title: "Password:",
+        placeholder: "P@$$w0rd",
+        validation: .combined(.notEmpty, .minLength(8))
+    )
+
+    @PropertyEditor(keyPath: \Person.passwordReentry)
+    var passwordReentry = FormFieldViewModel(
+        value: "",
+        title: "Password Again:",
+        placeholder: "P@$$w0rd"
+    )
+
     // 5. decorations in the class
     var personNameComponents: PersonNameComponents {
         PersonNameComponents(givenName: firstName.value, familyName: lastName.value)
