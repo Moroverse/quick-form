@@ -71,7 +71,7 @@ public struct FormDatePickerField<S: DatePickerStyle>: View {
         }
     }
 
-    func stylized<Content: View>(@ViewBuilder content: @escaping () -> Content) -> some View {
+    func stylized(@ViewBuilder content: @escaping () -> some View) -> some View {
         content()
             .font(.headline)
             .datePickerStyle(style)
@@ -101,9 +101,9 @@ public struct FormDatePickerField<S: DatePickerStyle>: View {
     let dateRange: ClosedRange<Date> = {
         let calendar = Calendar.current
         let startComponents = DateComponents(year: 2021, month: 1, day: 1)
-        return calendar.date(from:startComponents)!
-        ...
-        Date()
+        return calendar.date(from: startComponents)!
+            ...
+            Date()
     }()
 
     Form {
