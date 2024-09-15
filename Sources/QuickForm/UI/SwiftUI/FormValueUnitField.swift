@@ -46,6 +46,7 @@ public protocol AllValues {
 /// ```
 public struct FormValueUnitField<T: Dimension, S: PickerStyle>: View where T: AllValues, T.Unit == T {
     @Bindable private var viewModel: FormFieldViewModel<Measurement<T>>
+    @FocusState private var isFocused: Bool
     private let pickerStyle: S
 
     public var body: some View {
@@ -53,8 +54,12 @@ public struct FormValueUnitField<T: Dimension, S: PickerStyle>: View where T: Al
             Text(viewModel.title)
                 .font(.headline)
             TextField(String(localized: viewModel.placeholder ?? ""), value: $viewModel.value.value, format: .number)
+                .focused($isFocused)
                 .multilineTextAlignment(.trailing)
                 .disabled(viewModel.isReadOnly)
+                .onSubmit {
+                   isFocused = false
+                }
             let binding = Binding(get: {
                 viewModel.value.unit
             }, set: { newUnit, _ in
@@ -84,6 +89,7 @@ public struct FormValueUnitField<T: Dimension, S: PickerStyle>: View where T: Al
     ) {
         self.viewModel = viewModel
         self.pickerStyle = pickerStyle
+        self.isFocused = false
     }
 }
 

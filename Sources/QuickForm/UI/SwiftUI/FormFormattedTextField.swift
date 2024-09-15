@@ -80,6 +80,9 @@ public struct FormFormattedTextField<F>: View where F: ParseableFormatStyle, F.F
                 .focused($isFocused)
                 .multilineTextAlignment(resolvedAlignment)
                 .disabled(viewModel.isReadOnly)
+                .onSubmit {
+                    isFocused = false
+                }
                 .onAppear {
                     editingText = viewModel.format.format(viewModel.value)
                 }

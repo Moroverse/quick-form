@@ -38,6 +38,9 @@ public struct FormTextField: View {
                     .focused($isFocused)
                     .multilineTextAlignment(resolvedAlignment)
                     .disabled(viewModel.isReadOnly)
+                    .onSubmit {
+                        isFocused = false
+                    }
             }
             if hasError {
                 Text(viewModel.errorMessage ?? "Invalid input")
@@ -166,6 +169,9 @@ public struct FormOptionalTextField: View {
                     .focused($isFocused)
                     .multilineTextAlignment(resolvedAlignment)
                     .disabled(viewModel.isReadOnly)
+                    .onSubmit {
+                        isFocused = false
+                    }
             }
             if hasError {
                 Text(viewModel.errorMessage ?? "Invalid input")
