@@ -41,6 +41,7 @@ import SwiftUI
 public struct FormDatePickerField<S: DatePickerStyle>: View {
     @Bindable private var viewModel: FormFieldViewModel<Date>
     private let displayedComponents: DatePickerComponents
+    private let range: ClosedRange<Date>?
     private var style: S
     /// Initializes a new `FormDatePickerField`.
     ///
@@ -50,23 +51,35 @@ public struct FormDatePickerField<S: DatePickerStyle>: View {
     ///   - style: The style to apply to the date picker. Defaults to `.automatic`.
     public init(
         _ viewModel: FormFieldViewModel<Date>,
+        range: ClosedRange<Date>? = nil,
         displayedComponents: DatePickerComponents = [.date],
         style: S = DefaultDatePickerStyle.automatic
     ) {
         self.viewModel = viewModel
+        self.range = range
         self.displayedComponents = displayedComponents
         self.style = style
     }
 
     public var body: some View {
-        DatePicker(String(localized: viewModel.title), selection: $viewModel.value, displayedComponents: displayedComponents)
+        stylized {
+            if let range {
+                DatePicker(String(localized: viewModel.title), selection: $viewModel.value, in: range, displayedComponents: displayedComponents)
+            } else {
+                DatePicker(String(localized: viewModel.title), selection: $viewModel.value, displayedComponents: displayedComponents)
+            }
+        }
+    }
+
+    func stylized<Content: View>(@ViewBuilder content: @escaping () -> Content) -> some View {
+        content()
             .font(.headline)
             .datePickerStyle(style)
             .disabled(viewModel.isReadOnly)
     }
 }
 
-#Preview {
+#Preview("Default") {
     @Previewable @State var viewModel = FormFieldViewModel(
         value: Date(),
         title: "Birthday",
@@ -75,5 +88,25 @@ public struct FormDatePickerField<S: DatePickerStyle>: View {
 
     Form {
         FormDatePickerField(viewModel)
+    }
+}
+
+#Preview("Range") {
+    @Previewable @State var viewModel = FormFieldViewModel(
+        value: Date(),
+        title: "Birthday",
+        isReadOnly: false
+    )
+
+    let dateRange: ClosedRange<Date> = {
+        let calendar = Calendar.current
+        let startComponents = DateComponents(year: 2021, month: 1, day: 1)
+        return calendar.date(from:startComponents)!
+        ...
+        Date()
+    }()
+
+    Form {
+        FormDatePickerField(viewModel, range: dateRange)
     }
 }
