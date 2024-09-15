@@ -16,7 +16,6 @@ class PersonEditModel: Validatable {
         value: "",
         title: "First Name:",
         placeholder: "John",
-        autocapitalizationType: .words,
         validation: .combined(.notEmpty, .minLength(2), .maxLength(50))
     )
 
@@ -25,7 +24,6 @@ class PersonEditModel: Validatable {
         value: "",
         title: "Last Name:",
         placeholder: "Anderson",
-        autocapitalizationType: .words,
         validation: .combined(.notEmpty, .minLength(2), .maxLength(50))
     )
 

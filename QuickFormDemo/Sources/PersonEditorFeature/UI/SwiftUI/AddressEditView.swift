@@ -14,17 +14,17 @@ struct AddressEditView: View {
 
     var body: some View {
         VStack {
-            FormTextField(quickForm.line1)
+            FormTextField(quickForm.line1, alignment: .leading)
                 .padding(.vertical, 4)
             Divider()
-            FormOptionalTextField(quickForm.line2)
+            FormOptionalTextField(quickForm.line2, alignment: .leading)
                 .padding(.vertical, 4)
             Divider()
 
             HStack {
-                FormTextField(quickForm.city)
+                FormTextField(quickForm.city, alignment: .leading)
                 Divider()
-                FormTextField(quickForm.zipCode)
+                FormTextField(quickForm.zipCode, alignment: .leading)
             }
 
             Divider()
@@ -34,7 +34,7 @@ struct AddressEditView: View {
                     .buttonStyle(.plain)
                 if quickForm.country.value.hasStates {
                     Divider()
-                    FormOptionalPickerField(quickForm.state)
+                    FormOptionalPickerField(quickForm.state, clearValueMode: .always)
                 }
             }
         }

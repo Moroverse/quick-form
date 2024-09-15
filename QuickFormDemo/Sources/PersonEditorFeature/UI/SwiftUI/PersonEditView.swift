@@ -19,8 +19,8 @@ struct PersonEditView: View {
 
     var body: some View {
         Form {
-            FormTextField(quickForm.firstName)
-            FormTextField(quickForm.lastName)
+            FormTextField(quickForm.firstName, autocapitalizationType: .words)
+            FormTextField(quickForm.lastName, autocapitalizationType: .words)
             FormDatePickerField(quickForm.birthday)
             FormPickerField(quickForm.sex)
             FormValueUnitField(quickForm.weight)

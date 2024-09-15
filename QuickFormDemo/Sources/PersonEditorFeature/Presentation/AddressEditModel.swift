@@ -12,22 +12,19 @@ class AddressEditModel: Validatable {
     var line1 = FormFieldViewModel(
         value: "",
         placeholder: "Address Line 1",
-        alignment: .leading,
         validation: .of(.notEmpty)
     )
 
     @PropertyEditor(keyPath: \Address.line2)
     var line2 = FormFieldViewModel(
         value: String?.none,
-        placeholder: "Address Line 2",
-        alignment: .leading
+        placeholder: "Address Line 2"
     )
 
     @PropertyEditor(keyPath: \Address.city)
     var city = FormFieldViewModel(
         value: "",
         placeholder: "City",
-        alignment: .leading,
         validation: .of(.notEmpty)
     )
 
@@ -35,7 +32,6 @@ class AddressEditModel: Validatable {
     var zipCode = FormFieldViewModel(
         value: "",
         placeholder: "ZIP",
-        alignment: .leading,
         validation: .combined(.notEmpty, .usZipCode)
     )
 
@@ -51,8 +47,7 @@ class AddressEditModel: Validatable {
         value: CountryState?.some(.unitedStates(.california)),
         allValues: [],
         title: "",
-        placeholder: "State",
-        clearValueMode: .always
+        placeholder: "State"
     )
 
     convenience init(address: Address) {

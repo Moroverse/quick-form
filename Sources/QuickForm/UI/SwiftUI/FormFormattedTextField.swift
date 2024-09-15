@@ -44,11 +44,19 @@ public struct FormFormattedTextField<F>: View where F: ParseableFormatStyle, F.F
     @State private var originalValue: F.FormatInput?
     @Bindable private var viewModel: FormattedFieldViewModel<F>
     @State private var hasError: Bool
+    let alignment: ValueAlignment
+    let clearValueMode: ClearValueMode
 
-    public init(_ viewModel: FormattedFieldViewModel<F>) {
+    public init(
+        _ viewModel: FormattedFieldViewModel<F>,
+        alignment: ValueAlignment = .trailing,
+        clearValueMode: ClearValueMode = .never
+    ) {
         self.viewModel = viewModel
+        self.clearValueMode = clearValueMode
+        self.alignment = alignment
         hasError = viewModel.errorMessage != nil
-        resolvedAlignment = viewModel.alignment.textAlignment
+        resolvedAlignment = alignment.textAlignment
         isFocused = false
     }
 
@@ -96,7 +104,7 @@ public struct FormFormattedTextField<F>: View where F: ParseableFormatStyle, F.F
                             originalValue = viewModel.value
                         } else {
                             // Entering edit mode: restore alignment
-                            resolvedAlignment = viewModel.alignment.textAlignment
+                            resolvedAlignment = alignment.textAlignment
                             // Exiting edit mode: apply formatting
                             if let parsedValue = try? viewModel.format.parseStrategy.parse(editingText) {
                                 viewModel.value = parsedValue
@@ -105,13 +113,6 @@ public struct FormFormattedTextField<F>: View where F: ParseableFormatStyle, F.F
                                 viewModel.value = originalValue
                                 editingText = viewModel.format.format(viewModel.value)
                             }
-                        }
-                    }
-                }
-                .onChange(of: viewModel.alignment) {
-                    if !isFocused {
-                        withAnimation {
-                            resolvedAlignment = viewModel.alignment.textAlignment
                         }
                     }
                 }
@@ -143,7 +144,7 @@ public struct FormFormattedTextField<F>: View where F: ParseableFormatStyle, F.F
             return false
         }
 
-        switch viewModel.clearValueMode {
+        switch clearValueMode {
         case .never:
             return false
         case .whileEditing:
@@ -189,12 +190,11 @@ public struct FormFormattedTextField<F>: View where F: ParseableFormatStyle, F.F
     @Previewable @State var viewModel = FormattedFieldViewModel(
         value: 123,
         format: .currency(code: "USD"),
-        title: "",
-        alignment: .leading
+        title: ""
     )
 
     Form {
-        FormFormattedTextField(viewModel)
+        FormFormattedTextField(viewModel, alignment: .leading)
     }
 }
 
@@ -203,12 +203,11 @@ public struct FormFormattedTextField<F>: View where F: ParseableFormatStyle, F.F
         value: Double?.none,
         format: OptionalFormat(format: .currency(code: "USD")),
         title: "",
-        placeholder: "234000",
-        alignment: .leading
+        placeholder: "234000"
     )
 
     Form {
-        FormFormattedTextField(viewModel)
+        FormFormattedTextField(viewModel, alignment: .leading)
     }
 }
 
@@ -216,11 +215,10 @@ public struct FormFormattedTextField<F>: View where F: ParseableFormatStyle, F.F
     @Previewable @State var viewModel = FormattedFieldViewModel(
         value: 123,
         format: .currency(code: "USD"),
-        title: "Amount:",
-        clearValueMode: .whileEditing
+        title: "Amount:"
     )
 
     Form {
-        FormFormattedTextField(viewModel)
+        FormFormattedTextField(viewModel, clearValueMode: .whileEditing)
     }
 }

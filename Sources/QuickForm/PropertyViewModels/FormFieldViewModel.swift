@@ -63,10 +63,6 @@ public final class FormFieldViewModel<Property>: ValueEditor, Validatable {
     /// A boolean indicating whether the field is read-only.
     public var isReadOnly: Bool
 
-    public var alignment: ValueAlignment
-    public var clearValueMode: ClearValueMode
-    public var autocapitalizationType: AutocapitalizationType
-
     private var valueChanged: ((Property) -> Void)?
     private let validation: AnyValidationRule<Property>?
     private var validationResult: ValidationResult = .success
@@ -83,18 +79,12 @@ public final class FormFieldViewModel<Property>: ValueEditor, Validatable {
         title: LocalizedStringResource = "",
         placeholder: LocalizedStringResource? = nil,
         isReadOnly: Bool = false,
-        alignment: ValueAlignment = .trailing,
-        clearValueMode: ClearValueMode = .never,
-        autocapitalizationType: AutocapitalizationType = .never,
         validation: AnyValidationRule<Property>? = nil
     ) {
         _value = value
         self.title = title
         self.placeholder = placeholder
         self.isReadOnly = isReadOnly
-        self.alignment = alignment
-        self.clearValueMode = clearValueMode
-        self.autocapitalizationType = autocapitalizationType
         self.validation = validation
         validationResult = validate()
     }

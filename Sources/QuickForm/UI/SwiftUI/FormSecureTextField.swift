@@ -9,14 +9,22 @@ public struct FormSecureTextField: View {
     @Bindable private var viewModel: FormFieldViewModel<String>
     @State private var resolvedAlignment: TextAlignment
     @State private var hasError: Bool
+    let alignment: ValueAlignment
+    let clearValueMode: ClearValueMode
 
     /// Initializes a new `FormOptionalTextField`.
     ///
     /// - Parameter viewModel: The view model that manages the state of this text field.
-    public init(_ viewModel: FormFieldViewModel<String>) {
+    public init(
+        _ viewModel: FormFieldViewModel<String>,
+        alignment: ValueAlignment = .trailing,
+        clearValueMode: ClearValueMode = .never
+    ) {
         self.viewModel = viewModel
+        self.clearValueMode = clearValueMode
+        self.alignment = alignment
         hasError = viewModel.errorMessage != nil
-        resolvedAlignment = viewModel.alignment.textAlignment
+        resolvedAlignment = alignment.textAlignment
         isFocused = false
     }
 
@@ -50,16 +58,9 @@ public struct FormSecureTextField: View {
             }
         }
         .onChange(of: isFocused) {
-            if viewModel.alignment != .leading {
+            if alignment != .leading {
                 withAnimation {
-                    resolvedAlignment = isFocused ? .leading : viewModel.alignment.textAlignment
-                }
-            }
-        }
-        .onChange(of: viewModel.alignment) {
-            if !isFocused {
-                withAnimation {
-                    resolvedAlignment = viewModel.alignment.textAlignment
+                    resolvedAlignment = isFocused ? .leading : alignment.textAlignment
                 }
             }
         }
@@ -84,7 +85,7 @@ public struct FormSecureTextField: View {
             return false
         }
 
-        switch viewModel.clearValueMode {
+        switch clearValueMode {
         case .never:
             return false
         case .whileEditing:

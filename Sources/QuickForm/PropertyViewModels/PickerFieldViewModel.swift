@@ -145,7 +145,6 @@ public final class OptionalPickerFieldViewModel<Property: Hashable & CustomStrin
 
     /// A boolean indicating whether the field is read-only.
     public var isReadOnly: Bool
-    public var clearValueMode: ClearValueMode
     /// The validation rule to apply to the selected value.
     public var validation: AnyValidationRule<Property?>?
 
@@ -165,7 +164,6 @@ public final class OptionalPickerFieldViewModel<Property: Hashable & CustomStrin
         title: LocalizedStringResource = "",
         placeholder: LocalizedStringResource? = nil,
         isReadOnly: Bool = false,
-        clearValueMode: ClearValueMode = .never,
         validation: AnyValidationRule<Property?>? = nil
     ) {
         self.value = value
@@ -173,7 +171,6 @@ public final class OptionalPickerFieldViewModel<Property: Hashable & CustomStrin
         self.title = title
         self.placeholder = placeholder
         self.isReadOnly = isReadOnly
-        self.clearValueMode = clearValueMode
         self.validation = validation
         validationResult = validate()
     }

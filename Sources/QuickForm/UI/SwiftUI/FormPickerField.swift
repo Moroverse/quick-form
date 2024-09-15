@@ -121,6 +121,7 @@ public struct FormOptionalPickerField<Property: Hashable & CustomStringConvertib
     @Bindable private var viewModel: OptionalPickerFieldViewModel<Property>
     @State private var hasError: Bool
     private let pickerStyle: S
+    let clearValueMode: ClearValueMode
     /// Initializes a new `FormOptionalPickerField`.
     ///
     /// - Parameters:
@@ -128,10 +129,12 @@ public struct FormOptionalPickerField<Property: Hashable & CustomStringConvertib
     ///   - pickerStyle: The style to apply to the picker. Defaults to `.menu`.
     public init(
         _ viewModel: OptionalPickerFieldViewModel<Property>,
-        pickerStyle: S = .menu
+        pickerStyle: S = .menu,
+        clearValueMode: ClearValueMode = .never
     ) {
         self.viewModel = viewModel
         self.pickerStyle = pickerStyle
+        self.clearValueMode = clearValueMode
         hasError = viewModel.errorMessage != nil
     }
 
@@ -202,7 +205,7 @@ public struct FormOptionalPickerField<Property: Hashable & CustomStringConvertib
             return false
         }
 
-        switch viewModel.clearValueMode {
+        switch clearValueMode {
         case .never:
             return false
         default:
