@@ -65,6 +65,7 @@ public final class FormFieldViewModel<Property>: ValueEditor, Validatable {
 
     public var alignment: ValueAlignment
     public var clearValueMode: ClearValueMode
+    public var autocapitalizationType: AutocapitalizationType
 
     private var valueChanged: ((Property) -> Void)?
     private let validation: AnyValidationRule<Property>?
@@ -84,6 +85,7 @@ public final class FormFieldViewModel<Property>: ValueEditor, Validatable {
         isReadOnly: Bool = false,
         alignment: ValueAlignment = .trailing,
         clearValueMode: ClearValueMode = .never,
+        autocapitalizationType: AutocapitalizationType = .never,
         validation: AnyValidationRule<Property>? = nil
     ) {
         _value = value
@@ -92,6 +94,7 @@ public final class FormFieldViewModel<Property>: ValueEditor, Validatable {
         self.isReadOnly = isReadOnly
         self.alignment = alignment
         self.clearValueMode = clearValueMode
+        self.autocapitalizationType = autocapitalizationType
         self.validation = validation
         validationResult = validate()
     }

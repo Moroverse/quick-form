@@ -14,6 +14,17 @@ extension ValueAlignment {
     }
 }
 
+extension TextInputAutocapitalization {
+    init(_ type: AutocapitalizationType) {
+        switch type {
+        case .words: self = .words
+        case .sentences: self = .sentences
+        case .never: self = .never
+        case .characters: self = .characters
+        }
+    }
+}
+
 public struct FormTextField: View {
     @FocusState private var isFocused: Bool
     @Bindable private var viewModel: FormFieldViewModel<String>
@@ -38,6 +49,7 @@ public struct FormTextField: View {
                     .focused($isFocused)
                     .multilineTextAlignment(resolvedAlignment)
                     .disabled(viewModel.isReadOnly)
+                    .textInputAutocapitalization(TextInputAutocapitalization(viewModel.autocapitalizationType))
                     .onSubmit {
                         isFocused = false
                     }
