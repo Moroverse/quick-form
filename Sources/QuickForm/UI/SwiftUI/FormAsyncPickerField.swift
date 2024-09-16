@@ -40,24 +40,37 @@ public struct FormAsyncPickerField<Model: RandomAccessCollection, Query, VConten
     public var body: some View {
         VStack(alignment: .leading, spacing: 5) {
             HStack {
-                Button {
-                    isPresented = true
+                NavigationLink {
+                    AsyncPicker(
+                        selectedValue: $viewModel.value,
+                        valuesProvider: viewModel.valuesProvider,
+                        queryBuilder: viewModel.queryBuilder,
+                        content: pickerContent
+                    )
+                    .navigationTitle(String(localized: viewModel.title))
+                    .navigationBarTitleDisplayMode(.inline)
                 } label: {
                     valueContent(viewModel.value)
                 }
-                .popover(isPresented: $isPresented) {
-                    NavigationStack {
-                        AsyncPicker(
-                            selectedValue: $viewModel.value,
-                            valuesProvider: viewModel.valuesProvider,
-                            queryBuilder: viewModel.queryBuilder,
-                            content: pickerContent
-                        )
-                        .navigationTitle(String(localized: viewModel.title))
-                        .navigationBarTitleDisplayMode(.inline)
-                    }
-                    .frame(minWidth: 300, minHeight: 400)
-                }
+
+//                Button {
+//                    isPresented = true
+//                } label: {
+//                    valueContent(viewModel.value)
+//                }
+//                .popover(isPresented: $isPresented) {
+//                    NavigationStack {
+//                        AsyncPicker(
+//                            selectedValue: $viewModel.value,
+//                            valuesProvider: viewModel.valuesProvider,
+//                            queryBuilder: viewModel.queryBuilder,
+//                            content: pickerContent
+//                        )
+//                        .navigationTitle(String(localized: viewModel.title))
+//                        .navigationBarTitleDisplayMode(.inline)
+//                    }
+//                    .frame(minWidth: 300, minHeight: 400)
+//                }
                 if shouldDisplayClearButton {
                     Button {
                         viewModel.value = nil
