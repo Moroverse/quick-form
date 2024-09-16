@@ -8,7 +8,7 @@ import UIKitNavigation
 
 @MainActor
 func initialController() -> UIViewController {
-    return MainViewController(nibName: nil, bundle: nil)
+    MainViewController(nibName: nil, bundle: nil)
 }
 
 @main

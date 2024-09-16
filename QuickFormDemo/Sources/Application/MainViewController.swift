@@ -1,9 +1,6 @@
-//
-//  MainViewController.swift
-//  QuickFormDemo
-//
-//  Created by Daniel Moro on 16.9.24..
-//
+// MainViewController.swift
+// Copyright (c) 2024 Moroverse
+// Created by Daniel Moro on 2024-09-16 05:08 GMT.
 
 import UIKit
 
@@ -25,7 +22,6 @@ let fakePerson = Person(
         state: .unitedStates(.california)
     )
 )
-
 
 class MainViewController: UIViewController, UIAdaptivePresentationControllerDelegate {
     private var didDismiss: ((PersonInfo?) -> Void)?
@@ -57,7 +53,7 @@ class MainViewController: UIViewController, UIAdaptivePresentationControllerDele
     }
 
     @objc private func showFormTapped() {
-        let delegate = PersonEditorDelegate {[weak self] in
+        let delegate = PersonEditorDelegate { [weak self] in
             let warning = WarningOptions.warning()
             self?.presentedForm?.present(warning, animated: true)
         } didTapOnAddTeamMember: { [weak self] completion in
