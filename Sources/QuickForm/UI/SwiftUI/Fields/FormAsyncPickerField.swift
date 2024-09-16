@@ -9,7 +9,8 @@ public struct FormAsyncPickerField<Model: RandomAccessCollection, Query, VConten
     @Bindable private var viewModel: AsyncPickerFieldViewModel<Model, Query>
     @State private var hasError: Bool
     @State private var isPresented = false
-    let clearValueMode: ClearValueMode
+    private let clearValueMode: ClearValueMode
+    private let pickerStyle: AsyncPickerStyleConfiguration
     private let valueContent: (Model.Element?) -> VContent
     private let pickerContent: (Model.Element) -> PContent
     /// Initializes a new `FormOptionalPickerField`.
@@ -20,11 +21,13 @@ public struct FormAsyncPickerField<Model: RandomAccessCollection, Query, VConten
     public init(
         _ viewModel: AsyncPickerFieldViewModel<Model, Query>,
         clearValueMode: ClearValueMode = .never,
+        pickerStyle: AsyncPickerStyleConfiguration = .popover,
         @ViewBuilder valueContent: @escaping (Model.Element?) -> VContent,
         @ViewBuilder pickerContent: @escaping (Model.Element) -> PContent
     ) {
         self.viewModel = viewModel
         self.clearValueMode = clearValueMode
+        self.pickerStyle = pickerStyle
         self.valueContent = valueContent
         self.pickerContent = pickerContent
         hasError = viewModel.errorMessage != nil
@@ -40,37 +43,18 @@ public struct FormAsyncPickerField<Model: RandomAccessCollection, Query, VConten
     public var body: some View {
         VStack(alignment: .leading, spacing: 5) {
             HStack {
-                NavigationLink {
+                AsyncPickerFormField(title: viewModel.title) {
                     AsyncPicker(
                         selectedValue: $viewModel.value,
                         valuesProvider: viewModel.valuesProvider,
                         queryBuilder: viewModel.queryBuilder,
                         content: pickerContent
                     )
-                    .navigationTitle(String(localized: viewModel.title))
-                    .navigationBarTitleDisplayMode(.inline)
                 } label: {
                     valueContent(viewModel.value)
                 }
+                .asyncPickerStyle(pickerStyle)
 
-//                Button {
-//                    isPresented = true
-//                } label: {
-//                    valueContent(viewModel.value)
-//                }
-//                .popover(isPresented: $isPresented) {
-//                    NavigationStack {
-//                        AsyncPicker(
-//                            selectedValue: $viewModel.value,
-//                            valuesProvider: viewModel.valuesProvider,
-//                            queryBuilder: viewModel.queryBuilder,
-//                            content: pickerContent
-//                        )
-//                        .navigationTitle(String(localized: viewModel.title))
-//                        .navigationBarTitleDisplayMode(.inline)
-//                    }
-//                    .frame(minWidth: 300, minHeight: 400)
-//                }
                 if shouldDisplayClearButton {
                     Button {
                         viewModel.value = nil

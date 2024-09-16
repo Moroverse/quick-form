@@ -20,7 +20,11 @@ struct PersonEditView: View {
     var body: some View {
         Form {
             HStack(alignment: .center) {
-                FormAsyncPickerField(quickForm.avatar, clearValueMode: .always) { selection in
+                FormAsyncPickerField(
+                    quickForm.avatar,
+                    clearValueMode: .always,
+                    pickerStyle: .navigation
+                ) { selection in
                     if let selection {
                         Image(selection.imageName)
                             .resizable()
