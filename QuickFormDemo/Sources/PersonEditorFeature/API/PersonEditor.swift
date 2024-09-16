@@ -23,6 +23,17 @@ enum PersonEditor {
         viewModel.addCustomValidationRule(AgeValidationRule())
         viewModel.addCustomValidationRule(PasswordMatchRule())
         let view = PersonEditView(quickForm: viewModel, delegate: delegate)
-        return UIHostingController(rootView: view)
+        let wrappedView = Wrapped { view }
+        let hostingController = UIHostingController(rootView: wrappedView)
+        return hostingController
+    }
+}
+
+struct Wrapped<Content: View>: View {
+    let content: () -> Content
+    var body: some View {
+        NavigationStack {
+            content()
+        }
     }
 }
