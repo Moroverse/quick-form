@@ -34,9 +34,15 @@ public struct QuickFormMacro: MemberMacro, ExtensionMacro {
             else { return nil }
 
             guard case let .argumentList(arguments) = propertyEditorAttr.as(AttributeSyntax.self)?.arguments,
-                  let keyPathArg = arguments.first?.expression.as(KeyPathExprSyntax.self),
-                  let keyPath = keyPathArg.components.last?.component.as(KeyPathPropertyComponentSyntax.self)?.declName.baseName.text
+                  let keyPathArg = arguments.first?.expression.as(KeyPathExprSyntax.self)
             else { return nil }
+            let keyPaths = keyPathArg.components.compactMap {
+                $0.component.as(KeyPathPropertyComponentSyntax.self)?.declName.baseName.text
+            }
+            guard keyPaths.isEmpty == false else {
+                return nil
+            }
+            let keyPath = keyPaths.joined(separator: ".")
 
             return (identifier, "\\\(modelType).\(keyPath)")
         }
