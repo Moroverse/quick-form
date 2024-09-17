@@ -31,7 +31,13 @@ class MainViewController: UIViewController, UIAdaptivePresentationControllerDele
         let button = UIButton(type: .system)
         button.setTitle("Show Form", for: .normal)
         button.addTarget(self, action: #selector(showFormTapped), for: .touchUpInside)
-        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+
+    private lazy var showPrescriptionButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("Show Presription", for: .normal)
+        button.addTarget(self, action: #selector(showPrescriptionTapped), for: .touchUpInside)
         return button
     }()
 
@@ -44,11 +50,15 @@ class MainViewController: UIViewController, UIAdaptivePresentationControllerDele
     private func setupUI() {
         view.backgroundColor = .white
 
-        view.addSubview(showFormButton)
+        let stackView = UIStackView(arrangedSubviews: [showPrescriptionButton, showFormButton])
+        stackView.axis = .vertical
+        stackView.spacing = 16
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(stackView)
 
         NSLayoutConstraint.activate([
-            showFormButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            showFormButton.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+            stackView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            stackView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
         ])
     }
 
@@ -74,5 +84,11 @@ class MainViewController: UIViewController, UIAdaptivePresentationControllerDele
 
     func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
         didDismiss?(nil)
+    }
+
+    @objc private func showPrescriptionTapped() {
+        let editor = PrescriptionEditor.prescriptionEditor(for: fakePrescription)
+        editor.modalPresentationStyle = .pageSheet
+        present(editor, animated: true)
     }
 }
