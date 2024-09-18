@@ -111,7 +111,7 @@ public struct FormOptionalTextField: View {
             Button {
                 viewModel.value = nil
             } label: {
-                Image(systemName: "xmark.circle.fill")
+                Image(systemName: "xmark.circle")
             }
             .buttonStyle(.borderless)
         }

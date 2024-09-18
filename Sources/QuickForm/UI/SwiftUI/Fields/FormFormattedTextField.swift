@@ -126,7 +126,7 @@ public struct FormFormattedTextField<F>: View where F: ParseableFormatStyle, F.F
                     Button {
                         editingText = ""
                     } label: {
-                        Image(systemName: "xmark.circle.fill")
+                        Image(systemName: "xmark.circle")
                     }
                     .buttonStyle(.borderless)
                 }

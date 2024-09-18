@@ -59,7 +59,7 @@ public struct FormAsyncPickerField<Model: RandomAccessCollection, Query, VConten
                     Button {
                         viewModel.value = nil
                     } label: {
-                        Image(systemName: "xmark.circle.fill")
+                        Image(systemName: "xmark.circle")
                     }
                     .buttonStyle(.borderless)
                 }

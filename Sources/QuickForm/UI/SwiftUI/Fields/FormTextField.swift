@@ -67,7 +67,7 @@ public struct FormTextField: View {
             Button {
                 viewModel.value = ""
             } label: {
-                Image(systemName: "xmark.circle.fill")
+                Image(systemName: "xmark.circle")
             }
             .buttonStyle(.borderless)
         }
