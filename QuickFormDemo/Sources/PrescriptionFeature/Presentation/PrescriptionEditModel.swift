@@ -19,10 +19,10 @@ final class PrescriptionEditModel: Validatable {
     ], title: "Assessments")
 
     @PropertyEditor(keyPath: \Prescription.medication.name)
-    var medicationName = FormFieldViewModel(
-        value: "",
-        title: "Medication Name:",
-        placeholder: "Aspirin",
-        validation: .combined(.notEmpty)
+    var medicationName = ModelTransformer(
+        original: AsyncPickerFieldViewModel(value: MedicationInfo?.none, valuesProvider: MedicationFetcher.shared.fetchMedication, queryBuilder: {$0}),
+        new: FormFieldViewModel(value: "", title: "Name:", placeholder: "Aspirin", isReadOnly: true),
+        mapFrom: { $0?.name ?? "" },
+        mapTo: { _ in MedicationInfo?.none }
     )
 }

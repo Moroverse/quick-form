@@ -14,7 +14,13 @@ struct PrescriptionEditForm: View {
     var body: some View {
         Form {
             FormMultiPickerSection(quickForm.problems)
-            FormTextField(quickForm.medicationName)
+            Section("Medication") {
+                FormAsyncPickerField(quickForm.medicationName.original, clearValueMode: .always, pickerStyle: .navigation) { _ in
+                    FormTextField(quickForm.medicationName.new)
+                } pickerContent: { info in
+                    Text(info.name)
+                }
+            }
         }
 
     }

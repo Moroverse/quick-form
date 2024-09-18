@@ -33,7 +33,7 @@ extension Assessment: Hashable, Equatable {
 }
 
 //Mocks
-enum MedicationStrngth: String, Equatable {
+enum MedicationStrength: String, Equatable {
     case m500mg = "500 mg"
     case m1000mg = "1000 mg"
     case v1ml = "1 ml"
@@ -61,11 +61,11 @@ enum MedicationTakeRoute: String, Equatable {
 final class Medication: Identifiable {
     var id: Int
     var name: String
-    var strength: MedicationStrngth
+    var strength: MedicationStrength
     var dosageForm: DosageForm
     var route: MedicationTakeRoute
 
-    init(id: Int, name: String, strength: MedicationStrngth, dosageForm: DosageForm, route: MedicationTakeRoute) {
+    init(id: Int, name: String, strength: MedicationStrength, dosageForm: DosageForm, route: MedicationTakeRoute) {
         self.id = id
         self.name = name
         self.strength = strength
