@@ -52,17 +52,17 @@ public struct FormAsyncPickerField<Model: RandomAccessCollection, Query, VConten
                     )
                 } label: {
                     valueContent(viewModel.value)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    if shouldDisplayClearButton {
+                        Button {
+                            viewModel.value = nil
+                        } label: {
+                            Image(systemName: "xmark.circle")
+                        }
+                        .buttonStyle(.borderless)
+                    }
                 }
                 .asyncPickerStyle(pickerStyle)
-
-                if shouldDisplayClearButton {
-                    Button {
-                        viewModel.value = nil
-                    } label: {
-                        Image(systemName: "xmark.circle")
-                    }
-                    .buttonStyle(.borderless)
-                }
             }
 
             if hasError {
