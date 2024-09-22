@@ -1,9 +1,8 @@
-// FormCollectionSection.swift
+// FormMultiPickerSection.swift
 // Copyright (c) 2024 Moroverse
-// Created by Daniel Moro on 2024-09-08 13:42 GMT.
+// Created by Daniel Moro on 2024-09-17 18:13 GMT.
 
 import SwiftUI
-
 
 public struct FormMultiPickerSection<Property: Hashable & CustomStringConvertible>: View {
     @Bindable private var viewModel: MultiPickerFieldViewModel<Property>
@@ -44,12 +43,12 @@ enum Animal: CustomStringConvertible, Hashable {
     case cat
     case dog
     case bird
-    
+
     var description: String {
         switch self {
-        case .cat: return "Cat"
-        case .dog: return "Dog"
-        case .bird: return "Bird"
+        case .cat: "Cat"
+        case .dog: "Dog"
+        case .bird: "Bird"
         }
     }
 }

@@ -47,6 +47,17 @@ public struct QuickFormMacro: MemberMacro, ExtensionMacro {
             return (identifier, "\\\(modelType).\(keyPath)")
         }
 
+        // Find method annotated with @OnInit
+        let postInitMethod = classDecl.memberBlock.members
+            .compactMap { $0.decl.as(FunctionDeclSyntax.self) }
+            .first { function in
+                function.attributes.contains { attr in
+                    attr.as(AttributeSyntax.self)?.attributeName.as(IdentifierTypeSyntax.self)?.name.text == "PostInit"
+                }
+            }
+
+        let onInitCall = postInitMethod.map { "\($0.name)()" } ?? ""
+
         let conformsToValidatable = classDecl.inheritanceClause?.inheritedTypes.contains { type in
             type.type.as(IdentifierTypeSyntax.self)?.name.text == "Validatable"
         } ?? false
@@ -94,6 +105,7 @@ public struct QuickFormMacro: MemberMacro, ExtensionMacro {
             \(propertyEditors.map { identifier, keyPath in
                 "track(keyPath: \(keyPath), editor: \(identifier))"
             }.joined(separator: "\n"))
+            \(onInitCall)
         }
         """
         declarations.append(DeclSyntax(stringLiteral: initializer))
@@ -192,7 +204,7 @@ public struct QuickFormMacro: MemberMacro, ExtensionMacro {
                     if let self = self {
                         let currentValue = self.model[keyPath: keyPath]
                         let newValue = editor.value
-            
+
                         let shouldUpdate: Bool
                         if let currentEquatable = currentValue as? any Equatable,
                         let newEquatable = newValue as? any Equatable,
@@ -201,11 +213,11 @@ public struct QuickFormMacro: MemberMacro, ExtensionMacro {
                         } else {
                             shouldUpdate = true
                         }
-            
+
                         if shouldUpdate {
                             self.model[keyPath: keyPath] = newValue
                         }
-            
+
                         self.validationResult = self.validate()
                     }
                 }

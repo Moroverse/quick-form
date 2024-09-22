@@ -50,8 +50,8 @@ class AddressEditModel: Validatable {
         placeholder: "State"
     )
 
-    convenience init(address: Address) {
-        self.init(model: address)
+    @PostiInit
+    func configure() {
         country.onValueChanged { [weak self] newValue in
             self?.state.allValues = newValue.states
             self?.state.value = nil

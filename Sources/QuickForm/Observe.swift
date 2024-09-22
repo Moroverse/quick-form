@@ -17,8 +17,8 @@ public func observe(apply: @escaping @Sendable () -> Void) {
     observeAndReapply()
 }
 
-public func isEqual<A: Equatable, B: Equatable>(_ a: A, _ b: B) -> Bool {
-    if let b = b as? A, b == a {
+public func isEqual<A: Equatable>(_ lhs: A, _ rhs: some Equatable) -> Bool {
+    if let rhs = rhs as? A, lhs == lhs {
         return true
     }
 

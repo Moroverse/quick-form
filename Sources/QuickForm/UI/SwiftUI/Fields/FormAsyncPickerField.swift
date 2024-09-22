@@ -2,10 +2,10 @@
 // Copyright (c) 2024 Moroverse
 // Created by Daniel Moro on 2024-09-15 18:18 GMT.
 
-import QuickForm
 import SwiftUI
 
-public struct FormAsyncPickerField<Model: RandomAccessCollection, Query, VContent: View, PContent: View>: View where Model: Sendable, Model.Element: Identifiable, Query: Sendable & Equatable {
+public struct FormAsyncPickerField<Model: RandomAccessCollection, Query, VContent: View, PContent: View>: View
+    where Model: Sendable, Model.Element: Identifiable, Query: Sendable & Equatable {
     @Bindable private var viewModel: AsyncPickerFieldViewModel<Model, Query>
     @State private var hasError: Bool
     @State private var isPresented = false

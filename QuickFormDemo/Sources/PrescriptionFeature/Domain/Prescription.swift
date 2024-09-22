@@ -1,3 +1,7 @@
+// Prescription.swift
+// Copyright (c) 2024 Moroverse
+// Created by Daniel Moro on 2024-09-17 18:13 GMT.
+
 //
 //  Prescription.swift
 //  QuickFormDemo
@@ -74,7 +78,7 @@ final class Medication: Identifiable {
     }
 }
 
-final class MedicationBuilder {
+final class MedicationComponents {
     struct SubstancePart: Identifiable, Equatable {
         let id: Int
         let substance: String
@@ -98,49 +102,15 @@ final class MedicationBuilder {
     var id: Int?
     var level: Int = 0
 
-    var substance: SubstancePart? {
-        didSet {
-            if let substance {
-                id = substance.id
-                level = 1
-            }
-            route = nil
-        }
-    }
+    var substance: SubstancePart?
+    var strength: MedicationStrengthPart?
+    var dosageForm: DosageFormPart?
+    var route: MedicationTakeRoutePart?
 
-    var strength: MedicationStrengthPart? {
-        didSet {
-            if let strength {
-                id = strength.id
-                level = 8
-            }
-        }
-    }
-
-    var dosageForm: DosageFormPart? {
-        didSet {
-            if let dosageForm {
-                id = dosageForm.id
-                level = 4
-            }
-            strength = nil
-        }
-    }
-
-    var route: MedicationTakeRoutePart? {
-        didSet {
-            if let route {
-                id = route.id
-                level = 2
-            }
-            dosageForm = nil
-        }
-    }
-
-    func build() -> Medication? {
-        guard let id, let substance, let strength, let dosageForm, let route else { return nil }
-        return Medication(id: id, name: substance.substance, strength: strength.strength, dosageForm: dosageForm.form, route: route.route)
-    }
+//    func build() -> Medication? {
+//        guard let id, let substance, let strength, let dosageForm, let route else { return nil }
+//        return Medication(id: id, name: substance.substance, strength: strength.strength, dosageForm: dosageForm.form, route: route.route)
+//    }
 }
 
 class UnitDose: Unit {
@@ -150,10 +120,9 @@ class UnitDose: Unit {
     static let application = UnitDose(symbol: "application")
 }
 
-@Observable
 final class Prescription {
     var assessments: Set<Assessment>
-    var medication: MedicationBuilder
+    var medication: MedicationComponents
     var take: Measurement<UnitDose>
     var frequency: MedicationFrequency
     var dispense: String
@@ -162,7 +131,7 @@ final class Prescription {
 
     init(assessments: Set<Assessment>, take: Measurement<UnitDose>, frequency: MedicationFrequency, dispense: String, duration: Measurement<UnitDuration>, startDate: Date) {
         self.assessments = assessments
-        medication = MedicationBuilder()
+        medication = MedicationComponents()
         self.take = take
         self.frequency = frequency
         self.dispense = dispense

@@ -4,7 +4,8 @@
 
 import SwiftUI
 
-struct AsyncPicker<Model: RandomAccessCollection, Query, Content>: View where Model: Sendable, Model.Element: Identifiable, Query: Sendable & Equatable, Content: View {
+struct AsyncPicker<Model: RandomAccessCollection, Query, Content>: View
+    where Model: Sendable, Model.Element: Identifiable, Query: Sendable & Equatable, Content: View {
     private let valuesProvider: (Query) async throws -> Model
     private let queryBuilder: (String) -> Query
     private let content: (Model.Element) -> Content
@@ -45,7 +46,11 @@ struct AsyncPicker<Model: RandomAccessCollection, Query, Content>: View where Mo
                 ContentUnavailableView.search
 
             case let .error(error):
-                ContentUnavailableView("Error", image: "", description: Text("Error loading content: \(error.localizedDescription)"))
+                ContentUnavailableView(
+                    "Error",
+                    image: "",
+                    description: Text("Error loading content: \(error.localizedDescription)")
+                )
             }
         }
         .searchable(text: $searchText)
@@ -71,8 +76,8 @@ struct AsyncPicker<Model: RandomAccessCollection, Query, Content>: View where Mo
                 do {
                     let model = try await valuesProvider(query)
                     self.model = .loaded(model)
-                } catch _ as CancellationError {}
-                catch {
+                } catch _ as CancellationError {
+                } catch {
                     model = .error(error)
                 }
             }
@@ -102,20 +107,33 @@ struct Weekday: Identifiable, Hashable {
 
 #Preview {
     NavigationStack {
-        AsyncPicker(selectedValue: .constant(nil), valuesProvider: { query in
-            let weekdays = [Weekday(id: 1, name: "Monday"), Weekday(id: 2, name: "Tuesday"), Weekday(id: 3, name: "Wednesday"), Weekday(id: 4, name: "Thursday"), Weekday(id: 5, name: "Friday"), Weekday(id: 6, name: "Saturday"), Weekday(id: 7, name: "Sunday")]
-            try await Task.sleep(for: .seconds(3))
-            if query.isEmpty {
-                return weekdays
-            } else {
-                return weekdays.filter {
-                    $0.name.lowercased().contains(query.lowercased())
+        AsyncPicker(
+            selectedValue: .constant(nil),
+            valuesProvider: { query in
+                let weekdays = [
+                    Weekday(id: 1, name: "Monday"),
+                    Weekday(id: 2, name: "Tuesday"),
+                    Weekday(id: 3, name: "Wednesday"),
+                    Weekday(id: 4, name: "Thursday"),
+                    Weekday(id: 5, name: "Friday"),
+                    Weekday(id: 6, name: "Saturday"),
+                    Weekday(id: 7, name: "Sunday")
+                ]
+                try await Task.sleep(for: .seconds(3))
+                if query.isEmpty {
+                    return weekdays
+                } else {
+                    return weekdays.filter {
+                        $0.name.lowercased().contains(query.lowercased())
+                    }
                 }
+            },
+            queryBuilder: { text in
+                text
+            },
+            content: { item in
+                Text(item.name)
             }
-        }, queryBuilder: { text in
-            text
-        }, content: { item in
-            Text(item.name)
-        })
+        )
     }
 }

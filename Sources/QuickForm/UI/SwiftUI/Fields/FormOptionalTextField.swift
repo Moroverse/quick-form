@@ -79,14 +79,19 @@ public struct FormOptionalTextField: View {
                     Text(viewModel.title)
                         .font(.headline)
                 }
-                TextField(String(localized: viewModel.placeholder ?? ""), text: $viewModel.value.unwrapped(defaultValue: ""))
-                    .textInputAutocapitalization(autocapitalizationType)
-                    .focused($isFocused)
-                    .multilineTextAlignment(resolvedAlignment)
-                    .disabled(viewModel.isReadOnly)
-                    .onSubmit {
-                        isFocused = false
-                    }
+                TextField(
+                    String(
+                        localized: viewModel.placeholder ?? ""
+                    ),
+                    text: $viewModel.value.unwrapped(defaultValue: "")
+                )
+                .textInputAutocapitalization(autocapitalizationType)
+                .focused($isFocused)
+                .multilineTextAlignment(resolvedAlignment)
+                .disabled(viewModel.isReadOnly)
+                .onSubmit {
+                    isFocused = false
+                }
             }
             if hasError {
                 Text(viewModel.errorMessage ?? "Invalid input")
@@ -125,10 +130,13 @@ public struct FormOptionalTextField: View {
         switch clearValueMode {
         case .never:
             return false
+
         case .whileEditing:
             return isFocused == true
+
         case .unlessEditing:
             return isFocused == false
+
         case .always:
             return true
         }

@@ -77,13 +77,18 @@ struct AsyncPickerFormField<Label: View, Content: View>: View {
             switch style {
             case .navigation:
                 AsyncPickerNavigationStyle(title: title, content: content, label: label)
+
             case .popover:
                 AsyncPickerPopoverStyle(title: title, content: content, label: label)
             }
         }
     }
 
-    init(title: LocalizedStringResource, @ViewBuilder content: @escaping () -> Content, @ViewBuilder label: @escaping () -> Label) {
+    init(
+        title: LocalizedStringResource,
+        @ViewBuilder content: @escaping () -> Content,
+        @ViewBuilder label: @escaping () -> Label
+    ) {
         self.title = title
         self.content = content
         self.label = label

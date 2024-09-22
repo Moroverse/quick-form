@@ -1,12 +1,9 @@
-//
-//  MedicationFrequencyPicker.swift
-//  QuickFormDemo
-//
-//  Created by Daniel Moro on 16.9.24..
-//
+// MedicationFrequencyPicker.swift
+// Copyright (c) 2024 Moroverse
+// Created by Daniel Moro on 2024-09-17 04:19 GMT.
 
-import SwiftUI
 import QuickForm
+import SwiftUI
 
 struct MedicationFrequencyPicker: View {
     @Bindable private var viewModel: FormFieldViewModel<MedicationFrequency>
@@ -71,10 +68,10 @@ struct MedicationFrequencyPicker: View {
 
     init(viewModel: FormFieldViewModel<MedicationFrequency>) {
         self.viewModel = viewModel
-        self.simpleFrequency = viewModel.value.simpleFrequency
-        self.times = viewModel.value.interval ?? 1
-        self.period = viewModel.value.timePeriod ?? .hour
-        self.schedule = .BID
+        simpleFrequency = viewModel.value.simpleFrequency
+        times = viewModel.value.interval ?? 1
+        period = viewModel.value.timePeriod ?? .hour
+        schedule = .BID
     }
 }
 
@@ -97,7 +94,7 @@ struct EveryPeriodPicker: View {
         HStack {
             Text("Every")
             Picker("Times", selection: $times) {
-                ForEach(1..<100) { number in
+                ForEach(1 ..< 100) { number in
                     Text(number.formatted())
                         .tag(number)
                 }
@@ -119,7 +116,7 @@ struct TimesPerPeriodPicker: View {
     var body: some View {
         HStack {
             Picker("Times", selection: $times) {
-                ForEach(1..<100) { number in
+                ForEach(1 ..< 100) { number in
                     Text(number.formatted())
                         .tag(number)
                 }
@@ -132,7 +129,6 @@ struct TimesPerPeriodPicker: View {
                 }
             }
             .pickerStyle(.wheel)
-
         }
     }
 }

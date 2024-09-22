@@ -12,6 +12,7 @@ identifier_name:
     - id
     - URL
     - vc
+    - to
 
 cyclomatic_complexity:
   ignores_case_statements: true

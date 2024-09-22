@@ -36,7 +36,8 @@
 /// }
 ///
 /// let model = PostFormModel(model: PostForm())
-/// model.title.value = "This is a very long title that exceeds the maximum allowed length for a post title in our system"
+/// model.title.value = "This is a very long title that exceeds the maximum
+/// allowed length for a post title in our system"
 /// let titleResult = model.title.validate()
 /// // titleResult will be .failure("This field must not exceed 100 characters")
 ///

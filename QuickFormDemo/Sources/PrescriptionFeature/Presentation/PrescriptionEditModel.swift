@@ -1,17 +1,13 @@
-//
-//  PresriptionForm.swift
-//  QuickFormDemo
-//
-//  Created by Daniel Moro on 17.9.24..
-//
+// PrescriptionEditModel.swift
+// Copyright (c) 2024 Moroverse
+// Created by Daniel Moro on 2024-09-17 18:13 GMT.
 
-@preconcurrency import QuickForm
-import Observation
 import Foundation
+import Observation
+@preconcurrency import QuickForm
 
 @QuickForm(Prescription.self)
 final class PrescriptionEditModel: Validatable {
-
     @PropertyEditor(keyPath: \Prescription.assessments)
     var problems = MultiPickerFieldViewModel(value: [], allValues: [
         Assessment(name: "BCC", id: 1),
@@ -19,8 +15,8 @@ final class PrescriptionEditModel: Validatable {
     ], title: "Assessments")
 
     @PropertyEditor(keyPath: \Prescription.medication.substance)
-    var substance = AsyncPickerFieldViewModel(value: MedicationBuilder.SubstancePart?.none, valuesProvider: SubstanceFetcher.shared.fetchSubstance, queryBuilder: {$0})
+    var substance = AsyncPickerFieldViewModel(value: MedicationComponents.SubstancePart?.none, valuesProvider: SubstanceFetcher.shared.fetchSubstance, queryBuilder: { $0 })
 
     @PropertyEditor(keyPath: \Prescription.medication.route)
-    var route = AsyncPickerFieldViewModel(value: MedicationBuilder.MedicationTakeRoutePart?.none, valuesProvider: RouteFetcher.shared.fetchRoute, queryBuilder: { _ in 2 })
+    var route = AsyncPickerFieldViewModel(value: MedicationComponents.MedicationTakeRoutePart?.none, valuesProvider: RouteFetcher.shared.fetchRoute, queryBuilder: { _ in 2 })
 }

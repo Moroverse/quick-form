@@ -64,9 +64,18 @@ public struct FormDatePickerField<S: DatePickerStyle>: View {
     public var body: some View {
         stylized {
             if let range {
-                DatePicker(String(localized: viewModel.title), selection: $viewModel.value, in: range, displayedComponents: displayedComponents)
+                DatePicker(
+                    String(localized: viewModel.title),
+                    selection: $viewModel.value,
+                    in: range,
+                    displayedComponents: displayedComponents
+                )
             } else {
-                DatePicker(String(localized: viewModel.title), selection: $viewModel.value, displayedComponents: displayedComponents)
+                DatePicker(
+                    String(localized: viewModel.title),
+                    selection: $viewModel.value,
+                    displayedComponents: displayedComponents
+                )
             }
         }
     }

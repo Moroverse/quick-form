@@ -44,7 +44,8 @@ import Foundation
 ///     )
 /// }
 /// ```
-public struct OptionalFormat<Value, F>: ParseableFormatStyle where F: ParseableFormatStyle, F.FormatInput == Value, F.FormatOutput == String {
+public struct OptionalFormat<Value, F>: ParseableFormatStyle
+    where F: ParseableFormatStyle, F.FormatInput == Value, F.FormatOutput == String {
     private let format: F
     /// The parse strategy for the optional format.
     public var parseStrategy: OptionalFormatStrategy<Value, F.Strategy> {
@@ -72,7 +73,8 @@ public struct OptionalFormat<Value, F>: ParseableFormatStyle where F: ParseableF
 }
 
 /// A parse strategy for optional values that wraps another parse strategy.
-public struct OptionalFormatStrategy<Value, S>: ParseStrategy where S: ParseStrategy, S.ParseInput == String, S.ParseOutput == Value {
+public struct OptionalFormatStrategy<Value, S>: ParseStrategy
+    where S: ParseStrategy, S.ParseInput == String, S.ParseOutput == Value {
     private let strategy: S
     /// Parses the given string into an optional value.
     ///

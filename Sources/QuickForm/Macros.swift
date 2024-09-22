@@ -19,7 +19,8 @@ import Observation
 ///
 /// - Parameter type: The type of the data model that this form represents.
 ///
-/// - Note: The class decorated with `@QuickForm` should also conform to `Validatable` if you want to use the built-in validation features.
+/// - Note: The class decorated with `@QuickForm` should also conform to `Validatable`
+/// if you want to use the built-in validation features.
 ///
 /// ## Example Usage:
 ///
@@ -121,3 +122,6 @@ public macro QuickForm<T>(_ type: T.Type) = #externalMacro(module: "QuickFormMac
 @attached(accessor, names: named(init), named(get), named(set), named(_modify))
 @attached(peer, names: prefixed(`_`))
 public macro PropertyEditor(keyPath: Any) = #externalMacro(module: "QuickFormMacros", type: "PropertyEditorMacro")
+
+@attached(peer)
+public macro PostiInit() = #externalMacro(module: "QuickFormMacros", type: "PostInitMacro")

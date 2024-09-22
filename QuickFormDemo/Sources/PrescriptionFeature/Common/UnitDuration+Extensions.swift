@@ -1,9 +1,6 @@
-//
-//  UnitDuration+Extensions.swift
-//  QuickFormDemo
-//
-//  Created by Daniel Moro on 17.9.24..
-//
+// UnitDuration+Extensions.swift
+// Copyright (c) 2024 Moroverse
+// Created by Daniel Moro on 2024-09-17 18:13 GMT.
 
 import Foundation
 import QuickForm

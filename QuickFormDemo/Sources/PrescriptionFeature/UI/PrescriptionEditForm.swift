@@ -1,9 +1,6 @@
-//
-//  PrescriptionEditForm.swift
-//  QuickFormDemo
-//
-//  Created by Daniel Moro on 17.9.24..
-//
+// PrescriptionEditForm.swift
+// Copyright (c) 2024 Moroverse
+// Created by Daniel Moro on 2024-09-17 18:13 GMT.
 
 import QuickForm
 import SwiftUI
@@ -36,10 +33,8 @@ struct PrescriptionEditForm: View {
                 } pickerContent: { routePart in
                     Text(routePart.route.rawValue)
                 }
-
             }
         }
-
     }
 
     init(quickForm: PrescriptionEditModel) {
@@ -62,4 +57,3 @@ struct PrescriptionEditForm_Previews: PreviewProvider {
         }
     }
 }
-

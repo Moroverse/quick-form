@@ -134,6 +134,7 @@ public struct FormOptionalPickerField<Property: Hashable & CustomStringConvertib
         switch clearValueMode {
         case .never:
             return false
+
         default:
             return viewModel.value != nil
         }

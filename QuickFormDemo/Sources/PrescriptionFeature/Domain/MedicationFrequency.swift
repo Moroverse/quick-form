@@ -1,10 +1,6 @@
-//
-//  MedicationFrequency.swift
-//  QuickFormDemo
-//
-//  Created by Daniel Moro on 17.9.24..
-//
-
+// MedicationFrequency.swift
+// Copyright (c) 2024 Moroverse
+// Created by Daniel Moro on 2024-09-17 18:13 GMT.
 
 enum MedicationFrequency: Hashable {
     case timesPerPeriod(times: Int, period: TimePeriod)

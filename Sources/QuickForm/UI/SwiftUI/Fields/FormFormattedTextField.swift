@@ -147,10 +147,13 @@ public struct FormFormattedTextField<F>: View where F: ParseableFormatStyle, F.F
         switch clearValueMode {
         case .never:
             return false
+
         case .whileEditing:
             return isFocused == true
+
         case .unlessEditing:
             return isFocused == false
+
         case .always:
             return true
         }

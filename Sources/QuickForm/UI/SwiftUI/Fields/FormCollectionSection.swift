@@ -97,7 +97,10 @@ public struct FormCollectionSection<Property: Identifiable, Content: View>: View
     /// - Parameters:
     ///   - viewModel: The view model that manages the state of this collection section.
     ///   - content: A closure that returns the view to display for each item in the collection.
-    public init(_ viewModel: FormCollectionViewModel<Property>, content: @escaping @autoclosure () -> (Property) -> Content) {
+    public init(
+        _ viewModel: FormCollectionViewModel<Property>,
+        content: @escaping @autoclosure () -> (Property) -> Content
+    ) {
         self.viewModel = viewModel
         self.content = content()
     }
@@ -109,7 +112,8 @@ public extension FormCollectionSection {
     /// Use this method to customize the behavior of the collection view model, such as
     /// setting up insertion, selection, or change handling logic.
     ///
-    /// - Parameter configuration: A closure that takes a `FormCollectionViewModel<Property>` and performs configuration.
+    /// - Parameter configuration: A closure that takes a `FormCollectionViewModel<Property>`
+    /// and performs configuration.
     /// - Returns: The modified `FormCollectionSection` instance.
     func configure(_ configuration: @escaping (FormCollectionViewModel<Property>) -> Void) -> Self {
         configuration(viewModel)
