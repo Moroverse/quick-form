@@ -20,8 +20,6 @@ enum PersonEditor {
     @MainActor
     static func personEditor(for person: Person, delegate: PersonEditorDelegate?) -> UIViewController {
         let viewModel = PersonEditModel(model: person)
-        viewModel.addCustomValidationRule(AgeValidationRule())
-        viewModel.addCustomValidationRule(PasswordMatchRule())
         let view = PersonEditView(quickForm: viewModel, delegate: delegate)
         let wrappedView = Wrapped { view }
         let hostingController = UIHostingController(rootView: wrappedView)

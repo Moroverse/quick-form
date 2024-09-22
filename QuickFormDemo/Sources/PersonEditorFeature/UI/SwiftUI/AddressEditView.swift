@@ -44,7 +44,7 @@ struct AddressEditView: View {
 struct AddressEditView_Previews: PreviewProvider {
     struct PreviewWrapper: View {
         @State var form = AddressEditModel(
-            address: Address(
+            model: Address(
                 line1: "",
                 line2: nil,
                 city: "Belgrade",

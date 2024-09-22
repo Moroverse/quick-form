@@ -64,7 +64,7 @@ class PersonEditModel: Validatable {
 
     @PropertyEditor(keyPath: \Person.address)
     // 4. Custom view models using ValueEditor Protocol
-    var address = AddressEditModel(address: .init(
+    var address = AddressEditModel(model: .init(
         line1: "",
         city: "",
         zipCode: "",
@@ -111,5 +111,11 @@ class PersonEditModel: Validatable {
     // 5. decorations in the class
     var personNameComponents: PersonNameComponents {
         PersonNameComponents(givenName: firstName.value, familyName: lastName.value)
+    }
+
+    @PostInit
+    func configure() {
+        addCustomValidationRule(AgeValidationRule())
+        addCustomValidationRule(PasswordMatchRule())
     }
 }
