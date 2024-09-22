@@ -29,6 +29,7 @@ public final class AsyncPickerFieldViewModel<Model: Collection, Query>:
     /// The currently selected value, which can be nil.
     public var value: Model.Element? {
         didSet {
+            valueChanged?(value)
             validationResult = validate()
         }
     }
@@ -39,6 +40,7 @@ public final class AsyncPickerFieldViewModel<Model: Collection, Query>:
     public var validation: AnyValidationRule<Model.Element?>?
 
     private var validationResult: ValidationResult = .success
+    private var valueChanged: ((Model.Element?) -> Void)?
 
     /// Initializes a new instance of `OptionalPickerFieldViewModel`.
     ///
@@ -83,5 +85,15 @@ public final class AsyncPickerFieldViewModel<Model: Collection, Query>:
         } catch {
             allValues = .error(error)
         }
+    }
+
+    /// Sets a closure to be called when the value changes.
+    ///
+    /// - Parameter change: A closure that takes the new value as its parameter.
+    /// - Returns: The `FormattedFieldViewModel` instance for method chaining.
+    @discardableResult
+    public func onValueChanged(_ change: @escaping (Model.Element?) -> Void) -> Self {
+        valueChanged = change
+        return self
     }
 }
