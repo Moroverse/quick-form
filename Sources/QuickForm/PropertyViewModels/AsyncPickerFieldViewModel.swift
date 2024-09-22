@@ -23,7 +23,7 @@ public final class AsyncPickerFieldViewModel<Model: Collection, Query>:
     @ObservationIgnored
     public var valuesProvider: (Query) async throws -> Model
     @ObservationIgnored
-    public var queryBuilder: (String) -> Query
+    public var queryBuilder: (String?) -> Query
     /// An array of all available values for the picker.
     public var allValues: ModelState<Model>
     /// The currently selected value, which can be nil.
@@ -57,7 +57,7 @@ public final class AsyncPickerFieldViewModel<Model: Collection, Query>:
         isReadOnly: Bool = false,
         validation: AnyValidationRule<Model.Element?>? = nil,
         valuesProvider: @escaping (Query) async throws -> Model,
-        queryBuilder: @escaping (String) -> Query
+        queryBuilder: @escaping (String?) -> Query
     ) {
         self.value = value
         self.valuesProvider = valuesProvider

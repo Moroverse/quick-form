@@ -11,6 +11,7 @@ public struct FormAsyncPickerField<Model: RandomAccessCollection, Query, VConten
     @State private var isPresented = false
     private let clearValueMode: ClearValueMode
     private let pickerStyle: AsyncPickerStyleConfiguration
+    private let allowSearch: Bool
     private let valueContent: (Model.Element?) -> VContent
     private let pickerContent: (Model.Element) -> PContent
     /// Initializes a new `FormOptionalPickerField`.
@@ -22,12 +23,14 @@ public struct FormAsyncPickerField<Model: RandomAccessCollection, Query, VConten
         _ viewModel: AsyncPickerFieldViewModel<Model, Query>,
         clearValueMode: ClearValueMode = .never,
         pickerStyle: AsyncPickerStyleConfiguration = .popover,
+        allowSearch: Bool = true,
         @ViewBuilder valueContent: @escaping (Model.Element?) -> VContent,
         @ViewBuilder pickerContent: @escaping (Model.Element) -> PContent
     ) {
         self.viewModel = viewModel
         self.clearValueMode = clearValueMode
         self.pickerStyle = pickerStyle
+        self.allowSearch = allowSearch
         self.valueContent = valueContent
         self.pickerContent = pickerContent
         hasError = viewModel.errorMessage != nil
@@ -46,6 +49,7 @@ public struct FormAsyncPickerField<Model: RandomAccessCollection, Query, VConten
                 AsyncPickerFormField(title: viewModel.title) {
                     AsyncPicker(
                         selectedValue: $viewModel.value,
+                        allowSearch: allowSearch,
                         valuesProvider: viewModel.valuesProvider,
                         queryBuilder: viewModel.queryBuilder,
                         content: pickerContent

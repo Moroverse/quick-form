@@ -4,11 +4,50 @@
 
 import SwiftUI
 
+private struct Searchable: ViewModifier {
+    private let allowSearch: Bool
+    private let onSearchTextChange: (String) -> Void
+    @Binding private var searchText: String
+
+    init(
+        allowSearch: Bool,
+        searchText: Binding<String>,
+        onSearchTextChange: @escaping (String) -> Void
+    ) {
+        self.allowSearch = allowSearch
+        self.onSearchTextChange = onSearchTextChange
+        _searchText = searchText
+    }
+
+    func body(content: Content) -> some View {
+        if allowSearch {
+            content
+                .searchable(text: $searchText)
+                .onChange(of: searchText) { _, newSearchText in
+                    onSearchTextChange(newSearchText)
+                }
+        } else {
+            content
+        }
+    }
+}
+
+private extension View {
+    func searchable(
+        allowSearch: Bool,
+        searchText: Binding<String>,
+        onSearchTextChange: @escaping (String) -> Void
+    ) -> some View {
+        modifier(Searchable(allowSearch: allowSearch, searchText: searchText, onSearchTextChange: onSearchTextChange))
+    }
+}
+
 struct AsyncPicker<Model: RandomAccessCollection, Query, Content>: View
     where Model: Sendable, Model.Element: Identifiable, Query: Sendable & Equatable, Content: View {
     private let valuesProvider: (Query) async throws -> Model
-    private let queryBuilder: (String) -> Query
+    private let queryBuilder: (String?) -> Query
     private let content: (Model.Element) -> Content
+    private let allowSearch: Bool
     @State private var searchText: String
     @State private var query: Query?
     @State private var model: ModelState<Model>
@@ -53,10 +92,12 @@ struct AsyncPicker<Model: RandomAccessCollection, Query, Content>: View
                 )
             }
         }
-        .searchable(text: $searchText)
-        .onChange(of: searchText) { _, newSearchText in
+        .searchable(
+            allowSearch: allowSearch,
+            searchText: $searchText,
+            onSearchTextChange: { newSearchText in
             query = queryBuilder(newSearchText)
-        }
+        })
         .onChange(of: selectedID) { _, newQuery in
             if case let .loaded(values) = model, let selectedID = newQuery {
                 if let selectedValue = values.first(where: {
@@ -68,7 +109,11 @@ struct AsyncPicker<Model: RandomAccessCollection, Query, Content>: View
             }
         }
         .onAppear {
-            query = queryBuilder(searchText)
+            if allowSearch {
+                query = queryBuilder(searchText)
+            } else {
+                query = queryBuilder(nil)
+            }
         }
         .task(id: query) {
             if let query {
@@ -86,11 +131,13 @@ struct AsyncPicker<Model: RandomAccessCollection, Query, Content>: View
 
     init(
         selectedValue: Binding<Model.Element?>,
+        allowSearch: Bool = true,
         valuesProvider: @escaping (Query) async throws -> Model,
-        queryBuilder: @escaping (String) -> Query,
+        queryBuilder: @escaping (String?) -> Query,
         content: @escaping (Model.Element) -> Content
     ) {
         _selectedValue = selectedValue
+        self.allowSearch = allowSearch
         self.valuesProvider = valuesProvider
         self.queryBuilder = queryBuilder
         self.content = content
@@ -120,12 +167,12 @@ struct Weekday: Identifiable, Hashable {
                     Weekday(id: 7, name: "Sunday")
                 ]
                 try await Task.sleep(for: .seconds(3))
-                if query.isEmpty {
-                    return weekdays
-                } else {
+                if let query, query.isEmpty == false {
                     return weekdays.filter {
                         $0.name.lowercased().contains(query.lowercased())
                     }
+                } else {
+                    return weekdays
                 }
             },
             queryBuilder: { text in
