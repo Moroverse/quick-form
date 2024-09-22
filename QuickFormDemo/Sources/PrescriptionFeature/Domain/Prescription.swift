@@ -107,10 +107,10 @@ final class MedicationComponents {
     var dosageForm: DosageFormPart?
     var route: MedicationTakeRoutePart?
 
-//    func build() -> Medication? {
-//        guard let id, let substance, let strength, let dosageForm, let route else { return nil }
-//        return Medication(id: id, name: substance.substance, strength: strength.strength, dosageForm: dosageForm.form, route: route.route)
-//    }
+    func build() -> Medication? {
+        guard let id, let substance, let strength, let dosageForm, let route else { return nil }
+        return Medication(id: id, name: substance.substance, strength: strength.strength, dosageForm: dosageForm.form, route: route.route)
+    }
 }
 
 class UnitDose: Unit {
@@ -122,16 +122,16 @@ class UnitDose: Unit {
 
 final class Prescription {
     var assessments: Set<Assessment>
-    var medication: MedicationComponents
+    var medication: Medication?
     var take: Measurement<UnitDose>
     var frequency: MedicationFrequency
     var dispense: String
     var duration: Measurement<UnitDuration>
     var startDate: Date
 
-    init(assessments: Set<Assessment>, take: Measurement<UnitDose>, frequency: MedicationFrequency, dispense: String, duration: Measurement<UnitDuration>, startDate: Date) {
+    init(assessments: Set<Assessment>, medication: Medication, take: Measurement<UnitDose>, frequency: MedicationFrequency, dispense: String, duration: Measurement<UnitDuration>, startDate: Date) {
         self.assessments = assessments
-        medication = MedicationComponents()
+        self.medication = medication
         self.take = take
         self.frequency = frequency
         self.dispense = dispense
@@ -142,6 +142,7 @@ final class Prescription {
 
 let fakePrescription: Prescription = .init(
     assessments: [],
+    medication: Medication(id: 1, name: "Aspiring", strength: .m1000mg, dosageForm: .capsule, route: .intravenous),
     take: .init(value: 1, unit: UnitDose.tablet),
     frequency: .predefined(schedule: .BID),
     dispense: "1 tablet",

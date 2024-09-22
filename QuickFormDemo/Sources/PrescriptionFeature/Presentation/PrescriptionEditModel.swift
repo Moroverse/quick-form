@@ -14,9 +14,6 @@ final class PrescriptionEditModel: Validatable {
         Assessment(name: "SCC", id: 2)
     ], title: "Assessments")
 
-    @PropertyEditor(keyPath: \Prescription.medication.substance)
-    var substance = AsyncPickerFieldViewModel(value: MedicationComponents.SubstancePart?.none, valuesProvider: SubstanceFetcher.shared.fetchSubstance, queryBuilder: { $0 })
-
-    @PropertyEditor(keyPath: \Prescription.medication.route)
-    var route = AsyncPickerFieldViewModel(value: MedicationComponents.MedicationTakeRoutePart?.none, valuesProvider: RouteFetcher.shared.fetchRoute, queryBuilder: { _ in 2 })
+    @PropertyEditor(keyPath: \Prescription.medication)
+    var medication = MedicationBuilder(model: MedicationComponents())
 }

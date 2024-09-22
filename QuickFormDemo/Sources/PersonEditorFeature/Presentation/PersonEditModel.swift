@@ -105,7 +105,7 @@ class PersonEditModel: Validatable {
     var avatar = AsyncPickerFieldViewModel(value: nil, title: "Avatar:") { query in
         try await AvatarFetcher.shared.fetchAvatar(query: query)
     } queryBuilder: { text in
-        text
+        text ?? ""
     }
 
     // 5. decorations in the class
