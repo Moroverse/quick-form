@@ -9,6 +9,7 @@ import SwiftSyntaxMacros
 struct QuickFormPlugin: CompilerPlugin {
     let providingMacros: [Macro.Type] = [
         QuickFormMacro.self,
-        PropertyEditorMacro.self
+        PropertyEditorMacro.self,
+        PostInitMacro.self
     ]
 }

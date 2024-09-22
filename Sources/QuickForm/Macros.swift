@@ -124,4 +124,4 @@ public macro QuickForm<T>(_ type: T.Type) = #externalMacro(module: "QuickFormMac
 public macro PropertyEditor(keyPath: Any) = #externalMacro(module: "QuickFormMacros", type: "PropertyEditorMacro")
 
 @attached(peer)
-public macro PostiInit() = #externalMacro(module: "QuickFormMacros", type: "PostInitMacro")
+public macro PostInit() = #externalMacro(module: "QuickFormMacros", type: "PostInitMacro")

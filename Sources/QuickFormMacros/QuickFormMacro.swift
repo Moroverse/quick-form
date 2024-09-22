@@ -30,7 +30,11 @@ public struct QuickFormMacro: MemberMacro, ExtensionMacro {
             guard let varDecl = member.decl.as(VariableDeclSyntax.self),
                   let binding = varDecl.bindings.first,
                   let identifier = binding.pattern.as(IdentifierPatternSyntax.self)?.identifier.text,
-                  let propertyEditorAttr = varDecl.attributes.first(where: { $0.as(AttributeSyntax.self)?.attributeName.as(IdentifierTypeSyntax.self)?.name.text == "PropertyEditor" })
+                  let propertyEditorAttr = varDecl.attributes.first(where: {
+                      $0.as(AttributeSyntax.self)?
+                          .attributeName.as(IdentifierTypeSyntax.self)?
+                          .name.text == "PropertyEditor"
+                  })
             else { return nil }
 
             guard case let .argumentList(arguments) = propertyEditorAttr.as(AttributeSyntax.self)?.arguments,
@@ -47,14 +51,16 @@ public struct QuickFormMacro: MemberMacro, ExtensionMacro {
             return (identifier, "\\\(modelType).\(keyPath)")
         }
 
-        // Find method annotated with @OnInit
-        let postInitMethod = classDecl.memberBlock.members
-            .compactMap { $0.decl.as(FunctionDeclSyntax.self) }
-            .first { function in
-                function.attributes.contains { attr in
-                    attr.as(AttributeSyntax.self)?.attributeName.as(IdentifierTypeSyntax.self)?.name.text == "PostInit"
-                }
-            }
+        // Find method annotated with @PostInit
+        let funcDecls = classDecl.memberBlock.members.compactMap { $0.decl.as(FunctionDeclSyntax.self) }
+        let postInitMethod = funcDecls.first {
+            let postInitAttribute = $0.attributes.first(where: {
+                $0.as(AttributeSyntax.self)?
+                    .attributeName.as(IdentifierTypeSyntax.self)?
+                    .name.text == "PostInit"
+            })
+            return postInitAttribute != nil
+        }
 
         let onInitCall = postInitMethod.map { "\($0.name)()" } ?? ""
 
