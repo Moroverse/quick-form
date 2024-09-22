@@ -96,8 +96,9 @@ struct AsyncPicker<Model: RandomAccessCollection, Query, Content>: View
             allowSearch: allowSearch,
             searchText: $searchText,
             onSearchTextChange: { newSearchText in
-            query = queryBuilder(newSearchText)
-        })
+                query = queryBuilder(newSearchText)
+            }
+        )
         .onChange(of: selectedID) { _, newQuery in
             if case let .loaded(values) = model, let selectedID = newQuery {
                 if let selectedValue = values.first(where: {

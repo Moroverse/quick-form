@@ -36,7 +36,7 @@ extension MedicationBuilder: ValueEditor {
             if let substance = newValue?.name {
                 model.substance = MedicationComponents.SubstancePart(id: newValue!.id, substance: substance)
             }
-            
+
             if let route = newValue?.route {
                 model.route = MedicationComponents.MedicationTakeRoutePart(id: newValue!.id, route: route)
             }
