@@ -16,3 +16,11 @@ public func observe(apply: @escaping @Sendable () -> Void) {
     }
     observeAndReapply()
 }
+
+public func isEqual<A: Equatable, B: Equatable>(_ a: A, _ b: B) -> Bool {
+    if let b = b as? A, b == a {
+        return true
+    }
+
+    return false
+}

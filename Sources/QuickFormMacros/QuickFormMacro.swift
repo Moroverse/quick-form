@@ -65,6 +65,7 @@ public struct QuickFormMacro: MemberMacro, ExtensionMacro {
             set {
                 withMutation(keyPath: \\.model) {
                     _model = newValue
+                    update()
                 }
             }
         }
@@ -188,9 +189,26 @@ public struct QuickFormMacro: MemberMacro, ExtensionMacro {
             // Modify track method to update _validationResult
             let trackMethod = """
             func track<Property>(keyPath: WritableKeyPath<\(modelType), Property>, editor: any ValueEditor<Property>) {
-               observe { [weak self] in
-                   self?.model[keyPath: keyPath] = editor.value
-                   self?.validationResult = self?.validate() ?? .success
+                observe { [weak self] in
+                    if let self = self {
+                        let currentValue = self.model[keyPath: keyPath]
+                        let newValue = editor.value
+            
+                        let shouldUpdate: Bool
+                        if let currentEquatable = currentValue as? any Equatable,
+                        let newEquatable = newValue as? any Equatable,
+                        type(of: currentEquatable) == type(of: newEquatable) {
+                            shouldUpdate = !isEqual(currentEquatable, newEquatable)
+                        } else {
+                            shouldUpdate = true
+                        }
+            
+                        if shouldUpdate {
+                            self.model[keyPath: keyPath] = newValue
+                        }
+            
+                        self.validationResult = self.validate()
+                    }
                 }
             }
             """
