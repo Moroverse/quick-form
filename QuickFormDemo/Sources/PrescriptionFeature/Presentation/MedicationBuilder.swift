@@ -7,14 +7,22 @@ import Observation
 @preconcurrency import QuickForm
 
 @QuickForm(MedicationComponents.self)
-final class MedicationEditModel: Validatable {
+final class MedicationBuilder: Validatable {
     @PropertyEditor(keyPath: \MedicationComponents.substance)
     var substance = AsyncPickerFieldViewModel(value: MedicationComponents.SubstancePart?.none, valuesProvider: SubstanceFetcher.shared.fetchSubstance, queryBuilder: { $0 })
 
     @PropertyEditor(keyPath: \MedicationComponents.route)
-    var route = AsyncPickerFieldViewModel(value: MedicationComponents.MedicationTakeRoutePart?.none, valuesProvider: RouteFetcher.shared.fetchRoute, queryBuilder: { _ in 2 })
+    var route = AsyncPickerFieldViewModel(value: MedicationComponents.MedicationTakeRoutePart?.none, valuesProvider: RouteFetcher.shared.fetchRoute, queryBuilder: { _ in 0 })
 
-    func routeQuery(in: String) async -> Int {
-        2
+    @PostInit
+    func configure() {
+        substance.onValueChanged { [weak self] newValue in
+            self?.route.value = nil
+            self?.model.id = newValue?.id
+        }
+
+        route.queryBuilder = { [weak self] _ in
+            self?.model.id ?? 0
+        }
     }
 }
