@@ -18,11 +18,9 @@ final class PrescriptionEditModel: Validatable {
         Assessment(name: "SCC", id: 2)
     ], title: "Assessments")
 
-    @PropertyEditor(keyPath: \Prescription.medication.name)
-    var medicationName = ModelTransformer(
-        original: AsyncPickerFieldViewModel(value: MedicationInfo?.none, valuesProvider: MedicationFetcher.shared.fetchMedication, queryBuilder: {$0}),
-        new: FormFieldViewModel(value: "", title: "Name:", placeholder: "Aspirin", isReadOnly: true),
-        mapFrom: { $0?.name ?? "" },
-        mapTo: { _ in MedicationInfo?.none }
-    )
+    @PropertyEditor(keyPath: \Prescription.medication.substance)
+    var substance = AsyncPickerFieldViewModel(value: MedicationBuilder.SubstancePart?.none, valuesProvider: SubstanceFetcher.shared.fetchSubstance, queryBuilder: {$0})
+
+    @PropertyEditor(keyPath: \Prescription.medication.route)
+    var route = AsyncPickerFieldViewModel(value: MedicationBuilder.MedicationTakeRoutePart?.none, valuesProvider: RouteFetcher.shared.fetchRoute, queryBuilder: { _ in 2 })
 }

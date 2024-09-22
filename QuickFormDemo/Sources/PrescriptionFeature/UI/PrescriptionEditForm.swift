@@ -15,11 +15,28 @@ struct PrescriptionEditForm: View {
         Form {
             FormMultiPickerSection(quickForm.problems)
             Section("Medication") {
-                FormAsyncPickerField(quickForm.medicationName.original, clearValueMode: .always, pickerStyle: .navigation) { _ in
-                    FormTextField(quickForm.medicationName.new)
+                FormAsyncPickerField(quickForm.substance, clearValueMode: .always, pickerStyle: .navigation) { substance in
+                    HStack {
+                        Text("Substance:")
+                            .font(.headline)
+                        Spacer()
+                        Text(substance?.substance ?? "No substance selected")
+                    }
                 } pickerContent: { info in
-                    Text(info.name)
+                    Text(info.substance)
                 }
+
+                FormAsyncPickerField(quickForm.route) { routePart in
+                    HStack {
+                        Text("Route:")
+                            .font(.headline)
+                        Spacer()
+                        Text(routePart?.route.rawValue ?? "No route selected")
+                    }
+                } pickerContent: { routePart in
+                    Text(routePart.route.rawValue)
+                }
+
             }
         }
 
