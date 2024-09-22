@@ -65,7 +65,6 @@ public struct QuickFormMacro: MemberMacro, ExtensionMacro {
             set {
                 withMutation(keyPath: \\.model) {
                     _model = newValue
-                    update()
                 }
             }
         }
