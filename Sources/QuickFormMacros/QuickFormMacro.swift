@@ -109,7 +109,7 @@ public struct QuickFormMacro: MemberMacro, ExtensionMacro {
             self._model = model
             update()
             \(propertyEditors.map { identifier, keyPath in
-                "track(keyPath: \(keyPath), editor: \(identifier))"
+                makeTrack(identifier: identifier, keyPath: keyPath, shouldValidate: conformsToValidatable)
             }.joined(separator: "\n"))
             \(onInitCall)
         }
@@ -202,46 +202,7 @@ public struct QuickFormMacro: MemberMacro, ExtensionMacro {
             }
             """
             declarations.append(DeclSyntax(stringLiteral: validateMethod))
-
-            // Modify track method to update _validationResult
-            let trackMethod = """
-            func track<Property>(keyPath: WritableKeyPath<\(modelType), Property>, editor: any ValueEditor<Property>) {
-                observe { [weak self] in
-                    if let self = self {
-                        let currentValue = self.model[keyPath: keyPath]
-                        let newValue = editor.value
-
-                        let shouldUpdate: Bool
-                        if let currentEquatable = currentValue as? any Equatable,
-                        let newEquatable = newValue as? any Equatable,
-                        type(of: currentEquatable) == type(of: newEquatable) {
-                            shouldUpdate = !isEqual(currentEquatable, newEquatable)
-                        } else {
-                            shouldUpdate = true
-                        }
-
-                        if shouldUpdate {
-                            self.model[keyPath: keyPath] = newValue
-                        }
-
-                        self.validationResult = self.validate()
-                    }
-                }
-            }
-            """
-            declarations.append(DeclSyntax(stringLiteral: trackMethod))
-        } else {
-            // add original track
-            let trackMethod = """
-            func track<Property>(keyPath: WritableKeyPath<\(modelType), Property>, editor: any ValueEditor<Property>) {
-               observe { [weak self] in
-                   self?.model[keyPath: keyPath] = editor.value
-                }
-            }
-            """
-            declarations.append(DeclSyntax(stringLiteral: trackMethod))
         }
-
         let customValidationRules = """
         private var customValidationRules: [any ValidationRule<\(modelType)>] = []
 
@@ -252,6 +213,31 @@ public struct QuickFormMacro: MemberMacro, ExtensionMacro {
         declarations.append(DeclSyntax(stringLiteral: customValidationRules))
 
         return declarations
+    }
+
+    static func makeTrack(identifier: String, keyPath: String, shouldValidate: Bool) -> String {
+        let CapitalizedIdentifier = identifier.capitalized
+        let validation = shouldValidate ? "validationResult = validate()" : ""
+        let track =
+            """
+            func track\(CapitalizedIdentifier)() {
+                withObservationTracking { [weak self] in
+                        _ = self?.\(identifier).value
+                    } onChange: { [weak self] in
+                        Task { @MainActor [weak self] in
+                            guard let self else { return }
+                            self.model[keyPath: \(keyPath)] = \(identifier).value
+                            \(validation)
+                            track\(CapitalizedIdentifier)()
+                        }
+                    }
+                }
+
+                track\(CapitalizedIdentifier)()
+
+            """
+
+        return track
     }
 
     public static func expansion(
