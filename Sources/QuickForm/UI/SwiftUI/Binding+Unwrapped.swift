@@ -34,6 +34,7 @@ import SwiftUI
 /// In this example, the `TextField` uses a non-optional `String` binding,
 /// but it's backed by an optional `String?` state variable. The `unwrapped(_:)`
 /// method allows us to use the optional state with the non-optional `TextField`.
+@MainActor
 extension Binding {
     /// Unwraps an optional binding to create a non-optional binding.
     ///

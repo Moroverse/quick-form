@@ -14,8 +14,7 @@ public struct PropertyEditorMacro: AccessorMacro, PeerMacro {
     ) throws -> [AccessorDeclSyntax] {
         guard let varDecl = declaration.as(VariableDeclSyntax.self),
               let binding = varDecl.bindings.first,
-              let identifier = binding.pattern.as(IdentifierPatternSyntax.self)?.identifier.text,
-              let initializer = binding.initializer?.value else {
+              let identifier = binding.pattern.as(IdentifierPatternSyntax.self)?.identifier.text else {
             throw MacroError.invalidDeclaration
         }
 

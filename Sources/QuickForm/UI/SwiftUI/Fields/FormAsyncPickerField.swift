@@ -98,6 +98,7 @@ public struct FormAsyncPickerField<Model: RandomAccessCollection, Query, VConten
         switch clearValueMode {
         case .never:
             return false
+
         default:
             return viewModel.value != nil
         }

@@ -1,4 +1,4 @@
-// swift-tools-version: 5.10
+// swift-tools-version: 6.0
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import CompilerPluginSupport
@@ -26,9 +26,6 @@ let package = Package(
             name: "QuickForm",
             dependencies: [
                 "QuickFormMacros"
-            ],
-            swiftSettings: [
-                .enableExperimentalFeature("StrictConcurrency")
             ],
             plugins: [
                 .plugin(name: "SwiftLintBuildToolPlugin", package: "SwiftLintPlugins")

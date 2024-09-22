@@ -46,7 +46,7 @@ import SwiftUI
 ///     }
 /// }
 /// ```
-public struct FormCollectionSection<Property: Identifiable, Content: View>: View {
+public struct FormCollectionSection<Property: Identifiable & Sendable, Content: View>: View {
     @Bindable private var viewModel: FormCollectionViewModel<Property>
     // private let content: Content
     private let content: (Property) -> Content

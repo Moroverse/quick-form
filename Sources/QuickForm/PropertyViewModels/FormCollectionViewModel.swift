@@ -50,7 +50,7 @@ import Observation
 /// }
 /// ```
 @Observable
-public final class FormCollectionViewModel<Property: Identifiable>: ValueEditor {
+public final class FormCollectionViewModel<Property: Identifiable & Sendable>: ValueEditor {
     /// The title of the collection section.
     public var title: LocalizedStringResource
     /// The title for the insertion action (e.g., "Add Item").
@@ -103,10 +103,11 @@ public final class FormCollectionViewModel<Property: Identifiable>: ValueEditor 
     ///
     /// This method calls the async closure set by `onInsert(_:)` to create a new item.
     /// If an item is successfully created, it's appended to the collection.
+    @MainActor
     public func insert() async {
         if let insertion = _onInsert {
-            if let personInfo = await insertion() {
-                value.append(personInfo)
+            if let newValue = await insertion() {
+                value.append(newValue)
             }
         }
     }
