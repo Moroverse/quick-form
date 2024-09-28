@@ -94,6 +94,9 @@ public struct FormFormattedTextField<F>: View where F: ParseableFormatStyle, F.F
                 .onAppear {
                     editingText = viewModel.format.format(viewModel.value)
                 }
+                .onChange(of: viewModel.format) { _, _ in
+                    editingText = viewModel.format.format(viewModel.value)
+                }
                 .onChange(of: isFocused) { _, newValue in
                     withAnimation {
                         if newValue {

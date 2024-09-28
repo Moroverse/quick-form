@@ -22,4 +22,17 @@ final class PrescriptionEditModel: Validatable {
 
     @PropertyEditor(keyPath: \Prescription.frequency)
     var frequency = FormFieldViewModel(value: MedicationFrequency.predefined(schedule: .bid), title: "Frequency:")
+
+    @PropertyEditor(keyPath: \Prescription.dispense)
+    var dispense = FormattedFieldViewModel(value: 1, format: .dosageForm(.capsule), title: "Quantity:")
+
+    @PostInit
+    func configure() {
+        // onValueChanged can have only one handler, setting this up will remove one set inside MedicationBuilder...
+        medication.dosageForm.onValueChanged { [weak self] newValue in
+            if let form = newValue?.form {
+                self?.dispense.format = .dosageForm(form)
+            }
+        }
+    }
 }

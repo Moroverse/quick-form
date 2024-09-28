@@ -26,13 +26,14 @@ enum MedicationStrength: String, Equatable {
     case v5ml = "5 ml"
 }
 
-enum DosageForm: String, Equatable {
+enum DosageForm: String, Equatable, CaseIterable {
     case tablet = "Tablet"
     case capsule = "Capsule"
     case syrup = "Syrup"
     case liquid = "Liquid"
     case injection = "Injection"
     case suppository = "Suppository"
+    case package = "Package"
     case other = "Other"
 }
 

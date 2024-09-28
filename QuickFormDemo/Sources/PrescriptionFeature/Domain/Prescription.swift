@@ -15,7 +15,7 @@ final class Prescription {
     var medication: Medication?
     var take: Measurement<UnitDose>
     var frequency: MedicationFrequency
-    var dispense: String
+    var dispense: Int
     var duration: Measurement<UnitDuration>
     var startDate: Date
 
@@ -24,7 +24,7 @@ final class Prescription {
         medication: Medication,
         take: Measurement<UnitDose>,
         frequency: MedicationFrequency,
-        dispense: String,
+        dispense: Int,
         duration: Measurement<UnitDuration>,
         startDate: Date
     ) {
@@ -40,10 +40,10 @@ final class Prescription {
 
 let fakePrescription: Prescription = .init(
     assessments: [],
-    medication: Medication(id: 1, name: "Aspiring", strength: .m1000mg, dosageForm: .capsule, route: .intravenous),
+    medication: Medication(id: 1, name: "Aspirin", strength: .m1000mg, dosageForm: .capsule, route: .intravenous),
     take: .init(value: 1, unit: UnitDose.tablet),
     frequency: .predefined(schedule: .bid),
-    dispense: "1 tablet",
+    dispense: 1,
     duration: .init(value: 1, unit: .weeks),
     startDate: Date()
 )
