@@ -3,6 +3,7 @@
 // Created by Daniel Moro on 2024-09-07 07:45 GMT.
 
 import ProjectDescription
+import ProjectDescriptionHelpers
 
 let project = Project(
     name: "QuickFormDemo",
@@ -22,6 +23,13 @@ let project = Project(
             ),
             sources: ["Sources/**"],
             resources: ["Resources/**"],
+            scripts: [
+                .pre(
+                    script: .lintScript(),
+                    name: "Lint",
+                    basedOnDependencyAnalysis: false
+                )
+            ],
             dependencies: [
                 .external(name: "QuickForm")
             ],

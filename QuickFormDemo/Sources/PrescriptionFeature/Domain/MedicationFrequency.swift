@@ -62,14 +62,14 @@ enum MedicationFrequency: Hashable {
     }
 
     enum PredefinedSchedule: String, CaseIterable {
-        case QD = "Once daily"
-        case BID = "Twice daily"
-        case TID = "Three times daily"
-        case QID = "Four times daily"
-        case QHS = "Every bedtime"
-        case Q4H = "Every 4 hours"
-        case Q6H = "Every 6 hours"
-        case Q8H = "Every 8 hours"
+        case qd = "Once daily"
+        case bid = "Twice daily"
+        case tid = "Three times daily"
+        case qid = "Four times daily"
+        case qhs = "Every bedtime"
+        case q4h = "Every 4 hours"
+        case q6h = "Every 6 hours"
+        case q8h = "Every 8 hours"
         // Add more predefined schedules as needed
     }
 }

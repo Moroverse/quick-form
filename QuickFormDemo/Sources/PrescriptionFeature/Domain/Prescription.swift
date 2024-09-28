@@ -144,7 +144,7 @@ let fakePrescription: Prescription = .init(
     assessments: [],
     medication: Medication(id: 1, name: "Aspiring", strength: .m1000mg, dosageForm: .capsule, route: .intravenous),
     take: .init(value: 1, unit: UnitDose.tablet),
-    frequency: .predefined(schedule: .BID),
+    frequency: .predefined(schedule: .bid),
     dispense: "1 tablet",
     duration: .init(value: 1, unit: .weeks),
     startDate: Date()

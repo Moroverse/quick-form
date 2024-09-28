@@ -71,7 +71,7 @@ struct MedicationFrequencyPicker: View {
         simpleFrequency = viewModel.value.simpleFrequency
         times = viewModel.value.interval ?? 1
         period = viewModel.value.timePeriod ?? .hour
-        schedule = .BID
+        schedule = .bid
     }
 }
 
@@ -135,7 +135,7 @@ struct TimesPerPeriodPicker: View {
 
 #Preview {
     @Previewable @State var viewModel = FormFieldViewModel(
-        value: MedicationFrequency.predefined(schedule: .BID),
+        value: MedicationFrequency.predefined(schedule: .bid),
         title: "Take"
     )
     Form {

@@ -1,20 +1,18 @@
-//
-//  UIViewControllerRepresenting.swift
-//  QuickFormDemo
-//
-//  Created by Daniel Moro on 28.9.24..
-//
+// UIViewControllerRepresenting.swift
+// Copyright (c) 2024 Moroverse
+// Created by Daniel Moro on 2024-09-28 05:00 GMT.
 
 import SwiftUI
 import UIKit
 
 public struct UIViewControllerRepresenting<
     UIViewControllerType: UIViewController
-  >: UIViewControllerRepresentable {
+>: UIViewControllerRepresentable {
     private let base: UIViewControllerType
     public init(_ base: () -> UIViewControllerType) {
-      self.base = base()
+        self.base = base()
     }
+
     public func makeUIViewController(context _: Context) -> UIViewControllerType { base }
     public func updateUIViewController(_: UIViewControllerType, context _: Context) {}
-  }
+}
