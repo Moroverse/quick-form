@@ -11,8 +11,6 @@
 import QuickForm
 
 struct PasswordMatchRule: ValidationRule {
-    init() {}
-
     func validate(_ value: Person) -> ValidationResult {
         if value.password != value.passwordReentry {
             return .failure("Passwords must match")

@@ -12,7 +12,11 @@ struct PrescriptionEditForm: View {
         Form {
             FormMultiPickerSection(quickForm.problems)
             Section("Medication") {
-                FormAsyncPickerField(quickForm.medication.substance, clearValueMode: .always, pickerStyle: .navigation) { substance in
+                FormAsyncPickerField(
+                    quickForm.medication.substance,
+                    clearValueMode: .always,
+                    pickerStyle: .navigation
+                ) { substance in
                     HStack {
                         Text("Substance:")
                             .font(.headline)

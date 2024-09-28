@@ -62,6 +62,7 @@ enum MedicationFrequency: Hashable {
     }
 
     enum PredefinedSchedule: String, CaseIterable {
+        // swiftlint:disable:next identifier_name
         case qd = "Once daily"
         case bid = "Twice daily"
         case tid = "Three times daily"

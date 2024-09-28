@@ -35,7 +35,7 @@ let project = Project(
             ],
             settings: .settings(
                 base: [
-                    "SWIFT_STRICT_CONCURRENCY": "complete",
+                    //                    "SWIFT_STRICT_CONCURRENCY": "complete",
                     "LOCALIZATION_PREFERS_STRING_CATALOGS": "YES",
                     "SWIFT_EMIT_LOC_STRINGS": "YES"
                 ],

@@ -9,10 +9,18 @@ import Observation
 @QuickForm(MedicationComponents.self)
 final class MedicationBuilder: Validatable {
     @PropertyEditor(keyPath: \MedicationComponents.substance)
-    var substance = AsyncPickerFieldViewModel(value: MedicationComponents.SubstancePart?.none, valuesProvider: SubstanceFetcher.shared.fetchSubstance, queryBuilder: { $0 ?? "" })
+    var substance = AsyncPickerFieldViewModel(
+        value: MedicationComponents.SubstancePart?.none,
+        valuesProvider: SubstanceFetcher.shared.fetchSubstance,
+        queryBuilder: { $0 ?? "" }
+    )
 
     @PropertyEditor(keyPath: \MedicationComponents.route)
-    var route = AsyncPickerFieldViewModel(value: MedicationComponents.MedicationTakeRoutePart?.none, valuesProvider: RouteFetcher.shared.fetchRoute, queryBuilder: { _ in 0 })
+    var route = AsyncPickerFieldViewModel(
+        value: MedicationComponents.MedicationTakeRoutePart?.none,
+        valuesProvider: RouteFetcher.shared.fetchRoute,
+        queryBuilder: { _ in 0 }
+    )
 
     @PostInit
     func configure() {

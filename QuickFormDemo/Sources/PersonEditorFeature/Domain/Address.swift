@@ -10,7 +10,14 @@ struct Address: Equatable {
     var country: Country
     var state: CountryState?
 
-    init(line1: String, line2: String? = nil, city: String, zipCode: String, country: Country, state: CountryState? = nil) {
+    init(
+        line1: String,
+        line2: String? = nil,
+        city: String,
+        zipCode: String,
+        country: Country,
+        state: CountryState? = nil
+    ) {
         self.line1 = line1
         self.line2 = line2
         self.city = city

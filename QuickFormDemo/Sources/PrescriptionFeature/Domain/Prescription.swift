@@ -109,7 +109,13 @@ final class MedicationComponents {
 
     func build() -> Medication? {
         guard let id, let substance, let strength, let dosageForm, let route else { return nil }
-        return Medication(id: id, name: substance.substance, strength: strength.strength, dosageForm: dosageForm.form, route: route.route)
+        return Medication(
+            id: id,
+            name: substance.substance,
+            strength: strength.strength,
+            dosageForm: dosageForm.form,
+            route: route.route
+        )
     }
 }
 
@@ -129,7 +135,15 @@ final class Prescription {
     var duration: Measurement<UnitDuration>
     var startDate: Date
 
-    init(assessments: Set<Assessment>, medication: Medication, take: Measurement<UnitDose>, frequency: MedicationFrequency, dispense: String, duration: Measurement<UnitDuration>, startDate: Date) {
+    init(
+        assessments: Set<Assessment>,
+        medication: Medication,
+        take: Measurement<UnitDose>,
+        frequency: MedicationFrequency,
+        dispense: String,
+        duration: Measurement<UnitDuration>,
+        startDate: Date
+    ) {
         self.assessments = assessments
         self.medication = medication
         self.take = take

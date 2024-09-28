@@ -28,10 +28,18 @@ struct USPhoneNumberFormatStyle: Codable, ParseableFormatStyle {
 
         switch formatType {
         case .standard:
-            return cleaned.replacingOccurrences(of: "(\\d{3})(\\d{3})(\\d+)", with: "$1-$2-$3", options: .regularExpression)
+            return cleaned.replacingOccurrences(
+                of: "(\\d{3})(\\d{3})(\\d+)",
+                with: "$1-$2-$3",
+                options: .regularExpression
+            )
 
         case .parentheses:
-            return cleaned.replacingOccurrences(of: "(\\d{3})(\\d{3})(\\d+)", with: "($1) $2-$3", options: .regularExpression)
+            return cleaned.replacingOccurrences(
+                of: "(\\d{3})(\\d{3})(\\d+)",
+                with: "($1) $2-$3",
+                options: .regularExpression
+            )
         }
     }
 }
