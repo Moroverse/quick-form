@@ -21,4 +21,4 @@
 --disable wrapMultilineStatementBraces
 --enable blankLineAfterSwitchCase
 
---exclude */Derived
+--exclude **/Derived
