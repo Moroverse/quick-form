@@ -60,7 +60,7 @@ struct PersonEditView: View {
 
             FormDatePickerField(quickForm.birthday, style: .compact)
             FormPickerField(quickForm.sex)
-            FormValueUnitField(quickForm.weight)
+            FormValueDimensionField(quickForm.weight)
             FormFormattedTextField(quickForm.salary)
             FormToggleField(quickForm.isEstablished)
             FormFormattedTextField(quickForm.phone)

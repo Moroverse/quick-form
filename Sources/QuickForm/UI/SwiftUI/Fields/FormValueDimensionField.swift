@@ -1,4 +1,4 @@
-// FormValueUnitField.swift
+// FormValueDimensionField.swift
 // Copyright (c) 2024 Moroverse
 // Created by Daniel Moro on 2024-09-07 20:51 GMT.
 
@@ -7,7 +7,7 @@ import SwiftUI
 
 /// A protocol that defines a type with all possible cases.
 ///
-/// This protocol is used to constrain the unit type in `FormValueUnitField` to ensure
+/// This protocol is used to constrain the unit type in `FormValueDimensionField` to ensure
 /// that all possible units can be displayed in the picker.
 public protocol AllValues {
     associatedtype Unit: Identifiable
@@ -16,7 +16,7 @@ public protocol AllValues {
 
 /// A SwiftUI view that represents a field for inputting a value with an associated unit of measurement.
 ///
-/// `FormValueUnitField` is designed to work with `FormFieldViewModel<Measurement<T>>` to provide
+/// `FormValueDimensionField` is designed to work with `FormFieldViewModel<Measurement<T>>` to provide
 /// an interface for inputting a numeric value along with a selectable unit of measurement.
 /// This is particularly useful for fields where both a quantity and its unit need to be specified,
 /// such as weight, length, or any other measurable quantity.
@@ -39,12 +39,12 @@ public protocol AllValues {
 ///
 ///     var body: some View {
 ///         Form {
-///             FormValueUnitField(viewModel)
+///             FormValueDimensionField(viewModel)
 ///         }
 ///     }
 /// }
 /// ```
-public struct FormValueUnitField<T: Dimension, S: PickerStyle>: View where T: AllValues, T.Unit == T {
+public struct FormValueDimensionField<T: Dimension, S: PickerStyle>: View where T: AllValues, T.Unit == T {
     @Bindable private var viewModel: FormFieldViewModel<Measurement<T>>
     @FocusState private var isFocused: Bool
     private let pickerStyle: S
@@ -78,7 +78,7 @@ public struct FormValueUnitField<T: Dimension, S: PickerStyle>: View where T: Al
         }
     }
 
-    /// Initializes a new `FormValueUnitField`.
+    /// Initializes a new `FormValueDimensionField`.
     ///
     /// - Parameters:
     ///   - viewModel: The view model that manages the state of this value-unit field.
@@ -124,6 +124,6 @@ extension UnitMass: AllValues {
     )
 
     Form {
-        FormValueUnitField(viewModel)
+        FormValueDimensionField(viewModel)
     }
 }
