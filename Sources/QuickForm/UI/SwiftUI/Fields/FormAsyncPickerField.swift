@@ -55,15 +55,17 @@ public struct FormAsyncPickerField<Model: RandomAccessCollection, Query, VConten
                         content: pickerContent
                     )
                 } label: {
-                    valueContent(viewModel.value)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                    if shouldDisplayClearButton {
-                        Button {
-                            viewModel.value = nil
-                        } label: {
-                            Image(systemName: "xmark.circle")
+                    HStack {
+                        valueContent(viewModel.value)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                        if shouldDisplayClearButton {
+                            Button {
+                                viewModel.value = nil
+                            } label: {
+                                Image(systemName: "xmark.circle")
+                            }
+                            .buttonStyle(.borderless)
                         }
-                        .buttonStyle(.borderless)
                     }
                 }
                 .asyncPickerStyle(pickerStyle)

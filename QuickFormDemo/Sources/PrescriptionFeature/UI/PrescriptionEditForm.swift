@@ -27,7 +27,42 @@ struct PrescriptionEditForm: View {
                     Text(info.substance)
                 }
 
-                FormAsyncPickerField(quickForm.medication.route, allowSearch: false) { routePart in
+                FormAsyncPickerField(
+                    quickForm.medication.strength,
+                    clearValueMode: .always,
+                    pickerStyle: .navigation,
+                    allowSearch: false
+                ) { strengthPart in
+                    HStack {
+                        Text("Strength:")
+                            .font(.headline)
+                        Spacer()
+                        Text(strengthPart?.strength.rawValue ?? "No strength selected")
+                    }
+                } pickerContent: { strengthPart in
+                    Text(strengthPart.strength.rawValue)
+                }
+
+                FormAsyncPickerField(
+                    quickForm.medication.dosageForm,
+                    clearValueMode: .always,
+                    allowSearch: false
+                ) { dosageFormPart in
+                    HStack {
+                        Text("Dosage Form:")
+                            .font(.headline)
+                        Spacer()
+                        Text(dosageFormPart?.form.rawValue ?? "No dosage form selected")
+                    }
+                } pickerContent: { dosageFormPart in
+                    Text(dosageFormPart.form.rawValue)
+                }
+
+                FormAsyncPickerField(
+                    quickForm.medication.route,
+                    clearValueMode: .always,
+                    allowSearch: false
+                ) { routePart in
                     HStack {
                         Text("Route:")
                             .font(.headline)

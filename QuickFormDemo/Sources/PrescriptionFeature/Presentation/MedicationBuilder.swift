@@ -22,6 +22,20 @@ final class MedicationBuilder: Validatable {
         queryBuilder: { _ in 0 }
     )
 
+    @PropertyEditor(keyPath: \MedicationComponents.strength)
+    var strength = AsyncPickerFieldViewModel(
+        value: MedicationComponents.MedicationStrengthPart?.none,
+        valuesProvider: StrengthFetcher.shared.fetchStrength,
+        queryBuilder: { _ in 0 }
+    )
+
+    @PropertyEditor(keyPath: \MedicationComponents.dosageForm)
+    var dosageForm = AsyncPickerFieldViewModel(
+        value: MedicationComponents.DosageFormPart?.none,
+        valuesProvider: DosageFormFetcher.shared.fetchForm,
+        queryBuilder: { _ in 0 }
+    )
+
     @PostInit
     func configure() {
         substance.onValueChanged { [weak self] newValue in
@@ -30,6 +44,24 @@ final class MedicationBuilder: Validatable {
         }
 
         route.queryBuilder = { [weak self] _ in
+            self?.model.id ?? 0
+        }
+
+        route.onValueChanged { [weak self] newValue in
+            self?.dosageForm.value = nil
+            self?.model.id = newValue?.id
+        }
+
+        dosageForm.queryBuilder = { [weak self] _ in
+            self?.model.id ?? 0
+        }
+
+        dosageForm.onValueChanged { [weak self] newValue in
+            self?.strength.value = nil
+            self?.model.id = newValue?.id
+        }
+
+        strength.queryBuilder = { [weak self] _ in
             self?.model.id ?? 0
         }
     }
@@ -47,6 +79,14 @@ extension MedicationBuilder: ValueEditor {
 
             if let route = newValue?.route {
                 model.route = MedicationComponents.MedicationTakeRoutePart(id: newValue!.id, route: route)
+            }
+
+            if let form = newValue?.dosageForm {
+                model.dosageForm = MedicationComponents.DosageFormPart(id: newValue!.id, form: form)
+            }
+
+            if let strength = newValue?.strength {
+                model.strength = MedicationComponents.MedicationStrengthPart(id: newValue!.id, strength: strength)
             }
         }
     }

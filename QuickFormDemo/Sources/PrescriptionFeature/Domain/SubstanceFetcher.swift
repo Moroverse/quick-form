@@ -26,3 +26,29 @@ final class RouteFetcher {
         ]
     }
 }
+
+final class StrengthFetcher {
+    static let shared = StrengthFetcher()
+
+    func fetchStrength(dosageID id: Int) async throws -> [MedicationComponents.MedicationStrengthPart] {
+        [
+            .init(id: 8, strength: .m1000mg),
+            .init(id: 9, strength: .m500mg),
+            .init(id: 10, strength: .v1ml),
+            .init(id: 11, strength: .v5ml)
+        ]
+    }
+}
+
+final class DosageFormFetcher {
+    static let shared = DosageFormFetcher()
+
+    func fetchForm(routeID id: Int) async throws -> [MedicationComponents.DosageFormPart] {
+        [
+            .init(id: 12, form: .capsule),
+            .init(id: 13, form: .injection),
+            .init(id: 14, form: .liquid),
+            .init(id: 15, form: .suppository)
+        ]
+    }
+}
