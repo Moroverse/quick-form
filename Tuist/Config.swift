@@ -5,7 +5,7 @@
 import ProjectDescription
 
 let config = Config(
-    compatibleXcodeVersions: ["16.0"],
-    swiftVersion: "5.10",
+    compatibleXcodeVersions: ["16.0", "16.1"],
+    swiftVersion: "6.0",
     generationOptions: .options(enforceExplicitDependencies: true)
 )
