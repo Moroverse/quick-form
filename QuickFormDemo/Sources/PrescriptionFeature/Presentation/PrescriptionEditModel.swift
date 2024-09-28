@@ -16,4 +16,7 @@ final class PrescriptionEditModel: Validatable {
 
     @PropertyEditor(keyPath: \Prescription.medication)
     var medication = MedicationBuilder(model: MedicationComponents())
+
+    @PropertyEditor(keyPath: \Prescription.take)
+    var take = FormFieldViewModel(value: Measurement<UnitDose>(value: 1, unit: .application), title: "Take:")
 }

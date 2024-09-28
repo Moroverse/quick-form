@@ -9,13 +9,12 @@ extension UnitDose: Identifiable {}
 
 extension UnitDose: AllValues {
     static var allCases: [UnitDose] = [
-        .application
+        .application,
+        .capsule,
+        .drop,
+        .tablet
     ]
 }
-
-// func dummy(quickForm: PrescriptionEditModel) -> some View {
-//    FormValueUnitField(quickForm.take)
-// }
 
 struct PrescriptionEditForm: View {
     @Bindable private var quickForm: PrescriptionEditModel
@@ -97,6 +96,7 @@ struct PrescriptionEditForm: View {
                 strengthField()
                 dosageFormField()
                 routeField()
+                FormValueUnitField(quickForm.take)
             }
         }
     }
