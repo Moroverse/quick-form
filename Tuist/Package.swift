@@ -1,4 +1,4 @@
-// swift-tools-version: 5.10
+// swift-tools-version: 6.0
 @preconcurrency import PackageDescription
 
 #if TUIST
@@ -12,7 +12,6 @@
 let package = Package(
     name: "Demo",
     dependencies: [
-        .package(path: "../."),
-        .package(url: "https://github.com/pointfreeco/swift-navigation.git", from: "2.2.0")
+        .package(path: "../.")
     ]
 )

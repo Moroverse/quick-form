@@ -4,7 +4,6 @@
 
 import QuickForm
 import SwiftUI
-import UIKitNavigation
 
 @MainActor
 func initialController() -> UIViewController {
