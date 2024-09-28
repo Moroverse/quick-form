@@ -97,6 +97,7 @@ struct PrescriptionEditForm: View {
                 dosageFormField()
                 routeField()
                 FormValueUnitField(quickForm.take)
+                MedicationFrequencyPicker(viewModel: quickForm.frequency)
             }
         }
     }

@@ -20,7 +20,7 @@ enum MedicationFrequency: Hashable {
         case timesPerPeriod
         case everyPeriod
 
-        var toString: String {
+        var formatted: String {
             switch self {
             case .timesPerPeriod: "Times Per Period"
             case .everyPeriod: "Every Period"
@@ -51,7 +51,7 @@ enum MedicationFrequency: Hashable {
         case week
         case month
 
-        var toString: String {
+        var formatted: String {
             switch self {
             case .hour: "Hour"
             case .day: "Day"
@@ -72,5 +72,16 @@ enum MedicationFrequency: Hashable {
         case q6h = "Every 6 hours"
         case q8h = "Every 8 hours"
         // Add more predefined schedules as needed
+    }
+
+    var formatted: String {
+        switch self {
+        case let .timesPerPeriod(times: times, period: period):
+            "\(times) times per \(period.formatted)".lowercased()
+        case let .everyPeriod(interval: interval, period: period):
+            "Every \(interval) \(period.formatted)".lowercased()
+        case let .predefined(predefined):
+            "\(predefined.rawValue)".lowercased()
+        }
     }
 }

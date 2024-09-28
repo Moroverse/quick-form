@@ -19,4 +19,7 @@ final class PrescriptionEditModel: Validatable {
 
     @PropertyEditor(keyPath: \Prescription.take)
     var take = FormFieldViewModel(value: Measurement<UnitDose>(value: 1, unit: .application), title: "Take:")
+
+    @PropertyEditor(keyPath: \Prescription.frequency)
+    var frequency = FormFieldViewModel(value: MedicationFrequency.predefined(schedule: .bid), title: "Frequency:")
 }

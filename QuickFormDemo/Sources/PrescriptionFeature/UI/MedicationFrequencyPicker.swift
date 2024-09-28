@@ -11,57 +11,70 @@ struct MedicationFrequencyPicker: View {
     @State private var times: Int
     @State private var period: MedicationFrequency.TimePeriod
     @State private var schedule: MedicationFrequency.PredefinedSchedule
+    @State private var isClosed: Bool = true
     var body: some View {
-        VStack {
-            Picker("Frequencty", selection: $simpleFrequency) {
-                ForEach(MedicationFrequency.SimpleFrequency.allCases, id: \.hashValue) { simpleFrequency in
-                    Text(simpleFrequency.toString)
-                        .tag(simpleFrequency, includeOptional: true)
+        HStack {
+            Text(viewModel.title)
+                .font(.headline)
+            Spacer()
+            Button(viewModel.value.formatted) {
+                withAnimation {
+                    isClosed.toggle()
                 }
             }
-            .pickerStyle(.segmented)
+        }
+        if isClosed == false {
+            VStack {
+                Picker("Frequency", selection: $simpleFrequency) {
+                    ForEach(MedicationFrequency.SimpleFrequency.allCases, id: \.hashValue) { simpleFrequency in
+                        Text(simpleFrequency.formatted)
+                            .tag(simpleFrequency, includeOptional: true)
+                    }
+                }
+                .pickerStyle(.segmented)
 
-            switch simpleFrequency {
-            case .predefined:
-                PredefinedSchedulePicker(schedule: $schedule)
-            case .timesPerPeriod:
-                TimesPerPeriodPicker(times: $times, period: $period)
-            case .everyPeriod:
-                EveryPeriodPicker(times: $times, period: $period)
+                switch simpleFrequency {
+                case .predefined:
+                    PredefinedSchedulePicker(schedule: $schedule)
+                case .timesPerPeriod:
+                    TimesPerPeriodPicker(times: $times, period: $period)
+                case .everyPeriod:
+                    EveryPeriodPicker(times: $times, period: $period)
+                }
             }
-        }
-        .padding()
-        .onChange(of: schedule) { _, newValue in
-            viewModel.value = .predefined(schedule: newValue)
-        }
-        .onChange(of: times) { _, newValue in
-            switch simpleFrequency {
-            case .predefined:
-                break
-            case .timesPerPeriod:
-                viewModel.value = .timesPerPeriod(times: newValue, period: period)
-            case .everyPeriod:
-                viewModel.value = .everyPeriod(interval: newValue, period: period)
+            .padding()
+            .onChange(of: schedule) { _, newValue in
+                viewModel.value = .predefined(schedule: newValue)
             }
-        }
-        .onChange(of: period) { _, newValue in
-            switch simpleFrequency {
-            case .predefined:
-                break
-            case .timesPerPeriod:
-                viewModel.value = .timesPerPeriod(times: times, period: newValue)
-            case .everyPeriod:
-                viewModel.value = .everyPeriod(interval: times, period: newValue)
+            .onChange(of: times) { _, newValue in
+                switch simpleFrequency {
+                case .predefined:
+                    break
+                case .timesPerPeriod:
+                    viewModel.value = .timesPerPeriod(times: newValue, period: period)
+                case .everyPeriod:
+                    viewModel.value = .everyPeriod(interval: newValue, period: period)
+                }
             }
-        }
-        .onChange(of: simpleFrequency) { _, newValue in
-            switch newValue {
-            case .predefined:
-                viewModel.value = .predefined(schedule: schedule)
-            case .timesPerPeriod:
-                viewModel.value = .timesPerPeriod(times: times, period: period)
-            case .everyPeriod:
-                viewModel.value = .everyPeriod(interval: times, period: period)
+            .onChange(of: period) { _, newValue in
+                switch simpleFrequency {
+                case .predefined:
+                    break
+                case .timesPerPeriod:
+                    viewModel.value = .timesPerPeriod(times: times, period: newValue)
+                case .everyPeriod:
+                    viewModel.value = .everyPeriod(interval: times, period: newValue)
+                }
+            }
+            .onChange(of: simpleFrequency) { _, newValue in
+                switch newValue {
+                case .predefined:
+                    viewModel.value = .predefined(schedule: schedule)
+                case .timesPerPeriod:
+                    viewModel.value = .timesPerPeriod(times: times, period: period)
+                case .everyPeriod:
+                    viewModel.value = .everyPeriod(interval: times, period: period)
+                }
             }
         }
     }
@@ -102,7 +115,7 @@ struct EveryPeriodPicker: View {
             .pickerStyle(.wheel)
             Picker("Period", selection: $period) {
                 ForEach(MedicationFrequency.TimePeriod.allCases, id: \.self) { schedule in
-                    Text(schedule.toString)
+                    Text(schedule.formatted)
                 }
             }
             .pickerStyle(.wheel)
@@ -125,7 +138,7 @@ struct TimesPerPeriodPicker: View {
             Text("times per")
             Picker("Period", selection: $period) {
                 ForEach(MedicationFrequency.TimePeriod.allCases, id: \.self) { schedule in
-                    Text(schedule.toString)
+                    Text(schedule.formatted)
                 }
             }
             .pickerStyle(.wheel)
