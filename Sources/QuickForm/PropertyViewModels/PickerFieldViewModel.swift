@@ -48,14 +48,14 @@ public final class PickerFieldViewModel<Property: Hashable & CustomStringConvert
     /// The currently selected value.
     public var value: Property {
         didSet {
-            valueChanged?(value)
+            dispatcher.publish(value)
         }
     }
 
     /// A boolean indicating whether the field is read-only.
     public var isReadOnly: Bool
 
-    private var valueChanged: ((Property) -> Void)?
+    private var dispatcher: Dispatcher
     /// Initializes a new instance of `PickerFieldViewModel`.
     ///
     /// - Parameters:
@@ -73,6 +73,7 @@ public final class PickerFieldViewModel<Property: Hashable & CustomStringConvert
         self.allValues = allValues
         self.title = title
         self.isReadOnly = isReadOnly
+        dispatcher = Dispatcher()
     }
 
     /// Sets a closure to be called when the selected value changes.
@@ -81,7 +82,7 @@ public final class PickerFieldViewModel<Property: Hashable & CustomStringConvert
     /// - Returns: The `PickerFieldViewModel` instance for method chaining.
     @discardableResult
     public func onValueChanged(_ change: @escaping (Property) -> Void) -> Self {
-        valueChanged = change
+        dispatcher.subscribe(handler: change)
         return self
     }
 }

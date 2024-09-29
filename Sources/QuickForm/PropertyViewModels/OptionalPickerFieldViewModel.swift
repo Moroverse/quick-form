@@ -58,6 +58,7 @@ public final class OptionalPickerFieldViewModel<Property: Hashable & CustomStrin
     /// The currently selected value, which can be nil.
     public var value: Property? {
         didSet {
+            dispatcher.publish(value)
             validationResult = validate()
         }
     }
@@ -68,6 +69,7 @@ public final class OptionalPickerFieldViewModel<Property: Hashable & CustomStrin
     public var validation: AnyValidationRule<Property?>?
 
     private var validationResult: ValidationResult = .success
+    private var dispatcher: Dispatcher
 
     /// Initializes a new instance of `OptionalPickerFieldViewModel`.
     ///
@@ -91,6 +93,7 @@ public final class OptionalPickerFieldViewModel<Property: Hashable & CustomStrin
         self.placeholder = placeholder
         self.isReadOnly = isReadOnly
         self.validation = validation
+        dispatcher = Dispatcher()
         validationResult = validate()
     }
 
@@ -99,5 +102,15 @@ public final class OptionalPickerFieldViewModel<Property: Hashable & CustomStrin
     /// - Returns: A `ValidationResult` indicating whether the validation succeeded or failed.
     public func validate() -> ValidationResult {
         validation?.validate(value) ?? .success
+    }
+
+    /// Sets a closure to be called when the selected value changes.
+    ///
+    /// - Parameter change: A closure that takes the new selected value as its parameter.
+    /// - Returns: The `OptionalPickerFieldViewModel` instance for method chaining.
+    @discardableResult
+    public func onValueChanged(_ change: @escaping (Property?) -> Void) -> Self {
+        dispatcher.subscribe(handler: change)
+        return self
     }
 }

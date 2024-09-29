@@ -53,7 +53,7 @@ public final class FormattedFieldViewModel<F>: ValueEditor, Validatable
     /// The current value of the form field.
     public var value: F.FormatInput {
         didSet {
-            valueChanged?(value)
+            dispatcher.publish(value)
             validationResult = validate()
         }
     }
@@ -61,7 +61,7 @@ public final class FormattedFieldViewModel<F>: ValueEditor, Validatable
     /// A boolean indicating whether the field is read-only.
     public var isReadOnly: Bool
 
-    private var valueChanged: ((F.FormatInput) -> Void)?
+    private var dispatcher: Dispatcher
     private let validation: AnyValidationRule<F.FormatInput?>?
     private var validationResult: ValidationResult = .success
     /// Initializes a new instance of `FormattedFieldViewModel`.
@@ -87,6 +87,7 @@ public final class FormattedFieldViewModel<F>: ValueEditor, Validatable
         self.placeholder = placeholder
         self.isReadOnly = isReadOnly
         self.validation = validation
+        dispatcher = Dispatcher()
         validationResult = validate()
     }
 
@@ -96,7 +97,7 @@ public final class FormattedFieldViewModel<F>: ValueEditor, Validatable
     /// - Returns: The `FormattedFieldViewModel` instance for method chaining.
     @discardableResult
     public func onValueChanged(_ change: @escaping (F.FormatInput) -> Void) -> Self {
-        valueChanged = change
+        dispatcher.subscribe(handler: change)
         return self
     }
 

@@ -48,14 +48,14 @@ public final class MultiPickerFieldViewModel<Property: Hashable & CustomStringCo
     /// The currently selected value.
     public var value: Set<Property> {
         didSet {
-            valueChanged?(value)
+            dispatcher.publish(value)
         }
     }
 
     /// A boolean indicating whether the field is read-only.
     public var isReadOnly: Bool
 
-    private var valueChanged: ((Set<Property>) -> Void)?
+    private var dispatcher: Dispatcher
     /// Initializes a new instance of `PickerFieldViewModel`.
     ///
     /// - Parameters:
@@ -73,6 +73,7 @@ public final class MultiPickerFieldViewModel<Property: Hashable & CustomStringCo
         self.allValues = allValues
         self.title = title
         self.isReadOnly = isReadOnly
+        dispatcher = Dispatcher()
     }
 
     /// Sets a closure to be called when the selected value changes.
@@ -81,7 +82,7 @@ public final class MultiPickerFieldViewModel<Property: Hashable & CustomStringCo
     /// - Returns: The `PickerFieldViewModel` instance for method chaining.
     @discardableResult
     public func onValueChanged(_ change: @escaping (Set<Property>) -> Void) -> Self {
-        valueChanged = change
+        dispatcher.subscribe(handler: change)
         return self
     }
 }

@@ -55,7 +55,7 @@ public final class FormFieldViewModel<Property>: ValueEditor, Validatable {
     /// The current value of the form field.
     public var value: Property {
         didSet {
-            valueChanged?(value)
+            dispatcher.publish(value)
             validationResult = validate()
         }
     }
@@ -63,7 +63,7 @@ public final class FormFieldViewModel<Property>: ValueEditor, Validatable {
     /// A boolean indicating whether the field is read-only.
     public var isReadOnly: Bool
 
-    private var valueChanged: ((Property) -> Void)?
+    private var dispatcher: Dispatcher
     private let validation: AnyValidationRule<Property>?
     private var validationResult: ValidationResult = .success
     /// Initializes a new instance of `FormFieldViewModel`.
@@ -86,6 +86,7 @@ public final class FormFieldViewModel<Property>: ValueEditor, Validatable {
         self.placeholder = placeholder
         self.isReadOnly = isReadOnly
         self.validation = validation
+        dispatcher = Dispatcher()
         validationResult = validate()
     }
 
@@ -95,7 +96,7 @@ public final class FormFieldViewModel<Property>: ValueEditor, Validatable {
     /// - Returns: The `FormFieldViewModel` instance for method chaining.
     @discardableResult
     public func onValueChanged(_ change: @escaping (Property) -> Void) -> Self {
-        valueChanged = change
+        dispatcher.subscribe(handler: change)
         return self
     }
 

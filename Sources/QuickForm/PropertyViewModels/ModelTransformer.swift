@@ -2,12 +2,6 @@
 // Copyright (c) 2024 Moroverse
 // Created by Daniel Moro on 2024-09-18 04:54 GMT.
 
-//
-//  ModelTransformer.swift
-//  quick-form
-//
-//  Created by Daniel Moro on 18.9.24..
-//
 import Observation
 
 public final class ModelTransformer<SourceEditor, DestinationEditor>: ValueEditor
