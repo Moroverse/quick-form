@@ -37,24 +37,42 @@ import SwiftUI
 ///     }
 /// }
 /// ```
-public struct FormFormattedTextField<F>: View where F: ParseableFormatStyle, F.FormatOutput == String {
+public struct FormFormattedTextField<F, V>: View where F: ParseableFormatStyle, F.FormatOutput == String, V: View {
+    let alignment: TextAlignment
+    let clearValueMode: ClearValueMode
+
     @FocusState private var isFocused: Bool
     @State private var resolvedAlignment: TextAlignment
     @State private var editingText = ""
     @State private var originalValue: F.FormatInput?
     @Bindable private var viewModel: FormattedFieldViewModel<F>
     @State private var hasError: Bool
-    let alignment: TextAlignment
-    let clearValueMode: ClearValueMode
+
+    private var trailingAccessoriesContent: (() -> V)?
 
     public init(
         _ viewModel: FormattedFieldViewModel<F>,
         alignment: TextAlignment = .trailing,
         clearValueMode: ClearValueMode = .never
+    ) where V == Never {
+        self.viewModel = viewModel
+        self.clearValueMode = clearValueMode
+        self.alignment = alignment
+        hasError = viewModel.errorMessage != nil
+        resolvedAlignment = alignment
+        isFocused = false
+    }
+
+    init(
+        _ viewModel: FormattedFieldViewModel<F>,
+        alignment: TextAlignment,
+        clearValueMode: ClearValueMode,
+        @ViewBuilder trailingAccessories: @escaping () -> V
     ) {
         self.viewModel = viewModel
         self.clearValueMode = clearValueMode
         self.alignment = alignment
+        trailingAccessoriesContent = trailingAccessories
         hasError = viewModel.errorMessage != nil
         resolvedAlignment = alignment
         isFocused = false
@@ -133,6 +151,10 @@ public struct FormFormattedTextField<F>: View where F: ParseableFormatStyle, F.F
                     }
                     .buttonStyle(.borderless)
                 }
+
+                if let trailingAccessoriesContent {
+                    trailingAccessoriesContent()
+                }
             }
             if hasError {
                 Text(viewModel.errorMessage ?? "Invalid input")
@@ -165,6 +187,15 @@ public struct FormFormattedTextField<F>: View where F: ParseableFormatStyle, F.F
     private var hasTitle: Bool {
         let value = String(localized: viewModel.title)
         return value.isEmpty == false
+    }
+
+    public func trailingAccessories<Content: View>(_ content: @escaping () -> Content) -> FormFormattedTextField<F, Content> {
+        return .init(
+            viewModel,
+            alignment: alignment,
+            clearValueMode: clearValueMode,
+            trailingAccessories: content
+        )
     }
 }
 
