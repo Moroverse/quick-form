@@ -24,13 +24,20 @@ final class PrescriptionEditModel: Validatable {
     var frequency = FormFieldViewModel(value: MedicationFrequency.predefined(schedule: .bid), title: "Frequency:")
 
     @PropertyEditor(keyPath: \Prescription.dispense)
-    var dispense = FormattedFieldViewModel(value: .custom(1), format: .dosageForm(.capsule), title: "Quantity:")
+    var dosageForm = FormattedFieldViewModel(value: .custom(1), format: .dosageForm(.capsule), title: "Quantity:")
+
+    var dispense = AsyncPickerFieldViewModel(
+        value: Prescription.DispensePackage?.none,
+        title: "",
+        valuesProvider: PackageDispenseFetcher.shared.fetchDispense,
+        queryBuilder: { _ in 0 }
+    )
 
     @PostInit
     func configure() {
         medication.dosageForm.onValueChanged { [weak self] newValue in
             if let form = newValue?.form {
-                self?.dispense.format = .dosageForm(form)
+                self?.dosageForm.format = .dosageForm(form)
             }
         }
     }

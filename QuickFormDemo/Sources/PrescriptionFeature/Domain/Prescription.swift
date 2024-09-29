@@ -11,16 +11,21 @@
 import Foundation
 
 final class Prescription {
+    struct DispensePackage: Identifiable, Equatable {
+        let id: Int
+        let description: String
+    }
+
     enum Dispense: CustomStringConvertible {
         case custom(Int)
-        case original(String)
+        case original(DispensePackage)
 
         var description: String {
             switch self {
             case let .custom(int):
                 String(int)
-            case let .original(string):
-                string
+            case let .original(package):
+                package.description
             }
         }
     }

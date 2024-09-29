@@ -6,7 +6,8 @@ final class SubstanceFetcher {
     static let shared = SubstanceFetcher()
 
     func fetchSubstance(query: String) async throws -> [MedicationComponents.SubstancePart] {
-        [
+        try await Task.sleep(for: .seconds(2))
+        return [
             .init(id: 1, substance: "Aspirin"),
             .init(id: 2, substance: "Ibuprofen"),
             .init(id: 3, substance: "Botox")
@@ -18,7 +19,8 @@ final class RouteFetcher {
     static let shared = RouteFetcher()
 
     func fetchRoute(substanceID id: Int) async throws -> [MedicationComponents.MedicationTakeRoutePart] {
-        [
+        try await Task.sleep(for: .seconds(2))
+        return [
             .init(id: 4, route: .oral),
             .init(id: 5, route: .intravenous),
             .init(id: 6, route: .intravenous),
@@ -31,7 +33,8 @@ final class StrengthFetcher {
     static let shared = StrengthFetcher()
 
     func fetchStrength(dosageID id: Int) async throws -> [MedicationComponents.MedicationStrengthPart] {
-        [
+        try await Task.sleep(for: .seconds(2))
+        return [
             .init(id: 8, strength: .m1000mg),
             .init(id: 9, strength: .m500mg),
             .init(id: 10, strength: .v1ml),
@@ -44,11 +47,23 @@ final class DosageFormFetcher {
     static let shared = DosageFormFetcher()
 
     func fetchForm(routeID id: Int) async throws -> [MedicationComponents.DosageFormPart] {
-        [
+        try await Task.sleep(for: .seconds(2))
+        return [
             .init(id: 12, form: .capsule),
             .init(id: 13, form: .injection),
             .init(id: 14, form: .liquid),
             .init(id: 15, form: .suppository)
+        ]
+    }
+}
+
+final class PackageDispenseFetcher {
+    static let shared = PackageDispenseFetcher()
+
+    func fetchDispense(medicationID id: Int) async throws -> [Prescription.DispensePackage] {
+        try await Task.sleep(for: .seconds(2))
+        return [
+            .init(id: 16, description: "")
         ]
     }
 }
