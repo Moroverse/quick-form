@@ -42,7 +42,7 @@ import Observation
 /// }
 /// ```
 @Observable
-public final class FormattedFieldViewModel<F>: ValueEditor, Validatable
+public final class FormattedFieldViewModel<F>: ObservableValueEditor, Validatable
     where F: ParseableFormatStyle, F.FormatOutput == String {
     /// The title of the form field.
     public var title: LocalizedStringResource

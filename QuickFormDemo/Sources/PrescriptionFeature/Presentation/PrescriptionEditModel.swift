@@ -26,26 +26,35 @@ final class PrescriptionEditModel: Validatable {
     @PropertyEditor(keyPath: \Prescription.dispense)
     var dispense = FormattedFieldViewModel(value: .custom(1), format: .dosageForm(.capsule), title: "Quantity:")
 
+    @PropertyEditor(keyPath: \Prescription.dispense)
     var dispensePackage = AsyncPickerFieldViewModel(
         value: Prescription.DispensePackage?.none,
         title: "",
         valuesProvider: PackageDispenseFetcher.shared.fetchDispense,
         queryBuilder: { _ in 0 }
-    )
+    ).map {
+        if let package = $0 {
+            Prescription.Dispense.original(package)
+        } else {
+            Prescription.Dispense.custom(1)
+        }
+    } transformToSource: {
+        if case let .original(package) = $0 {
+            package
+        } else {
+            nil
+        }
+    }
+
+    var info: String {
+        model.debugDescription
+    }
 
     @PostInit
     func configure() {
         medication.dosageForm.onValueChanged { [weak self] newValue in
             if let form = newValue?.form {
                 self?.dispense.format = .dosageForm(form)
-            }
-        }
-
-        dispense.onValueChanged { [weak self] dispense in
-            if case let .original(package) = dispense {
-                self?.dispensePackage.value = package
-            } else {
-                self?.dispensePackage.value = nil
             }
         }
     }

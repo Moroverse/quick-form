@@ -10,13 +10,13 @@
 //
 import Foundation
 
-final class Prescription {
+final class Prescription: AutoDebugStringConvertible {
     struct DispensePackage: Identifiable, Equatable {
         let id: Int
         let description: String
     }
 
-    enum Dispense: CustomStringConvertible {
+    enum Dispense: CustomStringConvertible, Equatable {
         case custom(Int)
         case original(DispensePackage)
 
@@ -66,3 +66,4 @@ let fakePrescription: Prescription = .init(
     duration: .init(value: 1, unit: .weeks),
     startDate: Date()
 )
+

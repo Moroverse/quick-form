@@ -40,7 +40,7 @@ import Observation
 /// }
 /// ```
 @Observable
-public final class MultiPickerFieldViewModel<Property: Hashable & CustomStringConvertible>: ValueEditor {
+public final class MultiPickerFieldViewModel<Property: Hashable & CustomStringConvertible>: ObservableValueEditor {
     /// The title of the picker field.
     public var title: LocalizedStringResource
     /// An array of all available values for the picker.

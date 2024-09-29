@@ -58,3 +58,7 @@ public protocol ValueEditor<Value> {
     /// The current value being edited.
     var value: Value { get set }
 }
+
+public protocol ObservableValueEditor: ValueEditor {
+    func onValueChanged(_ change: @escaping (Value) -> Void) -> Self
+}

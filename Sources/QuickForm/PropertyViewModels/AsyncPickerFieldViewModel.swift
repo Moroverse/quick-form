@@ -14,7 +14,7 @@ public enum ModelState<Model> {
 
 @Observable
 public final class AsyncPickerFieldViewModel<Model: Collection, Query>:
-    ValueEditor, Validatable where Model: Sendable, Query: Sendable & Equatable {
+    ObservableValueEditor, Validatable where Model: Sendable, Query: Sendable & Equatable {
     /// The title of the picker field.
     public var title: LocalizedStringResource
     /// An optional placeholder text for the form field.

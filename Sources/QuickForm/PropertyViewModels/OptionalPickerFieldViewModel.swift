@@ -48,7 +48,7 @@ import Observation
 /// ```
 @Observable
 public final class OptionalPickerFieldViewModel<Property: Hashable & CustomStringConvertible>:
-    ValueEditor, Validatable {
+    ObservableValueEditor, Validatable {
     /// The title of the picker field.
     public var title: LocalizedStringResource
     /// An optional placeholder text for the form field.

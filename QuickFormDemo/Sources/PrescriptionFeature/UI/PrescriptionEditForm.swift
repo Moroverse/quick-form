@@ -90,7 +90,11 @@ struct PrescriptionEditForm: View {
 
     private func originalDispenseField() -> some View {
         NavigationStack {
-            FormAsyncPickerField(quickForm.dispensePackage, pickerStyle: .inline, allowSearch: false) { dispense in
+            FormAsyncPickerField(
+                quickForm.dispensePackage.sourceEditor,
+                pickerStyle: .inline,
+                allowSearch: false
+            ) { dispense in
                 Text(dispense?.description ?? "No dispense selected")
             } pickerContent: { dispense in
                 Text(dispense.description)
@@ -121,6 +125,12 @@ struct PrescriptionEditForm: View {
                             originalDispenseField()
                         }
                     }
+            }
+
+            Section {
+                TextEditor(text: .constant(quickForm.info))
+                    .frame(height: 300)
+                    .disabled(true)
             }
         }
     }

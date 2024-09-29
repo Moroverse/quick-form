@@ -47,7 +47,7 @@ import Observation
 /// }
 /// ```
 @Observable
-public final class FormFieldViewModel<Property>: ValueEditor, Validatable {
+public final class FormFieldViewModel<Property>: ObservableValueEditor, Validatable {
     /// The title of the form field.
     public var title: LocalizedStringResource
     /// An optional placeholder text for the form field.
