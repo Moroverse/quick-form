@@ -5,4 +5,5 @@
 public enum AsyncPickerStyleConfiguration {
     case navigation
     case popover
+    case inline
 }

@@ -80,6 +80,8 @@ struct AsyncPickerFormField<Label: View, Content: View>: View {
 
             case .popover:
                 AsyncPickerPopoverStyle(title: title, content: content, label: label)
+            case .inline:
+                content()
             }
         }
     }
