@@ -1,4 +1,4 @@
-// SubstanceFetcher.swift
+// Fetchers.swift
 // Copyright (c) 2024 Moroverse
 // Created by Daniel Moro on 2024-09-22 04:54 GMT.
 
@@ -23,22 +23,7 @@ final class RouteFetcher {
         return [
             .init(id: 4, route: .oral),
             .init(id: 5, route: .intravenous),
-            .init(id: 6, route: .intravenous),
             .init(id: 7, route: .topical)
-        ]
-    }
-}
-
-final class StrengthFetcher {
-    static let shared = StrengthFetcher()
-
-    func fetchStrength(dosageID id: Int) async throws -> [MedicationComponents.MedicationStrengthPart] {
-        try await Task.sleep(for: .seconds(2))
-        return [
-            .init(id: 8, strength: .m1000mg),
-            .init(id: 9, strength: .m500mg),
-            .init(id: 10, strength: .v1ml),
-            .init(id: 11, strength: .v5ml)
         ]
     }
 }
@@ -50,9 +35,23 @@ final class DosageFormFetcher {
         try await Task.sleep(for: .seconds(2))
         return [
             .init(id: 12, form: .capsule),
-            .init(id: 13, form: .injection),
-            .init(id: 14, form: .liquid),
-            .init(id: 15, form: .suppository)
+            .init(id: 13, form: .tablet),
+            .init(id: 14, form: .drops),
+            .init(id: 15, form: .suspension)
+        ]
+    }
+}
+
+final class StrengthFetcher {
+    static let shared = StrengthFetcher()
+
+    func fetchStrength(dosageID id: Int) async throws -> [MedicationComponents.MedicationStrengthPart] {
+        try await Task.sleep(for: .seconds(2))
+        return [
+            .init(id: 8, strength: .m200mg),
+            .init(id: 9, strength: .m400mg),
+            .init(id: 10, strength: .m600mg),
+            .init(id: 11, strength: .m800mg)
         ]
     }
 }
@@ -63,7 +62,11 @@ final class PackageDispenseFetcher {
     func fetchDispense(medicationID id: Int) async throws -> [Prescription.DispensePackage] {
         try await Task.sleep(for: .seconds(2))
         return [
-            .init(id: 16, description: "")
+            .init(id: 16, description: "1"),
+            .init(id: 17, description: "6"),
+            .init(id: 18, description: "10"),
+            .init(id: 19, description: "16"),
+            .init(id: 20, description: "20")
         ]
     }
 }

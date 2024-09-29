@@ -190,7 +190,7 @@ public struct FormFormattedTextField<F, V>: View where F: ParseableFormatStyle, 
     }
 
     public func trailingAccessories<Content: View>(_ content: @escaping () -> Content) -> FormFormattedTextField<F, Content> {
-        return .init(
+        .init(
             viewModel,
             alignment: alignment,
             clearValueMode: clearValueMode,

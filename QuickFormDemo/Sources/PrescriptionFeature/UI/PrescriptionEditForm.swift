@@ -18,7 +18,7 @@ extension UnitDose: AllValues {
 
 struct PrescriptionEditForm: View {
     @Bindable private var quickForm: PrescriptionEditModel
-
+    @State private var isPresented: Bool = false
     private func substanceField() -> some View {
         FormAsyncPickerField(
             quickForm.medication.substance,
@@ -88,6 +88,17 @@ struct PrescriptionEditForm: View {
         }
     }
 
+    private func originalDispenseField() -> some View {
+        NavigationStack {
+            FormAsyncPickerField(quickForm.dispensePackage, pickerStyle: .inline, allowSearch: false) { dispense in
+                Text(dispense?.description ?? "No dispense selected")
+            } pickerContent: { dispense in
+                Text(dispense.description)
+            }
+        }
+        .frame(minWidth: 300, minHeight: 400)
+    }
+
     var body: some View {
         Form {
             FormMultiPickerSection(quickForm.problems)
@@ -98,7 +109,18 @@ struct PrescriptionEditForm: View {
                 routeField()
                 FormValueUnitField(quickForm.take)
                 MedicationFrequencyPicker(viewModel: quickForm.frequency)
-                FormFormattedTextField(quickForm.dispense)
+                FormFormattedTextField(quickForm.dispense, clearValueMode: .unlessEditing)
+                    .trailingAccessories {
+                        Button {
+                            isPresented.toggle()
+                        } label: {
+                            Image(systemName: "info.circle")
+                                .imageScale(.large)
+                        }
+                        .popover(isPresented: $isPresented) {
+                            originalDispenseField()
+                        }
+                    }
             }
         }
     }

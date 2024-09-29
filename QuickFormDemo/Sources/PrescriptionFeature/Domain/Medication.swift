@@ -20,7 +20,11 @@ final class Medication: Identifiable {
 
 // Mocks
 enum MedicationStrength: String, Equatable {
+    case m200mg = "200 mg"
+    case m400mg = "400 mg"
     case m500mg = "500 mg"
+    case m600mg = "600 mg"
+    case m800mg = "800 mg"
     case m1000mg = "1000 mg"
     case v1ml = "1 ml"
     case v5ml = "5 ml"
@@ -34,6 +38,8 @@ enum DosageForm: String, Equatable, CaseIterable {
     case injection = "Injection"
     case suppository = "Suppository"
     case package = "Package"
+    case drops = "Drops, Suspension"
+    case suspension = "Suspension"
     case other = "Other"
 }
 

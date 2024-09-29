@@ -24,9 +24,9 @@ final class PrescriptionEditModel: Validatable {
     var frequency = FormFieldViewModel(value: MedicationFrequency.predefined(schedule: .bid), title: "Frequency:")
 
     @PropertyEditor(keyPath: \Prescription.dispense)
-    var dosageForm = FormattedFieldViewModel(value: .custom(1), format: .dosageForm(.capsule), title: "Quantity:")
+    var dispense = FormattedFieldViewModel(value: .custom(1), format: .dosageForm(.capsule), title: "Quantity:")
 
-    var dispense = AsyncPickerFieldViewModel(
+    var dispensePackage = AsyncPickerFieldViewModel(
         value: Prescription.DispensePackage?.none,
         title: "",
         valuesProvider: PackageDispenseFetcher.shared.fetchDispense,
@@ -37,7 +37,15 @@ final class PrescriptionEditModel: Validatable {
     func configure() {
         medication.dosageForm.onValueChanged { [weak self] newValue in
             if let form = newValue?.form {
-                self?.dosageForm.format = .dosageForm(form)
+                self?.dispense.format = .dosageForm(form)
+            }
+        }
+
+        dispense.onValueChanged { [weak self] dispense in
+            if case let .original(package) = dispense {
+                self?.dispensePackage.value = package
+            } else {
+                self?.dispensePackage.value = nil
             }
         }
     }
