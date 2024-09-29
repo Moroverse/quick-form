@@ -11,11 +11,25 @@
 import Foundation
 
 final class Prescription {
+    enum Dispense: CustomStringConvertible {
+        case custom(Int)
+        case original(String)
+
+        var description: String {
+            switch self {
+            case let .custom(int):
+                String(int)
+            case let .original(string):
+                string
+            }
+        }
+    }
+
     var assessments: Set<Assessment>
     var medication: Medication?
     var take: Measurement<UnitDose>
     var frequency: MedicationFrequency
-    var dispense: Int
+    var dispense: Dispense
     var duration: Measurement<UnitDuration>
     var startDate: Date
 
@@ -24,7 +38,7 @@ final class Prescription {
         medication: Medication,
         take: Measurement<UnitDose>,
         frequency: MedicationFrequency,
-        dispense: Int,
+        dispense: Dispense,
         duration: Measurement<UnitDuration>,
         startDate: Date
     ) {
@@ -43,7 +57,7 @@ let fakePrescription: Prescription = .init(
     medication: Medication(id: 1, name: "Aspirin", strength: .m1000mg, dosageForm: .capsule, route: .intravenous),
     take: .init(value: 1, unit: UnitDose.tablet),
     frequency: .predefined(schedule: .bid),
-    dispense: 1,
+    dispense: .custom(1),
     duration: .init(value: 1, unit: .weeks),
     startDate: Date()
 )

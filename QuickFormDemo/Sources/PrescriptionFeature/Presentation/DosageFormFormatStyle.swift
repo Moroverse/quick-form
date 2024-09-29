@@ -5,7 +5,7 @@
 import Foundation
 
 struct DosageFormFormatStyle: ParseableFormatStyle {
-    typealias FormatInput = Int
+    typealias FormatInput = Prescription.Dispense
     typealias FormatOutput = String
 
     private var dosageForm: String
@@ -28,7 +28,7 @@ struct DosageFormFormatStyle: ParseableFormatStyle {
 }
 
 struct DosageFormParseStrategy: ParseStrategy {
-    func parse(_ value: String) throws -> Int {
+    func parse(_ value: String) throws -> Prescription.Dispense {
         let components = value.components(separatedBy: " ")
         let dosage: Int
         switch components.count {
@@ -50,7 +50,7 @@ struct DosageFormParseStrategy: ParseStrategy {
             throw ParseError.invalidFormat
         }
 
-        return dosage
+        return .custom(dosage)
     }
 
     enum ParseError: Error {

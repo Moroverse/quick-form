@@ -106,7 +106,7 @@ public struct FormFormattedTextField<F>: View where F: ParseableFormatStyle, F.F
                             editingText = safeExtract()
                             originalValue = viewModel.value
                         } else {
-                            // Entering edit mode: restore alignment
+                            // Exiting edit mode: restore alignment
                             resolvedAlignment = alignment
                             // Exiting edit mode: apply formatting
                             if let parsedValue = try? viewModel.format.parseStrategy.parse(editingText) {
