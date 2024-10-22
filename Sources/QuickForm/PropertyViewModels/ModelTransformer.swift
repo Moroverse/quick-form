@@ -35,5 +35,3 @@ public final class ModelTransformer<SourceEditor, DestinationEditor>: ValueEdito
         self.mapFrom = mapFrom
     }
 }
-
-

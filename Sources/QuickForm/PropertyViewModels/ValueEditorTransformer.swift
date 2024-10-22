@@ -1,14 +1,10 @@
-//
-//  ModelValueTransformer.swift
-//  quick-form
-//
-//  Created by Daniel Moro on 29.9.24..
-//
-
+// ValueEditorTransformer.swift
+// Copyright (c) 2024 Moroverse
+// Created by Daniel Moro on 2024-09-29 15:46 GMT.
 
 public final class ValueEditorTransformer<SourceEditor, Transformed>: ValueEditor
-where SourceEditor: ObservableValueEditor {
-    private var settingValue: Bool = false
+    where SourceEditor: ObservableValueEditor {
+    private var settingValue = false
     public var value: Transformed {
         didSet {
             settingValue = true
@@ -27,20 +23,20 @@ where SourceEditor: ObservableValueEditor {
         transformFromSource: @escaping (SourceEditor.Value) -> Transformed,
         transformToSource: @escaping (Transformed) -> SourceEditor.Value
     ) {
-        self.sourceEditor = original
+        sourceEditor = original
         self.transformToSource = transformToSource
         self.transformFromSource = transformFromSource
-        self.value = transformFromSource(original.value)
+        value = transformFromSource(original.value)
 
-        sourceEditor.onValueChanged{ [weak self] in
+        sourceEditor.onValueChanged { [weak self] in
             if self?.settingValue == true { return }
             self?.value = transformFromSource($0)
         }
     }
 }
 
-extension ValueEditor {
-    public func map<TransformedValue>(
+public extension ValueEditor {
+    func map<TransformedValue>(
         transformFromSource: @escaping (Value) -> TransformedValue,
         transformToSource: @escaping (TransformedValue) -> Value
     ) -> ValueEditorTransformer<Self, TransformedValue> {

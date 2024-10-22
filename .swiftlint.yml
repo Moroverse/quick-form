@@ -58,7 +58,7 @@ opt_in_rules:
 - weak_delegate
 
 excluded:
-  - **/Derived
+  - "**/Derived"
 
 class_delegate_protocol:
     severity: error

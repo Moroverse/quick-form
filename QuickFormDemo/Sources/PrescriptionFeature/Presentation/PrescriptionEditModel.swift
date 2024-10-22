@@ -46,9 +46,7 @@ final class PrescriptionEditModel: Validatable {
         }
     }
 
-    var info: String {
-        model.debugDescription
-    }
+    var info: String = ""
 
     @PostInit
     func configure() {
@@ -57,5 +55,9 @@ final class PrescriptionEditModel: Validatable {
                 self?.dispense.format = .dosageForm(form)
             }
         }
+
+        addCustomValidationRule(SpyValidationRule(onValidation: { [weak self] desc in
+            self?.info = desc
+        }))
     }
 }

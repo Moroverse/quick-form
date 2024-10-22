@@ -11,6 +11,7 @@ final class MedicationBuilder: Validatable {
     @PropertyEditor(keyPath: \MedicationComponents.substance)
     var substance = AsyncPickerFieldViewModel(
         value: MedicationComponents.SubstancePart?.none,
+        validation: .of(RequiredRule()),
         valuesProvider: SubstanceFetcher.shared.fetchSubstance,
         queryBuilder: { $0 ?? "" }
     )

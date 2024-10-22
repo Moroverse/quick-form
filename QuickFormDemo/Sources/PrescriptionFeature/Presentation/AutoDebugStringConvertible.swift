@@ -1,9 +1,6 @@
-//
-//  AutoDebugStringConvertible.swift
-//  QuickFormDemo
-//
-//  Created by Daniel Moro on 29.9.24..
-//
+// AutoDebugStringConvertible.swift
+// Copyright (c) 2024 Moroverse
+// Created by Daniel Moro on 2024-09-29 15:46 GMT.
 
 protocol AutoDebugStringConvertible: CustomDebugStringConvertible {}
 
@@ -19,7 +16,3 @@ extension AutoDebugStringConvertible {
         return "\(type(of: self))(\(properties.joined(separator: ", ")))"
     }
 }
-
-extension Person: AutoDebugStringConvertible {}
-extension Medication: AutoDebugStringConvertible {}
-extension MedicationComponents: AutoDebugStringConvertible {}

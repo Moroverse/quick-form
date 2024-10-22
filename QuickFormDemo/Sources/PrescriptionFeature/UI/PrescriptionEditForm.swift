@@ -105,6 +105,7 @@ struct PrescriptionEditForm: View {
 
     var body: some View {
         Form {
+            let _ = Self._printChanges()
             FormMultiPickerSection(quickForm.problems)
             Section("Medication") {
                 substanceField()
