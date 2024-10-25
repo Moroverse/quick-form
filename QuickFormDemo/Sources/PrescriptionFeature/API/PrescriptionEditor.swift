@@ -7,7 +7,7 @@ import UIKit
 
 enum PrescriptionEditor {
     @MainActor
-    static func prescriptionEditor(for prescription: Prescription) -> UIViewController {
+    static func prescriptionEditor(for prescription: PrescriptionComponents) -> UIViewController {
         let viewModel = PrescriptionEditModel(model: prescription)
         let view = PrescriptionEditForm(quickForm: viewModel)
         let wrappedView = Wrapped { view }

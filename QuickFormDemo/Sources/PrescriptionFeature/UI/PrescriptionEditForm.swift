@@ -105,15 +105,17 @@ struct PrescriptionEditForm: View {
 
     var body: some View {
         Form {
-            let _ = Self._printChanges()
             FormMultiPickerSection(quickForm.problems)
             Section("Medication") {
                 substanceField()
                 strengthField()
                 dosageFormField()
                 routeField()
-                FormValueUnitField(quickForm.take)
-                MedicationFrequencyPicker(viewModel: quickForm.frequency)
+                FormOptionalValueUnitField(
+                    quickForm.take,
+                    defaultValue: Measurement<UnitDose>(value: 1, unit: .application)
+                )
+//                MedicationFrequencyPicker(viewModel: quickForm.frequency)
                 FormFormattedTextField(quickForm.dispense, clearValueMode: .unlessEditing)
                     .trailingAccessories {
                         Button {

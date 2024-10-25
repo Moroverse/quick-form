@@ -59,7 +59,7 @@ final class StrengthFetcher {
 final class PackageDispenseFetcher {
     static let shared = PackageDispenseFetcher()
 
-    func fetchDispense(medicationID id: Int) async throws -> [Prescription.DispensePackage] {
+    func fetchDispense(medicationID id: Int) async throws -> [PrescriptionComponents.DispensePackage] {
         try await Task.sleep(for: .seconds(2))
         return [
             .init(id: 16, description: "1"),

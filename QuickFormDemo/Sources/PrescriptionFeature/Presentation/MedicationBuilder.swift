@@ -8,6 +8,8 @@ import Observation
 
 @QuickForm(MedicationComponents.self)
 final class MedicationBuilder: Validatable {
+    private let dispatcher = Dispatcher()
+
     @PropertyEditor(keyPath: \MedicationComponents.substance)
     var substance = AsyncPickerFieldViewModel(
         value: MedicationComponents.SubstancePart?.none,
@@ -19,6 +21,7 @@ final class MedicationBuilder: Validatable {
     @PropertyEditor(keyPath: \MedicationComponents.route)
     var route = AsyncPickerFieldViewModel(
         value: MedicationComponents.MedicationTakeRoutePart?.none,
+        validation: .of(RequiredRule()),
         valuesProvider: RouteFetcher.shared.fetchRoute,
         queryBuilder: { _ in 0 }
     )
@@ -26,6 +29,7 @@ final class MedicationBuilder: Validatable {
     @PropertyEditor(keyPath: \MedicationComponents.strength)
     var strength = AsyncPickerFieldViewModel(
         value: MedicationComponents.MedicationStrengthPart?.none,
+        validation: .of(RequiredRule()),
         valuesProvider: StrengthFetcher.shared.fetchStrength,
         queryBuilder: { _ in 0 }
     )
@@ -33,6 +37,7 @@ final class MedicationBuilder: Validatable {
     @PropertyEditor(keyPath: \MedicationComponents.dosageForm)
     var dosageForm = AsyncPickerFieldViewModel(
         value: MedicationComponents.DosageFormPart?.none,
+        validation: .of(RequiredRule()),
         valuesProvider: DosageFormFetcher.shared.fetchForm,
         queryBuilder: { _ in 0 }
     )
@@ -40,8 +45,10 @@ final class MedicationBuilder: Validatable {
     @PostInit
     func configure() {
         substance.onValueChanged { [weak self] newValue in
-            self?.route.value = nil
-            self?.model.id = newValue?.id
+            guard let self else { return }
+            route.value = nil
+            model.id = newValue?.id
+            dispatcher.publish(model)
         }
 
         route.queryBuilder = { [weak self] _ in
@@ -49,8 +56,10 @@ final class MedicationBuilder: Validatable {
         }
 
         route.onValueChanged { [weak self] newValue in
-            self?.dosageForm.value = nil
-            self?.model.id = newValue?.id
+            guard let self else { return }
+            dosageForm.value = nil
+            model.id = newValue?.id
+            dispatcher.publish(model)
         }
 
         dosageForm.queryBuilder = { [weak self] _ in
@@ -58,37 +67,36 @@ final class MedicationBuilder: Validatable {
         }
 
         dosageForm.onValueChanged { [weak self] newValue in
-            self?.strength.value = nil
-            self?.model.id = newValue?.id
+            guard let self else { return }
+            strength.value = nil
+            model.id = newValue?.id
+            dispatcher.publish(model)
         }
 
         strength.queryBuilder = { [weak self] _ in
             self?.model.id ?? 0
         }
+
+        strength.onValueChanged { [weak self] _ in
+            guard let self else { return }
+            dispatcher.publish(model)
+        }
     }
 }
 
-extension MedicationBuilder: ValueEditor {
-    var value: Medication? {
+extension MedicationBuilder: ObservableValueEditor {
+    func onValueChanged(_ change: @escaping (MedicationComponents) -> Void) -> Self {
+        dispatcher.subscribe(handler: change)
+        return self
+    }
+
+    var value: MedicationComponents {
         get {
-            model.build()
+            model
         }
         set(newValue) {
-            if let substance = newValue?.name {
-                model.substance = MedicationComponents.SubstancePart(id: newValue!.id, substance: substance)
-            }
-
-            if let route = newValue?.route {
-                model.route = MedicationComponents.MedicationTakeRoutePart(id: newValue!.id, route: route)
-            }
-
-            if let form = newValue?.dosageForm {
-                model.dosageForm = MedicationComponents.DosageFormPart(id: newValue!.id, form: form)
-            }
-
-            if let strength = newValue?.strength {
-                model.strength = MedicationComponents.MedicationStrengthPart(id: newValue!.id, strength: strength)
-            }
+            model = newValue
+            update()
         }
     }
 }

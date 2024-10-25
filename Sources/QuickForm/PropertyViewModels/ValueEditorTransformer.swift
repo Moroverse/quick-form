@@ -7,6 +7,7 @@ public final class ValueEditorTransformer<SourceEditor, Transformed>: ValueEdito
     private var settingValue = false
     public var value: Transformed {
         didSet {
+            if settingValue == true { return }
             settingValue = true
             sourceEditor.value = transformToSource(value)
             settingValue = false
@@ -30,7 +31,9 @@ public final class ValueEditorTransformer<SourceEditor, Transformed>: ValueEdito
 
         sourceEditor.onValueChanged { [weak self] in
             if self?.settingValue == true { return }
+            self?.settingValue = true
             self?.value = transformFromSource($0)
+            self?.settingValue = false
         }
     }
 }

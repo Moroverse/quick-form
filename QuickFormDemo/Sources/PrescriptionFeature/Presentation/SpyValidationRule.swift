@@ -1,3 +1,7 @@
+// SpyValidationRule.swift
+// Copyright (c) 2024 Moroverse
+// Created by Daniel Moro on 2024-10-22 02:17 GMT.
+
 //
 //  AgeValidationRule.swift
 //  QuickFormDemo
@@ -13,7 +17,7 @@ struct SpyValidationRule: ValidationRule {
         self.onValidation = onValidation
     }
 
-    func validate(_ value: Prescription) -> ValidationResult {
+    func validate(_ value: PrescriptionComponents) -> ValidationResult {
         if let onValidation {
             onValidation(value.debugDescription)
         }

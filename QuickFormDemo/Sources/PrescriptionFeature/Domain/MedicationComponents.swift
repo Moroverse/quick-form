@@ -31,6 +31,20 @@ final class MedicationComponents: AutoDebugStringConvertible {
     var dosageForm: DosageFormPart?
     var route: MedicationTakeRoutePart?
 
+    init(
+        id: Int? = nil,
+        substance: SubstancePart? = nil,
+        strength: MedicationStrengthPart? = nil,
+        dosageForm: DosageFormPart? = nil,
+        route: MedicationTakeRoutePart? = nil
+    ) {
+        self.id = id
+        self.substance = substance
+        self.strength = strength
+        self.dosageForm = dosageForm
+        self.route = route
+    }
+
     func build() -> Medication? {
         guard let id, let substance, let strength, let dosageForm, let route else { return nil }
         return Medication(

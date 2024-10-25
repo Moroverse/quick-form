@@ -6,37 +6,59 @@ import Foundation
 import Observation
 @preconcurrency import QuickForm
 
-@QuickForm(Prescription.self)
+@QuickForm(PrescriptionComponents.self)
 final class PrescriptionEditModel: Validatable {
-    @PropertyEditor(keyPath: \Prescription.assessments)
+    @PropertyEditor(keyPath: \PrescriptionComponents.assessments)
     var problems = MultiPickerFieldViewModel(value: [], allValues: [
         Assessment(name: "BCC", id: 1),
         Assessment(name: "SCC", id: 2)
     ], title: "Assessments")
 
-    @PropertyEditor(keyPath: \Prescription.medication)
+    @PropertyEditor(keyPath: \PrescriptionComponents.medication)
     var medication = MedicationBuilder(model: MedicationComponents())
+//        .map {
+//            $0.build()
+//        } transformToSource: {
+//            if let newValue = $0 {
+//                var model = MedicationComponents()
+//                model.substance = MedicationComponents.SubstancePart(id: newValue.id, substance: newValue.name)
+//                model.route = MedicationComponents.MedicationTakeRoutePart(id: newValue.id, route: newValue.route)
+//                model.dosageForm = MedicationComponents.DosageFormPart(id: newValue.id, form: newValue.dosageForm)
+//                model.strength = MedicationComponents.MedicationStrengthPart(
+//                    id: newValue.id,
+//                    strength: newValue.strength
+//                )
+//
+//                return model
+//            } else {
+//                return MedicationComponents()
+//            }
+//        }
 
-    @PropertyEditor(keyPath: \Prescription.take)
-    var take = FormFieldViewModel(value: Measurement<UnitDose>(value: 1, unit: .application), title: "Take:")
+    @PropertyEditor(keyPath: \PrescriptionComponents.take)
+    var take = FormFieldViewModel(value: Measurement<UnitDose>?.none, title: "Take:")
 
-    @PropertyEditor(keyPath: \Prescription.frequency)
-    var frequency = FormFieldViewModel(value: MedicationFrequency.predefined(schedule: .bid), title: "Frequency:")
+    @PropertyEditor(keyPath: \PrescriptionComponents.frequency)
+    var frequency = FormFieldViewModel(value: MedicationFrequency?.none, title: "Frequency:")
 
-    @PropertyEditor(keyPath: \Prescription.dispense)
-    var dispense = FormattedFieldViewModel(value: .custom(1), format: .dosageForm(.capsule), title: "Quantity:")
+    @PropertyEditor(keyPath: \PrescriptionComponents.dispense)
+    var dispense = FormattedFieldViewModel(
+        value: PrescriptionComponents.Dispense?.none,
+        format: OptionalFormat(format: .dosageForm(.capsule)),
+        title: "Quantity:"
+    )
 
-    @PropertyEditor(keyPath: \Prescription.dispense)
+    @PropertyEditor(keyPath: \PrescriptionComponents.dispense)
     var dispensePackage = AsyncPickerFieldViewModel(
-        value: Prescription.DispensePackage?.none,
+        value: PrescriptionComponents.DispensePackage?.none,
         title: "",
         valuesProvider: PackageDispenseFetcher.shared.fetchDispense,
         queryBuilder: { _ in 0 }
     ).map {
         if let package = $0 {
-            Prescription.Dispense.original(package)
+            PrescriptionComponents.Dispense.original(package)
         } else {
-            Prescription.Dispense.custom(1)
+            PrescriptionComponents.Dispense?.none
         }
     } transformToSource: {
         if case let .original(package) = $0 {
@@ -46,13 +68,14 @@ final class PrescriptionEditModel: Validatable {
         }
     }
 
+    @PropertyEditor(keyPath: Never)
     var info: String = ""
 
     @PostInit
     func configure() {
         medication.dosageForm.onValueChanged { [weak self] newValue in
             if let form = newValue?.form {
-                self?.dispense.format = .dosageForm(form)
+                self?.dispense.format = OptionalFormat(format: .dosageForm(form))
             }
         }
 

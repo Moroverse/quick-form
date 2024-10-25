@@ -10,7 +10,7 @@
 //
 import Foundation
 
-final class Prescription: AutoDebugStringConvertible {
+final class PrescriptionComponents: AutoDebugStringConvertible {
     struct DispensePackage: Identifiable, Equatable, AutoDebugStringConvertible {
         let id: Int
         let description: String
@@ -31,21 +31,21 @@ final class Prescription: AutoDebugStringConvertible {
     }
 
     var assessments: Set<Assessment>
-    var medication: Medication?
-    var take: Measurement<UnitDose>
-    var frequency: MedicationFrequency
-    var dispense: Dispense
-    var duration: Measurement<UnitDuration>
-    var startDate: Date
+    var medication: MedicationComponents
+    var take: Measurement<UnitDose>?
+    var frequency: MedicationFrequency?
+    var dispense: Dispense?
+    var duration: Measurement<UnitDuration>?
+    var startDate: Date?
 
     init(
         assessments: Set<Assessment>,
-        medication: Medication,
-        take: Measurement<UnitDose>,
-        frequency: MedicationFrequency,
-        dispense: Dispense,
-        duration: Measurement<UnitDuration>,
-        startDate: Date
+        medication: MedicationComponents,
+        take: Measurement<UnitDose>?,
+        frequency: MedicationFrequency?,
+        dispense: Dispense?,
+        duration: Measurement<UnitDuration>?,
+        startDate: Date?
     ) {
         self.assessments = assessments
         self.medication = medication
@@ -57,9 +57,15 @@ final class Prescription: AutoDebugStringConvertible {
     }
 }
 
-let fakePrescription: Prescription = .init(
+let fakePrescription: PrescriptionComponents = .init(
     assessments: [],
-    medication: Medication(id: 1, name: "Aspirin", strength: .m1000mg, dosageForm: .capsule, route: .intravenous),
+    medication: MedicationComponents(
+        id: 4,
+        substance: .init(id: 1, substance: "Aspirin"),
+        strength: .init(id: 2, strength: .m1000mg),
+        dosageForm: .init(id: 3, form: .capsule),
+        route: .init(id: 4, route: .intravenous)
+    ),
     take: .init(value: 1, unit: UnitDose.tablet),
     frequency: .predefined(schedule: .bid),
     dispense: .custom(1),
