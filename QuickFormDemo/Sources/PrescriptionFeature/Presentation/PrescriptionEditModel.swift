@@ -15,25 +15,7 @@ final class PrescriptionEditModel: Validatable {
     ], title: "Assessments")
 
     @PropertyEditor(keyPath: \PrescriptionComponents.medication)
-    var medication = MedicationBuilder(model: MedicationComponents())
-//        .map {
-//            $0.build()
-//        } transformToSource: {
-//            if let newValue = $0 {
-//                var model = MedicationComponents()
-//                model.substance = MedicationComponents.SubstancePart(id: newValue.id, substance: newValue.name)
-//                model.route = MedicationComponents.MedicationTakeRoutePart(id: newValue.id, route: newValue.route)
-//                model.dosageForm = MedicationComponents.DosageFormPart(id: newValue.id, form: newValue.dosageForm)
-//                model.strength = MedicationComponents.MedicationStrengthPart(
-//                    id: newValue.id,
-//                    strength: newValue.strength
-//                )
-//
-//                return model
-//            } else {
-//                return MedicationComponents()
-//            }
-//        }
+    var medication = MedicationBuilder(value: MedicationComponents())
 
     @PropertyEditor(keyPath: \PrescriptionComponents.take)
     var take = FormFieldViewModel(value: Measurement<UnitDose>?.none, title: "Take:")

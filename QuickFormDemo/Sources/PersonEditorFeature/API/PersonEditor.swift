@@ -19,7 +19,7 @@ struct PersonEditorDelegate {
 enum PersonEditor {
     @MainActor
     static func personEditor(for person: Person, delegate: PersonEditorDelegate?) -> UIViewController {
-        let viewModel = PersonEditModel(model: person)
+        let viewModel = PersonEditModel(value: person)
         let view = PersonEditView(quickForm: viewModel, delegate: delegate)
         let wrappedView = Wrapped { view }
         let hostingController = UIHostingController(rootView: wrappedView)

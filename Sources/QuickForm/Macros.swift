@@ -58,8 +58,8 @@ import Observation
 @attached(
     member,
     names: named(init),
-    named(model),
-    named(_model),
+    named(value),
+    named(_value),
     named(track),
     named(_$observationRegistrar),
     named(access),

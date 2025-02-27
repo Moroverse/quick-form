@@ -74,25 +74,25 @@ public struct QuickFormMacro: MemberMacro, ExtensionMacro {
 
         // Add model property
         let modelVar = """
-        \(classVisibility) var model: \(modelType) {
+        \(classVisibility) var value: \(modelType) {
             get {
-                access(keyPath: \\.model)
-                return _model
+                access(keyPath: \\.value)
+                return _value
             }
             set {
-                withMutation(keyPath: \\.model) {
-                    _model = newValue
+                withMutation(keyPath: \\.value) {
+                    _value = newValue
                 }
             }
         }
-        private var _model: \(modelType)
+        private var _value: \(modelType)
         """
         declarations.append(DeclSyntax(stringLiteral: modelVar))
 
         // Add update method
         let updateMethodContent = propertyEditors.map { identifier, keyPath in
             """
-            \(identifier).value = _model[keyPath: \(keyPath)]
+            \(identifier).value = _value[keyPath: \(keyPath)]
             """
         }.joined(separator: "\n")
 
@@ -105,8 +105,8 @@ public struct QuickFormMacro: MemberMacro, ExtensionMacro {
 
         // Add initializer
         let initializer = """
-        \(classVisibility) init(model: \(modelType)) {
-            self._model = model
+        \(classVisibility) init(value: \(modelType)) {
+            self._value = value
             update()
             \(propertyEditors.map { identifier, keyPath in
                 makeTrack(identifier: identifier, keyPath: keyPath, shouldValidate: conformsToValidatable)
@@ -186,7 +186,7 @@ public struct QuickFormMacro: MemberMacro, ExtensionMacro {
 
                 // Apply custom validation rules
                 for rule in customValidationRules {
-                    let result = rule.validate(_model)
+                    let result = rule.validate(_value)
                     if case .failure(let error) = result {
                          errors.append(error)
                     }
@@ -226,7 +226,7 @@ public struct QuickFormMacro: MemberMacro, ExtensionMacro {
                     } onChange: { [weak self] in
                         Task { @MainActor [weak self] in
                             guard let self else { return }
-                            self.model[keyPath: \(keyPath)] = \(identifier).value
+                            self.value[keyPath: \(keyPath)] = \(identifier).value
                             \(validation)
                             track\(CapitalizedIdentifier)()
                         }

@@ -14,7 +14,12 @@ final class Assessment: Identifiable {
 
 extension Assessment: CustomStringConvertible {
     var description: String {
-        name
+        get { name
+        }
+
+        _modify {
+            yi
+        }
     }
 }
 

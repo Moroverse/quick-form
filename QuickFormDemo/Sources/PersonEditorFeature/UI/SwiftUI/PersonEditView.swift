@@ -96,8 +96,8 @@ struct PersonEditView: View {
             }
         }
         .navigationTitle(quickForm.personNameComponents.formatted())
-        .onChange(of: quickForm.model) {
-            info = String(describing: quickForm.model)
+        .onChange(of: quickForm.value) {
+            info = String(describing: quickForm.value)
         }
         .toolbar {
             if !quickForm.isValid {
@@ -122,7 +122,7 @@ struct PersonEditView: View {
 struct ContentView_Previews: PreviewProvider {
     struct PreviewWrapper: View {
         @State var form = PersonEditModel(
-            model: Person(
+            value: Person(
                 givenName: "Olivia",
                 familyName: "Chen",
                 dateOfBirth: Date(timeIntervalSince1970: 707_443_200), // September 3, 1992

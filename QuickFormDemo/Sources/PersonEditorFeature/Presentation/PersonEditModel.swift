@@ -64,7 +64,7 @@ class PersonEditModel: Validatable {
 
     @PropertyEditor(keyPath: \Person.address)
     // 4. Custom view models using ValueEditor Protocol
-    var address = AddressEditModel(model: .init(
+    var address = AddressEditModel(value: .init(
         line1: "",
         city: "",
         zipCode: "",

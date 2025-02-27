@@ -8,8 +8,6 @@ import Observation
 
 @QuickForm(MedicationComponents.self)
 final class MedicationBuilder: Validatable {
-    private let dispatcher = Dispatcher()
-
     @PropertyEditor(keyPath: \MedicationComponents.substance)
     var substance = AsyncPickerFieldViewModel(
         value: MedicationComponents.SubstancePart?.none,
@@ -47,56 +45,33 @@ final class MedicationBuilder: Validatable {
         substance.onValueChanged { [weak self] newValue in
             guard let self else { return }
             route.value = nil
-            model.id = newValue?.id
-            dispatcher.publish(model)
+            value.id = newValue?.id
         }
 
         route.queryBuilder = { [weak self] _ in
-            self?.model.id ?? 0
+            self?.value.id ?? 0
         }
 
         route.onValueChanged { [weak self] newValue in
             guard let self else { return }
             dosageForm.value = nil
-            model.id = newValue?.id
-            dispatcher.publish(model)
+            value.id = newValue?.id
         }
 
         dosageForm.queryBuilder = { [weak self] _ in
-            self?.model.id ?? 0
+            self?.value.id ?? 0
         }
 
         dosageForm.onValueChanged { [weak self] newValue in
             guard let self else { return }
             strength.value = nil
-            model.id = newValue?.id
-            dispatcher.publish(model)
+            value.id = newValue?.id
         }
 
         strength.queryBuilder = { [weak self] _ in
-            self?.model.id ?? 0
-        }
-
-        strength.onValueChanged { [weak self] _ in
-            guard let self else { return }
-            dispatcher.publish(model)
+            self?.value.id ?? 0
         }
     }
 }
 
-extension MedicationBuilder: ObservableValueEditor {
-    func onValueChanged(_ change: @escaping (MedicationComponents) -> Void) -> Self {
-        dispatcher.subscribe(handler: change)
-        return self
-    }
-
-    var value: MedicationComponents {
-        get {
-            model
-        }
-        set(newValue) {
-            model = newValue
-            update()
-        }
-    }
-}
+extension MedicationBuilder: ValueEditor {}

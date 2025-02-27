@@ -145,7 +145,7 @@ struct PrescriptionEditForm: View {
 
 struct PrescriptionEditForm_Previews: PreviewProvider {
     struct PreviewWrapper: View {
-        @State var form = PrescriptionEditModel(model: fakePrescription)
+        @State var form = PrescriptionEditModel(value: fakePrescription)
 
         var body: some View {
             PrescriptionEditForm(quickForm: form)

@@ -65,14 +65,4 @@ class AddressEditModel: Validatable {
     }
 }
 
-extension AddressEditModel: ValueEditor {
-    var value: Address {
-        get {
-            model
-        }
-        set(newValue) {
-            model = newValue
-            update()
-        }
-    }
-}
+extension AddressEditModel: ValueEditor {}
