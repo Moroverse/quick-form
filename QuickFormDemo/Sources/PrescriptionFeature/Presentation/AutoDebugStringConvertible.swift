@@ -1,5 +1,5 @@
 // AutoDebugStringConvertible.swift
-// Copyright (c) 2024 Moroverse
+// Copyright (c) 2025 Moroverse
 // Created by Daniel Moro on 2024-09-29 15:46 GMT.
 
 protocol AutoDebugStringConvertible: CustomDebugStringConvertible {}

@@ -1,5 +1,5 @@
 // CountryState+Description.swift
-// Copyright (c) 2024 Moroverse
+// Copyright (c) 2025 Moroverse
 // Created by Daniel Moro on 2024-09-08 08:55 GMT.
 
 extension CountryState: CustomStringConvertible {
