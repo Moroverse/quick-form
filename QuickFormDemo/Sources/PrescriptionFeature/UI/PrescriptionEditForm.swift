@@ -115,7 +115,7 @@ struct PrescriptionEditForm: View {
                     quickForm.take,
                     defaultValue: Measurement<UnitDose>(value: 1, unit: .application)
                 )
-//                MedicationFrequencyPicker(viewModel: quickForm.frequency)
+                MedicationFrequencyPicker(viewModel: quickForm.frequency)
                 FormFormattedTextField(quickForm.dispense, clearValueMode: .unlessEditing)
                     .trailingAccessories {
                         Button {

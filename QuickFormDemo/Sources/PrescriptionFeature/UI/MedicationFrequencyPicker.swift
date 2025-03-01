@@ -6,7 +6,7 @@ import QuickForm
 import SwiftUI
 
 struct MedicationFrequencyPicker: View {
-    @Bindable private var viewModel: FormFieldViewModel<MedicationFrequency>
+    @Bindable private var viewModel: FormFieldViewModel<MedicationFrequency?>
     @State private var simpleFrequency: MedicationFrequency.SimpleFrequency
     @State private var times: Int
     @State private var period: MedicationFrequency.TimePeriod
@@ -17,12 +17,25 @@ struct MedicationFrequencyPicker: View {
             Text(viewModel.title)
                 .font(.headline)
             Spacer()
-            Button(viewModel.value.formatted) {
+            Button(viewModel.value?.formatted ?? "Not Set") {
                 withAnimation {
                     isClosed.toggle()
+                    if isClosed == false {
+                        updateValue(with: simpleFrequency)
+                    }
                 }
             }
+            if shouldDisplayClearButton {
+                Button {
+                    viewModel.value = nil
+                    isClosed = true
+                } label: {
+                    Image(systemName: "xmark.circle")
+                }
+                .buttonStyle(.borderless)
+            }
         }
+        .disabled(viewModel.isReadOnly)
         if isClosed == false {
             VStack {
                 Picker("Frequency", selection: $simpleFrequency) {
@@ -67,24 +80,36 @@ struct MedicationFrequencyPicker: View {
                 }
             }
             .onChange(of: simpleFrequency) { _, newValue in
-                switch newValue {
-                case .predefined:
-                    viewModel.value = .predefined(schedule: schedule)
-                case .timesPerPeriod:
-                    viewModel.value = .timesPerPeriod(times: times, period: period)
-                case .everyPeriod:
-                    viewModel.value = .everyPeriod(interval: times, period: period)
-                }
+                updateValue(with: newValue)
             }
         }
     }
 
-    init(viewModel: FormFieldViewModel<MedicationFrequency>) {
+    init(viewModel: FormFieldViewModel<MedicationFrequency?>) {
         self.viewModel = viewModel
-        simpleFrequency = viewModel.value.simpleFrequency
-        times = viewModel.value.interval ?? 1
-        period = viewModel.value.timePeriod ?? .hour
+        simpleFrequency = viewModel.value?.simpleFrequency ?? .predefined
+        times = viewModel.value?.interval ?? 1
+        period = viewModel.value?.timePeriod ?? .hour
         schedule = .bid
+    }
+
+    private var shouldDisplayClearButton: Bool {
+        if viewModel.isReadOnly {
+            return false
+        }
+
+        return viewModel.value != nil
+    }
+
+    private func updateValue(with simpleFrequency: MedicationFrequency.SimpleFrequency) {
+        switch simpleFrequency {
+        case .predefined:
+            viewModel.value = .predefined(schedule: schedule)
+        case .timesPerPeriod:
+            viewModel.value = .timesPerPeriod(times: times, period: period)
+        case .everyPeriod:
+            viewModel.value = .everyPeriod(interval: times, period: period)
+        }
     }
 }
 
@@ -148,7 +173,7 @@ struct TimesPerPeriodPicker: View {
 
 #Preview {
     @Previewable @State var viewModel = FormFieldViewModel(
-        value: MedicationFrequency.predefined(schedule: .bid),
+        value: MedicationFrequency?.none,
         title: "Take"
     )
     Form {
