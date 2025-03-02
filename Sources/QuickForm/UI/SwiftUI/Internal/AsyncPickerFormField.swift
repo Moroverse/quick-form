@@ -44,10 +44,11 @@ struct AsyncPickerPopoverStyle<Label: View, Content: View>: View, AsyncPickerSty
     @State private var isPresented = false
 
     var body: some View {
-        Button {
+        Button(action: {}, label: label)
+        .buttonStyle(.plain)
+        .contentShape(Rectangle())
+        .onTapGesture {
             isPresented = true
-        } label: {
-            label()
         }
         .popover(isPresented: $isPresented) {
             NavigationStack {

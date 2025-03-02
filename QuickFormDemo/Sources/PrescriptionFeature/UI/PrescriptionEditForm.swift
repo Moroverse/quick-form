@@ -108,9 +108,9 @@ struct PrescriptionEditForm: View {
             FormMultiPickerSection(quickForm.problems)
             Section("Medication") {
                 substanceField()
-                strengthField()
-                dosageFormField()
                 routeField()
+                dosageFormField()
+                strengthField()
                 FormOptionalValueUnitField(
                     quickForm.take,
                     defaultValue: Measurement<UnitDose>(value: 1, unit: .application)
@@ -130,11 +130,11 @@ struct PrescriptionEditForm: View {
                     }
             }
 
-            Section {
-                TextEditor(text: .constant(quickForm.info))
-                    .frame(height: 300)
-                    .disabled(true)
-            }
+//            Section {
+//                TextEditor(text: .constant(quickForm.info))
+//                    .frame(height: 300)
+//                    .disabled(true)
+//            }
         }
     }
 
