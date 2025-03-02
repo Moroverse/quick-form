@@ -37,7 +37,7 @@ import SwiftUI
 ///     }
 /// }
 /// ```
-public struct FormFormattedTextField<F, V>: View where F: ParseableFormatStyle, F.FormatOutput == String, V: View {
+public struct FormFormattedTextField<F, V>: View where F: ParseableFormatStyle, F.FormatOutput == String, F.FormatInput: Equatable, V: View {
     let alignment: TextAlignment
     let clearValueMode: ClearValueMode
 
@@ -78,20 +78,6 @@ public struct FormFormattedTextField<F, V>: View where F: ParseableFormatStyle, 
         isFocused = false
     }
 
-    func safeExtract() -> String {
-        if _isOptional(type(of: viewModel.value)) {
-            var optional = String(describing: viewModel.value)
-            if optional == "nil" {
-                return ""
-            }
-            optional.trimPrefix("Optional(\"")
-            let result = optional.split(separator: "\"")
-            return String(result[0])
-        } else {
-            return String(describing: viewModel.value)
-        }
-    }
-
     public var body: some View {
         VStack {
             HStack(spacing: 10) {
@@ -115,13 +101,18 @@ public struct FormFormattedTextField<F, V>: View where F: ParseableFormatStyle, 
                 .onChange(of: viewModel.format) { _, _ in
                     editingText = viewModel.format.format(viewModel.value)
                 }
+                .onChange(of: viewModel.value) { newValue in
+                     if !isFocused {
+                        editingText = viewModel.format.format(newValue)
+                    }
+                }
                 .onChange(of: isFocused) { _, newValue in
                     withAnimation {
                         if newValue {
                             // Entering edit mode: enforce leading
                             resolvedAlignment = .leading
                             // Entering edit mode: remove formatting
-                            editingText = safeExtract()
+                            editingText = viewModel.rawStringValue
                             originalValue = viewModel.value
                         } else {
                             // Exiting edit mode: restore alignment

@@ -58,6 +58,14 @@ public final class FormattedFieldViewModel<F>: ObservableValueEditor, Validatabl
         }
     }
 
+    public var rawStringValue: String {
+        if let convertible = value as? CustomStringConvertible {
+            return convertible.description
+        } else {
+            return String(describing: value)
+        }
+    }
+
     /// A boolean indicating whether the field is read-only.
     public var isReadOnly: Bool
 

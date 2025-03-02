@@ -61,6 +61,10 @@ final class PrescriptionEditModel: Validatable {
             }
         }
 
+        dispensePackage.onValueChanged { [weak self] newValue in
+            self?.dispense.value = newValue
+        }
+
         addCustomValidationRule(SpyValidationRule(onValidation: { [weak self] desc in
             self?.info = desc
         }))
