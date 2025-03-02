@@ -11,7 +11,7 @@ QuickForm simplifies the process of creating forms in SwiftUI by providing a set
 Add the following dependency to your `Package.swift` file:
 
 ```swift
-.package(url: "https://github.com/yourusername/QuickForm.git", from: "1.0.0")
+.package(url: "https://github.com/Moroverse/quick-form.git", from: "1.0.0")
 ```
 
 ## Main Components
@@ -24,7 +24,10 @@ Add the following dependency to your `Package.swift` file:
 - ``FormattedFieldViewModel``
 - ``PickerFieldViewModel``
 - ``OptionalPickerFieldViewModel``
+- ``MultiPickerFieldViewModel``
 - ``FormCollectionViewModel``
+- ``AsyncPickerFieldViewModel``
+- ``ValueEditorTransformer``
 ### Form Filed Editors
 - ``FormTextField``
 - ``FormOptionalTextField``
@@ -32,12 +35,23 @@ Add the following dependency to your `Package.swift` file:
 - ``FormPickerField``
 - ``FormOptionalPickerField``
 - ``FormValueUnitField``
+- ``FormValueDimensionField``
+- ``FormOptionalValueUnitField``
 - ``FormToggleField``
 - ``FormDatePickerField``
 - ``FormCollectionSection``
+- ``FormMultiPickerSection``
+- ``FormAsyncPickerField``
+- ``FormSecureTextField``
 ### Validators
 - ``Validatable``
 - ``ValidationRule``
+- ``ValidationResult``
+- ``MaxLengthRule``
+- ``MinLengthRule``
+- ``NotEmptyRule``
+- ``RequiredRule``
+- ``AnyValidationRule``
 ### Formaters
 - ``OptionalFormat``
 

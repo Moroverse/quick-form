@@ -58,6 +58,16 @@ public final class FormattedFieldViewModel<F>: ObservableValueEditor, Validatabl
         }
     }
 
+    /// Returns the raw string representation of the current value.
+    ///
+    /// This property provides a simple string representation of the underlying value,
+    /// without applying any formatting. It's useful when you need the unformatted value
+    /// for editing purposes or raw display.
+    ///
+    /// - If the value conforms to `CustomStringConvertible`, uses its `description` property
+    /// - Otherwise, falls back to Swift's default string representation using `String(describing:)`
+    ///
+    /// - Returns: A string representation of the raw value
     public var rawStringValue: String {
         if let convertible = value as? CustomStringConvertible {
             return convertible.description

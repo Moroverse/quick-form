@@ -59,6 +59,56 @@ public protocol ValueEditor<Value> {
     var value: Value { get set }
 }
 
+/// A protocol that extends `ValueEditor` to provide observation capabilities.
+///
+/// `ObservableValueEditor` adds the ability to register callbacks that are triggered
+/// when the value changes, enabling reactive programming patterns with form fields.
+/// This is particularly useful for updating UI components, triggering validation,
+/// or propagating changes to other parts of your application.
+///
+/// Conforming types must implement the `onValueChanged` method that registers a callback
+/// to be invoked whenever the value changes.
+///
+/// ## Example
+///
+/// ```swift
+/// class ReactiveFieldViewModel<T>: ObservableValueEditor {
+///     var value: T {
+///         didSet {
+///             // Notify subscribers about the change
+///             notifySubscribers(value)
+///         }
+///     }
+///
+///     private var subscribers: [(T) -> Void] = []
+///
+///     init(value: T) {
+///         self.value = value
+///     }
+///
+///     @discardableResult
+///     func onValueChanged(_ change: @escaping (T) -> Void) -> Self {
+///         subscribers.append(change)
+///         return self
+///     }
+///
+///     private func notifySubscribers(_ newValue: T) {
+///         subscribers.forEach { $0(newValue) }
+///     }
+/// }
+///
+/// // Usage:
+/// let field = ReactiveFieldViewModel(value: 0)
+/// field.onValueChanged { newValue in
+///     print("Value changed to: \(newValue)")
+/// }
+/// field.value = 42 // Prints: "Value changed to: 42"
+/// ```
 public protocol ObservableValueEditor: ValueEditor {
+    /// Registers a callback to be invoked when the value changes.
+    ///
+    /// - Parameter change: A closure that will be called whenever the value changes,
+    ///   with the new value as its parameter.
+    /// - Returns: The editor instance for method chaining.
     func onValueChanged(_ change: @escaping (Value) -> Void) -> Self
 }
