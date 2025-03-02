@@ -17,11 +17,19 @@ let package = Package(
         )
     ],
     dependencies: [
-        .package(url: "https://github.com/SimplyDanny/SwiftLintPlugins", from: "0.55.1"),
+        .package(url: "https://github.com/SimplyDanny/SwiftLintPlugins", from: "0.58.2"),
         .package(url: "https://github.com/apple/swift-docc-plugin", from: "1.0.0"),
-        .package(url: "https://github.com/swiftlang/swift-syntax", "509.0.0" ..< "601.0.0-prerelease")
+        .package(url: "https://github.com/swiftlang/swift-syntax.git", from: "600.0.0-latest"),
+        .package(url: "https://github.com/pointfreeco/swift-macro-testing.git", from: "0.6.0")
     ],
     targets: [
+        .macro(
+            name: "QuickFormMacros",
+            dependencies: [
+                .product(name: "SwiftSyntaxMacros", package: "swift-syntax"),
+                .product(name: "SwiftCompilerPlugin", package: "swift-syntax")
+            ]
+        ),
         .target(
             name: "QuickForm",
             dependencies: [
@@ -31,12 +39,15 @@ let package = Package(
                 .plugin(name: "SwiftLintBuildToolPlugin", package: "SwiftLintPlugins")
             ]
         ),
-        .macro(
-            name: "QuickFormMacros",
+        .testTarget(
+            name: "QuickFormTests",
             dependencies: [
-                .product(name: "SwiftSyntaxMacros", package: "swift-syntax"),
-                .product(name: "SwiftCompilerPlugin", package: "swift-syntax")
+               "QuickForm",
+                "QuickFormMacros",
+                .product(name: "SwiftSyntaxMacrosTestSupport", package: "swift-syntax"),
+                .product(name: "MacroTesting", package: "swift-macro-testing")
             ]
-        )
-    ]
+        ),
+    ],
+    swiftLanguageModes: [.v5]
 )
