@@ -15,6 +15,18 @@ protocol AsyncPickerStyle: View {
     init(title: LocalizedStringResource, content: @escaping () -> Content, label: @escaping () -> Label)
 }
 
+struct SafeNavigationBarTitleDisplayModeModifier: ViewModifier {
+    func body(content: Content) -> some View {
+        #if os(macOS)
+        content
+        #else
+        content
+            .navigationBarTitleDisplayMode(.inline)
+        #endif
+    }
+}
+
+
 struct AsyncPickerNavigationStyle<Label: View, Content: View>: View, AsyncPickerStyle {
     let title: LocalizedStringResource
     let content: () -> Content
@@ -24,7 +36,7 @@ struct AsyncPickerNavigationStyle<Label: View, Content: View>: View, AsyncPicker
         NavigationLink {
             content()
                 .navigationTitle(String(localized: title))
-                .navigationBarTitleDisplayMode(.inline)
+                .modifier(SafeNavigationBarTitleDisplayModeModifier())
         } label: {
             label()
         }
@@ -54,7 +66,7 @@ struct AsyncPickerPopoverStyle<Label: View, Content: View>: View, AsyncPickerSty
             NavigationStack {
                 content()
                     .navigationTitle(String(localized: title))
-                    .navigationBarTitleDisplayMode(.inline)
+                    .modifier(SafeNavigationBarTitleDisplayModeModifier())
             }
             .frame(minWidth: 300, minHeight: 400)
         }

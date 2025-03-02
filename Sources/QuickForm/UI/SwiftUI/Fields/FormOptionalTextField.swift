@@ -44,25 +44,42 @@ public struct FormOptionalTextField: View {
     @State private var hasError: Bool
     let alignment: TextAlignment
     let clearValueMode: ClearValueMode
-    let autocapitalizationType: TextInputAutocapitalization
+    #if os(iOS)
+        let autocapitalizationType: TextInputAutocapitalization
+    #endif
 
     /// Initializes a new `FormOptionalTextField`.
     ///
     /// - Parameter viewModel: The view model that manages the state of this text field.
-    public init(
-        _ viewModel: FormFieldViewModel<String?>,
-        alignment: TextAlignment = .trailing,
-        clearValueMode: ClearValueMode = .never,
-        autocapitalizationType: TextInputAutocapitalization = .never
-    ) {
-        self.viewModel = viewModel
-        self.clearValueMode = clearValueMode
-        self.alignment = alignment
-        self.autocapitalizationType = autocapitalizationType
-        hasError = viewModel.errorMessage != nil
-        resolvedAlignment = alignment
-        isFocused = false
-    }
+    #if os(iOS)
+        public init(
+            _ viewModel: FormFieldViewModel<String?>,
+            alignment: TextAlignment = .trailing,
+            clearValueMode: ClearValueMode = .never,
+            autocapitalizationType: TextInputAutocapitalization = .never
+        ) {
+            self.viewModel = viewModel
+            self.clearValueMode = clearValueMode
+            self.alignment = alignment
+            self.autocapitalizationType = autocapitalizationType
+            hasError = viewModel.errorMessage != nil
+            resolvedAlignment = alignment
+            isFocused = false
+        }
+    #else
+        public init(
+            _ viewModel: FormFieldViewModel<String?>,
+            alignment: TextAlignment = .trailing,
+            clearValueMode: ClearValueMode = .never
+        ) {
+            self.viewModel = viewModel
+            self.clearValueMode = clearValueMode
+            self.alignment = alignment
+            hasError = viewModel.errorMessage != nil
+            resolvedAlignment = alignment
+            isFocused = false
+        }
+    #endif
 
     /// The body of the `FormOptionalTextField` view.
     ///
@@ -85,7 +102,9 @@ public struct FormOptionalTextField: View {
                     ),
                     text: $viewModel.value.unwrapped(defaultValue: "")
                 )
+                #if os(iOS)
                 .textInputAutocapitalization(autocapitalizationType)
+                #endif
                 .focused($isFocused)
                 .multilineTextAlignment(resolvedAlignment)
                 .disabled(viewModel.isReadOnly)

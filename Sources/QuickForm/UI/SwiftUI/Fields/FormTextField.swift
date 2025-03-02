@@ -11,22 +11,39 @@ public struct FormTextField: View {
     @State private var hasError: Bool
     let alignment: TextAlignment
     let clearValueMode: ClearValueMode
-    let autocapitalizationType: TextInputAutocapitalization
+    #if os(iOS)
+        let autocapitalizationType: TextInputAutocapitalization
+    #endif
 
-    public init(
-        _ viewModel: FormFieldViewModel<String>,
-        alignment: TextAlignment = .trailing,
-        clearValueMode: ClearValueMode = .never,
-        autocapitalizationType: TextInputAutocapitalization = .never
-    ) {
-        self.viewModel = viewModel
-        self.clearValueMode = clearValueMode
-        self.alignment = alignment
-        self.autocapitalizationType = autocapitalizationType
-        hasError = viewModel.errorMessage != nil
-        resolvedAlignment = alignment
-        isFocused = false
-    }
+    #if os(iOS)
+        public init(
+            _ viewModel: FormFieldViewModel<String>,
+            alignment: TextAlignment = .trailing,
+            clearValueMode: ClearValueMode = .never,
+            autocapitalizationType: TextInputAutocapitalization = .never
+        ) {
+            self.viewModel = viewModel
+            self.clearValueMode = clearValueMode
+            self.alignment = alignment
+            self.autocapitalizationType = autocapitalizationType
+            hasError = viewModel.errorMessage != nil
+            resolvedAlignment = alignment
+            isFocused = false
+        }
+    #else
+        public init(
+            _ viewModel: FormFieldViewModel<String>,
+            alignment: TextAlignment = .trailing,
+            clearValueMode: ClearValueMode = .never
+        ) {
+            self.viewModel = viewModel
+            self.clearValueMode = clearValueMode
+            self.alignment = alignment
+            hasError = viewModel.errorMessage != nil
+            resolvedAlignment = alignment
+            isFocused = false
+        }
+    #endif
 
     public var body: some View {
         VStack(alignment: .leading, spacing: 5) {
@@ -39,7 +56,9 @@ public struct FormTextField: View {
                     .focused($isFocused)
                     .multilineTextAlignment(resolvedAlignment)
                     .disabled(viewModel.isReadOnly)
+                #if os(iOS)
                     .textInputAutocapitalization(autocapitalizationType)
+                #endif
                     .onSubmit {
                         isFocused = false
                     }

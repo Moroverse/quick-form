@@ -11,7 +11,7 @@ private struct ConcreteSubscription: Subscription {
         _unsubscribe = unsubscribe
     }
 
-    public func unsubscribe() {
+    func unsubscribe() {
         _unsubscribe()
     }
 }
