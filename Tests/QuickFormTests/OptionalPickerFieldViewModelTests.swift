@@ -1,6 +1,6 @@
 // OptionalPickerFieldViewModelTests.swift
 // Copyright (c) 2025 Moroverse
-// Created by Daniel Moro on 2025-03-04 09:15 GMT.
+// Created by Daniel Moro on 2025-03-03 08:27 GMT.
 
 import Foundation
 import QuickForm
@@ -13,9 +13,9 @@ enum TestOption: String, Hashable, CustomStringConvertible {
 
     var description: String {
         switch self {
-        case .first: return "First Option"
-        case .second: return "Second Option"
-        case .third: return "Third Option"
+        case .first: "First Option"
+        case .second: "Second Option"
+        case .third: "Third Option"
         }
     }
 }
@@ -116,7 +116,6 @@ struct OptionalPickerFieldViewModelTests {
 
     @Test("Validates value according to validation rules")
     func validation() {
-
         let sut = OptionalPickerFieldViewModel(
             value: TestOption.first,
             allValues: [.first, .second, .third],

@@ -1,6 +1,6 @@
 // MultiPickerFieldViewModelTests.swift
 // Copyright (c) 2025 Moroverse
-// Created by Daniel Moro on 2025-03-03 17:15 GMT.
+// Created by Daniel Moro on 2025-03-03 08:20 GMT.
 
 import Foundation
 import QuickForm
@@ -15,11 +15,11 @@ enum TestCategory: String, Hashable, CustomStringConvertible {
 
     var description: String {
         switch self {
-        case .food: return "Food"
-        case .travel: return "Travel"
-        case .entertainment: return "Entertainment"
-        case .sports: return "Sports"
-        case .education: return "Education"
+        case .food: "Food"
+        case .travel: "Travel"
+        case .entertainment: "Entertainment"
+        case .sports: "Sports"
+        case .education: "Education"
         }
     }
 }
