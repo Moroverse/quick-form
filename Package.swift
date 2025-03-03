@@ -42,12 +42,12 @@ let package = Package(
         .testTarget(
             name: "QuickFormTests",
             dependencies: [
-               "QuickForm",
+                "QuickForm",
                 "QuickFormMacros",
                 .product(name: "SwiftSyntaxMacrosTestSupport", package: "swift-syntax"),
                 .product(name: "MacroTesting", package: "swift-macro-testing")
             ]
-        ),
+        )
     ],
     swiftLanguageModes: [.v5]
 )
