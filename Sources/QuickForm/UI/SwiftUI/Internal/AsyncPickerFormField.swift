@@ -18,14 +18,13 @@ protocol AsyncPickerStyle: View {
 struct SafeNavigationBarTitleDisplayModeModifier: ViewModifier {
     func body(content: Content) -> some View {
         #if os(macOS)
-        content
+            content
         #else
-        content
-            .navigationBarTitleDisplayMode(.inline)
+            content
+                .navigationBarTitleDisplayMode(.inline)
         #endif
     }
 }
-
 
 struct AsyncPickerNavigationStyle<Label: View, Content: View>: View, AsyncPickerStyle {
     let title: LocalizedStringResource
@@ -57,19 +56,19 @@ struct AsyncPickerPopoverStyle<Label: View, Content: View>: View, AsyncPickerSty
 
     var body: some View {
         Button(action: {}, label: label)
-        .buttonStyle(.plain)
-        .contentShape(Rectangle())
-        .onTapGesture {
-            isPresented = true
-        }
-        .popover(isPresented: $isPresented) {
-            NavigationStack {
-                content()
-                    .navigationTitle(String(localized: title))
-                    .modifier(SafeNavigationBarTitleDisplayModeModifier())
+            .buttonStyle(.plain)
+            .contentShape(Rectangle())
+            .onTapGesture {
+                isPresented = true
             }
-            .frame(minWidth: 300, minHeight: 400)
-        }
+            .popover(isPresented: $isPresented) {
+                NavigationStack {
+                    content()
+                        .navigationTitle(String(localized: title))
+                        .modifier(SafeNavigationBarTitleDisplayModeModifier())
+                }
+                .frame(minWidth: 300, minHeight: 400)
+            }
     }
 
     init(title: LocalizedStringResource, content: @escaping () -> Content, label: @escaping () -> Label) {

@@ -6,8 +6,8 @@ import Observation
 
 /// A value editor that transforms between two different value editor types.
 ///
-/// `ModelTransformer` connects two value editors and provides bidirectional 
-/// transformation between their values. This is useful when you need to work 
+/// `ModelTransformer` connects two value editors and provides bidirectional
+/// transformation between their values. This is useful when you need to work
 /// with different representations of the same underlying data.
 ///
 /// Example usage:
@@ -25,7 +25,7 @@ public final class ModelTransformer<SourceEditor, DestinationEditor>: ValueEdito
     /// The transformed value.
     ///
     /// When getting this value, it transforms the original editor's value using `mapFrom`.
-    /// When setting this value, it updates both the destination editor and transforms 
+    /// When setting this value, it updates both the destination editor and transforms
     /// it back to update the original editor using `mapTo`.
     public var value: DestinationEditor.Value {
         get {

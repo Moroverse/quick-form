@@ -1,13 +1,10 @@
-//
-//  FormattedFieldViewModelTests.swift
-//  quick-form
-//
-//  Created by Daniel Moro on 3.3.25..
-//
+// FormattedFieldViewModelTests.swift
+// Copyright (c) 2025 Moroverse
+// Created by Daniel Moro on 2025-03-03 08:01 GMT.
 
-import Testing
-import QuickForm
 import Foundation
+import QuickForm
+import Testing
 
 @Suite("FormattedFieldViewModel Tests")
 struct FormattedFieldViewModelTests {
@@ -26,7 +23,7 @@ struct FormattedFieldViewModelTests {
         #expect(sut.placeholder == "Enter amount")
         #expect(sut.isReadOnly == false)
     }
-    
+
     @Test("Formats value according to format style")
     func valueFormatting() {
         let locale = Locale(identifier: "en_US")
@@ -35,11 +32,11 @@ struct FormattedFieldViewModelTests {
             format: .currency(code: "USD").locale(locale),
             title: "Price"
         )
-        
+
         let formatted = sut.format.format(sut.value)
         #expect(formatted == "$1,234.56")
     }
-    
+
     @Test("Calls all registered callbacks when value changes")
     func onValueChange() {
         let sut = FormattedFieldViewModel(
@@ -47,16 +44,16 @@ struct FormattedFieldViewModelTests {
             format: .number,
             title: "Amount"
         )
-        
+
         var recordChange = 0
-        var recordedValue: Double? = nil
+        var recordedValue: Double?
         sut.onValueChanged { newValue in
             recordChange += 1
             recordedValue = newValue
         }
 
         var secondRecordChange = 0
-        var secondRecordedValue: Double? = nil
+        var secondRecordedValue: Double?
         sut.onValueChanged { newValue in
             secondRecordChange += 1
             secondRecordedValue = newValue
@@ -69,7 +66,7 @@ struct FormattedFieldViewModelTests {
         #expect(secondRecordChange == 1)
         #expect(secondRecordedValue == 250.0)
     }
-    
+
     @Test("Returns raw string value without formatting")
     func rawStringValue() {
         let sut = FormattedFieldViewModel(
@@ -77,13 +74,13 @@ struct FormattedFieldViewModelTests {
             format: .currency(code: "USD"),
             title: "Price"
         )
-        
+
         #expect(sut.rawStringValue == "1234.56")
-        
+
         sut.value = 99.99
         #expect(sut.rawStringValue == "99.99")
     }
-    
+
     @Test("Validates model values according to validation rules")
     func validation() {
         struct LessThan20Rule: ValidationRule {
@@ -100,7 +97,7 @@ struct FormattedFieldViewModelTests {
             format: .number,
             validation: .of(LessThan20Rule())
         )
-        
+
         #expect(sut.isValid == true)
         sut.value = 5.0
         #expect(sut.isValid == true)
@@ -120,17 +117,15 @@ struct FormattedFieldViewModelTests {
             }
         }
 
-        
         let sut = FormattedFieldViewModel(
             value: 10.0,
             format: .number,
             validation: .of(Rule())
         )
-        
+
         #expect(sut.errorMessage == nil)
-        
+
         sut.value = 20
         #expect(sut.errorMessage == Rule.ruleErrorMessage)
-
     }
 }

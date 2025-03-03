@@ -99,7 +99,7 @@ public struct FormAsyncPickerField<Model: RandomAccessCollection, Query, VConten
         hasError = viewModel.errorMessage != nil
     }
 
-     /// The body of the `FormAsyncPickerField` view.
+    /// The body of the `FormAsyncPickerField` view.
     ///
     /// This view consists of:
     /// - A customizable presentation of the currently selected value

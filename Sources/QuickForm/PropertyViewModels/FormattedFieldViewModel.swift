@@ -70,9 +70,9 @@ public final class FormattedFieldViewModel<F>: ObservableValueEditor, Validatabl
     /// - Returns: A string representation of the raw value
     public var rawStringValue: String {
         if let convertible = value as? CustomStringConvertible {
-            return convertible.description
+            convertible.description
         } else {
-            return String(describing: value)
+            String(describing: value)
         }
     }
 

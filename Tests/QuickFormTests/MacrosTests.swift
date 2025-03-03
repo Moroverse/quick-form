@@ -1,9 +1,6 @@
-//
-//  MTe.swift
-//  quick-form
-//
-//  Created by Daniel Moro on 2.3.25..
-//
+// MacrosTests.swift
+// Copyright (c) 2025 Moroverse
+// Created by Daniel Moro on 2025-03-03 05:18 GMT.
 
 import MacroTesting
 import SwiftSyntaxMacrosTestSupport

@@ -1,12 +1,9 @@
-//
-//  FormFieldViewModelTests.swift
-//  quick-form
-//
-//  Created by Daniel Moro on 3.3.25..
-//
+// FormFieldViewModelTests.swift
+// Copyright (c) 2025 Moroverse
+// Created by Daniel Moro on 2025-03-03 05:39 GMT.
 
-import Testing
 import QuickForm
+import Testing
 
 @Suite("FormFieldViewModelTests")
 struct FormFieldViewModelTests {
@@ -29,14 +26,14 @@ struct FormFieldViewModelTests {
     func onValueChange() {
         let sut = FormFieldViewModel<String>(value: "banana")
         var recordChange = 0
-        var recordedValue: String? = nil
+        var recordedValue: String?
         sut.onValueChanged { newValue in
             recordChange += 1
             recordedValue = newValue
         }
 
         var secondRecordChange = 0
-        var secondRecordedValue: String? = nil
+        var secondRecordedValue: String?
         sut.onValueChanged { newValue in
             secondRecordChange += 1
             secondRecordedValue = newValue
@@ -56,7 +53,7 @@ struct FormFieldViewModelTests {
             value: "banana",
             validation: .of(.notEmpty)
         )
-        
+
         #expect(sut.isValid == true)
         sut.value = ""
         #expect(sut.isValid == false)

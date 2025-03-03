@@ -7,16 +7,16 @@ import Observation
 /// A transformer that creates a bidirectional connection between a source value editor
 /// and a transformed representation.
 ///
-/// `ValueEditorTransformer` enables you to work with different representations of the same 
+/// `ValueEditorTransformer` enables you to work with different representations of the same
 /// underlying data while maintaining bidirectional synchronization. When the source editor
-/// changes, the transformer's value is updated automatically. Similarly, when the 
+/// changes, the transformer's value is updated automatically. Similarly, when the
 /// transformer's value changes, the source editor is updated.
 ///
 /// Unlike `ModelTransformer`, this class is Observable and provides change notification
 /// through the Observation framework.
 @Observable
 public final class ValueEditorTransformer<SourceEditor, Transformed>: ObservableValueEditor
-where SourceEditor: ObservableValueEditor {
+    where SourceEditor: ObservableValueEditor {
     @ObservationIgnored
     private var settingValue = false
     /// The transformed value.
@@ -38,7 +38,7 @@ where SourceEditor: ObservableValueEditor {
     /// - Parameter change: A closure that will be called whenever the value changes,
     ///   with the new value as its parameter.
     /// - Returns: The transformer instance for method chaining.
-   @discardableResult
+    @discardableResult
     public func onValueChanged(_ change: @escaping (Transformed) -> Void) -> Self {
         dispatcher.subscribe(handler: change)
         return self

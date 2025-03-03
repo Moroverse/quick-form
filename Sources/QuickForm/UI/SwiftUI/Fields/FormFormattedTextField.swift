@@ -102,7 +102,7 @@ public struct FormFormattedTextField<F, V>: View where F: ParseableFormatStyle, 
                     editingText = viewModel.format.format(viewModel.value)
                 }
                 .onChange(of: viewModel.value) { newValue in
-                     if !isFocused {
+                    if !isFocused {
                         editingText = viewModel.format.format(newValue)
                     }
                 }
