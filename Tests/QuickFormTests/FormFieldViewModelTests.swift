@@ -10,7 +10,7 @@ import QuickForm
 
 @Suite("FormFieldViewModelTests")
 struct FormFieldViewModelTests {
-    @Test
+    @Test("Initializes with correct properties")
     func modelInit() {
         let sut = FormFieldViewModel<String>(
             value: "banana",
@@ -25,7 +25,7 @@ struct FormFieldViewModelTests {
         #expect(sut.isReadOnly == false)
     }
 
-    @Test
+    @Test("Calls all registered callbacks when value changes")
     func onValueChange() {
         let sut = FormFieldViewModel<String>(value: "banana")
         var recordChange = 0
@@ -50,7 +50,7 @@ struct FormFieldViewModelTests {
         #expect(secondRecordedValue == "apple")
     }
 
-    @Test
+    @Test("Validates model values according to validation rules")
     func validation() {
         let sut = FormFieldViewModel<String>(
             value: "banana",
