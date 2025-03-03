@@ -66,10 +66,10 @@ public final class FormCollectionViewModel<Property: Identifiable & Sendable>: V
 
     /// A boolean indicating whether the collection is read-only.
     public var isReadOnly: Bool
-    private var onCanSelect: (Property) -> Bool = { _ in true }
-    private var onCanInsert: () -> Bool = { true }
-    private var onCanDelete: (_ atOffsets: IndexSet) -> Bool = { _ in true }
-    private var onCanMove: (_ fromSource: IndexSet, _ toDestination: Int) -> Bool = { _, _ in true }
+    public var onCanSelect: (Property) -> Bool = { _ in true }
+    public var onCanInsert: () -> Bool = { true }
+    public var onCanDelete: (_ atOffsets: IndexSet) -> Bool = { _ in true }
+    public var onCanMove: (_ fromSource: IndexSet, _ toDestination: Int) -> Bool = { _, _ in true }
     private var _onInsert: (() async -> Property?)?
     private var _onChange: ((CollectionDifference<Property>) -> Void)?
     private var _onSelect: ((Property?) -> Void)?
