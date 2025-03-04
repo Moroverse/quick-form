@@ -21,4 +21,23 @@ public extension String {
         fi
         """
     }
+
+    static func formatScript() -> String {
+        """
+        #!/bin/bash
+        export PATH="$PATH:$HOME/.local/share/mise/shims"
+        
+        if which swiftformat > /dev/null; then
+            swiftformat .
+        else
+            echo "warning: SwiftFormat not installed, run mise install"
+        fi
+        
+        if which swiftlint > /dev/null; then
+            swiftlint --fix
+        else
+            echo "warning: SwiftLint not installed, run mise install"
+        fi
+        """
+    }
 }

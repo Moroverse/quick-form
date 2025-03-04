@@ -25,6 +25,11 @@ let project = Project(
             resources: ["Resources/**"],
             scripts: [
                 .pre(
+                    script: .formatScript(),
+                    name: "Format",
+                    basedOnDependencyAnalysis: false
+                ),
+                .pre(
                     script: .lintScript(),
                     name: "Lint",
                     basedOnDependencyAnalysis: false
