@@ -103,7 +103,7 @@ struct AsyncPickerFieldViewModelTests {
     func validation() {
         let sut = AsyncPickerFieldViewModel<[TestItem], String>(
             value: nil,
-            validation: .of(RequiredRule()),
+            validation: .of(.required()),
             valuesProvider: { _ in [] },
             queryBuilder: { $0 ?? "" }
         )
