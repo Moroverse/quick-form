@@ -105,7 +105,7 @@ public final class FormCollectionViewModel<Property: Identifiable & Sendable>: V
     /// If an item is successfully created, it's appended to the collection.
     @MainActor
     public func insert() async {
-        if let insertion = _onInsert {
+        if canInsert(), let insertion = _onInsert {
             if let newValue = await insertion() {
                 value.append(newValue)
             }
@@ -124,7 +124,13 @@ public final class FormCollectionViewModel<Property: Identifiable & Sendable>: V
     ///
     /// - Parameter item: The item to select, or nil to deselect.
     public func select(item: Property?) {
-        _onSelect?(item)
+        if let item {
+            if canSelect(item: item) {
+                _onSelect?(item)
+            }
+        } else {
+            _onSelect?(item)
+        }
     }
 
     /// Checks if items at the given offsets can be deleted.
@@ -139,7 +145,9 @@ public final class FormCollectionViewModel<Property: Identifiable & Sendable>: V
     ///
     /// - Parameter offsets: The offsets of items to delete.
     public func delete(at offsets: IndexSet) {
-        value.remove(atOffsets: offsets)
+        if canDelete(at: offsets) {
+            value.remove(atOffsets: offsets)
+        }
     }
 
     /// Checks if items can be moved from the source offsets to the destination index.
@@ -158,7 +166,9 @@ public final class FormCollectionViewModel<Property: Identifiable & Sendable>: V
     ///   - source: The current offsets of the items to move.
     ///   - destination: The destination offset to move the items to.
     public func move(from source: IndexSet, to destination: Int) {
-        value.move(fromOffsets: source, toOffset: destination)
+        if canMove(from: source, to: destination) {
+            value.move(fromOffsets: source, toOffset: destination)
+        }
     }
 
     /// Sets the closure to be called when attempting to insert a new item.
