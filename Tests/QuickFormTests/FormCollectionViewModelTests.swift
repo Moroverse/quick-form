@@ -118,9 +118,8 @@ struct FormCollectionViewModelTests {
             value: items
         )
 
-
-       sut.onCanSelect = { item in
-            return item.value > 15
+        sut.onCanSelect = { item in
+            item.value > 15
         }
         var selectedItem: TestItem?
         sut.onSelect { item in
@@ -151,7 +150,7 @@ struct FormCollectionViewModelTests {
             value: items
         )
 
-        sut.onCanMove = { source, destination in
+        sut.onCanMove = { source, _ in
             source.contains(0)
         }
 

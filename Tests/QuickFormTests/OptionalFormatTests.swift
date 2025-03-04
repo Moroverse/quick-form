@@ -1,15 +1,14 @@
 // OptionalFormatTests.swift
 // Copyright (c) 2025 Moroverse
-// Created by Daniel Moro on 2025-03-04 15:45 GMT.
+// Created by Daniel Moro on 2025-03-04 08:27 GMT.
 
 import Foundation
+import Numerics
 import QuickForm
 import Testing
-import Numerics
 
 @Suite("OptionalFormat Tests")
 struct OptionalFormatTests {
-
     @Test("Formats non-nil values using the wrapped format")
     func formatsNonNilValues() {
         let locale = Locale(identifier: "en_US")

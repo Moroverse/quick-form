@@ -1,9 +1,6 @@
-//
-//  ValidatableTests.swift
-//  quick-form
-//
-//  Created by Daniel Moro on 4.3.25..
-//
+// ValidatableTests.swift
+// Copyright (c) 2025 Moroverse
+// Created by Daniel Moro on 2025-03-04 06:59 GMT.
 
 import Foundation
 import QuickForm
@@ -20,13 +17,12 @@ class TestValidatable: Validatable {
     }
 
     func validate() -> ValidationResult {
-        return shouldSucceed ? .success : .failure(errorMessage)
+        shouldSucceed ? .success : .failure(errorMessage)
     }
 }
 
 @Suite("Validatable Protocol Extensions Tests")
 struct ValidatableTests {
-
     @Test("isValid returns true when validation succeeds")
     func isValidWithSuccess() {
         let sut = TestValidatable(shouldSucceed: true)
@@ -94,7 +90,7 @@ struct ValidatableTests {
 
         // Failure case
         let failureResult = failureCase.validate()
-        if case .failure(let message) = failureResult {
+        if case let .failure(message) = failureResult {
             #expect(failureCase.errorMessage == message)
             #expect(failureCase.errorMessage == customMessage)
         } else {

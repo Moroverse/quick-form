@@ -1,9 +1,6 @@
-//
-//  GeneralRulesTests.swift
-//  quick-form
-//
-//  Created by Daniel Moro on 4.3.25..
-//
+// GeneralRulesTests.swift
+// Copyright (c) 2025 Moroverse
+// Created by Daniel Moro on 2025-03-04 07:29 GMT.
 
 import Foundation
 import QuickForm
@@ -11,7 +8,6 @@ import Testing
 
 @Suite("General Validation Rules Tests")
 struct GeneralRulesTests {
-
     // MARK: - NotEmptyRule Tests
 
     @Test("NotEmptyRule validates non-empty strings as valid")
@@ -31,7 +27,7 @@ struct GeneralRulesTests {
         let result = rule.validate("")
         #expect(!result.isSuccessful)
 
-        if case .failure(let message) = result {
+        if case let .failure(message) = result {
             #expect(String(localized: message) == "This field cannot be empty")
         } else {
             Issue.record("Expected failure message")
@@ -64,7 +60,7 @@ struct GeneralRulesTests {
         let result = rule.validate("Hello World")
         #expect(!result.isSuccessful)
 
-        if case .failure(var message) = result {
+        if case var .failure(message) = result {
             message.locale = Locale(identifier: "en_US")
             #expect(String(localized: message) == "This field must not exceed 5 characters")
         } else {
@@ -97,7 +93,7 @@ struct GeneralRulesTests {
         let result = rule.validate("Hi")
         #expect(!result.isSuccessful)
 
-        if case .failure(let message) = result {
+        if case let .failure(message) = result {
             #expect(String(localized: message).contains("must be at least 5 characters"))
         } else {
             Issue.record("Expected failure message")
@@ -129,7 +125,7 @@ struct GeneralRulesTests {
         let result = rule.validate(nil)
         #expect(!result.isSuccessful)
 
-        if case .failure(let message) = result {
+        if case let .failure(message) = result {
             #expect(String(localized: message) == "This field is required")
         } else {
             Issue.record("Expected failure message")
@@ -169,20 +165,20 @@ struct GeneralRulesTests {
 
         let emptyResult = combinedRule.validate("")
         #expect(!emptyResult.isSuccessful)
-        if case .failure(let message) = emptyResult {
+        if case let .failure(message) = emptyResult {
             #expect(String(localized: message) == "This field cannot be empty")
         }
 
         let shortResult = combinedRule.validate("A")
         #expect(!shortResult.isSuccessful)
-        if case .failure(var message) = shortResult {
+        if case var .failure(message) = shortResult {
             message.locale = Locale(identifier: "en_US")
             #expect(String(localized: message) == "This field must be at least 3 characters long")
         }
 
         let longResult = combinedRule.validate("This string is too long for the max length")
         #expect(!longResult.isSuccessful)
-        if case .failure(var message) = longResult {
+        if case var .failure(message) = longResult {
             message.locale = Locale(identifier: "en_US")
             #expect(String(localized: message) == "This field must not exceed 10 characters")
         }

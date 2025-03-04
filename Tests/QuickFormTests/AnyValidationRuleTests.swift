@@ -1,9 +1,6 @@
-//
-//  AnyValidationRuleTests.swift
-//  quick-form
-//
-//  Created by Daniel Moro on 4.3.25..
-//
+// AnyValidationRuleTests.swift
+// Copyright (c) 2025 Moroverse
+// Created by Daniel Moro on 2025-03-04 07:15 GMT.
 
 import Foundation
 import QuickForm
@@ -18,7 +15,7 @@ struct MinValueRule: ValidationRule {
     }
 
     func validate(_ value: Int) -> ValidationResult {
-        return value >= minimumValue ? .success : .failure("Value must be at least \(minimumValue)")
+        value >= minimumValue ? .success : .failure("Value must be at least \(minimumValue)")
     }
 }
 
@@ -30,19 +27,18 @@ struct MaxValueRule: ValidationRule {
     }
 
     func validate(_ value: Int) -> ValidationResult {
-        return value <= maximumValue ? .success : .failure("Value must not exceed \(maximumValue)")
+        value <= maximumValue ? .success : .failure("Value must not exceed \(maximumValue)")
     }
 }
 
 struct EvenNumberRule: ValidationRule {
     func validate(_ value: Int) -> ValidationResult {
-        return value % 2 == 0 ? .success : .failure("Value must be an even number")
+        value % 2 == 0 ? .success : .failure("Value must be an even number")
     }
 }
 
 @Suite("AnyValidationRule Tests")
 struct AnyValidationRuleTests {
-
     @Test("Type-erases validation rules correctly")
     func typeErases() {
         let minRule = MinValueRule(minimumValue: 5)
@@ -57,12 +53,12 @@ struct AnyValidationRuleTests {
 
         // Test error messages are preserved
         var minErrorMessage: LocalizedStringResource?
-        if case .failure(let message) = minRule.validate(3) {
+        if case let .failure(message) = minRule.validate(3) {
             minErrorMessage = message
         }
 
         var anyErrorMessage: LocalizedStringResource?
-        if case .failure(let message) = anyRule.validate(3) {
+        if case let .failure(message) = anyRule.validate(3) {
             anyErrorMessage = message
         }
 
@@ -111,7 +107,7 @@ struct AnyValidationRuleTests {
 
         // Test failure messages in order
         let tooSmallResult = combinedRule.validate(3)
-        if case .failure(var message) = tooSmallResult {
+        if case var .failure(message) = tooSmallResult {
             message.locale = Locale(identifier: "en_US")
             #expect(String(localized: message) == "Value must be at least 5")
         } else {
@@ -119,7 +115,7 @@ struct AnyValidationRuleTests {
         }
 
         let oddNumberResult = combinedRule.validate(7)
-        if case .failure(var message) = oddNumberResult {
+        if case var .failure(message) = oddNumberResult {
             message.locale = Locale(identifier: "en_US")
             #expect(String(localized: message) == "Value must be an even number")
         } else {
@@ -127,7 +123,7 @@ struct AnyValidationRuleTests {
         }
 
         let tooLargeResult = combinedRule.validate(11)
-        if case .failure(var message) = tooLargeResult {
+        if case var .failure(message) = tooLargeResult {
             message.locale = Locale(identifier: "en_US")
             #expect(String(localized: message) == "Value must not exceed 10")
         } else {
@@ -150,9 +146,9 @@ extension ValidationResult {
     var isSuccessful: Bool {
         switch self {
         case .success:
-            return true
+            true
         case .failure:
-            return false
+            false
         }
     }
 }
