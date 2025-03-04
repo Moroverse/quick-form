@@ -10,7 +10,7 @@ let project = Project(
     targets: [
         .target(
             name: "QuickFormDemo",
-            destinations: .iOS,
+            destinations: [.iPad, .iPhone, .macCatalyst],
             product: .app,
             bundleId: "com.ezderm.quick-form",
             infoPlist: .extendingDefault(
@@ -42,7 +42,8 @@ let project = Project(
                 base: [
                     //                    "SWIFT_STRICT_CONCURRENCY": "complete",
                     "LOCALIZATION_PREFERS_STRING_CATALOGS": "YES",
-                    "SWIFT_EMIT_LOC_STRINGS": "YES"
+                    "SWIFT_EMIT_LOC_STRINGS": "YES",
+                    "TARGETED_DEVICE_FAMILY": "1,2"
                 ],
                 defaultSettings: .recommended(excluding: [])
             )
