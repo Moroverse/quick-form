@@ -1,9 +1,6 @@
-//
-//  PlainStringFormatTests.swift
-//  quick-form
-//
-//  Created by Daniel Moro on 4.3.25..
-//
+// PlainStringFormatTests.swift
+// Copyright (c) 2025 Moroverse
+// Created by Daniel Moro on 2025-03-04 09:22 GMT.
 
 import Foundation
 import QuickForm
@@ -11,7 +8,6 @@ import Testing
 
 @Suite("PlainStringFormat Tests")
 struct PlainStringFormatTests {
-
     @Test("Formats values without modification")
     func formatsWithoutModification() {
         let format = PlainStringFormat()

@@ -1,9 +1,6 @@
-//
-//  FormTextEditor.swift
-//  QuickForm
-//
-//  Created by Daniel Moro on 4.3.25..
-//
+// FormTextEditor.swift
+// Copyright (c) 2025 Moroverse
+// Created by Daniel Moro on 2025-03-04 21:17 GMT.
 
 import SwiftUI
 

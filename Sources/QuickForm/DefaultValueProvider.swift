@@ -1,9 +1,6 @@
-//
-//  DefaultValueProvider.swift
-//  quick-form
-//
-//  Created by Daniel Moro on 4.3.25..
-//
+// DefaultValueProvider.swift
+// Copyright (c) 2025 Moroverse
+// Created by Daniel Moro on 2025-03-04 19:24 GMT.
 
 import Foundation
 

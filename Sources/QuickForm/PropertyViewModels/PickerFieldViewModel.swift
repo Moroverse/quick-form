@@ -102,4 +102,3 @@ public extension PickerFieldViewModel where Property: DefaultValueProvider {
         )
     }
 }
-
