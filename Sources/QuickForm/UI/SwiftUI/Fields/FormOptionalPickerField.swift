@@ -33,7 +33,7 @@ import SwiftUI
 ///         value: nil,
 ///         allValues: Department.allCases,
 ///         title: "Department:",
-///         validation: .of(RequiredRule())
+///         validation: .of(.required())
 ///     )
 ///
 ///     var body: some View {

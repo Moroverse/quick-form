@@ -11,7 +11,7 @@ final class MedicationBuilder: Validatable {
     @PropertyEditor(keyPath: \MedicationComponents.substance)
     var substance = AsyncPickerFieldViewModel(
         value: MedicationComponents.SubstancePart?.none,
-        validation: .of(RequiredRule()),
+        validation: .of(.required()),
         valuesProvider: SubstanceFetcher.shared.fetchSubstance,
         queryBuilder: { $0 ?? "" }
     )
@@ -19,7 +19,7 @@ final class MedicationBuilder: Validatable {
     @PropertyEditor(keyPath: \MedicationComponents.route)
     var route = AsyncPickerFieldViewModel(
         value: MedicationComponents.MedicationTakeRoutePart?.none,
-        validation: .of(RequiredRule()),
+        validation: .of(.required()),
         valuesProvider: RouteFetcher.shared.fetchRoute,
         queryBuilder: { _ in 0 }
     )
@@ -27,7 +27,7 @@ final class MedicationBuilder: Validatable {
     @PropertyEditor(keyPath: \MedicationComponents.strength)
     var strength = AsyncPickerFieldViewModel(
         value: MedicationComponents.MedicationStrengthPart?.none,
-        validation: .of(RequiredRule()),
+        validation: .of(.required()),
         valuesProvider: StrengthFetcher.shared.fetchStrength,
         queryBuilder: { _ in 0 }
     )
@@ -35,7 +35,7 @@ final class MedicationBuilder: Validatable {
     @PropertyEditor(keyPath: \MedicationComponents.dosageForm)
     var dosageForm = AsyncPickerFieldViewModel(
         value: MedicationComponents.DosageFormPart?.none,
-        validation: .of(RequiredRule()),
+        validation: .of(.required()),
         valuesProvider: DosageFormFetcher.shared.fetchForm,
         queryBuilder: { _ in 0 }
     )

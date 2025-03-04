@@ -59,7 +59,7 @@ class AddressEditModel: Validatable {
             if self?.state.allValues.isEmpty == true {
                 self?.state.validation = nil
             } else {
-                self?.state.validation = .of(RequiredRule())
+                self?.state.validation = .of(.required())
             }
         }
     }

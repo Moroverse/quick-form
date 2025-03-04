@@ -1,9 +1,6 @@
-//
-//  FormCollectionViewModelTests.swift
-//  quick-form
-//
-//  Created by Daniel Moro on 3.3.25..
-//
+// FormCollectionViewModelTests.swift
+// Copyright (c) 2025 Moroverse
+// Created by Daniel Moro on 2025-03-03 11:25 GMT.
 
 import Foundation
 import QuickForm
@@ -92,7 +89,7 @@ struct FormCollectionViewModelTests {
         )
 
         sut.onInsert {
-            return TestItem(name: "Inserted Item", value: 42)
+            TestItem(name: "Inserted Item", value: 42)
         }
 
         #expect(sut.value.isEmpty)

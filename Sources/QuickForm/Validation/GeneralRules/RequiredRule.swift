@@ -21,14 +21,14 @@
 ///     var name = FormFieldViewModel<String?>(
 ///         value: nil,
 ///         title: "Name:",
-///         validation: .of(RequiredRule())
+///         validation: .of(.required())
 ///     )
 ///
 ///     @PropertyEditor(keyPath: \PersonForm.age)
 ///     var age = FormFieldViewModel<Int?>(
 ///         value: nil,
 ///         title: "Age:",
-///         validation: .of(RequiredRule())
+///         validation: .of(.required())
 ///     )
 /// }
 ///
@@ -53,5 +53,20 @@ public struct RequiredRule<T>: ValidationRule {
     ///   Returns `.success` if the value is not nil, and `.failure` with an error message otherwise.
     public func validate(_ value: T?) -> ValidationResult {
         value != nil ? .success : .failure("This field is required")
+    }
+}
+
+public extension ValidationRule {
+    /// A convenience static property to create a `RequiredRule`.
+    ///
+    /// This allows for more readable code when using the rule, especially in combination with other rules.
+    ///
+    /// ## Example
+    ///
+    /// ```swift
+    /// let validation = AnyValidationRule.combined(.required(), .minLength(5))
+    /// ```
+    static func required<T>() -> AnyValidationRule<T?> where Self == AnyValidationRule<T?> {
+        AnyValidationRule<T?>(RequiredRule<T>())
     }
 }
