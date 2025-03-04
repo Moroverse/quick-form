@@ -61,21 +61,15 @@ public struct FormCollectionSection<Property: Identifiable & Sendable, Content: 
             ForEach(viewModel.value) { item in
                 content(item)
                     .onTapGesture {
-                        if viewModel.canSelect(item: item) {
-                            viewModel.select(item: item)
-                        }
+                        viewModel.select(item: item)
                     }
             }
 
             .onMove { from, to in
-                if viewModel.canMove(from: from, to: to) {
-                    viewModel.move(from: from, to: to)
-                }
+                viewModel.move(from: from, to: to)
             }
             .onDelete { offsets in
-                if viewModel.canDelete(at: offsets) {
-                    viewModel.delete(at: offsets)
-                }
+                viewModel.delete(at: offsets)
             }
 //            }
             if viewModel.canInsert() {
