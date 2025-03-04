@@ -44,7 +44,7 @@ import Foundation
 ///
 /// // Use the combined rule
 /// let result = passwordRule.validate("password")
-/// // result will be .failure("Must be at least 8 characters")
+/// // result will be .failure("Must contain an uppercase letter")
 ///
 /// let result2 = passwordRule.validate("Password123")
 /// // result2 will be .success

@@ -8,7 +8,7 @@ import SwiftUI
 ///
 /// `FormFormattedTextField` is designed to work with `FormattedFieldViewModel` to provide
 /// a text field that automatically formats its input and output according to a specified
-/// format style. This is particularly useful for fields like currency, dates, or any other
+/// format style. This is particularly useful for fields like currency, numbers, or any other
 /// data that needs to be displayed in a specific format while storing a different underlying value.
 ///
 /// ## Features

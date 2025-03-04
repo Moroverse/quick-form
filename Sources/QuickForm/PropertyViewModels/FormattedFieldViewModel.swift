@@ -11,7 +11,7 @@ import Observation
 /// for a form field that requires specific input/output formatting. It conforms to both `ValueEditor`
 /// and `Validatable` protocols, providing a complete solution for formatted form field management.
 ///
-/// This class is particularly useful for fields like currency, dates, or any other data that
+/// This class is particularly useful for fields like currency, numbers, or any other data that
 /// needs to be displayed in a specific format while storing a different underlying value.
 ///
 /// ## Features
