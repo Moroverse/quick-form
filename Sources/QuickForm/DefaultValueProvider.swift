@@ -27,3 +27,11 @@ extension Date: DefaultValueProvider {
 extension Optional: DefaultValueProvider where Wrapped: DefaultValueProvider {
     public static var defaultValue: Optional<Wrapped> { nil }
 }
+
+extension Decimal: DefaultValueProvider {
+    public static var defaultValue: Decimal { 0 }
+}
+
+extension Bool: DefaultValueProvider {
+    public static var defaultValue: Bool { false }
+}

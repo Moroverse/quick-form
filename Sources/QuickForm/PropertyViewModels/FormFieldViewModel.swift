@@ -27,7 +27,7 @@ import Observation
 /// class PersonEditModel: Validatable {
 ///     @PropertyEditor(keyPath: \Person.name)
 ///     var name = FormFieldViewModel(
-///         value: "",
+///         type: String.self,
 ///         title: "Name:",
 ///         placeholder: "Enter your name",
 ///         validation: .combined(.notEmpty, .maxLength(50))
@@ -35,7 +35,7 @@ import Observation
 ///
 ///     @PropertyEditor(keyPath: \Person.age)
 ///     var age = FormFieldViewModel(
-///         value: 0,
+///         type: Int.self,
 ///         title: "Age:",
 ///         validation: AnyValidationRule { value in
 ///             guard value >= 0 && value <= 120 else {
@@ -110,6 +110,7 @@ public final class FormFieldViewModel<Property>: ObservableValueEditor, Validata
 
 public extension FormFieldViewModel where Property: DefaultValueProvider {
     convenience init(
+        type: Property.Type,
         title: LocalizedStringResource = "",
         placeholder: LocalizedStringResource? = nil,
         isReadOnly: Bool = false,

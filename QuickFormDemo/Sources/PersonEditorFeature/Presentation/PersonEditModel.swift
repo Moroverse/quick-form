@@ -6,6 +6,14 @@ import Foundation
 import Observation
 @preconcurrency import QuickForm
 
+extension Person.Sex: DefaultValueProvider {
+    public static var defaultValue: Self = .other
+}
+
+extension Measurement: @retroactive DefaultValueProvider where UnitType == UnitMass {
+    public static var defaultValue: Self = .init(value: 0, unit: .kilograms)
+}
+
 // 1. QuickForm macro
 @QuickForm(Person.self)
 class PersonEditModel: Validatable {
@@ -13,7 +21,7 @@ class PersonEditModel: Validatable {
     @PropertyEditor(keyPath: \Person.givenName)
     // 3. Out-of box view models
     var firstName = FormFieldViewModel(
-        value: "",
+        type: String.self,
         title: "First Name:",
         placeholder: "John",
         validation: .combined(.notEmpty, .minLength(2), .maxLength(50))
@@ -21,7 +29,7 @@ class PersonEditModel: Validatable {
 
     @PropertyEditor(keyPath: \Person.familyName)
     var lastName = FormFieldViewModel(
-        value: "",
+        type: String.self,
         title: "Last Name:",
         placeholder: "Anderson",
         validation: .combined(.notEmpty, .minLength(2), .maxLength(50))
@@ -29,28 +37,28 @@ class PersonEditModel: Validatable {
 
     @PropertyEditor(keyPath: \Person.dateOfBirth)
     var birthday = FormFieldViewModel(
-        value: Date(),
+        type: Date.self,
         title: "Birthday:",
         placeholder: "1980-01-01"
     )
 
     @PropertyEditor(keyPath: \Person.sex)
     var sex = PickerFieldViewModel(
-        value: Person.Sex.other,
+        type: Person.Sex.self,
         allValues: Person.Sex.allCases,
         title: "Sex:"
     )
 
     @PropertyEditor(keyPath: \Person.weight)
     var weight = FormFieldViewModel(
-        value: Measurement<UnitMass>(value: 0, unit: .kilograms),
+        type: Measurement<UnitMass>.self,
         title: "Weight:",
         placeholder: "70.0"
     )
 
     @PropertyEditor(keyPath: \Person.salary)
     var salary = FormattedFieldViewModel(
-        value: 0.0,
+        type: Decimal.self,
         format: .currency(code: "USD"),
         title: "Salary:",
         placeholder: "$100,000"
@@ -58,7 +66,7 @@ class PersonEditModel: Validatable {
 
     @PropertyEditor(keyPath: \Person.isEstablished)
     var isEstablished = FormFieldViewModel(
-        value: false,
+        type: Bool.self,
         title: "Established:"
     )
 
@@ -74,13 +82,13 @@ class PersonEditModel: Validatable {
 
     @PropertyEditor(keyPath: \Person.careTeam)
     var careTeam = FormCollectionViewModel(
-        value: [PersonInfo](),
+        type: PersonInfo.self,
         title: "Care Team"
     )
 
     @PropertyEditor(keyPath: \Person.phone)
     var phone = FormattedFieldViewModel(
-        value: "",
+        type: String?.self,
         format: OptionalFormat(format: .usPhoneNumber(.parentheses)),
         title: "Phone:",
         placeholder: "(123) 456-7890"
@@ -88,7 +96,7 @@ class PersonEditModel: Validatable {
 
     @PropertyEditor(keyPath: \Person.password)
     var password = FormFieldViewModel(
-        value: "",
+        type: String.self,
         title: "Password:",
         placeholder: "P@$$w0rd",
         validation: .combined(.notEmpty, .minLength(8))
@@ -96,7 +104,7 @@ class PersonEditModel: Validatable {
 
     @PropertyEditor(keyPath: \Person.passwordReentry)
     var passwordReentry = FormFieldViewModel(
-        value: "",
+        type: String.self,
         title: "Password Again:",
         placeholder: "P@$$w0rd"
     )

@@ -25,7 +25,7 @@ import SwiftUI
 /// ```swift
 /// struct MedicationForm: View {
 ///     @State private var viewModel = AsyncPickerFieldViewModel<[Medication], String>(
-///         value: nil,
+///         type: Medication.self,
 ///         title: "Medication:",
 ///         valuesProvider: { query in
 ///             // Fetch medications matching the query

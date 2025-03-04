@@ -114,3 +114,23 @@ public final class OptionalPickerFieldViewModel<Property: Hashable & CustomStrin
         return self
     }
 }
+
+public extension OptionalPickerFieldViewModel where Property: DefaultValueProvider {
+    convenience init(
+        type: Property?.Type,
+        allValues: [Property],
+        title: LocalizedStringResource = "",
+        placeholder: LocalizedStringResource? = nil,
+        isReadOnly: Bool = false,
+        validation: AnyValidationRule<Property?>? = nil
+    ) {
+        self.init(
+            value: Property.defaultValue,
+            allValues: allValues,
+            title: title,
+            placeholder: placeholder,
+            isReadOnly: isReadOnly,
+            validation: validation
+        )
+    }
+}

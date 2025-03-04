@@ -33,7 +33,7 @@ import Observation
 /// class ExpenseEditModel: Validatable {
 ///     @PropertyEditor(keyPath: \Expense.category)
 ///     var category = PickerFieldViewModel(
-///         value: [Category.food, .travel],
+///         type: Category.self,
 ///         allValues: Category.allCases,
 ///         title: "Important:"
 ///     )
@@ -84,5 +84,29 @@ public final class MultiPickerFieldViewModel<Property: Hashable & CustomStringCo
     public func onValueChanged(_ change: @escaping (Set<Property>) -> Void) -> Self {
         dispatcher.subscribe(handler: change)
         return self
+    }
+}
+
+public extension MultiPickerFieldViewModel {
+    /// Convenience initializer that uses a set with a default value.
+    ///
+    /// - Parameters:
+    ///   - type: The type of picker items.
+    ///   - allValues: An array of all available values for the picker.
+    ///   - title: The title of the picker field.
+    ///   - isReadOnly: A boolean indicating whether the field is read-only.
+    convenience init(
+        type: Property.Type,
+        allValues: [Property],
+        includeDefaultValue: Bool = false,
+        title: LocalizedStringResource = "",
+        isReadOnly: Bool = false
+    ) {
+        self.init(
+            value: [],
+            allValues: allValues,
+            title: title,
+            isReadOnly: isReadOnly
+        )
     }
 }

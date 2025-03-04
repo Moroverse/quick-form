@@ -23,7 +23,7 @@ import SwiftUI
 /// ```swift
 /// struct ProductForm: View {
 ///     @State private var viewModel = FormFieldViewModel(
-///         value: Measurement(value: 1.5, unit: UnitMass.kilograms),
+///         type: Measurement<UnitMass>.self,
 ///         title: "Weight:"
 ///     )
 ///

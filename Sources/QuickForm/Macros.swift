@@ -29,7 +29,7 @@ import Observation
 /// class PersonEditModel: Validatable {
 ///     @PropertyEditor(keyPath: \Person.givenName)
 ///     var firstName = FormFieldViewModel(
-///         value: "",
+///         type: String.self,
 ///         title: "First Name:",
 ///         placeholder: "John",
 ///         validation: .combined(.notEmpty, .minLength(2), .maxLength(50))
@@ -37,7 +37,7 @@ import Observation
 ///
 ///     @PropertyEditor(keyPath: \Person.familyName)
 ///     var lastName = FormFieldViewModel(
-///         value: "",
+///         type: String.self,
 ///         title: "Last Name:",
 ///         placeholder: "Doe",
 ///         validation: .combined(.notEmpty, .minLength(2), .maxLength(50))
@@ -45,7 +45,7 @@ import Observation
 ///
 ///     @PropertyEditor(keyPath: \Person.dateOfBirth)
 ///     var birthday = FormFieldViewModel(
-///         value: Date(),
+///         type: Date.self,
 ///         title: "Birthday:",
 ///         placeholder: "1980-01-01"
 ///     )
@@ -96,7 +96,7 @@ public macro QuickForm<T>(_ type: T.Type) = #externalMacro(module: "QuickFormMac
 /// class PersonEditModel: Validatable {
 ///     @PropertyEditor(keyPath: \Person.givenName)
 ///     var firstName = FormFieldViewModel(
-///         value: "",
+///         type: String.self,
 ///         title: "First Name:",
 ///         placeholder: "John",
 ///         validation: .combined(.notEmpty, .minLength(2), .maxLength(50))
@@ -104,7 +104,7 @@ public macro QuickForm<T>(_ type: T.Type) = #externalMacro(module: "QuickFormMac
 ///
 ///     @PropertyEditor(keyPath: \Person.familyName)
 ///     var lastName = FormFieldViewModel(
-///         value: "",
+///         type: String.self,
 ///         title: "Last Name:",
 ///         placeholder: "Doe",
 ///         validation: .combined(.notEmpty, .minLength(2), .maxLength(50))

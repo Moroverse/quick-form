@@ -22,7 +22,7 @@ import SwiftUI
 /// ```swift
 /// struct EventForm: View {
 ///     @State private var viewModel = FormFieldViewModel(
-///         value: Date(),
+///         type: Date.self,
 ///         title: "Event Date:",
 ///         isReadOnly: false
 ///     )

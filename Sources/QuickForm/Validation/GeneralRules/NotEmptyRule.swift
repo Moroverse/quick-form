@@ -20,14 +20,14 @@
 /// class PersonFormModel: Validatable {
 ///     @PropertyEditor(keyPath: \PersonForm.name)
 ///     var name = FormFieldViewModel(
-///         value: "",
+///         type: String.self,
 ///         title: "Name:",
 ///         validation: .of(.notEmpty)
 ///     )
 ///
 ///     @PropertyEditor(keyPath: \PersonForm.email)
 ///     var email = FormFieldViewModel(
-///         value: "",
+///         type: String.self,
 ///         title: "Email:",
 ///         validation: .combined(.notEmpty, .email)
 ///     )

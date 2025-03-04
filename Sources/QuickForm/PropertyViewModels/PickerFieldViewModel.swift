@@ -33,7 +33,7 @@ import Observation
 /// class ExpenseEditModel: Validatable {
 ///     @PropertyEditor(keyPath: \Expense.category)
 ///     var category = PickerFieldViewModel(
-///         value: Category.food,
+///         type: Category.self,
 ///         allValues: Category.allCases,
 ///         title: "Category:"
 ///     )
@@ -86,3 +86,20 @@ public final class PickerFieldViewModel<Property: Hashable & CustomStringConvert
         return self
     }
 }
+
+public extension PickerFieldViewModel where Property: DefaultValueProvider {
+    convenience init(
+        type: Property.Type,
+        allValues: [Property],
+        title: LocalizedStringResource = "",
+        isReadOnly: Bool = false
+    ) {
+        self.init(
+            value: Property.defaultValue,
+            allValues: allValues,
+            title: title,
+            isReadOnly: isReadOnly
+        )
+    }
+}
+

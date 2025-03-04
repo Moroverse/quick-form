@@ -21,14 +21,14 @@
 /// class UserFormModel: Validatable {
 ///     @PropertyEditor(keyPath: \UserForm.username)
 ///     var username = FormFieldViewModel(
-///         value: "",
+///         type: String.self,
 ///         title: "Username:",
 ///         validation: .combined(.notEmpty, .minLength(5))
 ///     )
 ///
 ///     @PropertyEditor(keyPath: \UserForm.password)
 ///     var password = FormFieldViewModel(
-///         value: "",
+///         type: String.self,
 ///         title: "Password:",
 ///         validation: .combined(.notEmpty, .minLength(8), .containsUppercase, .containsNumber)
 ///     )

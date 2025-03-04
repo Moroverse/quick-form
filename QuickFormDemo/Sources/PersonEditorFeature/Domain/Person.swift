@@ -27,7 +27,7 @@ struct Person: Equatable {
     var dateOfBirth: Date
     var sex: Sex
     var phone: String?
-    var salary: Double
+    var salary: Decimal
     var weight: Measurement<UnitMass>
     var isEstablished: Bool
     var address: Address
@@ -42,7 +42,7 @@ struct Person: Equatable {
         dateOfBirth: Date,
         sex: Sex,
         phone: String? = nil,
-        salary: Double = 0,
+        salary: Decimal = 0,
         weight: Measurement<UnitMass> = .init(value: 0, unit: .kilograms),
         isEstablished: Bool = true,
         address: Address,

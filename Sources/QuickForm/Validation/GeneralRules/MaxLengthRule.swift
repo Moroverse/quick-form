@@ -22,14 +22,14 @@
 /// class PostFormModel: Validatable {
 ///     @PropertyEditor(keyPath: \PostForm.title)
 ///     var title = FormFieldViewModel(
-///         value: "",
+///         type: String.self,
 ///         title: "Post Title:",
 ///         validation: .combined(.notEmpty, .maxLength(100))
 ///     )
 ///
 ///     @PropertyEditor(keyPath: \PostForm.content)
 ///     var content = FormFieldViewModel(
-///         value: "",
+///         type: String.self,
 ///         title: "Post Content:",
 ///         validation: .combined(.notEmpty, .minLength(10), .maxLength(1000))
 ///     )

@@ -36,7 +36,7 @@ import Observation
 /// class PersonFormModel: Validatable {
 ///     @PropertyEditor(keyPath: \PersonForm.contacts)
 ///     var contacts = FormCollectionViewModel<Contact>(
-///         value: [],
+///         type: Contact.self,
 ///         title: "Contacts:",
 ///         insertionTitle: "Add Contact"
 ///     )
@@ -199,5 +199,28 @@ public final class FormCollectionViewModel<Property: Identifiable & Sendable>: V
     public func onSelect(action: ((Property?) -> Void)?) -> Self {
         _onSelect = action
         return self
+    }
+}
+
+public extension FormCollectionViewModel {
+    /// Convenience initializer that uses a collection with a default value item.
+    ///
+    /// - Parameters:
+    ///   - type: The type of collection items.
+    ///   - title: The title of the collection section.
+    ///   - insertionTitle: The title for the insertion action.
+    ///   - isReadOnly: A boolean indicating whether the collection is read-only.
+    convenience init(
+        type: Property.Type,
+        title: LocalizedStringResource = "",
+        insertionTitle: LocalizedStringResource = "Add",
+        isReadOnly: Bool = false
+    ) {
+        self.init(
+            value: [],
+            title: title,
+            insertionTitle: insertionTitle,
+            isReadOnly: isReadOnly
+        )
     }
 }

@@ -20,14 +20,14 @@ import Foundation
 /// class PersonEditModel: Validatable {
 ///     @PropertyEditor(keyPath: \Person.givenName)
 ///     var firstName = FormFieldViewModel(
-///         value: "",
+///         type: String.self,
 ///         title: "First Name:",
 ///         validation: .notEmpty
 ///     )
 ///
 ///     @PropertyEditor(keyPath: \Person.familyName)
 ///     var lastName = FormFieldViewModel(
-///         value: "",
+///         type: String.self,
 ///         title: "Last Name:",
 ///         validation: .notEmpty
 ///     )

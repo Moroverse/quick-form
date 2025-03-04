@@ -30,7 +30,7 @@ import SwiftUI
 ///
 /// struct EmployeeForm: View {
 ///     @State private var viewModel = OptionalPickerFieldViewModel<Department>(
-///         value: nil,
+///         type: Department.self,
 ///         allValues: Department.allCases,
 ///         title: "Department:",
 ///         validation: .of(.required())

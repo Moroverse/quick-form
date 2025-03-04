@@ -25,7 +25,7 @@ import SwiftUI
 /// ```swift
 /// struct PersonForm: View {
 ///     @State private var viewModel = FormFieldViewModel<String?>(
-///         value: nil,
+///         type: String?.self,
 ///         title: "Middle Name:",
 ///         placeholder: "Enter middle name (optional)"
 ///     )

@@ -68,7 +68,7 @@ import QuickForm
 class PersonEditModel: Validatable {
 @PropertyEditor(keyPath: \Person.givenName)
 var firstName = FormFieldViewModel(
-value: "",
+type: String.self,
 title: "First Name:",
 placeholder: "John",
 validation: .combined(.notEmpty, .minLength(2), .maxLength(50))
@@ -76,7 +76,7 @@ validation: .combined(.notEmpty, .minLength(2), .maxLength(50))
 
 @PropertyEditor(keyPath: \Person.familyName)
 var lastName = FormFieldViewModel(
-value: "",
+type: String.self,
 title: "Last Name:",
 placeholder: "Doe",
 validation: .combined(.notEmpty, .minLength(2), .maxLength(50))
@@ -84,7 +84,7 @@ validation: .combined(.notEmpty, .minLength(2), .maxLength(50))
 
 @PropertyEditor(keyPath: \Person.dateOfBirth)
 var birthday = FormFieldViewModel(
-    value: Date(),
+    type: Date.self,
     title: "Birthday:",
     placeholder: "1980-01-01"
     )

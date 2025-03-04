@@ -6,45 +6,53 @@ import Foundation
 import Observation
 @preconcurrency import QuickForm
 
+extension Country: DefaultValueProvider {
+    public static var defaultValue: Self { .unitedStates }
+}
+
+extension CountryState: DefaultValueProvider {
+    public static var defaultValue: Self { .unitedStates(.california) }
+}
+
 @QuickForm(Address.self)
 class AddressEditModel: Validatable {
     @PropertyEditor(keyPath: \Address.line1)
     var line1 = FormFieldViewModel(
-        value: "",
+        type: String.self,
         placeholder: "Address Line 1",
         validation: .of(.notEmpty)
     )
 
     @PropertyEditor(keyPath: \Address.line2)
     var line2 = FormFieldViewModel(
-        value: String?.none,
+        type: String?.self,
         placeholder: "Address Line 2"
     )
 
     @PropertyEditor(keyPath: \Address.city)
     var city = FormFieldViewModel(
-        value: "",
+        type: String.self,
         placeholder: "City",
         validation: .of(.notEmpty)
     )
 
     @PropertyEditor(keyPath: \Address.zipCode)
     var zipCode = FormFieldViewModel(
-        value: "",
+        type: String.self,
         placeholder: "ZIP",
         validation: .combined(.notEmpty, .usZipCode)
     )
 
     @PropertyEditor(keyPath: \Address.country)
     var country = PickerFieldViewModel(
-        value: Country.unitedStates,
+        type: Country.self,
         allValues: Country.allCases,
         title: ""
     )
 
     @PropertyEditor(keyPath: \Address.state)
     var state = OptionalPickerFieldViewModel(
-        value: CountryState?.some(.unitedStates(.california)),
+        type: CountryState?.self,
         allValues: [],
         title: "",
         placeholder: "State"

@@ -21,7 +21,7 @@ import SwiftUI
 /// ```swift
 /// struct UserPreferencesForm: View {
 ///     @State private var viewModel = FormFieldViewModel(
-///         value: false,
+///         type: Bool.self,
 ///         title: "Receive notifications:",
 ///         isReadOnly: false
 ///     )

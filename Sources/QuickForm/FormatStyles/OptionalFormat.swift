@@ -37,7 +37,7 @@ import Foundation
 /// class EmployeeFormModel: Validatable {
 ///     @PropertyEditor(keyPath: \EmployeeForm.salary)
 ///     var salary = FormattedFieldViewModel(
-///         value: nil as Double?,
+///         type: Double?.self,
 ///         format: OptionalFormat(format: .currency(code: "USD")),
 ///         title: "Salary:",
 ///         placeholder: "Enter salary (optional)"

@@ -98,3 +98,35 @@ public final class AsyncPickerFieldViewModel<Model: Collection, Query>:
         return self
     }
 }
+
+public extension AsyncPickerFieldViewModel where Model.Element: DefaultValueProvider {
+    /// Convenience initializer that uses the default value of the element type.
+    ///
+    /// - Parameters:
+    ///   - type: The type of model elements.
+    ///   - title: The title of the picker field.
+    ///   - placeholder: An optional placeholder text for the form field.
+    ///   - isReadOnly: A boolean indicating whether the field is read-only. Defaults to `false`.
+    ///   - validation: An optional validation rule for the field.
+    ///   - valuesProvider: A closure that provides values based on a query.
+    ///   - queryBuilder: A closure that builds a query from an optional string.
+    convenience init(
+        type: Model.Element?.Type,
+        title: LocalizedStringResource = "",
+        placeholder: LocalizedStringResource? = nil,
+        isReadOnly: Bool = false,
+        validation: AnyValidationRule<Model.Element?>? = nil,
+        valuesProvider: @escaping (Query) async throws -> Model,
+        queryBuilder: @escaping (String?) -> Query
+    ) {
+        self.init(
+            value: Model.Element.defaultValue,
+            title: title,
+            placeholder: placeholder,
+            isReadOnly: isReadOnly,
+            validation: validation,
+            valuesProvider: valuesProvider,
+            queryBuilder: queryBuilder
+        )
+    }
+}

@@ -28,7 +28,7 @@ import SwiftUI
 ///
 /// struct ExpenseForm: View {
 ///     @State private var viewModel = PickerFieldViewModel(
-///         value: Category.food,
+///         type: Category.self,
 ///         allValues: Category.allCases,
 ///         title: "Category:"
 ///     )

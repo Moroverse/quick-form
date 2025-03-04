@@ -28,7 +28,7 @@ import Observation
 /// class PersonEditModel: Validatable {
 ///     @PropertyEditor(keyPath: \Person.salary)
 ///     var salary = FormattedFieldViewModel(
-///         value: 50000.0,
+///         type: Decimal.self,
 ///         format: .currency(code: "USD"),
 ///         title: "Salary:",
 ///         placeholder: "Enter annual salary",
@@ -124,5 +124,34 @@ public final class FormattedFieldViewModel<F>: ObservableValueEditor, Validatabl
     /// - Returns: A `ValidationResult` indicating whether the validation succeeded or failed.
     public func validate() -> ValidationResult {
         validation?.validate(value) ?? .success
+    }
+}
+
+public extension FormattedFieldViewModel where F.FormatInput: DefaultValueProvider {
+    /// Convenience initializer that uses the default value of the input type.
+    ///
+    /// - Parameters:
+    ///   - type: The type of formatted input.
+    ///   - format: The format style to use for this field.
+    ///   - title: The title of the form field.
+    ///   - placeholder: An optional placeholder text for the form field.
+    ///   - isReadOnly: A boolean indicating whether the field is read-only. Defaults to `false`.
+    ///   - validation: An optional validation rule for the field.
+    convenience init(
+        type: F.FormatInput.Type,
+        format: F,
+        title: LocalizedStringResource = "",
+        placeholder: LocalizedStringResource? = nil,
+        isReadOnly: Bool = false,
+        validation: AnyValidationRule<F.FormatInput?>? = nil
+    ) {
+        self.init(
+            value: F.FormatInput.defaultValue,
+            format: format,
+            title: title,
+            placeholder: placeholder,
+            isReadOnly: isReadOnly,
+            validation: validation
+        )
     }
 }
