@@ -107,3 +107,20 @@ public final class FormFieldViewModel<Property>: ObservableValueEditor, Validata
         validation?.validate(value) ?? .success
     }
 }
+
+public extension FormFieldViewModel where Property: DefaultValueProvider {
+    convenience init(
+        title: LocalizedStringResource = "",
+        placeholder: LocalizedStringResource? = nil,
+        isReadOnly: Bool = false,
+        validation: AnyValidationRule<Property>? = nil
+    ) {
+        self.init(
+            value: Property.defaultValue,
+            title: title,
+            placeholder: placeholder,
+            isReadOnly: isReadOnly,
+            validation: validation
+        )
+    }
+}
