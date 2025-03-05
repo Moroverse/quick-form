@@ -1,0 +1,129 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "" : {
+      "shouldTranslate" : false
+    },
+    "Add" : {
+      "localizations" : {
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dodaj"
+          }
+        }
+      }
+    },
+    "Done" : {
+      "localizations" : {
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Završi"
+          }
+        }
+      }
+    },
+    "Error" : {
+      "localizations" : {
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Greška"
+          }
+        }
+      }
+    },
+    "Error loading content: %@" : {
+      "localizations" : {
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Problem u učitavanju sadržaja: %@"
+          }
+        }
+      }
+    },
+    "Invalid input" : {
+      "localizations" : {
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nevalidan unos"
+          }
+        }
+      }
+    },
+    "Loading..." : {
+      "localizations" : {
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Učitavam…"
+          }
+        }
+      }
+    },
+    "None" : {
+      "localizations" : {
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bez vrednosti"
+          }
+        }
+      }
+    },
+    "Please enter a valid US ZIP code (e.g., 12345 or 12345-6789)" : {
+      "localizations" : {
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Molim unesite validan poštanski broj ( na primer, 12345 ili 12345-6789)"
+          }
+        }
+      }
+    },
+    "This field cannot be empty" : {
+      "localizations" : {
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ovo polje ne može biti prazno"
+          }
+        }
+      }
+    },
+    "This field is required" : {
+      "localizations" : {
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ovo polje je obavezno"
+          }
+        }
+      }
+    },
+    "This field must be at least %lld characters long" : {
+      "localizations" : {
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Polje mora imati bar %lld karaktera"
+          }
+        }
+      }
+    },
+    "This field must not exceed %lld characters" : {
+      "localizations" : {
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Polje ne sme da pređe %lld karaktera"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}
