@@ -130,6 +130,10 @@ struct PrescriptionEditForm: View {
                     }
             }
 
+            Section("Message to Pharmacist") {
+                FormTextEditor(viewModel: quickForm.messageToPharmacist)
+            }
+
 //            Section {
 //                TextEditor(text: .constant(quickForm.info))
 //                    .frame(height: 300)

@@ -6,7 +6,7 @@ import SwiftUI
 
 public struct FormTextEditor: View {
     @FocusState private var isFocused: Bool
-    @Bindable private var viewModel: FormFieldViewModel<String>
+    @Bindable private var viewModel: FormFieldViewModel<String?>
     @State private var hasError: Bool
     public var body: some View {
         VStack(alignment: .leading, spacing: 5) {
@@ -30,7 +30,7 @@ public struct FormTextEditor: View {
         }
     }
 
-    public init(viewModel: FormFieldViewModel<String>) {
+    public init(viewModel: FormFieldViewModel<String?>) {
         self.viewModel = viewModel
         hasError = viewModel.errorMessage != nil
     }
@@ -46,20 +46,20 @@ public struct FormTextEditor: View {
         }
 
         if viewModel.isReadOnly {
-            return .constant(viewModel.value)
+            return .constant(viewModel.value ?? "")
         } else {
-            return $viewModel.value
+            return $viewModel.value.unwrapped(defaultValue: "")
         }
     }
 
     private var shouldShowPlaceholder: Bool {
-        isFocused == false && viewModel.value.isEmpty
+        isFocused == false && !(viewModel.value?.isEmpty == false)
     }
 }
 
 #Preview("Default") {
     @Previewable @State var viewModel = FormFieldViewModel(
-        value: "Rasa",
+        value: "Rasa" as String?,
         title: "Dogs",
         placeholder: "John",
         isReadOnly: false
@@ -72,7 +72,7 @@ public struct FormTextEditor: View {
 
 #Preview("Placeholder") {
     @Previewable @State var viewModel = FormFieldViewModel(
-        value: "",
+        value: String?.none,
         title: "Dogs",
         placeholder: "John",
         isReadOnly: false
@@ -85,7 +85,7 @@ public struct FormTextEditor: View {
 
 #Preview("Not Title") {
     @Previewable @State var viewModel = FormFieldViewModel(
-        value: "Rasa",
+        value: "Rasa" as String?,
         title: "",
         placeholder: "John",
         isReadOnly: false
@@ -98,7 +98,7 @@ public struct FormTextEditor: View {
 
 #Preview("Read only") {
     @Previewable @State var viewModel = FormFieldViewModel(
-        value: "Rasa",
+        value: "Rasa" as String?,
         title: "",
         placeholder: "John",
         isReadOnly: true

@@ -50,6 +50,12 @@ final class PrescriptionEditModel: Validatable {
         }
     }
 
+    @PropertyEditor(keyPath: \PrescriptionComponents.messageToPharmacist)
+    var messageToPharmacist = FormFieldViewModel(
+        type: String?.self,
+        placeholder: "Do not substitute"
+    )
+
     @PropertyEditor(keyPath: Never)
     var info: String = ""
 

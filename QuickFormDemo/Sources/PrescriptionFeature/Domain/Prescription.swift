@@ -37,6 +37,7 @@ final class PrescriptionComponents: AutoDebugStringConvertible {
     var dispense: Dispense?
     var duration: Measurement<UnitDuration>?
     var startDate: Date?
+    var messageToPharmacist: String?
 
     init(
         assessments: Set<Assessment>,
@@ -45,7 +46,8 @@ final class PrescriptionComponents: AutoDebugStringConvertible {
         frequency: MedicationFrequency?,
         dispense: Dispense?,
         duration: Measurement<UnitDuration>?,
-        startDate: Date?
+        startDate: Date?,
+        messageToPharmacist: String? = nil
     ) {
         self.assessments = assessments
         self.medication = medication
