@@ -63,7 +63,7 @@ struct PersonEditView: View {
             FormValueDimensionField(quickForm.weight)
             FormFormattedTextField(quickForm.salary)
             FormToggleField(quickForm.isEstablished)
-            FormFormattedTextField(quickForm.phone)
+            FormFormattedTextField(quickForm.phone, autoMask: .phone)
             Section {
                 AddressEditView(quickForm: quickForm.address)
             }

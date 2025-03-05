@@ -40,6 +40,7 @@ import SwiftUI
 public struct FormFormattedTextField<F, V>: View where F: ParseableFormatStyle, F.FormatOutput == String, F.FormatInput: Equatable, V: View {
     let alignment: TextAlignment
     let clearValueMode: ClearValueMode
+    let autoMask: AutoMask?
 
     @FocusState private var isFocused: Bool
     @State private var resolvedAlignment: TextAlignment
@@ -47,17 +48,20 @@ public struct FormFormattedTextField<F, V>: View where F: ParseableFormatStyle, 
     @State private var originalValue: F.FormatInput?
     @Bindable private var viewModel: FormattedFieldViewModel<F>
     @State private var hasError: Bool
+    @State private var isAutoMasking = false
 
     private var trailingAccessoriesContent: (() -> V)?
 
     public init(
         _ viewModel: FormattedFieldViewModel<F>,
         alignment: TextAlignment = .trailing,
-        clearValueMode: ClearValueMode = .never
+        clearValueMode: ClearValueMode = .never,
+        autoMask: AutoMask? = nil
     ) where V == Never {
         self.viewModel = viewModel
         self.clearValueMode = clearValueMode
         self.alignment = alignment
+        self.autoMask = autoMask
         hasError = viewModel.errorMessage != nil
         resolvedAlignment = alignment
         isFocused = false
@@ -67,11 +71,13 @@ public struct FormFormattedTextField<F, V>: View where F: ParseableFormatStyle, 
         _ viewModel: FormattedFieldViewModel<F>,
         alignment: TextAlignment,
         clearValueMode: ClearValueMode,
+        autoMask: AutoMask? = nil,
         @ViewBuilder trailingAccessories: @escaping () -> V
     ) {
         self.viewModel = viewModel
         self.clearValueMode = clearValueMode
         self.alignment = alignment
+        self.autoMask = autoMask
         trailingAccessoriesContent = trailingAccessories
         hasError = viewModel.errorMessage != nil
         resolvedAlignment = alignment
@@ -101,9 +107,30 @@ public struct FormFormattedTextField<F, V>: View where F: ParseableFormatStyle, 
                 .onChange(of: viewModel.format) { _, _ in
                     editingText = viewModel.format.format(viewModel.value)
                 }
-                .onChange(of: viewModel.value) { newValue in
+                .onChange(of: viewModel.value) { _, newValue in
                     if !isFocused {
                         editingText = viewModel.format.format(newValue)
+                    }
+                }
+                .onChange(of: editingText) { _, newValue in
+                    if let autoMask, isFocused {
+                        // Only apply auto-masking when user is typing (not when programmatically changing text)
+                        if !isAutoMasking {
+                            isAutoMasking = true
+
+                            // Filter out characters that aren't allowed by the mask
+                            let filteredText = newValue.filter { autoMask.isAllowed(character: $0) }
+
+                            // Apply the mask formatting
+                            let maskedText = autoMask.apply(to: filteredText)
+
+                            // Only update if the text would actually change
+                            if maskedText != editingText {
+                                editingText = maskedText
+                            }
+
+                            isAutoMasking = false
+                        }
                     }
                 }
                 .onChange(of: isFocused) { _, newValue in
@@ -248,5 +275,44 @@ public struct FormFormattedTextField<F, V>: View where F: ParseableFormatStyle, 
 
     Form {
         FormFormattedTextField(viewModel, clearValueMode: .whileEditing)
+    }
+}
+
+#Preview("Phone Mask") {
+    @Previewable @State var viewModel = FormattedFieldViewModel(
+        value: "",
+        format: PlainStringFormat(),
+        title: "Phone Number:",
+        placeholder: "(555) 555-5555"
+    )
+
+    Form {
+        FormFormattedTextField(viewModel, autoMask: .phone)
+    }
+}
+
+#Preview("Credit Card Mask") {
+    @Previewable @State var viewModel = FormattedFieldViewModel(
+        value: "",
+        format: PlainStringFormat(),
+        title: "Card Number:",
+        placeholder: "1234 5678 9012 3456"
+    )
+
+    Form {
+        FormFormattedTextField(viewModel, autoMask: .creditCard)
+    }
+}
+
+#Preview("Pattern Mask") {
+    @Previewable @State var viewModel = FormattedFieldViewModel(
+        value: "",
+        format: PlainStringFormat(),
+        title: "Patient Record Number",
+        placeholder: "MRN-XX-####"
+    )
+
+    Form {
+        FormFormattedTextField(viewModel, autoMask: .pattern("MRN-XX-####", allowedCharacters: .alphanumerics))
     }
 }
