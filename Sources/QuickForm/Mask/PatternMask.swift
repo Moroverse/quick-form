@@ -37,6 +37,9 @@ public struct PatternMask: AutoMask {
                 filteredIndex = filteredText.index(after: filteredIndex)
             } else {
                 result.append(patternChar)
+                if filteredText[filteredIndex] == patternChar {
+                    filteredIndex = filteredText.index(after: filteredIndex)
+                }
             }
         }
 

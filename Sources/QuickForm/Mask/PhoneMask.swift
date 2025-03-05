@@ -35,8 +35,6 @@ public struct PhoneMask: AutoMask {
                     let final = digitArray[6 ..< min(10, digitArray.count)]
                     result.append(String(final))
                 }
-            } else {
-                result.append(")")
             }
         }
 
