@@ -28,6 +28,39 @@ public struct FormTextEditor: View {
                 hasError = newValue != nil
             }
         }
+        .toolbar {
+            ToolbarItemGroup(placement: .keyboard) {
+                Button {
+                    var text = viewModel.value ?? ""
+                    text += "**"
+                    viewModel.value = text
+                } label: {
+                    Image(systemName: "bold")
+                }
+
+                Button {
+                    var text = viewModel.value ?? ""
+                    text += "*"
+                    viewModel.value = text
+                } label: {
+                    Image(systemName: "italic")
+                }
+
+                Button {
+                    var text = viewModel.value ?? ""
+                    text += "`"
+                    viewModel.value = text
+                } label: {
+                    Image(systemName: "doc.text")
+                }
+
+                Spacer()
+
+                Button("Done") {
+                    isFocused = false
+                }
+            }
+        }
     }
 
     public init(viewModel: FormFieldViewModel<String?>) {
