@@ -5,6 +5,9 @@
 import SwiftUI
 
 public struct FormTextField: View {
+#if DEBUG
+    let inspection = Inspection<Self>()
+#endif
     @FocusState private var isFocused: Bool
     @Bindable private var viewModel: FormFieldViewModel<String>
     @State private var resolvedAlignment: TextAlignment
@@ -50,6 +53,7 @@ public struct FormTextField: View {
             HStack(spacing: 10) {
                 if hasTitle {
                     Text(viewModel.title)
+                        .accessibilityIdentifier("TITLE")
                         .font(.headline)
                 }
                 TextField(String(localized: viewModel.placeholder ?? ""), text: $viewModel.value)
@@ -81,6 +85,7 @@ public struct FormTextField: View {
                 hasError = newValue != nil
             }
         }
+        .inspect(inspection, in: self)
 
         if shouldDisplayClearButton {
             Button {
