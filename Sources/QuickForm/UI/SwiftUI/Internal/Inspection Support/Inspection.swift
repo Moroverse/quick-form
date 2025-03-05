@@ -1,3 +1,7 @@
+// Inspection.swift
+// Copyright (c) 2025 Moroverse
+// Created by Daniel Moro on 2025-03-05 07:19 GMT.
+
 import Combine
 import SwiftUI
 
@@ -26,8 +30,14 @@ struct InspectionModifier<V: View>: ViewModifier {
     }
 }
 
+#if DEBUG
+    protocol InspectableForm {
+        var inspection: Inspection<Self> { get }
+    }
+#endif
+
 extension View {
-    func inspect<V: View>(_ inspection: Inspection<V>, in view: V) -> some View {
+    func registerForInspection<V: View>(_ inspection: Inspection<V>, in view: V) -> some View {
         #if DEBUG
             modifier(InspectionModifier(inspection: inspection, in: view))
         #else

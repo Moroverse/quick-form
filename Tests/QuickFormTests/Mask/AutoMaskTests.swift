@@ -1,6 +1,6 @@
 // AutoMaskTests.swift
 // Copyright (c) 2025 Moroverse
-// Created by Daniel Moro on 2025-03-05 05:30 GMT.
+// Created by Daniel Moro on 2025-03-05 05:57 GMT.
 
 import Foundation
 import QuickForm
@@ -8,7 +8,6 @@ import Testing
 
 @Suite("AutoMask Tests")
 struct AutoMaskTests {
-
     // MARK: - Phone Mask Tests
 
     @Test("PhoneMask.apply formats phone number correctly")

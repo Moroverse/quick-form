@@ -1,6 +1,6 @@
 // PhoneMask.swift
 // Copyright (c) 2025 Moroverse
-// Created by Daniel Moro on 2025-03-05 04:47 GMT.
+// Created by Daniel Moro on 2025-03-05 04:59 GMT.
 
 /// A mask for phone numbers in the format (XXX) XXX-XXXX
 public struct PhoneMask: AutoMask {

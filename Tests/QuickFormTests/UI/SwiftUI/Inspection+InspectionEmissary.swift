@@ -1,11 +1,8 @@
-//
-//  Untitled.swift
-//  quick-form
-//
-//  Created by Daniel Moro on 5.3.25..
-//
+// Inspection+InspectionEmissary.swift
+// Copyright (c) 2025 Moroverse
+// Created by Daniel Moro on 2025-03-05 07:32 GMT.
 
-import ViewInspector
 @testable import QuickForm
+import ViewInspector
 
-extension Inspection: InspectionEmissary { }
+extension Inspection: InspectionEmissary {}

@@ -5,9 +5,9 @@
 import SwiftUI
 
 public struct FormTextField: View {
-#if DEBUG
-    let inspection = Inspection<Self>()
-#endif
+    #if DEBUG
+        let inspection = Inspection<Self>()
+    #endif
     @FocusState private var isFocused: Bool
     @Bindable private var viewModel: FormFieldViewModel<String>
     @State private var resolvedAlignment: TextAlignment
@@ -57,6 +57,7 @@ public struct FormTextField: View {
                         .font(.headline)
                 }
                 TextField(String(localized: viewModel.placeholder ?? ""), text: $viewModel.value)
+                    .accessibilityIdentifier("VALUE")
                     .focused($isFocused)
                     .multilineTextAlignment(resolvedAlignment)
                     .disabled(viewModel.isReadOnly)
@@ -85,7 +86,7 @@ public struct FormTextField: View {
                 hasError = newValue != nil
             }
         }
-        .inspect(inspection, in: self)
+        .registerForInspection(inspection, in: self)
 
         if shouldDisplayClearButton {
             Button {
@@ -122,6 +123,10 @@ public struct FormTextField: View {
         return value.isEmpty == false
     }
 }
+
+#if DEBUG
+    extension FormTextField: InspectableForm {}
+#endif
 
 #Preview("Default") {
     @Previewable @State var viewModel = FormFieldViewModel(
