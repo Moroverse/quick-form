@@ -1,0 +1,525 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "" : {
+      "shouldTranslate" : false
+    },
+    "(123) 456-7890" : {
+      "localizations" : {
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "+381 (64) 123-45-67"
+          }
+        }
+      }
+    },
+    "%@ %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ %2$@"
+          }
+        },
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ %2$@"
+          }
+        }
+      }
+    },
+    "$100,000" : {
+      "localizations" : {
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "100.000RSD"
+          }
+        }
+      }
+    },
+    "70.0" : {
+      "localizations" : {
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "70,0"
+          }
+        }
+      }
+    },
+    "1980-01-01" : {
+      "localizations" : {
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1.1.1980."
+          }
+        }
+      }
+    },
+    "Address Line 1" : {
+      "localizations" : {
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adresa"
+          }
+        }
+      }
+    },
+    "Address Line 2" : {
+      "localizations" : {
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adresa Linija 2"
+          }
+        }
+      }
+    },
+    "Anderson" : {
+      "localizations" : {
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Perić"
+          }
+        }
+      }
+    },
+    "Assessments" : {
+      "localizations" : {
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dijagnoze"
+          }
+        }
+      }
+    },
+    "Avatar:" : {
+      "localizations" : {
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Slika:"
+          }
+        }
+      }
+    },
+    "Birthday:" : {
+      "localizations" : {
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rođendan:"
+          }
+        }
+      }
+    },
+    "Care Team" : {
+      "localizations" : {
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tim"
+          }
+        }
+      }
+    },
+    "City" : {
+      "localizations" : {
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Grad"
+          }
+        }
+      }
+    },
+    "Deactivate" : {
+      "localizations" : {
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deaktiviraj"
+          }
+        }
+      }
+    },
+    "Do not substitute" : {
+      "localizations" : {
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ne izdaj zamene"
+          }
+        }
+      }
+    },
+    "Dosage Form:" : {
+      "localizations" : {
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oblik leka:"
+          }
+        }
+      }
+    },
+    "Established:" : {
+      "localizations" : {
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Poznat pacijent:"
+          }
+        }
+      }
+    },
+    "Every" : {
+      "localizations" : {
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Svaki"
+          }
+        }
+      }
+    },
+    "First Name:" : {
+      "localizations" : {
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ime:"
+          }
+        }
+      }
+    },
+    "Frequency" : {
+      "localizations" : {
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Frekvencija"
+          }
+        }
+      }
+    },
+    "Frequency:" : {
+      "localizations" : {
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Frekvencija:"
+          }
+        }
+      }
+    },
+    "John" : {
+      "localizations" : {
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Petar"
+          }
+        }
+      }
+    },
+    "Last Name:" : {
+      "localizations" : {
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prezime:"
+          }
+        }
+      }
+    },
+    "Medication" : {
+      "localizations" : {
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lek"
+          }
+        }
+      }
+    },
+    "Message to Pharmacist" : {
+      "localizations" : {
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Poruka farmaceutu"
+          }
+        }
+      }
+    },
+    "No Person Avatar Selected" : {
+      "localizations" : {
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nije izabrana slika"
+          }
+        }
+      }
+    },
+    "Object has invalid fields:\n%@" : {
+      "localizations" : {
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Postoje polja koja nisu validna:\n%@"
+          }
+        }
+      }
+    },
+    "P@$$w0rd" : {
+      "localizations" : {
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "L02&nka"
+          }
+        }
+      }
+    },
+    "Password Again:" : {
+      "localizations" : {
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ponovi lozinku:"
+          }
+        }
+      }
+    },
+    "Password:" : {
+      "localizations" : {
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lozinka:"
+          }
+        }
+      }
+    },
+    "Passwords must match" : {
+      "localizations" : {
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lozinke se moraju podudarati"
+          }
+        }
+      }
+    },
+    "Period" : {
+      "localizations" : {
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Period"
+          }
+        }
+      }
+    },
+    "Person is not valid" : {
+      "localizations" : {
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Osoba nije validna"
+          }
+        }
+      }
+    },
+    "Person must be at least %lld years old" : {
+      "localizations" : {
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Osiba mora bit stara bar %lld godina"
+          }
+        }
+      }
+    },
+    "Phone:" : {
+      "localizations" : {
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Telefon:"
+          }
+        }
+      }
+    },
+    "Quantity:" : {
+      "localizations" : {
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Količina:"
+          }
+        }
+      }
+    },
+    "Route:" : {
+      "localizations" : {
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Način unosa:"
+          }
+        }
+      }
+    },
+    "Salary:" : {
+      "localizations" : {
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Plata:"
+          }
+        }
+      }
+    },
+    "Schedule" : {
+      "localizations" : {
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Raspored"
+          }
+        }
+      }
+    },
+    "Security" : {
+      "localizations" : {
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bezbednost"
+          }
+        }
+      }
+    },
+    "Sex:" : {
+      "localizations" : {
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pol:"
+          }
+        }
+      }
+    },
+    "State" : {
+      "localizations" : {
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Regija:"
+          }
+        }
+      }
+    },
+    "Strength:" : {
+      "localizations" : {
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jačina:"
+          }
+        }
+      }
+    },
+    "Substance:" : {
+      "localizations" : {
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Supstanca:"
+          }
+        }
+      }
+    },
+    "Take:" : {
+      "localizations" : {
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Raspored uzimanja:"
+          }
+        }
+      }
+    },
+    "This is not related controller that demonstrates navigation options" : {
+      "localizations" : {
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ovo je ekran koji samo pokazuje mogućnosti navigiranja kroz aplikaciju"
+          }
+        }
+      }
+    },
+    "Times" : {
+      "localizations" : {
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uzeti"
+          }
+        }
+      }
+    },
+    "times per" : {
+      "localizations" : {
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "na"
+          }
+        }
+      }
+    },
+    "Unable to calculate age" : {
+      "localizations" : {
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nemoguće je izračunati starost"
+          }
+        }
+      }
+    },
+    "Weight:" : {
+      "localizations" : {
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Težina"
+          }
+        }
+      }
+    },
+    "ZIP" : {
+      "localizations" : {
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Poštanski broj"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}
