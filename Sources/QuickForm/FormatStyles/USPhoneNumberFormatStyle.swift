@@ -4,25 +4,25 @@
 
 import Foundation
 
-struct USPhoneNumberFormatStyle: Codable, ParseableFormatStyle {
-    enum FormatType: Codable {
+public struct USPhoneNumberFormatStyle: Codable, ParseableFormatStyle {
+    public enum FormatType: Codable {
         case standard
         case parentheses
     }
 
-    typealias Strategy = USPhoneNumberParseStrategy
+    public typealias Strategy = USPhoneNumberParseStrategy
 
     private let formatType: FormatType
 
-    var parseStrategy: USPhoneNumberParseStrategy {
+    public var parseStrategy: USPhoneNumberParseStrategy {
         USPhoneNumberParseStrategy()
     }
 
-    init(_ formatType: FormatType = .standard) {
+    public init(_ formatType: FormatType = .standard) {
         self.formatType = formatType
     }
 
-    func format(_ value: String) -> String {
+    public func format(_ value: String) -> String {
         let cleaned = value.replacingOccurrences(of: "[^0-9]", with: "", options: .regularExpression)
         guard cleaned.count == 10 else { return value }
 
@@ -44,8 +44,8 @@ struct USPhoneNumberFormatStyle: Codable, ParseableFormatStyle {
     }
 }
 
-struct USPhoneNumberParseStrategy: ParseStrategy {
-    func parse(_ value: String) throws -> String {
+public struct USPhoneNumberParseStrategy: ParseStrategy {
+    public func parse(_ value: String) throws -> String {
         let cleaned = value.replacingOccurrences(of: "[^0-9]", with: "", options: .regularExpression)
         guard cleaned.count == 10 else {
             throw ParseError.invalidPhoneNumber
@@ -58,7 +58,7 @@ enum ParseError: Error {
     case invalidPhoneNumber
 }
 
-extension FormatStyle where Self == USPhoneNumberFormatStyle {
+public extension FormatStyle where Self == USPhoneNumberFormatStyle {
     static var usPhoneNumber: USPhoneNumberFormatStyle { USPhoneNumberFormatStyle() }
     static func usPhoneNumber(_ formatType: USPhoneNumberFormatStyle.FormatType) -> USPhoneNumberFormatStyle {
         USPhoneNumberFormatStyle(formatType)
