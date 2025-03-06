@@ -1,3 +1,7 @@
+// FormActionField.swift
+// Copyright (c) 2025 Moroverse
+// Created by Daniel Moro on 2025-03-06 05:33 GMT.
+
 //
 //  FormActionField.swift
 //  quick-form
@@ -7,11 +11,23 @@
 import Foundation
 import SwiftUI
 
+struct DismissableView<Content: View>: View {
+    private let content: (DismissAction) -> Content
+    @Environment(\.dismiss) private var dismiss
+    public var body: some View {
+        content(dismiss)
+    }
+
+    init(content: @escaping (DismissAction) -> Content) {
+        self.content = content
+    }
+}
+
 public struct FormActionField<Property, Label: View, Content: View>: View {
     @Bindable private var viewModel: FormFieldViewModel<Property>
     @State private var hasError: Bool
 
-    private let content: () -> Content
+    private let content: (DismissAction) -> Content
     private let label: (Property) -> Label
     private let presentationStyle: FieldActionStyleConfiguration
 
@@ -19,7 +35,9 @@ public struct FormActionField<Property, Label: View, Content: View>: View {
         VStack(alignment: .leading, spacing: 5) {
             ActionField(
                 title: viewModel.title,
-                content: content,
+                content: {
+                    DismissableView(content: content)
+                },
                 label: {
                     label(viewModel.value)
                         .frame(maxWidth: .infinity, alignment: .trailing)
@@ -43,7 +61,7 @@ public struct FormActionField<Property, Label: View, Content: View>: View {
     public init(
         _ viewModel: FormFieldViewModel<Property>,
         style: FieldActionStyleConfiguration,
-        @ViewBuilder content: @escaping () -> Content,
+        @ViewBuilder content: @escaping (DismissAction) -> Content,
         @ViewBuilder label: @escaping (Property) -> Label
     ) {
         self.viewModel = viewModel
@@ -60,7 +78,7 @@ public struct FormActionField<Property, Label: View, Content: View>: View {
 
     NavigationStack {
         Form {
-            FormActionField(form, style: .navigation) {} label: { value in
+            FormActionField(form, style: .navigation) { _ in } label: { value in
                 Text(verbatim: value)
             }
         }
@@ -72,7 +90,7 @@ public struct FormActionField<Property, Label: View, Content: View>: View {
 
     NavigationStack {
         Form {
-            FormActionField(form, style: .popover) {} label: { value in
+            FormActionField(form, style: .popover) { _ in } label: { value in
                 Text(verbatim: value)
             }
         }
@@ -84,7 +102,7 @@ public struct FormActionField<Property, Label: View, Content: View>: View {
 
     NavigationStack {
         Form {
-            FormActionField(form, style: .sheet) {} label: { value in
+            FormActionField(form, style: .sheet) { _ in } label: { value in
                 Text(verbatim: value)
             }
         }

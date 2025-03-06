@@ -160,6 +160,16 @@
         }
       }
     },
+    "Done" : {
+      "localizations" : {
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Završi"
+          }
+        }
+      }
+    },
     "Dosage Form:" : {
       "localizations" : {
         "sr-Latn" : {
@@ -251,7 +261,6 @@
       }
     },
     "Message to Pharmacist" : {
-      "extractionState" : "stale",
       "localizations" : {
         "sr-Latn" : {
           "stringUnit" : {
@@ -262,10 +271,14 @@
       }
     },
     "Message to Pharmacist:" : {
-
-    },
-    "Message to Pharmacist2" : {
-
+      "localizations" : {
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Poruka farmaceutu:"
+          }
+        }
+      }
     },
     "No Person Avatar Selected" : {
       "localizations" : {
@@ -273,6 +286,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nije izabrana slika"
+          }
+        }
+      }
+    },
+    "No substitution" : {
+      "localizations" : {
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bez zamene"
           }
         }
       }

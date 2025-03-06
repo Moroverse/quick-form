@@ -19,6 +19,52 @@ extension UnitDose: AllValues {
 struct PrescriptionEditForm: View {
     @Bindable private var quickForm: PrescriptionEditModel
     @State private var isPresented: Bool = false
+    @FormField(wrappedValue: nil, placeholder: "No substitution") private var message: String?
+    var body: some View {
+        Form {
+            FormMultiPickerSection(quickForm.problems)
+            Section("Medication") {
+                substanceField()
+                routeField()
+                dosageFormField()
+                strengthField()
+                takeField()
+                frequencyField()
+            }
+
+            Section("Message to Pharmacist") {
+                FormActionField(
+                    quickForm.messageToPharmacist,
+                    style: .sheet
+                ) { dismiss in
+                    FormTextEditor(viewModel: $message)
+                        .toolbar {
+                            ToolbarItem(placement: .primaryAction) {
+                                Button("Done") {
+                                    quickForm.messageToPharmacist.value = message
+                                    dismiss()
+                                }
+                            }
+                        }
+                } label: { _ in
+                    FormOptionalTextField(quickForm.messageToPharmacist)
+                        .disabled(true)
+                }
+            }
+
+//            Section {
+//                TextEditor(text: .constant(quickForm.info))
+//                    .frame(height: 300)
+//                    .disabled(true)
+//            }
+        }
+    }
+
+    init(quickForm: PrescriptionEditModel) {
+        self.quickForm = quickForm
+        message = quickForm.messageToPharmacist.value
+    }
+
     private func substanceField() -> some View {
         FormAsyncPickerField(
             quickForm.medication.substance,
@@ -103,54 +149,30 @@ struct PrescriptionEditForm: View {
         .frame(minWidth: 300, minHeight: 400)
     }
 
-    var body: some View {
-        Form {
-            FormMultiPickerSection(quickForm.problems)
-            Section("Medication") {
-                substanceField()
-                routeField()
-                dosageFormField()
-                strengthField()
-                FormOptionalValueUnitField(
-                    quickForm.take,
-                    defaultValue: Measurement<UnitDose>(value: 1, unit: .application)
-                )
-                MedicationFrequencyPicker(viewModel: quickForm.frequency)
-                FormFormattedTextField(quickForm.dispense, clearValueMode: .unlessEditing)
-                    .trailingAccessories {
-                        Button {
-                            isPresented.toggle()
-                        } label: {
-                            Image(systemName: "info.circle")
-                                .imageScale(.large)
-                        }
-                        .popover(isPresented: $isPresented) {
-                            originalDispenseField()
-                        }
-                    }
-            }
-
-            Section("Message to Pharmacist2") {
-                FormActionField(
-                    quickForm.messageToPharmacist,
-                    style: .popover
-                ) {
-                    FormTextEditor(viewModel: quickForm.messageToPharmacist)
-                } label: { value in
-                    Text(value ?? "Enter a optional message")
-                }
-            }
-
-//            Section {
-//                TextEditor(text: .constant(quickForm.info))
-//                    .frame(height: 300)
-//                    .disabled(true)
-//            }
-        }
+    private func takeField() -> some View {
+        FormOptionalValueUnitField(
+            quickForm.take,
+            defaultValue: Measurement<UnitDose>(value: 1, unit: .application)
+        )
     }
 
-    init(quickForm: PrescriptionEditModel) {
-        self.quickForm = quickForm
+    private func frequencyField() -> some View {
+        MedicationFrequencyPicker(viewModel: quickForm.frequency)
+    }
+
+    private func dispenseField() -> some View {
+        FormFormattedTextField(quickForm.dispense, clearValueMode: .unlessEditing)
+            .trailingAccessories {
+                Button {
+                    isPresented.toggle()
+                } label: {
+                    Image(systemName: "info.circle")
+                        .imageScale(.large)
+                }
+                .popover(isPresented: $isPresented) {
+                    originalDispenseField()
+                }
+            }
     }
 }
 
