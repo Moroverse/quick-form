@@ -58,8 +58,9 @@ opt_in_rules:
 - weak_delegate
 
 excluded:
-  - "**/Derived"
-
+  - "**/Derived/**"
+  - "**/.build/**"
+  - "**/.git/**"
 class_delegate_protocol:
     severity: error
 

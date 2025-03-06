@@ -35,7 +35,7 @@ struct PrescriptionEditForm: View {
             Section("Message to Pharmacist") {
                 FormActionField(
                     quickForm.messageToPharmacist,
-                    style: .sheet
+                    style: .navigation
                 ) { dismiss in
                     FormTextEditor(viewModel: $message)
                         .toolbar {

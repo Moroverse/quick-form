@@ -10,10 +10,6 @@ import Testing
 struct MinValueRule: ValidationRule {
     let minimumValue: Int
 
-    init(minimumValue: Int) {
-        self.minimumValue = minimumValue
-    }
-
     func validate(_ value: Int) -> ValidationResult {
         value >= minimumValue ? .success : .failure("Value must be at least \(minimumValue)")
     }
@@ -21,10 +17,6 @@ struct MinValueRule: ValidationRule {
 
 struct MaxValueRule: ValidationRule {
     let maximumValue: Int
-
-    init(maximumValue: Int) {
-        self.maximumValue = maximumValue
-    }
 
     func validate(_ value: Int) -> ValidationResult {
         value <= maximumValue ? .success : .failure("Value must not exceed \(maximumValue)")

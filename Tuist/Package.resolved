@@ -2,6 +2,15 @@
   "originHash" : "8d72be81490037be4b27fd731250df0f48d438f8bc0a6f7b48ba29d9928adb5e",
   "pins" : [
     {
+      "identity" : "richtexteditorswiftui",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Moroverse/RichTextEditorSwiftUI.git",
+      "state" : {
+        "branch" : "main",
+        "revision" : "dcc6eccde078242567ec835cefc0aed98d03e353"
+      }
+    },
+    {
       "identity" : "swift-syntax",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/swiftlang/swift-syntax",

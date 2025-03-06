@@ -14,7 +14,7 @@ import SwiftUI
 struct DismissableView<Content: View>: View {
     private let content: (DismissAction) -> Content
     @Environment(\.dismiss) private var dismiss
-    public var body: some View {
+    var body: some View {
         content(dismiss)
     }
 

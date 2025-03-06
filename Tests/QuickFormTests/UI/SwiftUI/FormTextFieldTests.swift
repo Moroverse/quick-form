@@ -44,7 +44,7 @@ final class FormTextFieldTests: XCTestCase {
         }
     }
 
-    func inspect<V: View & InspectableForm>(view: V, inspection: @escaping @MainActor @Sendable (InspectableView<ViewType.View<V>>) async throws -> Void) {
+    private func inspect<V: View & InspectableForm>(view: V, inspection: @escaping @MainActor @Sendable (InspectableView<ViewType.View<V>>) async throws -> Void) {
         let exp = view.inspection.inspect(inspection)
         ViewHosting.host(view: view)
         defer { ViewHosting.expel() }
