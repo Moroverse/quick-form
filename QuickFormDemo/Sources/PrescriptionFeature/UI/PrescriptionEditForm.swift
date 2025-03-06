@@ -130,8 +130,15 @@ struct PrescriptionEditForm: View {
                     }
             }
 
-            Section("Message to Pharmacist") {
-                FormTextEditor(viewModel: quickForm.messageToPharmacist)
+            Section("Message to Pharmacist2") {
+                FormActionField(
+                    quickForm.messageToPharmacist,
+                    style: .popover
+                ) {
+                    FormTextEditor(viewModel: quickForm.messageToPharmacist)
+                } label: { value in
+                    Text(value ?? "Enter a optional message")
+                }
             }
 
 //            Section {

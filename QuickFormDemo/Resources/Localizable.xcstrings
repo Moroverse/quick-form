@@ -251,6 +251,7 @@
       }
     },
     "Message to Pharmacist" : {
+      "extractionState" : "stale",
       "localizations" : {
         "sr-Latn" : {
           "stringUnit" : {
@@ -259,6 +260,12 @@
           }
         }
       }
+    },
+    "Message to Pharmacist:" : {
+
+    },
+    "Message to Pharmacist2" : {
+
     },
     "No Person Avatar Selected" : {
       "localizations" : {

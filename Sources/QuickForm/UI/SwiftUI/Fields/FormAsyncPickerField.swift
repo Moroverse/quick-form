@@ -68,7 +68,7 @@ public struct FormAsyncPickerField<Model: RandomAccessCollection, Query, VConten
     @State private var hasError: Bool
     @State private var isPresented = false
     private let clearValueMode: ClearValueMode
-    private let pickerStyle: AsyncPickerStyleConfiguration
+    private let pickerStyle: FieldActionStyleConfiguration
     private let allowSearch: Bool
     private let valueContent: (Model.Element?) -> VContent
     private let pickerContent: (Model.Element) -> PContent
@@ -85,7 +85,7 @@ public struct FormAsyncPickerField<Model: RandomAccessCollection, Query, VConten
     public init(
         _ viewModel: AsyncPickerFieldViewModel<Model, Query>,
         clearValueMode: ClearValueMode = .never,
-        pickerStyle: AsyncPickerStyleConfiguration = .popover,
+        pickerStyle: FieldActionStyleConfiguration = .popover,
         allowSearch: Bool = true,
         @ViewBuilder valueContent: @escaping (Model.Element?) -> VContent,
         @ViewBuilder pickerContent: @escaping (Model.Element) -> PContent
@@ -112,7 +112,7 @@ public struct FormAsyncPickerField<Model: RandomAccessCollection, Query, VConten
     public var body: some View {
         VStack(alignment: .leading, spacing: 5) {
             HStack {
-                AsyncPickerFormField(title: viewModel.title) {
+                ActionField(title: viewModel.title) {
                     AsyncPicker(
                         selectedValue: $viewModel.value,
                         allowSearch: allowSearch,
@@ -134,7 +134,7 @@ public struct FormAsyncPickerField<Model: RandomAccessCollection, Query, VConten
                         }
                     }
                 }
-                .asyncPickerStyle(pickerStyle)
+                .style(pickerStyle)
             }
 
             if hasError {
