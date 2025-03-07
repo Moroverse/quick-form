@@ -22,8 +22,7 @@ let package = Package(
         .package(url: "https://github.com/apple/swift-docc-plugin", from: "1.0.0"),
         .package(url: "https://github.com/swiftlang/swift-syntax.git", from: "600.0.0-latest"),
         .package(url: "https://github.com/pointfreeco/swift-macro-testing.git", from: "0.6.0"),
-        .package(url: "https://github.com/nalexn/ViewInspector.git", from: "0.10.1"),
-        .package(url: "https://github.com/Moroverse/RichTextEditorSwiftUI.git", branch: "main")
+        .package(url: "https://github.com/nalexn/ViewInspector.git", from: "0.10.1")
     ],
     targets: [
         .macro(
@@ -36,8 +35,7 @@ let package = Package(
         .target(
             name: "QuickForm",
             dependencies: [
-                "QuickFormMacros",
-                .product(name: "RichTextEditorSwiftUI", package: "richtexteditorswiftui")
+                "QuickFormMacros"
             ],
             plugins: [
                 .plugin(name: "SwiftLintBuildToolPlugin", package: "SwiftLintPlugins")

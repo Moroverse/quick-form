@@ -1,15 +1,6 @@
 {
-  "originHash" : "26460e9e749d05420140552b04fb0e44f6eb3070fa9c63367186f93c83fc9907",
+  "originHash" : "df1798228e8008c4c488eb3221f4319453420bfec3d4a95a7a554d5c9abc7465",
   "pins" : [
-    {
-      "identity" : "richtexteditorswiftui",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/Moroverse/RichTextEditorSwiftUI.git",
-      "state" : {
-        "branch" : "main",
-        "revision" : "dcc6eccde078242567ec835cefc0aed98d03e353"
-      }
-    },
     {
       "identity" : "swift-custom-dump",
       "kind" : "remoteSourceControl",
