@@ -4,10 +4,17 @@
 
 import Foundation
 
+enum EmploymentType: CaseIterable {
+    case fullTime
+    case partTime
+    case contract
+}
+
 struct ProfessionalDetails {
     var desiredPosition: String
     var desiredSalary: Decimal
     var availabilityDate: Date
+    var employmentType: EmploymentType
 }
 
 #if DEBUG
@@ -16,7 +23,8 @@ struct ProfessionalDetails {
             .init(
                 desiredPosition: "Software Developer",
                 desiredSalary: 35000,
-                availabilityDate: Date()
+                availabilityDate: Date(),
+                employmentType: .partTime
             )
         }
     }

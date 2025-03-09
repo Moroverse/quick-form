@@ -6,6 +6,25 @@ import Foundation
 import Observation
 import QuickForm
 
+extension EmploymentType: CustomStringConvertible {
+    var description: String {
+        switch self {
+        case .fullTime:
+            "Full Time"
+        case .partTime:
+            "Part Time"
+        case .contract:
+            "Contract"
+        }
+    }
+}
+
+extension EmploymentType: DefaultValueProvider {
+    static var defaultValue: EmploymentType {
+        .partTime
+    }
+}
+
 @QuickForm(ProfessionalDetails.self)
 final class ProfessionalDetailsModel {
     @PropertyEditor(keyPath: \ProfessionalDetails.desiredPosition)
@@ -28,6 +47,13 @@ final class ProfessionalDetailsModel {
 
     @PropertyEditor(keyPath: \ProfessionalDetails.availabilityDate)
     var availabilityDate = FormFieldViewModel(type: Date.self, title: "Availability Date")
+
+    @PropertyEditor(keyPath: \ProfessionalDetails.employmentType)
+    var employmentType = PickerFieldViewModel(
+        type: EmploymentType.self,
+        allValues: EmploymentType.allCases,
+        title: "Employment Type"
+    )
 }
 
 extension ProfessionalDetailsModel: ValueEditor {}

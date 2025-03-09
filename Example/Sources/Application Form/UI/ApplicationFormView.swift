@@ -27,6 +27,10 @@ struct ApplicationFormView: View {
                     displayedComponents: [.date],
                     style: .automatic
                 )
+                FormPickerField(
+                    model.professionalDetails.employmentType,
+                    pickerStyle: .navigationLink
+                )
             }
         }
     }
