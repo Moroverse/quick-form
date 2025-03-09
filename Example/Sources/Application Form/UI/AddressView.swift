@@ -9,6 +9,7 @@ struct AddressView: View {
     @Bindable private var model: AddressModel
     var body: some View {
         FormTextField(model.street)
+        FormTextField(model.city)
     }
 
     init(model: AddressModel) {

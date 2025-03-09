@@ -14,7 +14,7 @@ Job Application Form
 - [x] Phone
 - [ ] Address
   - [x] Street
-  - [ ] City
+  - [x] City
   - [ ] Postal Code
   - [ ] Country
   - [ ] State

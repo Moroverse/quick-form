@@ -14,4 +14,12 @@ final class AddressModel {
         placeholder: "5th Avenue",
         validation: .of(.notEmpty)
     )
+
+    @PropertyEditor(keyPath: \Address.city)
+    var city = FormFieldViewModel(
+        type: String.self,
+        title: "City:",
+        placeholder: "New York",
+        validation: .of(.notEmpty)
+    )
 }
