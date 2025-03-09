@@ -17,7 +17,7 @@ Job Application Form
   - [x] City
   - [x] Postal Code
   - [x] Country
-  - [ ] State
+  - [x] State
 
 ## Professional Details
 

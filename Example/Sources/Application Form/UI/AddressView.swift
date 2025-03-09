@@ -15,6 +15,7 @@ struct AddressView: View {
         FormTextField(model.street)
         FormTextField(model.city)
         FormTextField(model.zip)
+
         FormAsyncPickerField(
             model.country,
             clearValueMode: .always,
@@ -25,6 +26,20 @@ struct AddressView: View {
             Text($0 ?? String(localized: placeholder))
         } pickerContent: {
             Text($0)
+        }
+
+        if let value = model.country.value, value.isEmpty == false {
+            FormAsyncPickerField(
+                model.state,
+                clearValueMode: .always,
+                pickerStyle: .sheet,
+                allowSearch: false
+            ) {
+                let placeholder = model.state.placeholder ?? ""
+                Text($0 ?? String(localized: placeholder))
+            } pickerContent: {
+                Text($0)
+            }
         }
     }
 

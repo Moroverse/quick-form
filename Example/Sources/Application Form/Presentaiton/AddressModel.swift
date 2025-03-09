@@ -7,6 +7,8 @@ import QuickForm
 
 @QuickForm(Address.self)
 final class AddressModel {
+    var stateLoader: StateLoader?
+
     @PropertyEditor(keyPath: \Address.street)
     var street = FormFieldViewModel(
         type: String.self,
@@ -41,4 +43,37 @@ final class AddressModel {
         },
         queryBuilder: { $0 ?? "" }
     )
+
+    @PropertyEditor(keyPath: \Address.state)
+    var state = AsyncPickerFieldViewModel(
+        type: String?.self,
+        placeholder: "Select State...",
+        validation: .of(.required()),
+        valuesProvider: {
+            try await MockStateLoader().loadStates(country: $0)
+        },
+        queryBuilder: { $0 ?? "" }
+    )
+
+    @PostInit
+    func configure() {
+        stateLoader = MockStateLoader()
+        country.onValueChanged { [weak self] newValue in
+            guard let self else { return }
+            state.value = nil
+            if let newValue {
+                Task { [weak self] in
+                    if await self?.stateLoader?.hasStates(country: newValue) == true {
+                        self?.state.validation = .of(.required())
+                    } else {
+                        self?.state.validation = .none
+                    }
+                    self?.state.queryBuilder = { _ in newValue }
+                }
+            } else {
+                state.validation = .none
+                state.queryBuilder = { $0 ?? "" }
+            }
+        }
+    }
 }
