@@ -6,11 +6,11 @@ import SwiftUI
 
 @main
 struct ExampleApp: App {
+    @State var model = ApplicationFormModel(value: .sample)
     var body: some Scene {
         WindowGroup {
-            Form {
-                let model = AddressModel(value: .sample)
-                return AddressView(model: model)
+            NavigationStack {
+                ApplicationFormView(model: model)
             }
         }
     }

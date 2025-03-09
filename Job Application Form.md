@@ -21,7 +21,7 @@ Job Application Form
 
 ## Professional Details
 
-- [ ] Desired Position
+- [x] Desired Position
 - [ ] Desired Salary
 - [ ] Availability Date
 - [ ] Employment Type

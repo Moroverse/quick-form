@@ -1,32 +1,36 @@
 // ApplicationFormView.swift
 // Copyright (c) 2025 Moroverse
-// Created by Daniel Moro on 2025-03-09 05:13 GMT.
+// Created by Daniel Moro on 2025-03-09 09:31 GMT.
 
 import QuickForm
 import SwiftUI
 
 struct ApplicationFormView: View {
-    @Bindable private var model: PersonalInformationModel
+    @Bindable private var model: ApplicationFormModel
     var body: some View {
         Form {
             Section(header: Text("Personal Information")) {
-                FormTextField(model.givenName)
-                FormTextField(model.familyName)
-                FormTextField(model.emailName)
-                FormFormattedTextField(model.phoneNumber, autoMask: .phone)
-                AddressView(model: model.address)
+                FormTextField(model.personalInformation.givenName)
+                FormTextField(model.personalInformation.familyName)
+                FormTextField(model.personalInformation.emailName)
+                FormFormattedTextField(model.personalInformation.phoneNumber, autoMask: .phone)
+                AddressView(model: model.personalInformation.address)
+            }
+
+            Section("Professional Details") {
+                FormTextField(model.professionalDetails.desiredPosition)
             }
         }
     }
 
-    init(model: PersonalInformationModel) {
+    init(model: ApplicationFormModel) {
         self.model = model
     }
 }
 
 struct ApplicationFormView_Previews: PreviewProvider {
     struct ApplicationFormViewWrapper: View {
-        @State var model = PersonalInformationModel(value: .sample)
+        @State var model = ApplicationFormModel(value: .sample)
 
         var body: some View {
             ApplicationFormView(model: model)

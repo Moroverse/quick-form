@@ -1,6 +1,6 @@
 // PersonalInformationModel.swift
 // Copyright (c) 2025 Moroverse
-// Created by Daniel Moro on 2025-03-09 05:06 GMT.
+// Created by Daniel Moro on 2025-03-09 09:31 GMT.
 
 import Observation
 import QuickForm
@@ -42,3 +42,5 @@ final class PersonalInformationModel {
     @PropertyEditor(keyPath: \PersonalInformation.address)
     var address = AddressModel(value: .sample)
 }
+
+extension PersonalInformationModel: ValueEditor {}
