@@ -4,7 +4,7 @@
 
 import Foundation
 
- public struct EmailRule: ValidationRule {
+public struct EmailRule: ValidationRule {
     public func validate(_ value: String) -> ValidationResult {
         let emailRegex = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
         let emailPredicate = NSPredicate(format: "SELF MATCHES %@", emailRegex)
@@ -12,8 +12,8 @@ import Foundation
     }
 
     public init() {}
- }
+}
 
- public extension ValidationRule where Self == EmailRule {
+public extension ValidationRule where Self == EmailRule {
     static var email: EmailRule { EmailRule() }
- }
+}
