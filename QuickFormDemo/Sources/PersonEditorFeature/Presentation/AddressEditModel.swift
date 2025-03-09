@@ -72,5 +72,3 @@ class AddressEditModel: Validatable {
         }
     }
 }
-
-// extension AddressEditModel: ValueEditor {}

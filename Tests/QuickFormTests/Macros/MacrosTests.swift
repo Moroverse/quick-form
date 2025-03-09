@@ -45,6 +45,7 @@ let canTestMacros: Bool = {
                         set {
                             withMutation(keyPath: \.value) {
                                 _value = newValue
+                                dispatcher.publish(newValue)
                             }
                         }
                     }
@@ -56,6 +57,7 @@ let canTestMacros: Bool = {
 
                     internal init(value: Person) {
                         self._value = value
+                        dispatcher = Dispatcher()
                         update()
 
 
@@ -81,9 +83,20 @@ let canTestMacros: Bool = {
                     internal func addCustomValidationRule(_ rule: some ValidationRule<Person>) {
                         customValidationRules.append(rule)
                     }
+
+                    private var dispatcher: Dispatcher
+
+                    @discardableResult
+                    internal func onValueChanged(_ change: @escaping (Person) -> Void) -> Self {
+                        dispatcher.subscribe(handler: change)
+                        return self
+                    }
                 }
 
                 extension PersonFormController: Observable {
+                }
+
+                extension PersonFormController: ObservableValueEditor {
                 }
                 """#
             }
@@ -190,6 +203,7 @@ let canTestMacros: Bool = {
                         set {
                             withMutation(keyPath: \.value) {
                                 _value = newValue
+                                dispatcher.publish(newValue)
                             }
                         }
                     }
@@ -201,6 +215,7 @@ let canTestMacros: Bool = {
 
                     internal init(value: Person) {
                         self._value = value
+                        dispatcher = Dispatcher()
                         update()
                         func trackNamefield() {
                         withObservationTracking { [weak self] in
@@ -242,9 +257,20 @@ let canTestMacros: Bool = {
                     internal func addCustomValidationRule(_ rule: some ValidationRule<Person>) {
                         customValidationRules.append(rule)
                     }
+
+                    private var dispatcher: Dispatcher
+
+                    @discardableResult
+                    internal func onValueChanged(_ change: @escaping (Person) -> Void) -> Self {
+                        dispatcher.subscribe(handler: change)
+                        return self
+                    }
                 }
 
                 extension PersonFormController: Observable {
+                }
+
+                extension PersonFormController: ObservableValueEditor {
                 }
                 """#
             }
