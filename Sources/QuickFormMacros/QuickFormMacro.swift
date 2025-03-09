@@ -82,6 +82,7 @@ public struct QuickFormMacro: MemberMacro, ExtensionMacro {
             set {
                 withMutation(keyPath: \\.value) {
                     _value = newValue
+                    dispatcher.publish(newValue)
                 }
             }
         }
@@ -107,6 +108,7 @@ public struct QuickFormMacro: MemberMacro, ExtensionMacro {
         let initializer = """
         \(classVisibility) init(value: \(modelType)) {
             self._value = value
+            dispatcher = Dispatcher()
             update()
             \(propertyEditors.map { identifier, keyPath in
                 makeTrack(identifier: identifier, keyPath: keyPath, shouldValidate: conformsToValidatable)
@@ -212,6 +214,22 @@ public struct QuickFormMacro: MemberMacro, ExtensionMacro {
         """
         declarations.append(DeclSyntax(stringLiteral: customValidationRules))
 
+        // add dispatcher
+        let dispatcher = """
+        private var dispatcher: Dispatcher
+        """
+        declarations.append(DeclSyntax(stringLiteral: dispatcher))
+
+        // add onValueChanged method
+        let onValueChangedMethod = """
+        @discardableResult
+        \(classVisibility) func onValueChanged(_ change: @escaping (\(modelType)) -> Void) -> Self {
+            dispatcher.subscribe(handler: change)
+            return self
+        }
+        """
+        declarations.append(DeclSyntax(stringLiteral: onValueChangedMethod))
+
         return declarations
     }
 
@@ -248,7 +266,7 @@ public struct QuickFormMacro: MemberMacro, ExtensionMacro {
         in context: some MacroExpansionContext
     ) throws -> [ExtensionDeclSyntax] {
         let observableConformance = try ExtensionDeclSyntax("extension \(type): Observable { }")
-        let valueEditorConformance = try ExtensionDeclSyntax("extension \(type): ValueEditor { }")
+        let valueEditorConformance = try ExtensionDeclSyntax("extension \(type): ObservableValueEditor { }")
         return [observableConformance, valueEditorConformance]
     }
 }

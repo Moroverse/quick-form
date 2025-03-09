@@ -6,6 +6,8 @@ public enum FieldActionStyleConfiguration {
     case navigation
     case popover
     case sheet
-    case fullScreen
+    #if os(iOS) || os(tvOS) || targetEnvironment(macCatalyst)
+        case fullScreen
+    #endif
     case inline
 }

@@ -111,36 +111,38 @@ struct FieldActionSheetStyle<Label: View, Content: View>: View, FieldActionStyle
     }
 }
 
-struct FieldActionFullScreenCoverStyle<Label: View, Content: View>: View, FieldActionStyle {
-    let title: LocalizedStringResource
-    let content: () -> Content
-    let label: () -> Label
-    @State private var isPresented = false
+#if os(iOS) || os(tvOS) || targetEnvironment(macCatalyst)
+    struct FieldActionFullScreenCoverStyle<Label: View, Content: View>: View, FieldActionStyle {
+        let title: LocalizedStringResource
+        let content: () -> Content
+        let label: () -> Label
+        @State private var isPresented = false
 
-    var body: some View {
-        Button(action: {
-            isPresented = true
-        }, label: label)
-            .buttonStyle(.plain)
-            .contentShape(Rectangle())
-            .onTapGesture {
+        var body: some View {
+            Button(action: {
                 isPresented = true
-            }
-            .fullScreenCover(isPresented: $isPresented, content: {
-                NavigationStack {
-                    content()
-                        .navigationTitle(String(localized: title))
-                        .modifier(SafeNavigationBarTitleDisplayModeModifier())
+            }, label: label)
+                .buttonStyle(.plain)
+                .contentShape(Rectangle())
+                .onTapGesture {
+                    isPresented = true
                 }
-            })
-    }
+                .fullScreenCover(isPresented: $isPresented, content: {
+                    NavigationStack {
+                        content()
+                            .navigationTitle(String(localized: title))
+                            .modifier(SafeNavigationBarTitleDisplayModeModifier())
+                    }
+                })
+        }
 
-    init(title: LocalizedStringResource, content: @escaping () -> Content, label: @escaping () -> Label) {
-        self.title = title
-        self.content = content
-        self.label = label
+        init(title: LocalizedStringResource, content: @escaping () -> Content, label: @escaping () -> Label) {
+            self.title = title
+            self.content = content
+            self.label = label
+        }
     }
-}
+#endif
 
 struct ActionField<Label: View, Content: View>: View {
     let title: LocalizedStringResource
@@ -162,9 +164,10 @@ struct ActionField<Label: View, Content: View>: View {
 
             case .sheet:
                 FieldActionSheetStyle(title: title, content: content, label: label)
-
-            case .fullScreen:
-                FieldActionFullScreenCoverStyle(title: title, content: content, label: label)
+            #if os(iOS) || os(tvOS) || targetEnvironment(macCatalyst)
+                case .fullScreen:
+                    FieldActionFullScreenCoverStyle(title: title, content: content, label: label)
+            #endif
             }
         }
     }
