@@ -8,16 +8,16 @@ Job Application Form
 
 ## Personal Information
 
-- [ ] Given Name
-- [ ] Familiy Name
-- [ ] Emai
-- [ ] Phone
-- [ ] Address
-  - [ ] Street
-  - [ ] City
-  - [ ] Postal Code
-  - [ ] Country
-  - [ ] State
+- [x] Given Name
+- [x] Familiy Name
+- [x] Emai
+- [x] Phone
+- [x] Address
+  - [x] Street
+  - [x] City
+  - [x] Postal Code
+  - [x] Country
+  - [x] State
 
 ## Professional Details
 
