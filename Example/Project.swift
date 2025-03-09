@@ -3,6 +3,7 @@
 // Created by Daniel Moro on 2025-03-09 05:00 GMT.
 
 import ProjectDescription
+import ProjectDescriptionHelpers
 
 let project = Project(
     name: "Example",
@@ -11,7 +12,7 @@ let project = Project(
             name: "Example",
             destinations: .iOS,
             product: .app,
-            bundleId: "io.tuist.",
+            bundleId: "io.moroverse.job-example",
             infoPlist: .extendingDefault(
                 with: [
                     "UILaunchScreen": [
@@ -22,9 +23,29 @@ let project = Project(
             ),
             sources: ["Sources/**"],
             resources: ["Resources/**"],
+            scripts: [
+                .pre(
+                    script: .formatScript(),
+                    name: "Format",
+                    basedOnDependencyAnalysis: false
+                ),
+                .pre(
+                    script: .lintScript(),
+                    name: "Lint",
+                    basedOnDependencyAnalysis: false
+                )
+            ],
             dependencies: [
                 .external(name: "QuickForm")
-            ]
+            ],
+            settings: .settings(
+                base: [
+                    "LOCALIZATION_PREFERS_STRING_CATALOGS": "YES",
+                    "SWIFT_EMIT_LOC_STRINGS": "YES",
+                    "TARGETED_DEVICE_FAMILY": "1,2"
+                ],
+                defaultSettings: .recommended(excluding: [])
+            )
         ),
         .target(
             name: "ExampleTests",

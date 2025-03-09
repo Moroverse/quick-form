@@ -12,7 +12,7 @@ let project = Project(
             name: "QuickFormDemo",
             destinations: [.iPad, .iPhone, .macCatalyst],
             product: .app,
-            bundleId: "com.ezderm.quick-form",
+            bundleId: "com.moroverse.quick-form",
             infoPlist: .extendingDefault(
                 with: [
                     "UILaunchScreen": [

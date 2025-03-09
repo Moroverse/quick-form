@@ -2,12 +2,6 @@
 // Copyright (c) 2025 Moroverse
 // Created by Daniel Moro on 2025-03-09 05:06 GMT.
 
-//
-//  PersonalInformationModel.swift
-//  Example
-//
-//  Created by Daniel Moro on 9.3.25..
-//
 import Observation
 import QuickForm
 
@@ -27,5 +21,13 @@ final class PersonalInformationModel {
         title: "Family Name",
         placeholder: "Doe",
         validation: .of(.notEmpty)
+    )
+
+    @PropertyEditor(keyPath: \PersonalInformation.email)
+    var emailName = FormFieldViewModel(
+        type: String.self,
+        title: "Email",
+        placeholder: "johndoe@example.com",
+        validation: .of(.email)
     )
 }

@@ -10,7 +10,7 @@ Job Application Form
 
 - [x] Given Name
 - [x] Familiy Name
-- [ ] Emai
+- [x] Emai
 - [ ] Phone
 - [ ] Address
   - [ ] Street
