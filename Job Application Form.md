@@ -11,7 +11,7 @@ Job Application Form
 - [x] Given Name
 - [x] Familiy Name
 - [x] Emai
-- [ ] Phone
+- [x] Phone
 - [ ] Address
   - [ ] Street
   - [ ] City

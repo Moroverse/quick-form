@@ -30,4 +30,12 @@ final class PersonalInformationModel {
         placeholder: "johndoe@example.com",
         validation: .of(.email)
     )
+
+    @PropertyEditor(keyPath: \PersonalInformation.phoneNumber)
+    var phoneNumber = FormattedFieldViewModel(
+        type: String.self,
+        format: .usPhoneNumber(.parentheses),
+        title: "Phone Number",
+        placeholder: "(123) 456-789"
+    )
 }

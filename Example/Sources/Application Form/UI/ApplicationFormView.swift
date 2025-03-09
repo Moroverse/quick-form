@@ -13,6 +13,7 @@ struct ApplicationFormView: View {
                 FormTextField(model.givenName)
                 FormTextField(model.familyName)
                 FormTextField(model.emailName)
+                FormFormattedTextField(model.phoneNumber, autoMask: .phone)
             }
         }
     }
