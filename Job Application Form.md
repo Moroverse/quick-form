@@ -21,11 +21,11 @@ Job Application Form
 
 ## Professional Details
 
-- [ ] Desired Position
-- [ ] Desired Salary
-- [ ] Availability Date
-- [ ] Employment Type
-- [ ] Willing to Relocate
+- [x] Desired Position
+- [x] Desired Salary
+- [x] Availability Date
+- [x] Employment Type
+- [x] Willing to Relocate
 
 ## Experience
 
