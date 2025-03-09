@@ -7,6 +7,7 @@ import Foundation
 struct ProfessionalDetails {
     var desiredPosition: String
     var desiredSalary: Decimal
+    var availabilityDate: Date
 }
 
 #if DEBUG
@@ -14,7 +15,8 @@ struct ProfessionalDetails {
         static var sample: Self {
             .init(
                 desiredPosition: "Software Developer",
-                desiredSalary: 35000
+                desiredSalary: 35000,
+                availabilityDate: Date()
             )
         }
     }

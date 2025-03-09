@@ -25,6 +25,9 @@ final class ProfessionalDetailsModel {
         title: "Desied Salary",
         placeholder: "3 000 000"
     )
+
+    @PropertyEditor(keyPath: \ProfessionalDetails.availabilityDate)
+    var availabilityDate = FormFieldViewModel(type: Date.self, title: "Availability Date")
 }
 
 extension ProfessionalDetailsModel: ValueEditor {}

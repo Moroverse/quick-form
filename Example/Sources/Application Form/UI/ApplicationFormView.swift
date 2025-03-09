@@ -2,6 +2,7 @@
 // Copyright (c) 2025 Moroverse
 // Created by Daniel Moro on 2025-03-09 09:31 GMT.
 
+import Foundation
 import QuickForm
 import SwiftUI
 
@@ -20,6 +21,12 @@ struct ApplicationFormView: View {
             Section("Professional Details") {
                 FormTextField(model.professionalDetails.desiredPosition)
                 FormFormattedTextField(model.professionalDetails.desiredSalary)
+                FormDatePickerField(
+                    model.professionalDetails.availabilityDate,
+                    range: Date() ... Date.distantFuture,
+                    displayedComponents: [.date],
+                    style: .automatic
+                )
             }
         }
     }
