@@ -31,6 +31,7 @@ struct ApplicationFormView: View {
                     model.professionalDetails.employmentType,
                     pickerStyle: .navigationLink
                 )
+                FormToggleField(model.professionalDetails.willingToRelocate)
             }
         }
     }

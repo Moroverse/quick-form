@@ -25,7 +25,7 @@ Job Application Form
 - [x] Desired Salary
 - [x] Availability Date
 - [x] Employment Type
-- [ ] Willing to Relocate
+- [x] Willing to Relocate
 
 ## Experience
 

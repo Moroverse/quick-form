@@ -54,6 +54,9 @@ final class ProfessionalDetailsModel {
         allValues: EmploymentType.allCases,
         title: "Employment Type"
     )
+
+    @PropertyEditor(keyPath: \ProfessionalDetails.willingToRelocate)
+    var willingToRelocate = FormFieldViewModel(type: Bool.self, title: "Willing to Relocate")
 }
 
 extension ProfessionalDetailsModel: ValueEditor {}

@@ -15,6 +15,7 @@ struct ProfessionalDetails {
     var desiredSalary: Decimal
     var availabilityDate: Date
     var employmentType: EmploymentType
+    var willingToRelocate: Bool
 }
 
 #if DEBUG
@@ -24,7 +25,8 @@ struct ProfessionalDetails {
                 desiredPosition: "Software Developer",
                 desiredSalary: 35000,
                 availabilityDate: Date(),
-                employmentType: .partTime
+                employmentType: .partTime,
+                willingToRelocate: true
             )
         }
     }
