@@ -12,7 +12,7 @@ Job Application Form
 - [x] Familiy Name
 - [x] Emai
 - [x] Phone
-- [ ] Address
+- [x] Address
   - [x] Street
   - [x] City
   - [x] Postal Code

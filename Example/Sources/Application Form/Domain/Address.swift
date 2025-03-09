@@ -17,8 +17,8 @@ struct Address {
                 street: "123 Main St",
                 city: "Anytown",
                 zipCode: "12345",
-                country: "US",
-                state: "CA"
+                country: "Tonga",
+                state: nil
             )
         }
     }

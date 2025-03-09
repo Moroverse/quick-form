@@ -38,4 +38,7 @@ final class PersonalInformationModel {
         title: "Phone Number",
         placeholder: "(123) 456-789"
     )
+
+    @PropertyEditor(keyPath: \PersonalInformation.address)
+    var address = AddressModel(value: .sample)
 }

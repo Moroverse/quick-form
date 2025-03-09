@@ -13,32 +13,38 @@ struct AddressView: View {
     @Bindable private var model: AddressModel
     var body: some View {
         FormTextField(model.street)
-        FormTextField(model.city)
-        FormTextField(model.zip)
-
-        FormAsyncPickerField(
-            model.country,
-            clearValueMode: .always,
-            pickerStyle: .popover,
-            allowSearch: true
-        ) {
-            let placeholder = model.country.placeholder ?? ""
-            Text($0 ?? String(localized: placeholder))
-        } pickerContent: {
-            Text($0)
+        HStack {
+            FormTextField(model.city)
+            Divider()
+            FormTextField(model.zip)
         }
 
-        if let value = model.country.value, value.isEmpty == false {
+        HStack {
             FormAsyncPickerField(
-                model.state,
+                model.country,
                 clearValueMode: .always,
-                pickerStyle: .sheet,
-                allowSearch: false
+                pickerStyle: .popover,
+                allowSearch: true
             ) {
-                let placeholder = model.state.placeholder ?? ""
+                let placeholder = model.country.placeholder ?? ""
                 Text($0 ?? String(localized: placeholder))
             } pickerContent: {
                 Text($0)
+            }
+
+            if model.hasStates {
+                Divider()
+                FormAsyncPickerField(
+                    model.state,
+                    clearValueMode: .always,
+                    pickerStyle: .sheet,
+                    allowSearch: false
+                ) {
+                    let placeholder = model.state.placeholder ?? ""
+                    Text($0 ?? String(localized: placeholder))
+                } pickerContent: {
+                    Text($0)
+                }
             }
         }
     }

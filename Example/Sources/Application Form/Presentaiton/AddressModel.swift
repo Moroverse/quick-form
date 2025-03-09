@@ -56,10 +56,26 @@ final class AddressModel {
         queryBuilder: { $0 ?? "" }
     )
 
+    var hasStates: Bool = false {
+        didSet {
+            if hasStates {
+                state.validation = .of(.required())
+            } else {
+                state.validation = .none
+            }
+
+            state.queryBuilder = { [weak self] _ in self?.country.value ?? "" }
+        }
+    }
+
     @PostInit
     func configure() {
         stateLoader = MockStateLoader()
         countryLoader = MockCountryLoader()
+
+        Task { [weak self] in
+            self?.hasStates = await self?.stateLoader?.hasStates(country: self?.country.value ?? "") ?? false
+        }
 
         state.valuesProvider = { [weak self] query in
             guard let self else { return [] }
@@ -78,17 +94,11 @@ final class AddressModel {
             state.value = nil
             if let newValue {
                 Task { [weak self] in
-                    if await self?.stateLoader?.hasStates(country: newValue) == true {
-                        self?.state.validation = .of(.required())
-                    } else {
-                        self?.state.validation = .none
-                    }
-                    self?.state.queryBuilder = { _ in newValue }
+                    self?.hasStates = await self?.stateLoader?.hasStates(country: newValue) ?? false
                 }
-            } else {
-                state.validation = .none
-                state.queryBuilder = { $0 ?? "" }
             }
         }
     }
 }
+
+extension AddressModel: ValueEditor {}
