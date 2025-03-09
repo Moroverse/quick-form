@@ -75,9 +75,6 @@
         }
       }
     },
-    "Please enter a valid email address" : {
-
-    },
     "Please enter a valid US ZIP code (e.g., 12345 or 12345-6789)" : {
       "localizations" : {
         "sr-Latn" : {
