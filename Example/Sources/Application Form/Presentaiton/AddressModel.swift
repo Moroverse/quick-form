@@ -22,4 +22,12 @@ final class AddressModel {
         placeholder: "New York",
         validation: .of(.notEmpty)
     )
+
+    @PropertyEditor(keyPath: \Address.zipCode)
+    var zip = FormFieldViewModel(
+        type: String.self,
+        title: "Postal Code:",
+        placeholder: "12345",
+        validation: .of(.usZipCode)
+    )
 }

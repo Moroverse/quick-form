@@ -10,6 +10,7 @@ struct AddressView: View {
     var body: some View {
         FormTextField(model.street)
         FormTextField(model.city)
+        FormTextField(model.zip)
     }
 
     init(model: AddressModel) {
