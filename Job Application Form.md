@@ -13,7 +13,7 @@ Job Application Form
 - [x] Emai
 - [x] Phone
 - [ ] Address
-  - [ ] Street
+  - [x] Street
   - [ ] City
   - [ ] Postal Code
   - [ ] Country
