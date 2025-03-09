@@ -11,6 +11,7 @@ struct ApplicationFormView: View {
         Form {
             Section(header: Text("Personal Information")) {
                 FormTextField(model.givenName)
+                FormTextField(model.familyName)
             }
         }
     }

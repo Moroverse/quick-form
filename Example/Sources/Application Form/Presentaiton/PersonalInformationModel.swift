@@ -17,7 +17,15 @@ final class PersonalInformationModel {
     var givenName = FormFieldViewModel(
         type: String.self,
         title: "Given Name",
-        placeholder: "John Doe",
+        placeholder: "John",
         isReadOnly: false
+    )
+
+    @PropertyEditor(keyPath: \PersonalInformation.familyName)
+    var familyName = FormFieldViewModel(
+        type: String.self,
+        title: "Family Name",
+        placeholder: "Doe",
+        validation: .of(.notEmpty)
     )
 }
