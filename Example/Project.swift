@@ -1,3 +1,7 @@
+// Project.swift
+// Copyright (c) 2025 Moroverse
+// Created by Daniel Moro on 2025-03-09 05:00 GMT.
+
 import ProjectDescription
 
 let project = Project(
@@ -12,8 +16,8 @@ let project = Project(
                 with: [
                     "UILaunchScreen": [
                         "UIColorName": "",
-                        "UIImageName": "",
-                    ],
+                        "UIImageName": ""
+                    ]
                 ]
             ),
             sources: ["Sources/**"],
@@ -31,6 +35,6 @@ let project = Project(
             sources: ["Tests/**"],
             resources: [],
             dependencies: [.target(name: "Example")]
-        ),
+        )
     ]
 )

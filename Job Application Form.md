@@ -8,7 +8,7 @@ Job Application Form
 
 ## Personal Information
 
-- [ ] Given Name
+- [x] Given Name
 - [ ] Familiy Name
 - [ ] Emai
 - [ ] Phone
