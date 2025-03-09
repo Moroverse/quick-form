@@ -22,7 +22,7 @@ Job Application Form
 ## Professional Details
 
 - [x] Desired Position
-- [ ] Desired Salary
+- [x] Desired Salary
 - [ ] Availability Date
 - [ ] Employment Type
 - [ ] Willing to Relocate

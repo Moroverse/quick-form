@@ -2,6 +2,7 @@
 // Copyright (c) 2025 Moroverse
 // Created by Daniel Moro on 2025-03-09 09:55 GMT.
 
+import Foundation
 import Observation
 import QuickForm
 
@@ -15,6 +16,14 @@ final class ProfessionalDetailsModel {
         validation: .of(
             .notEmpty
         )
+    )
+
+    @PropertyEditor(keyPath: \ProfessionalDetails.desiredSalary)
+    var desiredSalary = FormattedFieldViewModel(
+        type: Decimal.self,
+        format: .currency(code: "USD"),
+        title: "Desied Salary",
+        placeholder: "3 000 000"
     )
 }
 

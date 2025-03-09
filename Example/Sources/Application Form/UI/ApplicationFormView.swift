@@ -19,6 +19,7 @@ struct ApplicationFormView: View {
 
             Section("Professional Details") {
                 FormTextField(model.professionalDetails.desiredPosition)
+                FormFormattedTextField(model.professionalDetails.desiredSalary)
             }
         }
     }
