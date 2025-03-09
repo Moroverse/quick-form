@@ -8,6 +8,7 @@ import QuickForm
 @QuickForm(Address.self)
 final class AddressModel {
     var stateLoader: StateLoader?
+    var countryLoader: CountryLoader?
 
     @PropertyEditor(keyPath: \Address.street)
     var street = FormFieldViewModel(
@@ -38,8 +39,8 @@ final class AddressModel {
         type: String?.self,
         placeholder: "Select Country...",
         validation: .of(.required()),
-        valuesProvider: {
-            try await MockCountryLoader().loadCountries(query: $0)
+        valuesProvider: { _ in
+            []
         },
         queryBuilder: { $0 ?? "" }
     )
@@ -49,8 +50,8 @@ final class AddressModel {
         type: String?.self,
         placeholder: "Select State...",
         validation: .of(.required()),
-        valuesProvider: {
-            try await MockStateLoader().loadStates(country: $0)
+        valuesProvider: { _ in
+            []
         },
         queryBuilder: { $0 ?? "" }
     )
@@ -58,6 +59,20 @@ final class AddressModel {
     @PostInit
     func configure() {
         stateLoader = MockStateLoader()
+        countryLoader = MockCountryLoader()
+
+        state.valuesProvider = { [weak self] query in
+            guard let self else { return [] }
+            let result = try await stateLoader?.loadStates(country: query)
+            return result ?? []
+        }
+
+        country.valuesProvider = { [weak self] query in
+            guard let self else { return [] }
+            let result = try await countryLoader?.loadCountries(query: query)
+            return result ?? []
+        }
+
         country.onValueChanged { [weak self] newValue in
             guard let self else { return }
             state.value = nil
