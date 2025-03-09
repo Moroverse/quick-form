@@ -71,7 +71,7 @@ import Observation
     named(customValidationRules),
     named(addCustomValidationRule)
 )
-@attached(extension, conformances: Observable)
+@attached(extension, conformances: Observable, ValueEditor)
 public macro QuickForm<T>(_ type: T.Type) = #externalMacro(module: "QuickFormMacros", type: "QuickFormMacro")
 
 /// A property wrapper that creates a binding between a form field and a property in your data model.

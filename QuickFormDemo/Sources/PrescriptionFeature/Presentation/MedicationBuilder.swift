@@ -73,5 +73,3 @@ final class MedicationBuilder: Validatable {
         }
     }
 }
-
-extension MedicationBuilder: ValueEditor {}
