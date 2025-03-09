@@ -8,7 +8,10 @@ import SwiftUI
 struct ExampleApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            Form {
+                let model = AddressModel(value: .sample)
+                return AddressView(model: model)
+            }
         }
     }
 }

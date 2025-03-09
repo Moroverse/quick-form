@@ -30,4 +30,15 @@ final class AddressModel {
         placeholder: "12345",
         validation: .of(.usZipCode)
     )
+
+    @PropertyEditor(keyPath: \Address.country)
+    var country = AsyncPickerFieldViewModel(
+        type: String?.self,
+        placeholder: "Select Country...",
+        validation: .of(.required()),
+        valuesProvider: {
+            try await MockCountryLoader().loadCountries(query: $0)
+        },
+        queryBuilder: { $0 ?? "" }
+    )
 }

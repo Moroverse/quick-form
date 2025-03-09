@@ -6,7 +6,7 @@ struct Address {
     var street: String
     var city: String
     var zipCode: String
-    var country: String
+    var country: String?
     var state: String?
 }
 

@@ -5,12 +5,27 @@
 import QuickForm
 import SwiftUI
 
+extension String: @retroactive Identifiable {
+    public var id: String { self }
+}
+
 struct AddressView: View {
     @Bindable private var model: AddressModel
     var body: some View {
         FormTextField(model.street)
         FormTextField(model.city)
         FormTextField(model.zip)
+        FormAsyncPickerField(
+            model.country,
+            clearValueMode: .always,
+            pickerStyle: .popover,
+            allowSearch: true
+        ) {
+            let placeholder = model.country.placeholder ?? ""
+            Text($0 ?? String(localized: placeholder))
+        } pickerContent: {
+            Text($0)
+        }
     }
 
     init(model: AddressModel) {
