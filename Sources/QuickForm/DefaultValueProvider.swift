@@ -17,6 +17,10 @@ extension Int: DefaultValueProvider {
     public static var defaultValue: Int { 0 }
 }
 
+extension Double: DefaultValueProvider {
+    public static var defaultValue: Double { 0 }
+}
+
 extension Date: DefaultValueProvider {
     public static var defaultValue: Date { Date() }
 }
