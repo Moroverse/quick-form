@@ -33,6 +33,10 @@ struct ApplicationFormView: View {
                 )
                 FormToggleField(model.professionalDetails.willingToRelocate)
             }
+
+            Section("Experience") {
+                FormFormattedTextField(model.experience.years)
+            }
         }
     }
 

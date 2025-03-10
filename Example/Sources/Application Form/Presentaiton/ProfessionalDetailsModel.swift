@@ -1,6 +1,6 @@
 // ProfessionalDetailsModel.swift
 // Copyright (c) 2025 Moroverse
-// Created by Daniel Moro on 2025-03-09 09:55 GMT.
+// Created by Daniel Moro on 2025-03-09 20:35 GMT.
 
 import Foundation
 import Observation
@@ -58,5 +58,3 @@ final class ProfessionalDetailsModel {
     @PropertyEditor(keyPath: \ProfessionalDetails.willingToRelocate)
     var willingToRelocate = FormFieldViewModel(type: Bool.self, title: "Willing to Relocate")
 }
-
-extension ProfessionalDetailsModel: ValueEditor {}

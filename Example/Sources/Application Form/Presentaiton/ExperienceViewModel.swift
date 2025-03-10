@@ -10,6 +10,7 @@ final class ExperienceViewModel {
     @PropertyEditor(keyPath: \Experience.years)
     var years = FormattedFieldViewModel(
         type: Int.self,
-        format: .number
+        format: .number,
+        title: "Years of experience"
     )
 }

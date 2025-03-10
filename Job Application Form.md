@@ -29,7 +29,7 @@ Job Application Form
 
 ## Experience
 
-- [ ] Years of Experience
+- [x] Years of Experience
 - [ ] Skills
   - [ ] Proficiency Levels
 
