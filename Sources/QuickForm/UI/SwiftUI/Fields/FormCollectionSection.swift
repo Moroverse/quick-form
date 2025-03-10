@@ -49,7 +49,7 @@ import SwiftUI
 public struct FormCollectionSection<Property: Identifiable & Sendable, Content: View>: View {
     @Bindable private var viewModel: FormCollectionViewModel<Property>
     // private let content: Content
-    private let content: (Property) -> Content
+    private let content: (Binding<Property>) -> Content
 
     public var body: some View {
         Section {
@@ -58,8 +58,8 @@ public struct FormCollectionSection<Property: Identifiable & Sendable, Content: 
 //                    subview
 //                }
 //            } else {
-            ForEach(viewModel.value) { item in
-                content(item)
+            ForEach($viewModel.value) { $item in
+                content($item)
                     .onTapGesture {
                         viewModel.select(item: item)
                     }
@@ -93,7 +93,7 @@ public struct FormCollectionSection<Property: Identifiable & Sendable, Content: 
     ///   - content: A closure that returns the view to display for each item in the collection.
     public init(
         _ viewModel: FormCollectionViewModel<Property>,
-        content: @escaping @autoclosure () -> (Property) -> Content
+        content: @escaping @autoclosure () -> (Binding<Property>) -> Content
     ) {
         self.viewModel = viewModel
         self.content = content()
@@ -127,7 +127,7 @@ struct SimplePerson: Identifiable {
     )
 
     Form {
-        FormCollectionSection(form) { person in
+        FormCollectionSection(form) { $person in
             Text(person.name)
         }
     }
