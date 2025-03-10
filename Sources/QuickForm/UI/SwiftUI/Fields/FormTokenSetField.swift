@@ -56,7 +56,7 @@ public struct FormTokenSetField<Property: Identifiable & CustomStringConvertible
         .padding(.vertical)
     }
 
-    init(viewModel: TokenSetViewModel<Property>) {
+    public init(viewModel: TokenSetViewModel<Property>) {
         self.viewModel = viewModel
     }
 }

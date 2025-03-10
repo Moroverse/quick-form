@@ -36,6 +36,7 @@ struct ApplicationFormView: View {
 
             Section("Experience") {
                 FormFormattedTextField(model.experience.years)
+                FormTokenSetField(viewModel: model.experience.skills)
             }
         }
     }
