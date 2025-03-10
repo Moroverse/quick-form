@@ -10,11 +10,10 @@ public struct FormTokenSetField<Property: Identifiable & CustomStringConvertible
 
     @State var newTag: String = ""
     public var body: some View {
-        VStack(alignment: .leading) {
+        HStack(alignment: .center) {
             if let title = viewModel.title {
                 Text(title)
-                    .font(.title3)
-                    .padding(.horizontal)
+                    .font(.headline)
 
                 Divider()
             }
@@ -32,6 +31,7 @@ public struct FormTokenSetField<Property: Identifiable & CustomStringConvertible
                                 viewModel.remove(id: id)
                             }
                         }
+                        .padding(.vertical, 1)
                         .buttonBorderShape(.capsule)
                         .modifier(ButtonToggleStyle(isSelected: code.id == viewModel.selection))
                     }
@@ -50,10 +50,9 @@ public struct FormTokenSetField<Property: Identifiable & CustomStringConvertible
                             }
                         }
                     }
-                }.padding()
+                }
             }
         }
-        .padding(.vertical)
     }
 
     init(viewModel: TokenSetViewModel<Property>) {
