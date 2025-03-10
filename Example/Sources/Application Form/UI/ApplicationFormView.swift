@@ -38,6 +38,20 @@ struct ApplicationFormView: View {
                 FormFormattedTextField(model.experience.years)
                 FormTokenSetField(viewModel: model.experience.skills)
             }
+
+            FormCollectionSection(model.experience.skillsWithProficiencis) { skill in
+                HStack {
+                    Text(skill.name)
+                    Spacer()
+                    Slider(value: .constant(skill.level), in: 1 ... 5, step: 1)
+                        .frame(maxWidth: 200)
+                }
+            }
+            .configure { model in
+                model.onInsert {
+                    nil
+                }
+            }
         }
     }
 

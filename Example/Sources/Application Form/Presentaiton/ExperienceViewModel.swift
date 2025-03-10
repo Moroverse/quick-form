@@ -29,4 +29,11 @@ final class ExperienceViewModel {
     ) { newString in
         Experience.Skill(id: UUID(), name: newString, level: 1)
     }
+
+    @PropertyEditor(keyPath: \Experience.skills)
+    var skillsWithProficiencis = FormCollectionViewModel(
+        value: [Experience.Skill](),
+        title: "Skills",
+        insertionTitle: "New Skill"
+    )
 }

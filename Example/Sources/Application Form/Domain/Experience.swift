@@ -8,7 +8,7 @@ struct Experience {
     struct Skill: Identifiable {
         var id: UUID
         var name: String
-        var level: Int
+        var level: Double
     }
 
     var years: Int
