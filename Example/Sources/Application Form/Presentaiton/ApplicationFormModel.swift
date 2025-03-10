@@ -1,6 +1,6 @@
 // ApplicationFormModel.swift
 // Copyright (c) 2025 Moroverse
-// Created by Daniel Moro on 2025-03-09 09:57 GMT.
+// Created by Daniel Moro on 2025-03-09 20:35 GMT.
 
 import Observation
 import QuickForm
@@ -11,4 +11,6 @@ final class ApplicationFormModel {
     var personalInformation = PersonalInformationModel(value: .sample)
     @PropertyEditor(keyPath: \Applicant.professionalDetails)
     var professionalDetails = ProfessionalDetailsModel(value: .sample)
+    @PropertyEditor(keyPath: \Applicant.experience)
+    var experience = ExperienceViewModel(value: .sample)
 }

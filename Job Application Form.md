@@ -31,7 +31,8 @@ Job Application Form
 
 - [ ] Years of Experience
 - [ ] Skills
-- [ ] Proficiency Levels
+  - [ ] Proficiency Levels
+
 
 ## Education
 
