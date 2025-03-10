@@ -1,13 +1,18 @@
 // ApplicationFormView.swift
 // Copyright (c) 2025 Moroverse
-// Created by Daniel Moro on 2025-03-09 20:35 GMT.
+// Created by Daniel Moro on 2025-03-10 19:20 GMT.
 
 import Foundation
 import QuickForm
 import SwiftUI
 
+protocol ApplicationFormRouting {
+    func navigateToNextStep() async -> Experience.Skill?
+}
+
 struct ApplicationFormView: View {
     @Bindable private var model: ApplicationFormModel
+    let router: ApplicationFormRouting
     var body: some View {
         Form {
             Section(header: Text("Personal Information")) {
@@ -39,33 +44,39 @@ struct ApplicationFormView: View {
                 FormTokenSetField(viewModel: model.experience.skills)
             }
 
-            FormCollectionSection(model.experience.skillsWithProficiencis) { skill in
+            FormCollectionSection(model.experience.skillsWithProficiencis) { $skill in
                 HStack {
                     Text(skill.name)
                     Spacer()
-                    Slider(value: .constant(skill.level), in: 1 ... 5, step: 1)
+                    Slider(value: $skill.level, in: 1 ... 5, step: 1)
                         .frame(maxWidth: 200)
                 }
             }
             .configure { model in
-                model.onInsert {
-                    nil
-                }
+                model.onInsert(action: router.navigateToNextStep)
             }
         }
     }
 
-    init(model: ApplicationFormModel) {
+    init(model: ApplicationFormModel, router: ApplicationFormRouting) {
         self.model = model
+        self.router = router
+    }
+}
+
+struct MockApplicationFormRouting: ApplicationFormRouting {
+    func navigateToNextStep() async -> Experience.Skill? {
+        nil
     }
 }
 
 struct ApplicationFormView_Previews: PreviewProvider {
     struct ApplicationFormViewWrapper: View {
         @State var model = ApplicationFormModel(value: .sample)
+        @State var router = MockApplicationFormRouting()
 
         var body: some View {
-            ApplicationFormView(model: model)
+            ApplicationFormView(model: model, router: router)
         }
     }
 
