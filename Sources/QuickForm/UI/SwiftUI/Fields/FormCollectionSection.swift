@@ -60,8 +60,13 @@ public struct FormCollectionSection<Property: Identifiable & Sendable, Content: 
 //            } else {
             ForEach($viewModel.value) { $item in
                 content($item)
+                    .frame(maxWidth: .infinity)
+                    .animation(.default)
+                    .contentShape(Rectangle())
                     .onTapGesture {
-                        viewModel.select(item: item)
+                        Task {
+                            await viewModel.select(item: item)
+                        }
                     }
             }
 
