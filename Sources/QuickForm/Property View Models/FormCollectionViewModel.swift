@@ -72,7 +72,7 @@ public final class FormCollectionViewModel<Property: Identifiable & Sendable>: V
     public var onCanMove: (_ fromSource: IndexSet, _ toDestination: Int) -> Bool = { _, _ in true }
     private var _onInsert: (() async -> Property?)?
     private var _onChange: ((CollectionDifference<Property>) -> Void)?
-    private var _onSelect: ((Property?) -> Void)?
+    private var _onSelect: ((Property?) async -> Property?)?
     /// Initializes a new instance of `FormCollectionViewModel`.
     ///
     /// - Parameters:
@@ -123,13 +123,13 @@ public final class FormCollectionViewModel<Property: Identifiable & Sendable>: V
     /// Selects the given item or deselects if nil is provided.
     ///
     /// - Parameter item: The item to select, or nil to deselect.
-    public func select(item: Property?) {
+    @MainActor
+    public func select(item: Property?) async{
         if let item {
-            if canSelect(item: item) {
-                _onSelect?(item)
+            if let updatedItem = await _onSelect?(item),
+               let index = value.firstIndex(where: { $0.id == item.id }) {
+                value[index] = updatedItem
             }
-        } else {
-            _onSelect?(item)
         }
     }
 
@@ -196,7 +196,7 @@ public final class FormCollectionViewModel<Property: Identifiable & Sendable>: V
     /// - Parameter action: A closure that takes an optional `Property` as its parameter.
     /// - Returns: The `FormCollectionViewModel` instance for method chaining.
     @discardableResult
-    public func onSelect(action: ((Property?) -> Void)?) -> Self {
+    public func onSelect(action: ((Property?) async -> Property?)?) -> Self {
         _onSelect = action
         return self
     }
