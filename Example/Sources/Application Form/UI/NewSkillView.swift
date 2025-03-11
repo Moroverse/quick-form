@@ -7,12 +7,28 @@ import SwiftUI
 
 struct NewSkillView: View {
     @Bindable private var model: ExperienceSkillModel
+    @Environment(\.dismiss) private var dismiss
     var body: some View {
         Form {
             FormTextField(model.name)
             FormFormattedTextField(model.level, clearValueMode: .unlessEditing)
         }
         .navigationTitle("New Skill")
+        .toolbar {
+            ToolbarItem(placement: .primaryAction) {
+                Button("Done") {
+                    model.state = .committed(model.value)
+                    dismiss()
+                }
+            }
+
+            ToolbarItem(placement: .cancellationAction) {
+                Button("Cancel") {
+                    model.state = .cancelled
+                    dismiss()
+                }
+            }
+        }
     }
 
     init(model: ExperienceSkillModel) {

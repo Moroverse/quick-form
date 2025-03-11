@@ -21,9 +21,13 @@ struct ExampleApp: App {
 extension AnyRouter: ApplicationFormRouting {
     func navigateToNextStep() async -> ExperienceSkill? {
         await withCheckedContinuation { continuation in
-            let model = ExperienceSkillModel(value: .sample)
+            let model = ExperienceSkillModel(value: .init(id: UUID(), name: "", level: 0))
             showScreen(.sheet) {
-                continuation.resume(returning: model.value)
+                if case let .committed(newValue) = model.state {
+                    continuation.resume(returning: newValue)
+                } else {
+                    continuation.resume(returning: nil)
+                }
             } destination: { _ in
                 NewSkillView(model: model)
             }

@@ -7,8 +7,17 @@ import QuickForm
 
 @QuickForm(ExperienceSkill.self)
 final class ExperienceSkillModel {
+    enum State {
+        case new
+        case cancelled
+        case committed(ExperienceSkill)
+    }
+
     @PropertyEditor(keyPath: \ExperienceSkill.name)
     var name = FormFieldViewModel(type: String.self, title: "Name")
     @PropertyEditor(keyPath: \ExperienceSkill.level)
     var level = FormattedFieldViewModel(type: Double.self, format: .number, title: "Level")
+
+    @ObservationIgnored
+    var state: State = .new
 }
