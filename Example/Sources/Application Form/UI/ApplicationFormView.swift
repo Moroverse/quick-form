@@ -1,13 +1,13 @@
 // ApplicationFormView.swift
 // Copyright (c) 2025 Moroverse
-// Created by Daniel Moro on 2025-03-11 05:57 GMT.
+// Created by Daniel Moro on 2025-03-11 20:31 GMT.
 
 import Foundation
 import QuickForm
 import SwiftUI
 
 protocol ApplicationFormRouting {
-    func navigateToNextStep() async -> Experience.Skill?
+    func navigateToNextStep() async -> ExperienceSkill?
 }
 
 struct ApplicationFormView: View {
@@ -65,7 +65,7 @@ struct ApplicationFormView: View {
 }
 
 struct MockApplicationFormRouting: ApplicationFormRouting {
-    func navigateToNextStep() async -> Experience.Skill? {
+    func navigateToNextStep() async -> ExperienceSkill? {
         nil
     }
 }

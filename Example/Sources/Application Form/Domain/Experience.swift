@@ -1,18 +1,18 @@
 // Experience.swift
 // Copyright (c) 2025 Moroverse
-// Created by Daniel Moro on 2025-03-11 05:57 GMT.
+// Created by Daniel Moro on 2025-03-11 20:31 GMT.
 
 import Foundation
 
-struct Experience {
-    struct Skill: Identifiable {
-        var id: UUID
-        var name: String
-        var level: Double
-    }
+struct ExperienceSkill: Identifiable {
+    var id: UUID
+    var name: String
+    var level: Double
+}
 
+struct Experience {
     var years: Int
-    var skills: [Skill]
+    var skills: [ExperienceSkill]
 }
 
 #if DEBUG

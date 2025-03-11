@@ -40,7 +40,7 @@ extension ValidationRule {
     }
 }
 
-extension Experience.Skill: CustomStringConvertible {
+extension ExperienceSkill: CustomStringConvertible {
     var description: String {
         name
     }
@@ -58,16 +58,16 @@ final class ExperienceViewModel {
 
     @PropertyEditor(keyPath: \Experience.skills)
     var skills = TokenSetViewModel(
-        value: [Experience.Skill](),
+        value: [ExperienceSkill](),
         title: "Skills",
         insertionPlaceholder: "Enter a new skill"
     ) { newString in
-        Experience.Skill(id: UUID(), name: newString, level: 1)
+        ExperienceSkill(id: UUID(), name: newString, level: 1)
     }
 
     @PropertyEditor(keyPath: \Experience.skills)
     var skillsWithProficiencis = FormCollectionViewModel(
-        value: [Experience.Skill](),
+        value: [ExperienceSkill](),
         title: "Skills",
         insertionTitle: "New Skill"
     )
