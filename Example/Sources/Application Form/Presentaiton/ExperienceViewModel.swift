@@ -1,10 +1,44 @@
 // ExperienceViewModel.swift
 // Copyright (c) 2025 Moroverse
-// Created by Daniel Moro on 2025-03-10 19:20 GMT.
+// Created by Daniel Moro on 2025-03-11 20:31 GMT.
 
 import Foundation
 import Observation
 import QuickForm
+
+struct MinValueValidation<T: Comparable>: ValidationRule {
+    var minValue: T
+
+    func validate(_ value: T) -> ValidationResult {
+        if value < minValue {
+            return .failure("Value must be at least \(String(describing: minValue))")
+        }
+
+        return .success
+    }
+}
+
+struct MinOptionalValueValidation<T: Comparable>: ValidationRule {
+    var minValue: T
+
+    func validate(_ value: T?) -> ValidationResult {
+        if let value, value >= minValue {
+            return .success
+        }
+
+        return .failure("Value must be at least \(String(describing: minValue))")
+    }
+}
+
+extension ValidationRule {
+    static func minValue<T: Comparable>(_ minValue: T) -> MinValueValidation<T> where Self == MinValueValidation<T> {
+        MinValueValidation(minValue: minValue)
+    }
+
+    static func minValue<T: Comparable>(_ minValue: T) -> MinOptionalValueValidation<T> where Self == MinOptionalValueValidation<T> {
+        MinOptionalValueValidation(minValue: minValue)
+    }
+}
 
 extension Experience.Skill: CustomStringConvertible {
     var description: String {
@@ -18,7 +52,8 @@ final class ExperienceViewModel {
     var years = FormattedFieldViewModel(
         type: Int.self,
         format: .number,
-        title: "Years of experience"
+        title: "Years of experience",
+        validation: .of(.minValue(4))
     )
 
     @PropertyEditor(keyPath: \Experience.skills)
