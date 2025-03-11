@@ -4,12 +4,6 @@
 
 import Foundation
 
-struct ExperienceSkill: Identifiable {
-    var id: UUID
-    var name: String
-    var level: Double
-}
-
 struct Experience {
     var years: Int
     var skills: [ExperienceSkill]

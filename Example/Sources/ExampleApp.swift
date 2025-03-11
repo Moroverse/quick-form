@@ -21,11 +21,11 @@ struct ExampleApp: App {
 extension AnyRouter: ApplicationFormRouting {
     func navigateToNextStep() async -> ExperienceSkill? {
         await withCheckedContinuation { continuation in
+            let model = ExperienceSkillModel(value: .sample)
             showScreen(.sheet) {
-                let skill = ExperienceSkill(id: UUID(), name: "Novi", level: 2)
-                continuation.resume(returning: skill)
+                continuation.resume(returning: model.value)
             } destination: { _ in
-                NewSkillView()
+                NewSkillView(model: model)
             }
         }
     }
