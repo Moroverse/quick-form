@@ -55,7 +55,7 @@ public struct FormTokenSetField<Property: Identifiable & CustomStringConvertible
         }
     }
 
-    init(viewModel: TokenSetViewModel<Property>) {
+    public init(viewModel: TokenSetViewModel<Property>) {
         self.viewModel = viewModel
     }
 }

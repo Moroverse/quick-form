@@ -36,7 +36,8 @@ let project = Project(
                 )
             ],
             dependencies: [
-                .external(name: "QuickForm")
+                .external(name: "QuickForm"),
+                .external(name: "SwiftfulRouting")
             ],
             settings: .settings(
                 base: [
