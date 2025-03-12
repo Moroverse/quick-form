@@ -23,6 +23,7 @@ struct EducationFormView: View {
                 range: .distantPast ... Date(),
                 displayedComponents: [.date]
             )
+            FormStepperField(viewModel: model.gpa, range: 5 ... 10, step: 1)
 
             if case let .failure(error) = model.validationResult {
                 Section {

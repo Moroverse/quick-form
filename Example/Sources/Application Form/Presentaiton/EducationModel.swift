@@ -53,6 +53,13 @@ final class EducationModel: Validatable {
         validation: .of(.notEmpty)
     )
 
+    @PropertyEditor(keyPath: \Education.gpa)
+    var gpa = FormFieldViewModel(
+        type: Int.self,
+        title: "GPA",
+        validation: .of(.minValue(5))
+    )
+
     @ObservationIgnored
     var state: State?
 

@@ -36,13 +36,13 @@ Job Application Form
 
 ## Education
 
-- [ ] Collection:
+- [x] Collection:
   - [x] Institution
   - [x] Degree
   - [x] Field of Study
   - [x] Start Date
   - [x] End Date
-  - [ ] GPA
+  - [x] GPA
 
 ## Work History
 

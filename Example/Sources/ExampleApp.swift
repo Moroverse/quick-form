@@ -28,7 +28,8 @@ extension AnyRouter: ApplicationFormRouting {
                     startDate: Date(),
                     endDate: Date(),
                     degree: "",
-                    fieldOfStudy: ""
+                    fieldOfStudy: "",
+                    gpa: 5
                 )
             )
             showScreen(.sheet) {

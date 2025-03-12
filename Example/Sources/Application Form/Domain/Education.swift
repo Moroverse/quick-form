@@ -11,6 +11,7 @@ struct Education: Identifiable {
     var endDate: Date
     var degree: String
     var fieldOfStudy: String
+    var gpa: Int
 }
 
 #if DEBUG
@@ -21,7 +22,8 @@ struct Education: Identifiable {
             startDate: Date(),
             endDate: Date(),
             degree: "Bachelor of Example",
-            fieldOfStudy: "Example Studies"
+            fieldOfStudy: "Example Studies",
+            gpa: 5
         )
     }
 #endif
