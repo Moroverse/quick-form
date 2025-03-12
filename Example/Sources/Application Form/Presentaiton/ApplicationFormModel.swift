@@ -1,6 +1,6 @@
 // ApplicationFormModel.swift
 // Copyright (c) 2025 Moroverse
-// Created by Daniel Moro on 2025-03-09 20:35 GMT.
+// Created by Daniel Moro on 2025-03-11 20:31 GMT.
 
 import Observation
 import QuickForm
@@ -13,4 +13,10 @@ final class ApplicationFormModel {
     var professionalDetails = ProfessionalDetailsModel(value: .sample)
     @PropertyEditor(keyPath: \Applicant.experience)
     var experience = ExperienceViewModel(value: .sample)
+    @PropertyEditor(keyPath: \Applicant.education)
+    var education = FormCollectionViewModel(
+        type: Education.self,
+        title: "Education",
+        insertionTitle: "Add Education"
+    )
 }

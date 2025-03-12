@@ -19,7 +19,32 @@ struct ExampleApp: App {
 
 @MainActor
 extension AnyRouter: ApplicationFormRouting {
-    func navigateToNextStep() async -> ExperienceSkill? {
+    func navigateToEducation(_ selection: Education?) async -> Education? {
+        await withCheckedContinuation { continuation in
+            let model = EducationModel(
+                value: selection ?? Education(
+                    id: UUID(),
+                    institution: "",
+                    startDate: Date(),
+                    endDate: Date(),
+                    degree: "",
+                    fieldOfStudy: "",
+                    gpa: 5
+                )
+            )
+            showScreen(.sheet) {
+                if case let .committed(newValue) = model.state {
+                    continuation.resume(returning: newValue)
+                } else {
+                    continuation.resume(returning: nil)
+                }
+            } destination: { _ in
+                EducationFormView(model: model)
+            }
+        }
+    }
+
+    func navigateToNewSkill() async -> ExperienceSkill? {
         await withCheckedContinuation { continuation in
             let model = ExperienceSkillModel(value: .init(id: UUID(), name: "", level: 0))
             showScreen(.sheet) {

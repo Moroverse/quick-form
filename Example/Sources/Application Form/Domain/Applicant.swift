@@ -1,11 +1,12 @@
 // Applicant.swift
 // Copyright (c) 2025 Moroverse
-// Created by Daniel Moro on 2025-03-09 20:35 GMT.
+// Created by Daniel Moro on 2025-03-11 20:31 GMT.
 
 struct Applicant {
     var personalInformation: PersonalInformation
     var professionalDetails: ProfessionalDetails
     var experience: Experience
+    var education: [Education]
 }
 
 #if DEBUG
@@ -14,7 +15,8 @@ struct Applicant {
             .init(
                 personalInformation: .sample,
                 professionalDetails: .sample,
-                experience: .sample
+                experience: .sample,
+                education: [.sample]
             )
         }
     }

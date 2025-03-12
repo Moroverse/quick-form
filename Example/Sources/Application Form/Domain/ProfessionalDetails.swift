@@ -1,6 +1,6 @@
 // ProfessionalDetails.swift
 // Copyright (c) 2025 Moroverse
-// Created by Daniel Moro on 2025-03-09 09:54 GMT.
+// Created by Daniel Moro on 2025-03-12 19:38 GMT.
 
 import Foundation
 
@@ -14,7 +14,7 @@ struct ProfessionalDetails {
     var desiredPosition: String
     var desiredSalary: Decimal
     var availabilityDate: Date
-    var employmentType: EmploymentType
+    var employmentType: Set<EmploymentType>
     var willingToRelocate: Bool
 }
 
@@ -25,7 +25,7 @@ struct ProfessionalDetails {
                 desiredPosition: "Software Developer",
                 desiredSalary: 35000,
                 availabilityDate: Date(),
-                employmentType: .partTime,
+                employmentType: [.partTime],
                 willingToRelocate: true
             )
         }

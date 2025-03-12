@@ -8,7 +8,6 @@ import QuickForm
 @QuickForm(ExperienceSkill.self)
 final class ExperienceSkillModel {
     enum State {
-        case new
         case cancelled
         case committed(ExperienceSkill)
     }
@@ -19,5 +18,5 @@ final class ExperienceSkillModel {
     var level = FormattedFieldViewModel(type: Double.self, format: .number, title: "Level")
 
     @ObservationIgnored
-    var state: State = .new
+    var state: State?
 }
