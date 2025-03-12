@@ -1,0 +1,47 @@
+// EducationModel.swift
+// Copyright (c) 2025 Moroverse
+// Created by Daniel Moro on 2025-03-12 04:46 GMT.
+
+import Foundation
+import Observation
+import QuickForm
+
+struct EducationRangeValidation: ValidationRule {
+    func validate(_ value: Education) -> ValidationResult {
+        if value.startDate > value.endDate {
+            .failure("Start date cannot be later than end date")
+        } else {
+            .success
+        }
+    }
+}
+
+@QuickForm(Education.self)
+final class EducationModel: Validatable {
+    enum State {
+        case cancelled
+        case committed(Education)
+    }
+
+    @PropertyEditor(keyPath: \Education.institution)
+    var institution = FormFieldViewModel(
+        type: String.self,
+        title: "Institution",
+        placeholder: "Oxford University",
+        validation: .of(.notEmpty)
+    )
+
+    @PropertyEditor(keyPath: \Education.startDate)
+    var startDate = FormFieldViewModel(type: Date.self, title: "Start Date")
+
+    @PropertyEditor(keyPath: \Education.endDate)
+    var endDate = FormFieldViewModel(type: Date.self, title: "End Date")
+
+    @ObservationIgnored
+    var state: State?
+
+    @PostInit
+    func configure() {
+        addCustomValidationRule(EducationRangeValidation())
+    }
+}
