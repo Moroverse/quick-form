@@ -30,14 +30,14 @@ Job Application Form
 ## Experience
 
 - [x] Years of Experience
-- [ ] Skills
-  - [ ] Proficiency Levels
+- [x] Skills
+  - [x] Proficiency Levels
 
 
 ## Education
 
 - [ ] Collection:
-  - [ ] Institution
+  - [x] Institution
   - [ ] Degree
   - [ ] Field of Study
   - [ ] Start Date
