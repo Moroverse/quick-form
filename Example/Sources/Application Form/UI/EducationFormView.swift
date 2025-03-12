@@ -11,6 +11,7 @@ struct EducationFormView: View {
     var body: some View {
         Form {
             FormTextField(model.institution)
+            FormTextField(model.degree)
             FormDatePickerField(
                 model.startDate,
                 range: .distantPast ... Date(),

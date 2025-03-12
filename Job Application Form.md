@@ -38,7 +38,7 @@ Job Application Form
 
 - [ ] Collection:
   - [x] Institution
-  - [ ] Degree
+  - [x] Degree
   - [ ] Field of Study
   - [x] Start Date
   - [x] End Date

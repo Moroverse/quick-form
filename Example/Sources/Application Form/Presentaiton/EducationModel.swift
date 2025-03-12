@@ -1,6 +1,6 @@
 // EducationModel.swift
 // Copyright (c) 2025 Moroverse
-// Created by Daniel Moro on 2025-03-12 04:46 GMT.
+// Created by Daniel Moro on 2025-03-12 06:06 GMT.
 
 import Foundation
 import Observation
@@ -36,6 +36,14 @@ final class EducationModel: Validatable {
 
     @PropertyEditor(keyPath: \Education.endDate)
     var endDate = FormFieldViewModel(type: Date.self, title: "End Date")
+
+    @PropertyEditor(keyPath: \Education.degree)
+    var degree = FormFieldViewModel(
+        type: String.self,
+        title: "Degree",
+        placeholder: "Bachelor of Science",
+        validation: .of(.notEmpty)
+    )
 
     @ObservationIgnored
     var state: State?

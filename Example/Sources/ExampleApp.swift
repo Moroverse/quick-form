@@ -26,7 +26,8 @@ extension AnyRouter: ApplicationFormRouting {
                     id: UUID(),
                     institution: "",
                     startDate: Date(),
-                    endDate: Date()
+                    endDate: Date(),
+                    degree: ""
                 )
             )
             showScreen(.sheet) {
