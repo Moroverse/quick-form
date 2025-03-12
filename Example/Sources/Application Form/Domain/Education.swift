@@ -7,10 +7,12 @@ import Foundation
 struct Education: Identifiable {
     var id: UUID
     var institution: String
+    var startDate: Date
+    var endDate: Date
 }
 
 #if DEBUG
     extension Education {
-        static let sample = Education(id: UUID(), institution: "University of Example")
+        static let sample = Education(id: UUID(), institution: "University of Example", startDate: Date(), endDate: Date())
     }
 #endif

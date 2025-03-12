@@ -21,7 +21,14 @@ struct ExampleApp: App {
 extension AnyRouter: ApplicationFormRouting {
     func navigateToEducation(_ selection: Education?) async -> Education? {
         await withCheckedContinuation { continuation in
-            let model = EducationModel(value: selection ?? Education(id: UUID(), institution: ""))
+            let model = EducationModel(
+                value: selection ?? Education(
+                    id: UUID(),
+                    institution: "",
+                    startDate: Date(),
+                    endDate: Date()
+                )
+            )
             showScreen(.sheet) {
                 if case let .committed(newValue) = model.state {
                     continuation.resume(returning: newValue)

@@ -40,8 +40,8 @@ Job Application Form
   - [x] Institution
   - [ ] Degree
   - [ ] Field of Study
-  - [ ] Start Date
-  - [ ] End Date
+  - [x] Start Date
+  - [x] End Date
   - [ ] GPA
 
 ## Work History

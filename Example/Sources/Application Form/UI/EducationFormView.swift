@@ -1,6 +1,6 @@
 // EducationFormView.swift
 // Copyright (c) 2025 Moroverse
-// Created by Daniel Moro on 2025-03-12 04:49 GMT.
+// Created by Daniel Moro on 2025-03-12 05:32 GMT.
 
 import QuickForm
 import SwiftUI
@@ -11,6 +11,23 @@ struct EducationFormView: View {
     var body: some View {
         Form {
             FormTextField(model.institution)
+            FormDatePickerField(
+                model.startDate,
+                range: .distantPast ... Date(),
+                displayedComponents: [.date]
+            )
+            FormDatePickerField(
+                model.endDate,
+                range: .distantPast ... Date(),
+                displayedComponents: [.date]
+            )
+
+            if case let .failure(error) = model.validationResult {
+                Section {
+                    Text(error)
+                        .listRowBackground(Color.red.opacity(0.5))
+                }
+            }
         }
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
