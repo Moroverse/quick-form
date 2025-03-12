@@ -14,7 +14,7 @@ struct ProfessionalDetails {
     var desiredPosition: String
     var desiredSalary: Decimal
     var availabilityDate: Date
-    var employmentType: EmploymentType
+    var employmentType: Set<EmploymentType>
     var willingToRelocate: Bool
 }
 
@@ -25,7 +25,7 @@ struct ProfessionalDetails {
                 desiredPosition: "Software Developer",
                 desiredSalary: 35000,
                 availabilityDate: Date(),
-                employmentType: .partTime,
+                employmentType: [.partTime],
                 willingToRelocate: true
             )
         }

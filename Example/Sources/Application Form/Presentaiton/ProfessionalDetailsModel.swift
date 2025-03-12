@@ -49,7 +49,7 @@ final class ProfessionalDetailsModel {
     var availabilityDate = FormFieldViewModel(type: Date.self, title: "Availability Date")
 
     @PropertyEditor(keyPath: \ProfessionalDetails.employmentType)
-    var employmentType = PickerFieldViewModel(
+    var employmentType = MultiPickerFieldViewModel(
         type: EmploymentType.self,
         allValues: EmploymentType.allCases,
         title: "Employment Type"

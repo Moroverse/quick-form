@@ -18,6 +18,7 @@ struct ApplicationFormView: View {
         Form {
             personalInformationSection()
             professionalDetailsSection()
+            FormMultiPickerSection(model.professionalDetails.employmentType)
             experienceSection()
             experienceSkillSection()
             educationSection()
@@ -49,10 +50,10 @@ struct ApplicationFormView: View {
                 displayedComponents: [.date],
                 style: .automatic
             )
-            FormPickerField(
-                model.professionalDetails.employmentType,
-                pickerStyle: .navigationLink
-            )
+//            FormPickerField(
+//                model.professionalDetails.employmentType,
+//                pickerStyle: .navigationLink
+//            )
             FormToggleField(model.professionalDetails.willingToRelocate)
         }
     }
