@@ -81,8 +81,10 @@ struct ApplicationFormView: View {
     private func educationSection() -> some View {
         FormCollectionSection(model.education) { $education in
             HStack {
-                Text(education.institution ?? "No Institution")
+                Text(education.institution)
+                    .font(.headline)
                 Spacer()
+                Text("(GPA \(education.gpa))")
             }
         }
         .configure { model in
