@@ -1,6 +1,6 @@
 // FormStepperField.swift
 // Copyright (c) 2025 Moroverse
-// Created by Daniel Moro on 2025-03-12 18:56 GMT.
+// Created by Daniel Moro on 2025-03-12 19:21 GMT.
 
 import SwiftUI
 
@@ -8,7 +8,7 @@ public struct FormStepperField<Value: Strideable>: View {
     @Bindable private var viewModel: FormFieldViewModel<Value>
     private let range: ClosedRange<Value>?
     private let step: Value.Stride
-    public  var body: some View {
+    public var body: some View {
         if let range {
             Stepper(
                 value: $viewModel.value,
