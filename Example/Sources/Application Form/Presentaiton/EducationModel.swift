@@ -45,6 +45,14 @@ final class EducationModel: Validatable {
         validation: .of(.notEmpty)
     )
 
+    @PropertyEditor(keyPath: \Education.fieldOfStudy)
+    var fieldOfStudy = FormFieldViewModel(
+        type: String.self,
+        title: "Field of Study",
+        placeholder: "Computer Science",
+        validation: .of(.notEmpty)
+    )
+
     @ObservationIgnored
     var state: State?
 

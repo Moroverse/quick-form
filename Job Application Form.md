@@ -39,7 +39,7 @@ Job Application Form
 - [ ] Collection:
   - [x] Institution
   - [x] Degree
-  - [ ] Field of Study
+  - [x] Field of Study
   - [x] Start Date
   - [x] End Date
   - [ ] GPA
