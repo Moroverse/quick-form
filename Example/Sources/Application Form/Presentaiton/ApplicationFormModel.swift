@@ -1,6 +1,6 @@
 // ApplicationFormModel.swift
 // Copyright (c) 2025 Moroverse
-// Created by Daniel Moro on 2025-03-11 20:31 GMT.
+// Created by Daniel Moro on 2025-03-13 16:10 GMT.
 
 import Observation
 import QuickForm
@@ -19,4 +19,6 @@ final class ApplicationFormModel {
         title: "Education",
         insertionTitle: "Add Education"
     )
+    @PropertyEditor(keyPath: \Applicant.additionalInfo)
+    var additionalInfo = AdditionalInfoModel(value: .sample)
 }

@@ -55,7 +55,7 @@ Job Application Form
 
 ## Additional Info
 
-- [ ] Resume upload and preview
+- [x] Resume upload and preview
 - [ ] Cover letter
 - [ ] How did you hear about us
 - [ ] Additional Notes

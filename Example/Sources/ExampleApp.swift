@@ -19,6 +19,25 @@ struct ExampleApp: App {
 
 @MainActor
 extension AnyRouter: ApplicationFormRouting {
+    func navigateToPreview(at url: URL) {
+        showScreen(.sheet) { _ in
+            PreviewController(url: url)
+        }
+    }
+
+    func navigateToResumeUpload() async -> URL? {
+        let model = DocumentBrowserModel()
+        return await withCheckedContinuation { continuation in
+            model.didComplete = {
+                continuation.resume(returning: model.urls.first)
+            }
+
+            showScreen(.sheet) { _ in
+                DocumentBrowser(model: model)
+            }
+        }
+    }
+
     func navigateToEducation(_ selection: Education?) async -> Education? {
         await withCheckedContinuation { continuation in
             let model = EducationModel(

@@ -1,6 +1,6 @@
 // ApplicationFormView.swift
 // Copyright (c) 2025 Moroverse
-// Created by Daniel Moro on 2025-03-12 19:38 GMT.
+// Created by Daniel Moro on 2025-03-13 16:10 GMT.
 
 import Foundation
 import QuickForm
@@ -9,6 +9,9 @@ import SwiftUI
 protocol ApplicationFormRouting {
     func navigateToNewSkill() async -> ExperienceSkill?
     func navigateToEducation(_ selection: Education?) async -> Education?
+    func navigateToResumeUpload() async -> URL?
+    @MainActor
+    func navigateToPreview(at url: URL)
 }
 
 struct ApplicationFormView: View {
@@ -22,6 +25,7 @@ struct ApplicationFormView: View {
             experienceSection()
             experienceSkillSection()
             educationSection()
+            additionalInfoSection()
         }
     }
 
@@ -50,10 +54,6 @@ struct ApplicationFormView: View {
                 displayedComponents: [.date],
                 style: .automatic
             )
-//            FormPickerField(
-//                model.professionalDetails.employmentType,
-//                pickerStyle: .navigationLink
-//            )
             FormToggleField(model.professionalDetails.willingToRelocate)
         }
     }
@@ -95,9 +95,53 @@ struct ApplicationFormView: View {
             model.onSelect(action: router.navigateToEducation)
         }
     }
+
+    private func additionalInfoSection() -> some View {
+        Section("Additional Information") {
+            AsyncButton {
+                switch model.additionalInfo.resume.value {
+                case .missing:
+                    if let url = await router.navigateToResumeUpload() {
+                        await model.additionalInfo.uploadResume(from: url)
+                    }
+
+                case let .present(url: url):
+                    router.navigateToPreview(at: url)
+
+                case .error:
+                    // show upload
+                    break
+                }
+            } label: {
+                switch model.additionalInfo.resume.value {
+                case .missing:
+                    Text("No Resume. Tap to upload.")
+                case let .present(url: url):
+                    Text("Resume uploaded to \(url). Tap to preview.")
+                case let .error(error):
+                    Text("Resume upload error \(error.localizedDescription). Tap to retry.")
+                }
+            }
+            .swipeActions(edge: .trailing) {
+                if case .present = model.additionalInfo.resume.value {
+                    Button(role: .destructive) {
+                        //
+                    } label: {
+                        Label("Delete", systemImage: "trash")
+                    }
+                }
+            }
+        }
+    }
 }
 
 struct MockApplicationFormRouting: ApplicationFormRouting {
+    func navigateToPreview(at url: URL) {}
+
+    func navigateToResumeUpload() async -> URL? {
+        nil
+    }
+
     func navigateToEducation(_ selection: Education?) async -> Education? {
         nil
     }
