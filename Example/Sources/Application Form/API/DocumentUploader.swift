@@ -13,10 +13,3 @@ import Foundation
 protocol DocumentUploader {
     func upload(from url: URL) async throws -> URL
 }
-
-final class DefaultDocumentUploader: DocumentUploader {
-    func upload(from url: URL) async throws -> URL {
-        try await Task.sleep(for: .seconds(2))
-        return url
-    }
-}
