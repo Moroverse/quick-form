@@ -6,17 +6,8 @@ import Foundation
 import QuickForm
 import SwiftUI
 
-protocol ApplicationFormRouting {
-    func navigateToNewSkill() async -> ExperienceSkill?
-    func navigateToEducation(_ selection: Education?) async -> Education?
-    func navigateToResumeUpload() async -> URL?
-    @MainActor
-    func navigateToPreview(at url: URL)
-}
-
 struct ApplicationFormView: View {
     @Bindable private var model: ApplicationFormModel
-    let router: ApplicationFormRouting
     var body: some View {
         Form {
             personalInformationSection()
@@ -29,9 +20,8 @@ struct ApplicationFormView: View {
         }
     }
 
-    init(model: ApplicationFormModel, router: ApplicationFormRouting) {
+    init(model: ApplicationFormModel) {
         self.model = model
-        self.router = router
     }
 
     private func personalInformationSection() -> some View {
@@ -75,7 +65,7 @@ struct ApplicationFormView: View {
             }
         }
         .configure { model in
-            model.onInsert(action: router.navigateToNewSkill)
+            model.onInsert(action: self.model.didTaponNewSkill)
         }
     }
 
@@ -90,28 +80,16 @@ struct ApplicationFormView: View {
         }
         .configure { model in
             model.onInsert {
-                await router.navigateToEducation(nil)
+                await self.model.didTapOnEducationInsert(education: nil)
             }
-            model.onSelect(action: router.navigateToEducation)
+            model.onSelect(action: self.model.didTapOnEducationInsert)
         }
     }
 
     private func additionalInfoSection() -> some View {
         Section("Additional Information") {
             AsyncButton {
-                switch model.additionalInfo.resume.value {
-                case .missing:
-                    if let url = await router.navigateToResumeUpload() {
-                        await model.additionalInfo.uploadResume(from: url)
-                    }
-
-                case let .present(url: url):
-                    router.navigateToPreview(at: url)
-
-                case .error:
-                    // show upload
-                    break
-                }
+                await model.additionalInfo.didTapOnAdditionalInformationResume()
             } label: {
                 switch model.additionalInfo.resume.value {
                 case .missing:
@@ -125,7 +103,9 @@ struct ApplicationFormView: View {
             .swipeActions(edge: .trailing) {
                 if case .present = model.additionalInfo.resume.value {
                     Button(role: .destructive) {
-                        //
+                        Task {
+                            await model.additionalInfo.deleteResume()
+                        }
                     } label: {
                         Label("Delete", systemImage: "trash")
                     }
@@ -135,29 +115,12 @@ struct ApplicationFormView: View {
     }
 }
 
-struct MockApplicationFormRouting: ApplicationFormRouting {
-    func navigateToPreview(at url: URL) {}
-
-    func navigateToResumeUpload() async -> URL? {
-        nil
-    }
-
-    func navigateToEducation(_ selection: Education?) async -> Education? {
-        nil
-    }
-
-    func navigateToNewSkill() async -> ExperienceSkill? {
-        nil
-    }
-}
-
 struct ApplicationFormView_Previews: PreviewProvider {
     struct ApplicationFormViewWrapper: View {
         @State var model = ApplicationFormModel(value: .sample)
-        @State var router = MockApplicationFormRouting()
 
         var body: some View {
-            ApplicationFormView(model: model, router: router)
+            ApplicationFormView(model: model)
         }
     }
 

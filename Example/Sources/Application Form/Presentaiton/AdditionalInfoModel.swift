@@ -21,6 +21,9 @@ final class AdditionalInfoModel {
     @Injected(\.documentDeleter)
     var documentDeleter: DocumentDeleter
 
+    @LazyInjected(\.additionalInfoRouting)
+    var router: AdditionalInfoRouting?
+
     @PropertyEditor(keyPath: \AdditionalInfo.resume)
     var resume = FormFieldViewModel(type: Resume.self)
 
@@ -33,8 +36,32 @@ final class AdditionalInfoModel {
         }
     }
 
-    func deleteResume() async throws {}
+    func deleteResume() async {
+        guard case let .present(url) = resume.value else { return }
+        do {
+            try await documentDeleter.deleteDocument(from: url)
+            resume.value = .missing
+        } catch {
+            resume.value = .error(error)
+        }
+    }
 
     @PostInit
     func configure() {}
+
+    func didTapOnAdditionalInformationResume() async {
+        switch resume.value {
+        case .missing:
+            if let url = await router?.navigateToResumeUpload() {
+                await uploadResume(from: url)
+            }
+
+        case let .present(url: url):
+            await router?.navigateToPreview(at: url)
+
+        case .error:
+            // show upload
+            break
+        }
+    }
 }
