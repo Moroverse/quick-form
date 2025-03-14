@@ -1,6 +1,6 @@
 // AdditionalInfoModel.swift
 // Copyright (c) 2025 Moroverse
-// Created by Daniel Moro on 2025-03-13 16:17 GMT.
+// Created by Daniel Moro on 2025-03-14 06:15 GMT.
 
 import Factory
 import Foundation
@@ -47,7 +47,13 @@ final class AdditionalInfoModel {
     }
 
     @PostInit
-    func configure() {}
+    func configure() {
+        resume.title = resume.value.title
+
+        resume.onValueChanged { [weak resume] newValue in
+            resume?.title = newValue.title
+        }
+    }
 
     func didTapOnAdditionalInformationResume() async {
         switch resume.value {
@@ -62,6 +68,19 @@ final class AdditionalInfoModel {
         case .error:
             // show upload
             break
+        }
+    }
+}
+
+extension Resume {
+    var title: LocalizedStringResource {
+        switch self {
+        case .missing:
+            "No Resume."
+        case .present:
+            "Resume uploaded."
+        case let .error(error):
+            "Resume upload error \(error.localizedDescription)"
         }
     }
 }

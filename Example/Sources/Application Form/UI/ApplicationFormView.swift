@@ -1,6 +1,6 @@
 // ApplicationFormView.swift
 // Copyright (c) 2025 Moroverse
-// Created by Daniel Moro on 2025-03-13 16:10 GMT.
+// Created by Daniel Moro on 2025-03-14 06:15 GMT.
 
 import Foundation
 import QuickForm
@@ -91,15 +91,12 @@ struct ApplicationFormView: View {
             AsyncButton {
                 await model.additionalInfo.didTapOnAdditionalInformationResume()
             } label: {
-                switch model.additionalInfo.resume.value {
-                case .missing:
-                    Text("No Resume. Tap to upload.")
-                case let .present(url: url):
-                    Text("Resume uploaded to \(url). Tap to preview.")
-                case let .error(error):
-                    Text("Resume upload error \(error.localizedDescription). Tap to retry.")
+                HStack {
+                    Image(systemName: "doc")
+                    Text(model.additionalInfo.resume.title)
                 }
             }
+            .buttonStyle(.plain)
             .swipeActions(edge: .trailing) {
                 if case .present = model.additionalInfo.resume.value {
                     Button(role: .destructive) {
