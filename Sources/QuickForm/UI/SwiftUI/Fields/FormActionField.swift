@@ -45,9 +45,9 @@ public struct FormActionField<Property, Label: View, Content: View>: View {
                     .foregroundColor(.red)
             }
         }
-        .onChange(of: viewModel.errorMessage) { _, newValue in
+        .onChange(of: viewModel.validationResult) { _, newValue in
             withAnimation {
-                hasError = newValue != nil
+                hasError = newValue != .success
             }
         }
     }
