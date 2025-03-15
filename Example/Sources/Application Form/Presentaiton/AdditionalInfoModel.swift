@@ -1,19 +1,11 @@
 // AdditionalInfoModel.swift
 // Copyright (c) 2025 Moroverse
-// Created by Daniel Moro on 2025-03-14 06:15 GMT.
+// Created by Daniel Moro on 2025-03-15 14:12 GMT.
 
 import Factory
 import Foundation
 import Observation
 import QuickForm
-
-struct ExternalValidationRule<T>: ValidationRule {
-    let validate: () -> ValidationResult
-
-    func validate(_ value: T) -> ValidationResult {
-        validate()
-    }
-}
 
 @QuickForm(AdditionalInfo.self)
 final class AdditionalInfoModel {
@@ -64,13 +56,13 @@ final class AdditionalInfoModel {
 
     @PostInit
     func configure() {
-        resume.validation = .of(ExternalValidationRule(validate: { [weak self] in
+        resume.validation = .of(.custom { [weak self] _ in
             if let uploadErrorMessage = self?.uploadErrorMessage {
                 .failure(uploadErrorMessage)
             } else {
                 .success
             }
-        }))
+        })
     }
 
     func uploadResume(from url: URL) async {
