@@ -56,7 +56,7 @@ Job Application Form
 ## Additional Info
 
 - [x] Resume upload and preview
-- [ ] Cover letter
-- [ ] How did you hear about us
+- [x] Cover letter
+- [x] How did you hear about us
 - [ ] Additional Notes
 - [ ] Consent to Background Check

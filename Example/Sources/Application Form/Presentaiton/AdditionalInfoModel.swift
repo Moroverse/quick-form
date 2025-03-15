@@ -40,6 +40,13 @@ final class AdditionalInfoModel {
         placeholder: "Lorem ipsum dolor sit amet"
     )
 
+    @PropertyEditor(keyPath: \AdditionalInfo.howDidYouHear)
+    var howDidYouHearAboutUs = OptionalPickerFieldViewModel(
+        type: String?.self,
+        allValues: ["Facebook", "Coleague", "Referral", "Other"],
+        title: "How did you hear about us?"
+    )
+
     private var uploadErrorMessage: LocalizedStringResource?
 
     @PostInit
