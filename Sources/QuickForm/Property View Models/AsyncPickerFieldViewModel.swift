@@ -39,7 +39,7 @@ public final class AsyncPickerFieldViewModel<Model: Collection, Query>:
     /// The validation rule to apply to the selected value.
     public var validation: AnyValidationRule<Model.Element?>?
 
-    private(set) var validationResult: ValidationResult = .success
+    private var validationResult: ValidationResult = .success
     private var dispatcher: Dispatcher
 
     /// Initializes a new instance of `OptionalPickerFieldViewModel`.

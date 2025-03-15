@@ -1,12 +1,12 @@
 // TokenSetViewModel.swift
 // Copyright (c) 2025 Moroverse
-// Created by Daniel Moro on 2025-03-11 20:31 GMT.
+// Created by Daniel Moro on 2025-03-09 20:00 GMT.
 
 import Foundation
 import Observation
 
 @Observable
-public final class TokenSetViewModel<Property: Identifiable & CustomStringConvertible>: ObservableValueEditor {
+public final class TokenSetViewModel<Property: Identifiable & CustomStringConvertible>: ValueEditor {
     private var insertionMapper: ((String) -> Property?)?
     private var _onSelect: ((Property?) -> Void)?
 
@@ -23,20 +23,13 @@ public final class TokenSetViewModel<Property: Identifiable & CustomStringConver
         }
     }
 
-    public var value: [Property] {
-        didSet {
-            dispatcher.publish(value)
-        }
-    }
-
-    private var dispatcher: Dispatcher
+    public var value: [Property]
 
     public init(value: [Property], title: LocalizedStringResource? = nil, insertionPlaceholder: LocalizedStringResource?, insertionMapper: ((String) -> Property?)? = nil) {
         self.title = title
         self.value = value
         self.insertionPlaceholder = insertionPlaceholder
         self.insertionMapper = insertionMapper
-        dispatcher = Dispatcher()
     }
 
     public func insert(_ input: String) -> Bool {
@@ -61,11 +54,5 @@ public final class TokenSetViewModel<Property: Identifiable & CustomStringConver
 
     public func canDelete(_ value: Property) -> Bool {
         onCanDelete(value)
-    }
-
-    @discardableResult
-    public func onValueChanged(_ change: @escaping ([Property]) -> Void) -> Self {
-        dispatcher.subscribe(handler: change)
-        return self
     }
 }

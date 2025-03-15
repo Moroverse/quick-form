@@ -25,11 +25,7 @@ extension Date: DefaultValueProvider {
     public static var defaultValue: Date { Date() }
 }
 
-// extension Optional: DefaultValueProvider where Wrapped: DefaultValueProvider {
-//    public static var defaultValue: Optional<Wrapped> { nil }
-// }
-
-extension Optional: DefaultValueProvider {
+extension Optional: DefaultValueProvider where Wrapped: DefaultValueProvider {
     public static var defaultValue: Optional<Wrapped> { nil }
 }
 

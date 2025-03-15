@@ -68,7 +68,7 @@ public final class OptionalPickerFieldViewModel<Property: Hashable & CustomStrin
     /// The validation rule to apply to the selected value.
     public var validation: AnyValidationRule<Property?>?
 
-    private(set) var validationResult: ValidationResult = .success
+    private var validationResult: ValidationResult = .success
     private var dispatcher: Dispatcher
 
     /// Initializes a new instance of `OptionalPickerFieldViewModel`.

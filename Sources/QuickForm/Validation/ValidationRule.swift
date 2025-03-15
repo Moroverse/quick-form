@@ -107,7 +107,7 @@ public protocol ValidationRule<Value> {
 ///
 /// In this example, the `ValidationResult` is used to determine if a password meets
 /// the required length and to provide an error message if it doesn't.
-public enum ValidationResult: Equatable {
+public enum ValidationResult {
     /// Indicates that the validation was successful.
     case success
 

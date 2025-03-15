@@ -1,6 +1,6 @@
 // FormCollectionViewModel.swift
 // Copyright (c) 2025 Moroverse
-// Created by Daniel Moro on 2025-03-11 20:31 GMT.
+// Created by Daniel Moro on 2024-09-09 02:27 GMT.
 
 import Foundation
 import Observation
@@ -124,7 +124,7 @@ public final class FormCollectionViewModel<Property: Identifiable & Sendable>: V
     ///
     /// - Parameter item: The item to select, or nil to deselect.
     @MainActor
-    public func select(item: Property?) async {
+    public func select(item: Property?) async{
         if let item {
             if let updatedItem = await _onSelect?(item),
                let index = value.firstIndex(where: { $0.id == item.id }) {

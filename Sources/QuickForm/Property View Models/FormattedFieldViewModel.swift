@@ -81,7 +81,7 @@ public final class FormattedFieldViewModel<F>: ObservableValueEditor, Validatabl
 
     private var dispatcher: Dispatcher
     private let validation: AnyValidationRule<F.FormatInput?>?
-    private(set) var validationResult: ValidationResult = .success
+    private var validationResult: ValidationResult = .success
     /// Initializes a new instance of `FormattedFieldViewModel`.
     ///
     /// - Parameters:

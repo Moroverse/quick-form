@@ -143,9 +143,9 @@ public struct FormAsyncPickerField<Model: RandomAccessCollection, Query, VConten
                     .foregroundColor(.red)
             }
         }
-        .onChange(of: viewModel.validationResult) { _, newValue in
+        .onChange(of: viewModel.errorMessage) { _, newValue in
             withAnimation {
-                hasError = newValue != .success
+                hasError = newValue != nil
             }
         }
     }
