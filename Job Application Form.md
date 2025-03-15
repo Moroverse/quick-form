@@ -59,4 +59,4 @@ Job Application Form
 - [x] Cover letter
 - [x] How did you hear about us
 - [x] Additional Notes
-- [ ] Consent to Background Check
+- [x] Consent to Background Check

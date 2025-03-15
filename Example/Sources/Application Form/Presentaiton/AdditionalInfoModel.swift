@@ -54,6 +54,12 @@ final class AdditionalInfoModel {
         placeholder: "Any additional notes?"
     )
 
+    @PropertyEditor(keyPath: \AdditionalInfo.consentToBackgroundChecks)
+    var consentToBackgroundChecks = FormFieldViewModel(
+        type: Bool.self,
+        title: "I consent to background checks"
+    )
+
     private var uploadErrorMessage: LocalizedStringResource?
 
     @PostInit

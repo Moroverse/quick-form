@@ -97,20 +97,20 @@ struct ApplicationFormView: View {
                     }
                 }
                 .swipeActions(edge: .trailing) {
-                    if model.additionalInfo.resume.value != nil {
-                        Button {
-                            Task {
-                                await model.additionalInfo.deleteResume()
-                            }
-                        } label: {
-                            Label("Delete", systemImage: "trash")
+                    // if model.additionalInfo.resume.value != nil {
+                    Button {
+                        Task {
+                            await model.additionalInfo.deleteResume()
                         }
-                        .buttonStyle(.bordered)
+                    } label: {
+                        Label("Delete", systemImage: "trash")
                     }
+                    // }
                 }
             FormTextEditor(viewModel: model.additionalInfo.coverLetter)
             FormOptionalPickerField(model.additionalInfo.howDidYouHearAboutUs)
             FormTextEditor(viewModel: model.additionalInfo.additionalNotes)
+            FormToggleField(model.additionalInfo.consentToBackgroundChecks)
         }
     }
 }

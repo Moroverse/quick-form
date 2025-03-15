@@ -9,10 +9,17 @@ struct AdditionalInfo {
     var coverLetter: String?
     var howDidYouHear: String?
     var additionalNotes: String?
+    var consentToBackgroundChecks: Bool
 }
 
 #if DEBUG
     extension AdditionalInfo {
-        static let sample = AdditionalInfo(resume: nil, coverLetter: nil, howDidYouHear: nil, additionalNotes: nil)
+        static let sample = AdditionalInfo(
+            resume: nil,
+            coverLetter: nil,
+            howDidYouHear: nil,
+            additionalNotes: nil,
+            consentToBackgroundChecks: false
+        )
     }
 #endif
