@@ -8,10 +8,11 @@ struct AdditionalInfo {
     var resume: URL?
     var coverLetter: String?
     var howDidYouHear: String?
+    var additionalNotes: String?
 }
 
 #if DEBUG
     extension AdditionalInfo {
-        static let sample = AdditionalInfo(resume: nil, coverLetter: nil, howDidYouHear: nil)
+        static let sample = AdditionalInfo(resume: nil, coverLetter: nil, howDidYouHear: nil, additionalNotes: nil)
     }
 #endif

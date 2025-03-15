@@ -110,6 +110,7 @@ struct ApplicationFormView: View {
                 }
             FormTextEditor(viewModel: model.additionalInfo.coverLetter)
             FormOptionalPickerField(model.additionalInfo.howDidYouHearAboutUs)
+            FormTextEditor(viewModel: model.additionalInfo.additionalNotes)
         }
     }
 }

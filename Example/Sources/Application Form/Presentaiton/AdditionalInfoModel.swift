@@ -47,6 +47,13 @@ final class AdditionalInfoModel {
         title: "How did you hear about us?"
     )
 
+    @PropertyEditor(keyPath: \AdditionalInfo.additionalNotes)
+    var additionalNotes = FormFieldViewModel(
+        type: String?.self,
+        title: "Additional Notes",
+        placeholder: "Any additional notes?"
+    )
+
     private var uploadErrorMessage: LocalizedStringResource?
 
     @PostInit
