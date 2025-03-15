@@ -7,9 +7,11 @@ import Foundation
 import Observation
 import QuickForm
 
-extension Resume: DefaultValueProvider {
-    static var defaultValue: Resume {
-        .missing
+struct ExternalValidationRule<T>: ValidationRule {
+    let validate: () -> ValidationResult
+
+    func validate(_ value: T) -> ValidationResult {
+        validate()
     }
 }
 
@@ -25,62 +27,53 @@ final class AdditionalInfoModel {
     var router: AdditionalInfoRouting?
 
     @PropertyEditor(keyPath: \AdditionalInfo.resume)
-    var resume = FormFieldViewModel(type: Resume.self)
+    var resume = FormFieldViewModel(
+        type: URL?.self,
+        title: "Resume:",
+        placeholder: "Tap to upload resume"
+    )
+
+    private var uploadErrorMessage: LocalizedStringResource?
+
+    @PostInit
+    func configure() {
+        resume.validation = .of(ExternalValidationRule(validate: { [weak self] in
+            if let uploadErrorMessage = self?.uploadErrorMessage {
+                .failure(uploadErrorMessage)
+            } else {
+                .success
+            }
+        }))
+    }
 
     func uploadResume(from url: URL) async {
         do {
             let url = try await documentUploader.upload(from: url)
-            resume.value = .present(url: url)
+            resume.value = url
         } catch {
-            resume.value = .error(error)
+            uploadErrorMessage = "Upload failed with message: \(error.localizedDescription)"
+            resume.revalidate()
         }
     }
 
     func deleteResume() async {
-        guard case let .present(url) = resume.value else { return }
+        guard let value = resume.value else { return }
         do {
-            try await documentDeleter.deleteDocument(from: url)
-            resume.value = .missing
+            try await documentDeleter.deleteDocument(from: value)
+            resume.value = nil
         } catch {
-            resume.value = .error(error)
-        }
-    }
-
-    @PostInit
-    func configure() {
-        resume.title = resume.value.title
-
-        resume.onValueChanged { [weak resume] newValue in
-            resume?.title = newValue.title
+            uploadErrorMessage = "Delete failed with message: \(error.localizedDescription)"
+            resume.revalidate()
         }
     }
 
     func didTapOnAdditionalInformationResume() async {
-        switch resume.value {
-        case .missing:
+        if let url = resume.value {
+            await router?.navigateToPreview(at: url)
+        } else {
             if let url = await router?.navigateToResumeUpload() {
                 await uploadResume(from: url)
             }
-
-        case let .present(url: url):
-            await router?.navigateToPreview(at: url)
-
-        case .error:
-            // show upload
-            break
-        }
-    }
-}
-
-extension Resume {
-    var title: LocalizedStringResource {
-        switch self {
-        case .missing:
-            "No Resume."
-        case .present:
-            "Resume uploaded."
-        case let .error(error):
-            "Resume upload error \(error.localizedDescription)"
         }
     }
 }

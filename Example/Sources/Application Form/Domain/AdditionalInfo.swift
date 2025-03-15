@@ -4,18 +4,12 @@
 
 import Foundation
 
-enum Resume {
-    case missing
-    case present(url: URL)
-    case error(Error)
-}
-
 struct AdditionalInfo {
-    var resume: Resume
+    var resume: URL?
 }
 
 #if DEBUG
     extension AdditionalInfo {
-        static let sample = AdditionalInfo(resume: .missing)
+        static let sample = AdditionalInfo(resume: nil)
     }
 #endif

@@ -1,6 +1,6 @@
 // DefaultDocumentUploader.swift
 // Copyright (c) 2025 Moroverse
-// Created by Daniel Moro on 2025-03-14 03:06 GMT.
+// Created by Daniel Moro on 2025-03-14 03:17 GMT.
 
 import Factory
 import Foundation
@@ -10,6 +10,13 @@ extension Container {
         func upload(from url: URL) async throws -> URL {
             try await Task.sleep(for: .seconds(2))
             return url
+        }
+    }
+
+    final class FailingDocumentUploader: DocumentUploader {
+        func upload(from url: URL) async throws -> URL {
+            try await Task.sleep(for: .seconds(2))
+            throw URLError(.badServerResponse)
         }
     }
 

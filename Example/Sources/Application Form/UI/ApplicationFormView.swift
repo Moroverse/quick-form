@@ -88,26 +88,26 @@ struct ApplicationFormView: View {
 
     private func additionalInfoSection() -> some View {
         Section("Additional Information") {
-            AsyncButton {
-                await model.additionalInfo.didTapOnAdditionalInformationResume()
-            } label: {
-                HStack {
-                    Image(systemName: "doc")
-                    Text(model.additionalInfo.resume.title)
-                }
-            }
-            .buttonStyle(.plain)
-            .swipeActions(edge: .trailing) {
-                if case .present = model.additionalInfo.resume.value {
-                    Button(role: .destructive) {
-                        Task {
-                            await model.additionalInfo.deleteResume()
-                        }
-                    } label: {
-                        Label("Delete", systemImage: "trash")
+            FormAsyncActionField(
+                viewModel: model.additionalInfo.resume) {
+                    await model.additionalInfo.didTapOnAdditionalInformationResume()
+                } label: { resume in
+                    if let resume {
+                        Text(resume.absoluteString)
                     }
                 }
-            }
+                .swipeActions(edge: .trailing) {
+                    if model.additionalInfo.resume.value != nil {
+                        Button {
+                            Task {
+                                await model.additionalInfo.deleteResume()
+                            }
+                        } label: {
+                            Label("Delete", systemImage: "trash")
+                        }
+                        .buttonStyle(.bordered)
+                    }
+                }
         }
     }
 }
