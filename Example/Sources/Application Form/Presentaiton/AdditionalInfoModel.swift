@@ -33,6 +33,13 @@ final class AdditionalInfoModel {
         placeholder: "Tap to upload resume"
     )
 
+    @PropertyEditor(keyPath: \AdditionalInfo.coverLetter)
+    var coverLetter = FormFieldViewModel(
+        type: String?.self,
+        title: "Cover Letter",
+        placeholder: "Lorem ipsum dolor sit amet"
+    )
+
     private var uploadErrorMessage: LocalizedStringResource?
 
     @PostInit

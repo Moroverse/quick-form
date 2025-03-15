@@ -108,6 +108,7 @@ struct ApplicationFormView: View {
                         .buttonStyle(.bordered)
                     }
                 }
+            FormTextEditor(viewModel: model.additionalInfo.coverLetter)
         }
     }
 }

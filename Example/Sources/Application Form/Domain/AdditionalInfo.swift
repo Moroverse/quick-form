@@ -6,10 +6,11 @@ import Foundation
 
 struct AdditionalInfo {
     var resume: URL?
+    var coverLetter: String?
 }
 
 #if DEBUG
     extension AdditionalInfo {
-        static let sample = AdditionalInfo(resume: nil)
+        static let sample = AdditionalInfo(resume: nil, coverLetter: nil)
     }
 #endif
