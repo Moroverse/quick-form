@@ -2,10 +2,6 @@
 // Copyright (c) 2025 Moroverse
 // Created by Daniel Moro on 2025-03-06 06:44 GMT.
 
-// FormField.swift
-// Copyright (c) 2025 Moroverse
-// Created by Daniel Moro on 2025-03-06 12:00 GMT.
-
 import Foundation
 import QuickForm
 import SwiftUI

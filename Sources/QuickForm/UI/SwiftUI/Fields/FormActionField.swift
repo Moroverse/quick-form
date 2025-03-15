@@ -2,12 +2,6 @@
 // Copyright (c) 2025 Moroverse
 // Created by Daniel Moro on 2025-03-06 05:33 GMT.
 
-//
-//  FormActionField.swift
-//  quick-form
-//
-//  Created by Daniel Moro on 6.3.25..
-//
 import Foundation
 import SwiftUI
 
