@@ -1,19 +1,13 @@
 // ApplicationFormView.swift
 // Copyright (c) 2025 Moroverse
-// Created by Daniel Moro on 2025-03-12 19:38 GMT.
+// Created by Daniel Moro on 2025-03-14 06:15 GMT.
 
 import Foundation
 import QuickForm
 import SwiftUI
 
-protocol ApplicationFormRouting {
-    func navigateToNewSkill() async -> ExperienceSkill?
-    func navigateToEducation(_ selection: Education?) async -> Education?
-}
-
 struct ApplicationFormView: View {
     @Bindable private var model: ApplicationFormModel
-    let router: ApplicationFormRouting
     var body: some View {
         Form {
             personalInformationSection()
@@ -22,12 +16,12 @@ struct ApplicationFormView: View {
             experienceSection()
             experienceSkillSection()
             educationSection()
+            additionalInfoSection()
         }
     }
 
-    init(model: ApplicationFormModel, router: ApplicationFormRouting) {
+    init(model: ApplicationFormModel) {
         self.model = model
-        self.router = router
     }
 
     private func personalInformationSection() -> some View {
@@ -50,10 +44,6 @@ struct ApplicationFormView: View {
                 displayedComponents: [.date],
                 style: .automatic
             )
-//            FormPickerField(
-//                model.professionalDetails.employmentType,
-//                pickerStyle: .navigationLink
-//            )
             FormToggleField(model.professionalDetails.willingToRelocate)
         }
     }
@@ -75,7 +65,7 @@ struct ApplicationFormView: View {
             }
         }
         .configure { model in
-            model.onInsert(action: router.navigateToNewSkill)
+            model.onInsert(action: self.model.didTaponNewSkill)
         }
     }
 
@@ -90,30 +80,47 @@ struct ApplicationFormView: View {
         }
         .configure { model in
             model.onInsert {
-                await router.navigateToEducation(nil)
+                await self.model.didTapOnEducationInsert(education: nil)
             }
-            model.onSelect(action: router.navigateToEducation)
+            model.onSelect(action: self.model.didTapOnEducationInsert)
         }
     }
-}
 
-struct MockApplicationFormRouting: ApplicationFormRouting {
-    func navigateToEducation(_ selection: Education?) async -> Education? {
-        nil
-    }
-
-    func navigateToNewSkill() async -> ExperienceSkill? {
-        nil
+    private func additionalInfoSection() -> some View {
+        Section("Additional Information") {
+            FormAsyncActionField(
+                viewModel: model.additionalInfo.resume) {
+                    await model.additionalInfo.didTapOnAdditionalInformationResume()
+                } label: { resume in
+                    if let resume {
+                        Text(resume.absoluteString)
+                    }
+                }
+                .swipeActions(edge: .trailing) {
+                    // if model.additionalInfo.resume.value != nil {
+                    Button {
+                        Task {
+                            await model.additionalInfo.deleteResume()
+                        }
+                    } label: {
+                        Label("Delete", systemImage: "trash")
+                    }
+                    // }
+                }
+            FormTextEditor(viewModel: model.additionalInfo.coverLetter)
+            FormOptionalPickerField(model.additionalInfo.howDidYouHearAboutUs)
+            FormTextEditor(viewModel: model.additionalInfo.additionalNotes)
+            FormToggleField(model.additionalInfo.consentToBackgroundChecks)
+        }
     }
 }
 
 struct ApplicationFormView_Previews: PreviewProvider {
     struct ApplicationFormViewWrapper: View {
         @State var model = ApplicationFormModel(value: .sample)
-        @State var router = MockApplicationFormRouting()
 
         var body: some View {
-            ApplicationFormView(model: model, router: router)
+            ApplicationFormView(model: model)
         }
     }
 

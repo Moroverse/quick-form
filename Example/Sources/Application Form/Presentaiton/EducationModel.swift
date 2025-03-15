@@ -1,7 +1,8 @@
 // EducationModel.swift
 // Copyright (c) 2025 Moroverse
-// Created by Daniel Moro on 2025-03-12 06:06 GMT.
+// Created by Daniel Moro on 2025-03-12 20:10 GMT.
 
+import Factory
 import Foundation
 import Observation
 import QuickForm

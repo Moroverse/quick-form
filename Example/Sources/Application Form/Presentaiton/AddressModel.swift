@@ -1,14 +1,18 @@
 // AddressModel.swift
 // Copyright (c) 2025 Moroverse
-// Created by Daniel Moro on 2025-03-09 20:35 GMT.
+// Created by Daniel Moro on 2025-03-13 16:10 GMT.
 
+import Factory
 import Observation
 import QuickForm
 
 @QuickForm(Address.self)
 final class AddressModel {
-    var stateLoader: StateLoader?
-    var countryLoader: CountryLoader?
+    @Injected(\.stateLoader)
+    var stateLoader: StateLoader
+
+    @Injected(\.countryLoader)
+    var countryLoader: CountryLoader
 
     @PropertyEditor(keyPath: \Address.street)
     var street = FormFieldViewModel(
@@ -70,23 +74,18 @@ final class AddressModel {
 
     @PostInit
     func configure() {
-        stateLoader = MockStateLoader()
-        countryLoader = MockCountryLoader()
-
         Task { [weak self] in
-            self?.hasStates = await self?.stateLoader?.hasStates(country: self?.country.value ?? "") ?? false
+            self?.hasStates = await self?.stateLoader.hasStates(country: self?.country.value ?? "") ?? false
         }
 
         state.valuesProvider = { [weak self] query in
             guard let self else { return [] }
-            let result = try await stateLoader?.loadStates(country: query)
-            return result ?? []
+            return try await stateLoader.loadStates(country: query)
         }
 
         country.valuesProvider = { [weak self] query in
             guard let self else { return [] }
-            let result = try await countryLoader?.loadCountries(query: query)
-            return result ?? []
+            return try await countryLoader.loadCountries(query: query)
         }
 
         country.onValueChanged { [weak self] newValue in
@@ -94,7 +93,7 @@ final class AddressModel {
             state.value = nil
             if let newValue {
                 Task { [weak self] in
-                    self?.hasStates = await self?.stateLoader?.hasStates(country: newValue) ?? false
+                    self?.hasStates = await self?.stateLoader.hasStates(country: newValue) ?? false
                 }
             }
         }

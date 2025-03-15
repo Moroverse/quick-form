@@ -17,15 +17,16 @@ public struct FormTextEditor: View {
             TextEditor(text: bindableValue)
                 .focused($isFocused)
                 .foregroundColor(shouldShowPlaceholder ? .secondary : .primary)
+                .frame(minHeight: 44)
             if hasError {
                 Text(viewModel.errorMessage ?? "Invalid input")
                     .font(.caption)
                     .foregroundColor(.red)
             }
         }
-        .onChange(of: viewModel.errorMessage) { _, newValue in
+        .onChange(of: viewModel.validationResult) { _, newValue in
             withAnimation {
-                hasError = newValue != nil
+                hasError = newValue != .success
             }
         }
 //        .toolbar {
@@ -75,7 +76,8 @@ public struct FormTextEditor: View {
 
     private var bindableValue: Binding<String> {
         if shouldShowPlaceholder {
-            return .constant(String(localized: viewModel.placeholder ?? ""))
+            let value = String(localized: viewModel.placeholder ?? "")
+            return .constant(value)
         }
 
         if viewModel.isReadOnly {
@@ -86,7 +88,13 @@ public struct FormTextEditor: View {
     }
 
     private var shouldShowPlaceholder: Bool {
-        isFocused == false && !(viewModel.value?.isEmpty == false)
+        if let value = viewModel.value, value.isEmpty == false {
+            return false
+        }
+
+        let result = isFocused == false
+
+        return result
     }
 }
 
