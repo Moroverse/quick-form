@@ -29,7 +29,8 @@ final class AdditionalInfoModel {
     var coverLetter = FormFieldViewModel(
         type: String?.self,
         title: "Cover Letter",
-        placeholder: "Lorem ipsum dolor sit amet"
+        placeholder: "Lorem ipsum dolor sit amet",
+        validation: .of(OptionalRule.ifPresent(.maxLength(256)))
     )
 
     @PropertyEditor(keyPath: \AdditionalInfo.howDidYouHear)
