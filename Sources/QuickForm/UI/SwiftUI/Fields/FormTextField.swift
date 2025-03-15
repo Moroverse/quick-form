@@ -81,9 +81,9 @@ public struct FormTextField: View {
                 }
             }
         }
-        .onChange(of: viewModel.errorMessage) { _, newValue in
+        .onChange(of: viewModel.validationResult) { _, newValue in
             withAnimation {
-                hasError = newValue != nil
+                hasError = newValue != .success
             }
         }
         .registerForInspection(inspection, in: self)

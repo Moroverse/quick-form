@@ -64,8 +64,8 @@ public final class FormFieldViewModel<Property>: ObservableValueEditor, Validata
     public var isReadOnly: Bool
 
     private var dispatcher: Dispatcher
-    private let validation: AnyValidationRule<Property>?
-    private var validationResult: ValidationResult = .success
+    public var validation: AnyValidationRule<Property>?
+    private(set) var validationResult: ValidationResult = .success
     /// Initializes a new instance of `FormFieldViewModel`.
     ///
     /// - Parameters:
@@ -105,6 +105,11 @@ public final class FormFieldViewModel<Property>: ObservableValueEditor, Validata
     /// - Returns: A `ValidationResult` indicating whether the validation succeeded or failed.
     public func validate() -> ValidationResult {
         validation?.validate(value) ?? .success
+    }
+
+    @discardableResult
+    public func revalidate() {
+        validationResult = validation?.validate(value) ?? .success
     }
 }
 

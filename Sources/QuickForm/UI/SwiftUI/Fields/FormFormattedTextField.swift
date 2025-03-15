@@ -155,9 +155,9 @@ public struct FormFormattedTextField<F, V>: View where F: ParseableFormatStyle, 
                         }
                     }
                 }
-                .onChange(of: viewModel.errorMessage) { _, newValue in
+                .onChange(of: viewModel.validationResult) { _, newValue in
                     withAnimation {
-                        hasError = newValue != nil
+                        hasError = newValue != .success
                     }
                 }
 
