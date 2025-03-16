@@ -2,13 +2,41 @@
 // Copyright (c) 2025 Moroverse
 // Created by Daniel Moro on 2025-03-09 05:00 GMT.
 
+import ApplicationForm
 import Factory
 import SwiftfulRouting
 import SwiftUI
 
 @main
 struct ExampleApp: App {
-    @State var model = ApplicationFormModel(value: .sample)
+    @State var model = ApplicationFormModel(
+        value: .init(
+            personalInformation: .init(
+                givenName: "",
+                familyName: "",
+                email: "",
+                phoneNumber: "",
+                address: .init(
+                    street: "",
+                    city: "",
+                    zipCode: ""
+                )
+            ),
+            professionalDetails: .init(
+                desiredPosition: "",
+                desiredSalary: 0,
+                availabilityDate: .distantPast,
+                employmentType: [],
+                willingToRelocate: false
+            ),
+            experience: .init(
+                years: 0,
+                skills: []
+            ),
+            education: [],
+            additionalInfo: .init(consentToBackgroundChecks: false)
+        )
+    )
     var body: some Scene {
         WindowGroup {
             RouterView(addNavigationView: true) { router in
@@ -19,6 +47,6 @@ struct ExampleApp: App {
 
     func setup(router: AnyRouter) -> some View {
         Container.shared.anyRouter.register { router }
-        return ApplicationFormView(model: model)
+        return ApplicationFormComposer.compose(with: model)
     }
 }
