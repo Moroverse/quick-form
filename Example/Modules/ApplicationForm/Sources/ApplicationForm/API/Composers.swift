@@ -45,6 +45,12 @@ public enum DocumentBrowserComposer {
     public static func compose(with model: DocumentBrowserModel) -> some View {
         DocumentBrowser(model: model)
     }
+
+    #if canImport(UIKit)
+        public static func composeController(with model: DocumentBrowserModel) -> UIViewController {
+            DocumentBrowserFactory.make(with: model)
+        }
+    #endif
 }
 
 public enum NewSkillFormComposer {
@@ -63,4 +69,10 @@ public enum PreviewComposer {
     public static func compose(with url: URL) -> some View {
         PreviewController(url: url)
     }
+
+    #if canImport(UIKit)
+        public static func composeController(with url: URL) -> UIViewController {
+            PreviewControllerFactory.make(with: url)
+        }
+    #endif
 }
