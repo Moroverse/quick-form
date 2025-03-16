@@ -3,16 +3,20 @@
 // Created by Daniel Moro on 2025-03-16 06:36 GMT.
 
 import SwiftUI
-import UIKit
+#if canImport(UIKit)
+    import UIKit
+#endif
 
 public enum ApplicationFormComposer {
     public static func compose(with model: ApplicationFormModel) -> some View {
         ApplicationFormView(model: model)
     }
 
-    public static func composeController(with model: ApplicationFormModel) -> UIViewController {
-        UIHostingController(rootView: compose(with: model))
-    }
+    #if canImport(UIKit)
+        public static func composeController(with model: ApplicationFormModel) -> UIViewController {
+            UIHostingController(rootView: compose(with: model))
+        }
+    #endif
 }
 
 public enum EducationFormComposer {
@@ -20,9 +24,11 @@ public enum EducationFormComposer {
         EducationFormView(model: model)
     }
 
-    public static func composeController(with model: EducationModel) -> UIViewController {
-        UIHostingController(rootView: compose(with: model))
-    }
+    #if canImport(UIKit)
+        public static func composeController(with model: EducationModel) -> UIViewController {
+            UIHostingController(rootView: compose(with: model))
+        }
+    #endif
 }
 
 public final class DocumentBrowserModel {
@@ -41,9 +47,11 @@ public enum NewSkillFormComposer {
         NewSkillView(model: model)
     }
 
-    public static func composeController(with model: ExperienceSkillModel) -> UIViewController {
-        UIHostingController(rootView: compose(with: model))
-    }
+    #if canImport(UIKit)
+        public static func composeController(with model: ExperienceSkillModel) -> UIViewController {
+            UIHostingController(rootView: compose(with: model))
+        }
+    #endif
 }
 
 public enum PreviewComposer {
