@@ -107,7 +107,7 @@ struct FormCollectionViewModelTests {
     }
 
     @Test("Selection behavior with canSelect")
-    func selectionBehavior() {
+    func selectionBehavior() async {
         let items = [
             TestItem(name: "Item 1", value: 10),
             TestItem(name: "Item 2", value: 20),
@@ -124,18 +124,23 @@ struct FormCollectionViewModelTests {
         var selectedItem: TestItem?
         sut.onSelect { item in
             selectedItem = item
+            return item
         }
 
+        let oldSelection = items[2]
+        selectedItem = oldSelection
         #expect(!sut.canSelect(item: items[0]))
-        sut.select(item: items[0])
-        #expect(selectedItem == nil)
+        await sut.select(item: items[0])
+        #expect(selectedItem == oldSelection)
 
+        selectedItem = nil
         #expect(sut.canSelect(item: items[1]))
-        sut.select(item: items[1])
-        #expect(selectedItem?.name == "Item 2")
+        await sut.select(item: items[1])
+        #expect(selectedItem == items[1])
 
-        sut.select(item: nil)
-        #expect(selectedItem == nil)
+        selectedItem = oldSelection
+        await sut.select(item: nil)
+        #expect(selectedItem == oldSelection)
     }
 
     @Test("Move behavior with canMove")

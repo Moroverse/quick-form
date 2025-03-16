@@ -126,9 +126,11 @@ public final class FormCollectionViewModel<Property: Identifiable & Sendable>: V
     @MainActor
     public func select(item: Property?) async {
         if let item {
-            if let updatedItem = await _onSelect?(item),
-               let index = value.firstIndex(where: { $0.id == item.id }) {
-                value[index] = updatedItem
+            if canSelect(item: item) {
+                if let updatedItem = await _onSelect?(item),
+                   let index = value.firstIndex(where: { $0.id == item.id }) {
+                    value[index] = updatedItem
+                }
             }
         }
     }
