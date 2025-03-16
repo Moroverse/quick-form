@@ -67,7 +67,7 @@ struct PersonEditView: View {
             Section {
                 AddressEditView(quickForm: quickForm.address)
             }
-            FormCollectionSection(quickForm.careTeam) { personInfo in
+            FormCollectionSection(quickForm.careTeam) { $personInfo in
                 Text(personInfo.name)
             }
             .configure { viewModel in
