@@ -1,13 +1,19 @@
 // DocumentBrowser.swift
 // Copyright (c) 2025 Moroverse
-// Created by Daniel Moro on 2025-03-13 16:42 GMT.
+// Created by Daniel Moro on 2025-03-15 14:12 GMT.
 
 import Foundation
 import SwiftUI
 
-final class DocumentBrowserModel {
+public final class DocumentBrowserModel {
     var urls: [URL] = []
     var didComplete: (() -> Void)?
+}
+
+public enum DocumentBrowserComposer {
+    public static func compose(with model: DocumentBrowserModel) -> some View {
+        DocumentBrowser(model: model)
+    }
 }
 
 struct DocumentBrowser: UIViewControllerRepresentable {

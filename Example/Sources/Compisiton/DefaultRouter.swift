@@ -1,6 +1,6 @@
 // DefaultRouter.swift
 // Copyright (c) 2025 Moroverse
-// Created by Daniel Moro on 2025-03-14 03:27 GMT.
+// Created by Daniel Moro on 2025-03-09 05:00 GMT.
 
 import Factory
 import Foundation
@@ -26,7 +26,7 @@ extension AnyRouter: ApplicationFormRouting, AdditionalInfoRouting {
             }
 
             showScreen(.sheet) { _ in
-                DocumentBrowser(model: model)
+                DocumentBrowserComposer.compose(with: model)
             }
         }
     }
