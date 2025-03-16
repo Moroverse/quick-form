@@ -1,17 +1,17 @@
 // Education.swift
 // Copyright (c) 2025 Moroverse
-// Created by Daniel Moro on 2025-03-12 06:06 GMT.
+// Created by Daniel Moro on 2025-03-15 14:12 GMT.
 
 import Foundation
 
-struct Education: Identifiable {
-    var id: UUID
-    var institution: String
-    var startDate: Date
-    var endDate: Date
-    var degree: String
-    var fieldOfStudy: String
-    var gpa: Int
+public struct Education: Identifiable {
+    public var id: UUID
+    public var institution: String
+    public var startDate: Date
+    public var endDate: Date
+    public var degree: String
+    public var fieldOfStudy: String
+    public var gpa: Int
 }
 
 #if DEBUG

@@ -51,7 +51,7 @@ extension AnyRouter: ApplicationFormRouting, AdditionalInfoRouting {
                     continuation.resume(returning: nil)
                 }
             } destination: { _ in
-                EducationFormView(model: model)
+                EducationFormComposer.compose(with: model)
             }
         }
     }

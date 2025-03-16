@@ -1,9 +1,15 @@
 // EducationFormView.swift
 // Copyright (c) 2025 Moroverse
-// Created by Daniel Moro on 2025-03-12 06:06 GMT.
+// Created by Daniel Moro on 2025-03-15 14:12 GMT.
 
 import QuickForm
 import SwiftUI
+
+public enum EducationFormComposer {
+    public static func compose(with model: EducationModel) -> some View {
+        EducationFormView(model: model)
+    }
+}
 
 struct EducationFormView: View {
     @Bindable private var model: EducationModel
