@@ -42,3 +42,7 @@ import SwiftUI
         }
     }
 #endif
+
+#Preview {
+    DocumentBrowser(model: .init())
+}

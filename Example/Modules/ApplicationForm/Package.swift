@@ -29,6 +29,9 @@ let package = Package(
             dependencies: [
                 "Factory",
                 .product(name: "QuickForm", package: "quick-form")
+            ],
+            resources: [
+                .process("Resources/Preview Content")
             ]
         )
     ],

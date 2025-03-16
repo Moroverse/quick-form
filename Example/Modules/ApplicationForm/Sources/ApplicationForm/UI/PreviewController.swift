@@ -46,3 +46,7 @@ import SwiftUI
         }
     }
 #endif
+
+#Preview {
+    PreviewController(url: Bundle.module.url(forResource: "Markdown Demonstration Document", withExtension: "pdf")!)
+}
