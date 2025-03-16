@@ -1,12 +1,12 @@
 // ExperienceSkillModel.swift
 // Copyright (c) 2025 Moroverse
-// Created by Daniel Moro on 2025-03-11 21:30 GMT.
+// Created by Daniel Moro on 2025-03-15 14:12 GMT.
 
 import Observation
 import QuickForm
 
 @QuickForm(ExperienceSkill.self)
-final class ExperienceSkillModel {
+public final class ExperienceSkillModel {
     enum State {
         case cancelled
         case committed(ExperienceSkill)

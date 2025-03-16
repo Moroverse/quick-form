@@ -1,13 +1,13 @@
 // ExperienceSkill.swift
 // Copyright (c) 2025 Moroverse
-// Created by Daniel Moro on 2025-03-11 21:29 GMT.
+// Created by Daniel Moro on 2025-03-15 14:12 GMT.
 
 import Foundation
 
-struct ExperienceSkill: Identifiable {
-    var id: UUID
-    var name: String
-    var level: Double
+public struct ExperienceSkill: Identifiable {
+    public var id: UUID
+    public var name: String
+    public var level: Double
 }
 
 #if DEBUG

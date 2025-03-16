@@ -66,7 +66,7 @@ extension AnyRouter: ApplicationFormRouting, AdditionalInfoRouting {
                     continuation.resume(returning: nil)
                 }
             } destination: { _ in
-                NewSkillView(model: model)
+                NewSkillFormComposer.compose(with: model)
             }
         }
     }
