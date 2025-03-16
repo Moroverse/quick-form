@@ -5,12 +5,6 @@
 import QuickForm
 import SwiftUI
 
-public enum NewSkillFormComposer {
-    public static func compose(with model: ExperienceSkillModel) -> some View {
-        NewSkillView(model: model)
-    }
-}
-
 struct NewSkillView: View {
     @Bindable private var model: ExperienceSkillModel
     @Environment(\.dismiss) private var dismiss

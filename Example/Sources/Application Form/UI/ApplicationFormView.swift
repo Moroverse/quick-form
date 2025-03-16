@@ -6,12 +6,6 @@ import Foundation
 import QuickForm
 import SwiftUI
 
-public enum ApplicationFormComposer {
-    public static func compose(with model: ApplicationFormModel) -> some View {
-        ApplicationFormView(model: model)
-    }
-}
-
 struct ApplicationFormView: View {
     @Bindable private var model: ApplicationFormModel
     var body: some View {

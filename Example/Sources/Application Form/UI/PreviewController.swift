@@ -5,12 +5,6 @@
 import QuickLook
 import SwiftUI
 
-public enum PreviewComposer {
-    public static func compose(with url: URL) -> some View {
-        PreviewController(url: url)
-    }
-}
-
 struct PreviewController: UIViewControllerRepresentable {
     class Coordinator: QLPreviewControllerDataSource {
         let parent: PreviewController

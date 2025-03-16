@@ -5,17 +5,6 @@
 import Foundation
 import SwiftUI
 
-public final class DocumentBrowserModel {
-    var urls: [URL] = []
-    var didComplete: (() -> Void)?
-}
-
-public enum DocumentBrowserComposer {
-    public static func compose(with model: DocumentBrowserModel) -> some View {
-        DocumentBrowser(model: model)
-    }
-}
-
 struct DocumentBrowser: UIViewControllerRepresentable {
     let model: DocumentBrowserModel
 

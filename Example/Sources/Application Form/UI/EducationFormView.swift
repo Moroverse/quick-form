@@ -5,12 +5,6 @@
 import QuickForm
 import SwiftUI
 
-public enum EducationFormComposer {
-    public static func compose(with model: EducationModel) -> some View {
-        EducationFormView(model: model)
-    }
-}
-
 struct EducationFormView: View {
     @Bindable private var model: EducationModel
     @Environment(\.dismiss) private var dismiss
