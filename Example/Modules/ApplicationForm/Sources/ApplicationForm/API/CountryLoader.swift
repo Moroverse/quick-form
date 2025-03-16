@@ -9,7 +9,7 @@ public protocol CountryLoader {
 }
 
 public extension Container {
-    private struct Dummy: CountryLoader {
+    struct DummyCountryLoader: CountryLoader {
         public func loadCountries(query: String) async throws -> [String] {
             []
         }
@@ -17,7 +17,7 @@ public extension Container {
 
     var countryLoader: Factory<CountryLoader> {
         self {
-            Dummy()
+            DummyCountryLoader()
         }
     }
 }

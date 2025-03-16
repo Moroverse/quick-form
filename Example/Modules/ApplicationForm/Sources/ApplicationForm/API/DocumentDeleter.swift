@@ -10,13 +10,13 @@ public protocol DocumentDeleter {
 }
 
 public extension Container {
-    private struct Dummy: DocumentDeleter {
-        func deleteDocument(from url: URL) async throws {}
+    struct DummyDocumentDeleter: DocumentDeleter {
+        public func deleteDocument(from url: URL) async throws {}
     }
 
     var documentDeleter: Factory<DocumentDeleter> {
         self {
-            Dummy()
+            DummyDocumentDeleter()
         }
     }
 }

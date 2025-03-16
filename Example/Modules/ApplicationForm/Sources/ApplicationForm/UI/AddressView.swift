@@ -4,6 +4,7 @@
 
 import QuickForm
 import SwiftUI
+import Factory
 
 extension String: @retroactive Identifiable {
     public var id: String { self }
@@ -54,9 +55,28 @@ struct AddressView: View {
     }
 }
 
+
+
 struct AddressView_Previews: PreviewProvider {
+    struct MockCountryLoader: CountryLoader {
+        func loadCountries(query: String) async throws -> [String] {
+            ["Country #1", "Country #2", "Country #3"]
+        }
+    }
+
+    struct MockStateLoader: StateLoader {
+        func loadStates(country: String) async throws -> [String] {
+            ["State #1", "State #2", "State #3"]
+        }
+        
+        func hasStates(country: String) async -> Bool {
+            true
+        }
+    }
+
+
     struct AddressViewWrapper: View {
-        @State var model = AddressModel(value: .sample)
+        @State var model: AddressModel
 
         var body: some View {
             AddressView(model: model)
@@ -64,9 +84,29 @@ struct AddressView_Previews: PreviewProvider {
     }
 
     static var previews: some View {
+        let _ = Container.shared.countryLoader.register { Container.DummyCountryLoader() }
+        let _ = Container.shared.stateLoader.register { Container.DummyStateLoader() }
         NavigationStack {
             Form {
-                AddressViewWrapper()
+                AddressViewWrapper(model: AddressModel(value: .sample))
+            }
+        }
+
+        let _ = Container.shared.countryLoader.register { MockCountryLoader() }
+        let _ = Container.shared.stateLoader.register { MockStateLoader() }
+        NavigationStack {
+            Form {
+                AddressViewWrapper(
+                    model: AddressModel(
+                        value: .init(
+                            street: "Street",
+                            city: "Citi",
+                            zipCode: "",
+                            country: "Country #1",
+                            state: nil
+                        )
+                    )
+                )
             }
         }
     }

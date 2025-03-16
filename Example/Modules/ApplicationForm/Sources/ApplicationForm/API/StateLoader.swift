@@ -10,19 +10,19 @@ public protocol StateLoader {
 }
 
 public extension Container {
-    private struct Dummy: StateLoader {
-        func loadStates(country: String) async throws -> [String] {
+    struct DummyStateLoader: StateLoader {
+        public func loadStates(country: String) async throws -> [String] {
             []
         }
 
-        func hasStates(country: String) async -> Bool {
+        public func hasStates(country: String) async -> Bool {
             false
         }
     }
 
     var stateLoader: Factory<StateLoader> {
         self {
-            Dummy()
+            DummyStateLoader()
         }
     }
 }

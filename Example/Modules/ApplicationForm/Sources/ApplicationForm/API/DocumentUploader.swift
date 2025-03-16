@@ -10,15 +10,15 @@ public protocol DocumentUploader {
 }
 
 public extension Container {
-    private struct Dummy: DocumentUploader {
-        func upload(from url: URL) async throws -> URL {
+    struct DummyDocumentUploader: DocumentUploader {
+        public func upload(from url: URL) async throws -> URL {
             url
         }
     }
 
     var documentUploader: Factory<DocumentUploader> {
         self {
-            Dummy()
+            DummyDocumentUploader()
         }
     }
 }

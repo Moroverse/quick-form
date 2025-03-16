@@ -12,13 +12,5 @@ public protocol AdditionalInfoRouting {
 }
 
 public extension Container {
-    private struct Dummy: AdditionalInfoRouting {
-        func navigateToResumeUpload() async -> URL? {
-            nil
-        }
-
-        func navigateToPreview(at url: URL) {}
-    }
-
     var additionalInfoRouting: Factory<AdditionalInfoRouting?> { promised() }
 }
