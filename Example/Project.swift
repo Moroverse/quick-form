@@ -36,6 +36,7 @@ let project = Project(
                 )
             ],
             dependencies: [
+                .external(name: "ApplicationForm"),
                 .external(name: "QuickForm"),
                 .external(name: "SwiftfulRouting"),
                 .external(name: "Factory")
