@@ -1,8 +1,8 @@
 // Applicant.swift
 // Copyright (c) 2025 Moroverse
-// Created by Daniel Moro on 2025-03-13 16:10 GMT.
+// Created by Daniel Moro on 2025-03-15 14:12 GMT.
 
-struct Applicant {
+public struct Applicant {
     var personalInformation: PersonalInformation
     var professionalDetails: ProfessionalDetails
     var experience: Experience

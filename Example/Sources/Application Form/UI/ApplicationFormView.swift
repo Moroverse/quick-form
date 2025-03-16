@@ -1,10 +1,16 @@
 // ApplicationFormView.swift
 // Copyright (c) 2025 Moroverse
-// Created by Daniel Moro on 2025-03-14 06:15 GMT.
+// Created by Daniel Moro on 2025-03-15 14:12 GMT.
 
 import Foundation
 import QuickForm
 import SwiftUI
+
+public enum ApplicationFormComposer {
+    public static func compose(with model: ApplicationFormModel) -> some View {
+        ApplicationFormView(model: model)
+    }
+}
 
 struct ApplicationFormView: View {
     @Bindable private var model: ApplicationFormModel

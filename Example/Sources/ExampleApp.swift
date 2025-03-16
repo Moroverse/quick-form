@@ -19,6 +19,6 @@ struct ExampleApp: App {
 
     func setup(router: AnyRouter) -> some View {
         Container.shared.anyRouter.register { router }
-        return ApplicationFormView(model: model)
+        return ApplicationFormComposer.compose(with: model)
     }
 }
