@@ -1,9 +1,15 @@
 // PreviewController.swift
 // Copyright (c) 2025 Moroverse
-// Created by Daniel Moro on 2025-03-13 16:59 GMT.
+// Created by Daniel Moro on 2025-03-15 14:12 GMT.
 
 import QuickLook
 import SwiftUI
+
+public enum PreviewComposer {
+    public static func compose(with url: URL) -> some View {
+        PreviewController(url: url)
+    }
+}
 
 struct PreviewController: UIViewControllerRepresentable {
     class Coordinator: QLPreviewControllerDataSource {

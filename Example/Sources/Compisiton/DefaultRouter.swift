@@ -14,7 +14,7 @@ extension Container {
 extension AnyRouter: ApplicationFormRouting, AdditionalInfoRouting {
     func navigateToPreview(at url: URL) {
         showScreen(.sheet) { _ in
-            PreviewController(url: url)
+            PreviewComposer.compose(with: url)
         }
     }
 
