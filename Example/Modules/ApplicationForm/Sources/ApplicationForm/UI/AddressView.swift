@@ -1,10 +1,10 @@
 // AddressView.swift
 // Copyright (c) 2025 Moroverse
-// Created by Daniel Moro on 2025-03-15 14:12 GMT.
+// Created by Daniel Moro on 2025-03-09 06:05 GMT.
 
+import Factory
 import QuickForm
 import SwiftUI
-import Factory
 
 extension String: @retroactive Identifiable {
     public var id: String { self }
@@ -55,8 +55,7 @@ struct AddressView: View {
     }
 }
 
-
-
+// swiftlint:disable redundant_discardable_let
 struct AddressView_Previews: PreviewProvider {
     struct MockCountryLoader: CountryLoader {
         func loadCountries(query: String) async throws -> [String] {
@@ -68,12 +67,11 @@ struct AddressView_Previews: PreviewProvider {
         func loadStates(country: String) async throws -> [String] {
             ["State #1", "State #2", "State #3"]
         }
-        
+
         func hasStates(country: String) async -> Bool {
             true
         }
     }
-
 
     struct AddressViewWrapper: View {
         @State var model: AddressModel
@@ -111,3 +109,5 @@ struct AddressView_Previews: PreviewProvider {
         }
     }
 }
+
+// swiftlint:enable redundant_discardable_let

@@ -1,3 +1,7 @@
+// DocumentBrowserFactory.swift
+// Copyright (c) 2025 Moroverse
+// Created by Daniel Moro on 2025-03-16 15:39 GMT.
+
 //
 //  DocumentBrowserController.swift
 //  ApplicationForm

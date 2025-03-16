@@ -1,0 +1,27 @@
+# file options
+
+#format options
+
+--commas inline
+--indent 4
+--tabwidth 4
+--stripunusedargs closure-only
+--swiftversion 5.10
+--wraparguments before-first
+--wrapcollections before-first
+--header  "{file}\nCopyright (c) {year} Moroverse\nCreated by {author.name} on {created}."
+--dateformat yyyy-MM-dd HH:mm ZZZZ
+--timezone utc
+
+# rules
+
+--enable isEmpty
+--enable initCoderUnavailable
+--enable blockComments
+--disable wrapMultilineStatementBraces
+--enable blankLineAfterSwitchCase
+--disable redundantLet
+
+--exclude **/Derived/**
+--exclude **/.build/**
+--exclude **/.git/**
