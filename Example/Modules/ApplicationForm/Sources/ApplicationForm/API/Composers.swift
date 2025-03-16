@@ -1,6 +1,6 @@
 // Composers.swift
 // Copyright (c) 2025 Moroverse
-// Created by Daniel Moro on 2025-03-16 06:36 GMT.
+// Created by Daniel Moro on 2025-03-16 06:44 GMT.
 
 import SwiftUI
 #if canImport(UIKit)
@@ -32,8 +32,13 @@ public enum EducationFormComposer {
 }
 
 public final class DocumentBrowserModel {
-    var urls: [URL] = []
-    var didComplete: (() -> Void)?
+    public var urls: [URL]
+    public var didComplete: (() -> Void)?
+
+    public init(urls: [URL] = [], didComplete: (() -> Void)? = nil) {
+        self.urls = urls
+        self.didComplete = didComplete
+    }
 }
 
 public enum DocumentBrowserComposer {

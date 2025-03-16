@@ -19,7 +19,7 @@ let package = Package(
     ],
     dependencies: [
         .package(path: "../../../."),
-        .package(url: "https://github.com/hmlongco/Factory.git", from: "2.4.3"),
+        .package(url: "https://github.com/hmlongco/Factory.git", from: "2.4.3")
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.

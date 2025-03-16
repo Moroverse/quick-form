@@ -1,13 +1,21 @@
 // PersonalInformation.swift
 // Copyright (c) 2025 Moroverse
-// Created by Daniel Moro on 2025-03-15 14:12 GMT.
+// Created by Daniel Moro on 2025-03-09 05:25 GMT.
 
-struct PersonalInformation {
-    var givenName: String
-    var familyName: String
-    var email: String
-    var phoneNumber: String
-    var address: Address
+public struct PersonalInformation {
+    public var givenName: String
+    public var familyName: String
+    public var email: String
+    public var phoneNumber: String
+    public var address: Address
+
+    public init(givenName: String, familyName: String, email: String, phoneNumber: String, address: Address) {
+        self.givenName = givenName
+        self.familyName = familyName
+        self.email = email
+        self.phoneNumber = phoneNumber
+        self.address = address
+    }
 }
 
 #if DEBUG

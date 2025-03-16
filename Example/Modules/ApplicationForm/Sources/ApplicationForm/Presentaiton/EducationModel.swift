@@ -1,6 +1,6 @@
 // EducationModel.swift
 // Copyright (c) 2025 Moroverse
-// Created by Daniel Moro on 2025-03-15 14:12 GMT.
+// Created by Daniel Moro on 2025-03-12 05:07 GMT.
 
 import Factory
 import Foundation
@@ -19,7 +19,7 @@ struct EducationRangeValidation: ValidationRule {
 
 @QuickForm(Education.self)
 public final class EducationModel: Validatable {
-    enum State {
+    public enum State {
         case cancelled
         case committed(Education)
     }
@@ -62,7 +62,7 @@ public final class EducationModel: Validatable {
     )
 
     @ObservationIgnored
-    var state: State?
+    public var state: State?
 
     @PostInit
     func configure() {

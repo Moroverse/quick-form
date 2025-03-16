@@ -1,6 +1,6 @@
 // ApplicationFormRouting.swift
 // Copyright (c) 2025 Moroverse
-// Created by Daniel Moro on 2025-03-15 14:12 GMT.
+// Created by Daniel Moro on 2025-03-16 07:42 GMT.
 
 import Factory
 
@@ -10,5 +10,5 @@ public protocol ApplicationFormRouting {
 }
 
 public extension Container {
-    var applicationFormRouting: Factory<ApplicationFormRouting?>  { promised() }
+    var applicationFormRouting: Factory<ApplicationFormRouting?> { promised() }
 }

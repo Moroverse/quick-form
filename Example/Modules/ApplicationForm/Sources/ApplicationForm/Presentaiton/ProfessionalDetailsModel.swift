@@ -1,13 +1,13 @@
 // ProfessionalDetailsModel.swift
 // Copyright (c) 2025 Moroverse
-// Created by Daniel Moro on 2025-03-15 14:12 GMT.
+// Created by Daniel Moro on 2025-03-09 10:10 GMT.
 
 import Foundation
 import Observation
 import QuickForm
 
 extension EmploymentType: CustomStringConvertible {
-    var description: String {
+    public var description: String {
         switch self {
         case .fullTime:
             "Full Time"
@@ -20,7 +20,7 @@ extension EmploymentType: CustomStringConvertible {
 }
 
 extension EmploymentType: DefaultValueProvider {
-    static var defaultValue: EmploymentType {
+    public static var defaultValue: EmploymentType {
         .partTime
     }
 }

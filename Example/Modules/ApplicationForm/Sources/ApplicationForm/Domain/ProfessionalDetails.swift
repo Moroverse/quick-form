@@ -1,21 +1,29 @@
 // ProfessionalDetails.swift
 // Copyright (c) 2025 Moroverse
-// Created by Daniel Moro on 2025-03-15 14:12 GMT.
+// Created by Daniel Moro on 2025-03-09 10:10 GMT.
 
 import Foundation
 
-enum EmploymentType: CaseIterable {
+public enum EmploymentType: CaseIterable {
     case fullTime
     case partTime
     case contract
 }
 
-struct ProfessionalDetails {
-    var desiredPosition: String
-    var desiredSalary: Decimal
-    var availabilityDate: Date
-    var employmentType: Set<EmploymentType>
-    var willingToRelocate: Bool
+public struct ProfessionalDetails {
+    public var desiredPosition: String
+    public var desiredSalary: Decimal
+    public var availabilityDate: Date
+    public var employmentType: Set<EmploymentType>
+    public var willingToRelocate: Bool
+
+    public init(desiredPosition: String, desiredSalary: Decimal, availabilityDate: Date, employmentType: Set<EmploymentType>, willingToRelocate: Bool) {
+        self.desiredPosition = desiredPosition
+        self.desiredSalary = desiredSalary
+        self.availabilityDate = availabilityDate
+        self.employmentType = employmentType
+        self.willingToRelocate = willingToRelocate
+    }
 }
 
 #if DEBUG

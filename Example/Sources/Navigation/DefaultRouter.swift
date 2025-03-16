@@ -1,6 +1,6 @@
 // DefaultRouter.swift
 // Copyright (c) 2025 Moroverse
-// Created by Daniel Moro on 2025-03-09 05:00 GMT.
+// Created by Daniel Moro on 2025-03-15 14:12 GMT.
 
 import ApplicationForm
 import Factory
@@ -12,14 +12,14 @@ extension Container {
 }
 
 @MainActor
-extension AnyRouter: ApplicationFormRouting, AdditionalInfoRouting {
-    func navigateToPreview(at url: URL) {
+extension AnyRouter: @retroactive ApplicationFormRouting, @retroactive AdditionalInfoRouting {
+    public func navigateToPreview(at url: URL) {
         showScreen(.sheet) { _ in
             PreviewComposer.compose(with: url)
         }
     }
 
-    func navigateToResumeUpload() async -> URL? {
+    public func navigateToResumeUpload() async -> URL? {
         let model = DocumentBrowserModel()
         return await withCheckedContinuation { continuation in
             model.didComplete = {
@@ -32,7 +32,7 @@ extension AnyRouter: ApplicationFormRouting, AdditionalInfoRouting {
         }
     }
 
-    func navigateToEducation(_ selection: Education?) async -> Education? {
+    public func navigateToEducation(_ selection: Education?) async -> Education? {
         await withCheckedContinuation { continuation in
             let model = EducationModel(
                 value: selection ?? Education(
@@ -57,7 +57,7 @@ extension AnyRouter: ApplicationFormRouting, AdditionalInfoRouting {
         }
     }
 
-    func navigateToNewSkill() async -> ExperienceSkill? {
+    public func navigateToNewSkill() async -> ExperienceSkill? {
         await withCheckedContinuation { continuation in
             let model = ExperienceSkillModel(value: .init(id: UUID(), name: "", level: 0))
             showScreen(.sheet) {

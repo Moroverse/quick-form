@@ -1,12 +1,17 @@
 // Experience.swift
 // Copyright (c) 2025 Moroverse
-// Created by Daniel Moro on 2025-03-15 14:12 GMT.
+// Created by Daniel Moro on 2025-03-10 04:37 GMT.
 
 import Foundation
 
-struct Experience {
-    var years: Int
-    var skills: [ExperienceSkill]
+public struct Experience {
+    public var years: Int
+    public var skills: [ExperienceSkill]
+
+    public init(years: Int, skills: [ExperienceSkill]) {
+        self.years = years
+        self.skills = skills
+    }
 }
 
 #if DEBUG

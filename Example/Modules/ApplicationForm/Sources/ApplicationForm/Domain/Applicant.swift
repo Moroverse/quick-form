@@ -1,6 +1,6 @@
 // Applicant.swift
 // Copyright (c) 2025 Moroverse
-// Created by Daniel Moro on 2025-03-15 14:12 GMT.
+// Created by Daniel Moro on 2025-03-09 10:10 GMT.
 
 public struct Applicant {
     var personalInformation: PersonalInformation
@@ -8,6 +8,20 @@ public struct Applicant {
     var experience: Experience
     var education: [Education]
     var additionalInfo: AdditionalInfo
+
+    public init(
+        personalInformation: PersonalInformation,
+        professionalDetails: ProfessionalDetails,
+        experience: Experience,
+        education: [Education],
+        additionalInfo: AdditionalInfo
+    ) {
+        self.personalInformation = personalInformation
+        self.professionalDetails = professionalDetails
+        self.experience = experience
+        self.education = education
+        self.additionalInfo = additionalInfo
+    }
 }
 
 #if DEBUG
