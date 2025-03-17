@@ -28,7 +28,7 @@ disabled_rules:
 - non_optional_string_data_conversion # disabled
 
 opt_in_rules:
-- closure_end_indentation
+#- closure_end_indentation
 - closure_spacing
 - colon
 - comma_inheritance
@@ -122,7 +122,7 @@ function_parameter_count:
 
 identifier_name:
     min_length:
-        error: 3
+        warning: 3
     max_length:
         warning: 50
     allowed_symbols: [_]
