@@ -20,13 +20,13 @@ public enum ApplicationFormComposer {
 }
 
 public enum EducationFormComposer {
-    public static func compose(with model: EducationModel) -> some View {
-        EducationFormView(model: model)
+    public static func compose(with model: EducationModel, onDone: (() -> Void)? = nil) -> some View {
+        EducationFormView(model: model, onDone: onDone)
     }
 
     #if canImport(UIKit)
-        public static func composeController(with model: EducationModel) -> UIViewController {
-            UIHostingController(rootView: compose(with: model))
+        public static func composeController(with model: EducationModel, onDone: @escaping () -> Void) -> UIViewController {
+            UIHostingController(rootView: compose(with: model, onDone: onDone))
         }
     #endif
 }
@@ -54,13 +54,13 @@ public enum DocumentBrowserComposer {
 }
 
 public enum NewSkillFormComposer {
-    public static func compose(with model: ExperienceSkillModel) -> some View {
-        NewSkillView(model: model)
+    public static func compose(with model: ExperienceSkillModel, onDone: (() -> Void)? = nil) -> some View {
+        NewSkillView(model: model, onDone: onDone)
     }
 
     #if canImport(UIKit)
-        public static func composeController(with model: ExperienceSkillModel) -> UIViewController {
-            UIHostingController(rootView: compose(with: model))
+        public static func composeController(with model: ExperienceSkillModel, onDone: @escaping () -> Void) -> UIViewController {
+            UIHostingController(rootView: compose(with: model, onDone: onDone))
         }
     #endif
 }

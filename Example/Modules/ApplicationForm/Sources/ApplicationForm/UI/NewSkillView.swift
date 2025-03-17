@@ -8,6 +8,7 @@ import SwiftUI
 struct NewSkillView: View {
     @Bindable private var model: ExperienceSkillModel
     @Environment(\.dismiss) private var dismiss
+    let onDone: (() -> Void)?
     var body: some View {
         Form {
             FormTextField(model.name)
@@ -18,21 +19,30 @@ struct NewSkillView: View {
             ToolbarItem(placement: .primaryAction) {
                 Button("Done") {
                     model.state = .committed(model.value)
-                    dismiss()
+                    if let onDone {
+                        onDone()
+                    } else {
+                        dismiss()
+                    }
                 }
             }
 
             ToolbarItem(placement: .cancellationAction) {
                 Button("Cancel") {
                     model.state = .cancelled
-                    dismiss()
+                    if let onDone {
+                        onDone()
+                    } else {
+                        dismiss()
+                    }
                 }
             }
         }
     }
 
-    init(model: ExperienceSkillModel) {
+    init(model: ExperienceSkillModel, onDone: (() -> Void)? = nil) {
         self.model = model
+        self.onDone = onDone
     }
 }
 

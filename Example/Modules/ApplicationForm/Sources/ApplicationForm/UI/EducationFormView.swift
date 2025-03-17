@@ -8,6 +8,7 @@ import SwiftUI
 struct EducationFormView: View {
     @Bindable private var model: EducationModel
     @Environment(\.dismiss) private var dismiss
+    let onDone: (() -> Void)?
     var body: some View {
         Form {
             FormTextField(model.institution)
@@ -36,7 +37,11 @@ struct EducationFormView: View {
             ToolbarItem(placement: .primaryAction) {
                 Button("Done") {
                     model.state = .committed(model.value)
-                    dismiss()
+                    if let onDone {
+                        onDone()
+                    } else {
+                        dismiss()
+                    }
                 }
                 .disabled(!model.isValid)
             }
@@ -44,14 +49,19 @@ struct EducationFormView: View {
             ToolbarItem(placement: .cancellationAction) {
                 Button("Cancel") {
                     model.state = .cancelled
-                    dismiss()
+                    if let onDone {
+                        onDone()
+                    } else {
+                        dismiss()
+                    }
                 }
             }
         }
     }
 
-    init(model: EducationModel) {
+    init(model: EducationModel, onDone: (() -> Void)? = nil) {
         self.model = model
+        self.onDone = onDone
     }
 }
 

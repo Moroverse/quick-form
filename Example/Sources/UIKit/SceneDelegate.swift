@@ -3,10 +3,12 @@
 // Created by Daniel Moro on 2025-03-16 23:02 GMT.
 
 import ApplicationForm
+import Factory
 import UIKit
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
+    var mainCoordinator: AppCoordinator?
     var model = ApplicationFormModel(
         value: .init(
             personalInformation: .init(
@@ -47,9 +49,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         // MARK: - Main Flow Assembly
 
-        let viewController = ApplicationFormComposer.composeController(with: model)
-        let navigationController = UINavigationController(rootViewController: viewController)
-        window.rootViewController = navigationController
-        window.makeKeyAndVisible()
+        let mainCoordinator = CoordinatorFactory.makeMainCoordinator(window: window)
+        self.mainCoordinator = mainCoordinator
+        Container.shared.additionalInfoRouting.register { mainCoordinator }
+        Container.shared.applicationFormRouting.register { mainCoordinator }
+
+        mainCoordinator.start(with: model)
     }
 }
