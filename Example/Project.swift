@@ -5,6 +5,28 @@
 import ProjectDescription
 import ProjectDescriptionHelpers
 
+let infoPlistUIKitAdditions: [String: Plist.Value] = [
+    "UILaunchStoryboardName": "LaunchScreen.storyboard",
+    "UIApplicationSceneManifest": [
+        "UIApplicationSupportsMultipleScenes": false,
+        "UISceneConfigurations": [
+            "UIWindowSceneSessionRoleApplication": [
+                [
+                    "UISceneDelegateClassName": "AppFoundationKitDemo.SceneDelegate",
+                    "UISceneConfigurationName": "Default Configuration"
+                ]
+            ]
+        ]
+    ]
+]
+
+let infoPlistSwiftUIAdditions: [String: Plist.Value] = [
+    "UILaunchScreen": [
+        "UIColorName": "",
+        "UIImageName": ""
+    ]
+]
+
 let project = Project(
     name: "Example",
     targets: [
@@ -14,12 +36,7 @@ let project = Project(
             product: .app,
             bundleId: "io.moroverse.job-example",
             infoPlist: .extendingDefault(
-                with: [
-                    "UILaunchScreen": [
-                        "UIColorName": "",
-                        "UIImageName": ""
-                    ]
-                ]
+                with: infoPlistSwiftUIAdditions
             ),
             sources: [.glob("Sources/**", excluding: ["Sources/UIKit/**"])],
             resources: [
@@ -57,7 +74,9 @@ let project = Project(
             destinations: .iOS,
             product: .app,
             bundleId: "io.moroverse.job-example",
-            infoPlist: .default,
+            infoPlist: .extendingDefault(
+                with: infoPlistUIKitAdditions
+            ),
             sources: [.glob("Sources/**", excluding: ["Sources/SwiftUI/**"])],
             resources: ["Resources/**"],
             scripts: [
