@@ -50,7 +50,7 @@ import Observation
 /// }
 /// ```
 @Observable
-public final class FormCollectionViewModel<Property: Identifiable & Sendable>: ValueEditor {
+public final class FormCollectionViewModel<Property: Identifiable & Sendable>: ObservableValueEditor {
     /// The title of the collection section.
     public var title: LocalizedStringResource
     /// The title for the insertion action (e.g., "Add Item").
@@ -61,6 +61,7 @@ public final class FormCollectionViewModel<Property: Identifiable & Sendable>: V
             if let collectionChanged = _onChange {
                 collectionChanged(value.difference(from: oldValue) { $0.id == $1.id })
             }
+            dispatcher.publish(value)
         }
     }
 
@@ -73,6 +74,7 @@ public final class FormCollectionViewModel<Property: Identifiable & Sendable>: V
     private var _onInsert: (() async -> Property?)?
     private var _onChange: ((CollectionDifference<Property>) -> Void)?
     private var _onSelect: ((Property?) async -> Property?)?
+    private var dispatcher: Dispatcher
     /// Initializes a new instance of `FormCollectionViewModel`.
     ///
     /// - Parameters:
@@ -90,6 +92,7 @@ public final class FormCollectionViewModel<Property: Identifiable & Sendable>: V
         self.title = title
         self.insertionTitle = insertionTitle
         self.isReadOnly = isReadOnly
+        dispatcher = Dispatcher()
     }
 
     /// Checks if a new item can be inserted into the collection.
@@ -200,6 +203,11 @@ public final class FormCollectionViewModel<Property: Identifiable & Sendable>: V
     @discardableResult
     public func onSelect(action: ((Property?) async -> Property?)?) -> Self {
         _onSelect = action
+        return self
+    }
+
+    public func onValueChanged(_ change: @escaping ([Property]) -> Void) -> Self {
+        dispatcher.subscribe(handler: change)
         return self
     }
 }
