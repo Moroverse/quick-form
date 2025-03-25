@@ -221,7 +221,7 @@ public final class FormCollectionViewModel<Property: Identifiable & Sendable>: O
             for property in value {
                 let subscription = property.onValueChanged { [weak self] _ in
                     guard let self else { return }
-                    dispatcher.publish(value)
+                    dispatcher.publish(self.value)
                 }
 
                 internalSubscription.append(subscription)
