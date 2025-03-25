@@ -223,9 +223,8 @@ public struct QuickFormMacro: MemberMacro, ExtensionMacro {
         // add onValueChanged method
         let onValueChangedMethod = """
         @discardableResult
-        \(classVisibility) func onValueChanged(_ change: @escaping (\(modelType)) -> Void) -> Self {
+        \(classVisibility) func onValueChanged(_ change: @escaping (\(modelType)) -> Void) -> Subscription {
             dispatcher.subscribe(handler: change)
-            return self
         }
         """
         declarations.append(DeclSyntax(stringLiteral: onValueChangedMethod))

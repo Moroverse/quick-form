@@ -1,6 +1,6 @@
 // OptionalPickerFieldViewModel.swift
 // Copyright (c) 2025 Moroverse
-// Created by Daniel Moro on 2025-03-02 09:51 GMT.
+// Created by Daniel Moro on 2025-03-15 14:12 GMT.
 
 import Foundation
 import Observation
@@ -109,9 +109,8 @@ public final class OptionalPickerFieldViewModel<Property: Hashable & CustomStrin
     /// - Parameter change: A closure that takes the new selected value as its parameter.
     /// - Returns: The `OptionalPickerFieldViewModel` instance for method chaining.
     @discardableResult
-    public func onValueChanged(_ change: @escaping (Property?) -> Void) -> Self {
+    public func onValueChanged(_ change: @escaping (Property?) -> Void) -> Subscription {
         dispatcher.subscribe(handler: change)
-        return self
     }
 }
 

@@ -39,9 +39,8 @@ public final class ValueEditorTransformer<SourceEditor, Transformed>: Observable
     ///   with the new value as its parameter.
     /// - Returns: The transformer instance for method chaining.
     @discardableResult
-    public func onValueChanged(_ change: @escaping (Transformed) -> Void) -> Self {
+    public func onValueChanged(_ change: @escaping (Transformed) -> Void) -> Subscription {
         dispatcher.subscribe(handler: change)
-        return self
     }
 
     /// The source editor that provides the original value.

@@ -1,6 +1,6 @@
 // FormCollectionViewModel.swift
 // Copyright (c) 2025 Moroverse
-// Created by Daniel Moro on 2025-03-15 14:12 GMT.
+// Created by Daniel Moro on 2025-03-16 15:44 GMT.
 
 import Foundation
 import Observation
@@ -62,6 +62,8 @@ public final class FormCollectionViewModel<Property: Identifiable & Sendable>: O
                 collectionChanged(value.difference(from: oldValue) { $0.id == $1.id })
             }
             dispatcher.publish(value)
+
+            subscribeToPropertyChange()
         }
     }
 
@@ -206,9 +208,25 @@ public final class FormCollectionViewModel<Property: Identifiable & Sendable>: O
         return self
     }
 
-    public func onValueChanged(_ change: @escaping ([Property]) -> Void) -> Self {
+    public func onValueChanged(_ change: @escaping ([Property]) -> Void) -> Subscription {
         dispatcher.subscribe(handler: change)
-        return self
+    }
+
+    private var internalSubscription: [Subscription] = []
+    private func subscribeToPropertyChange() {
+        if let value = value as? [any ObservableValueEditor] {
+            internalSubscription.forEach { $0.unsubscribe() }
+            internalSubscription.removeAll()
+
+            for property in value {
+                let subscription = property.onValueChanged { [weak self] _ in
+                    guard let self else { return }
+                    dispatcher.publish(value)
+                }
+
+                internalSubscription.append(subscription)
+            }
+        }
     }
 }
 

@@ -81,9 +81,8 @@ public final class MultiPickerFieldViewModel<Property: Hashable & CustomStringCo
     /// - Parameter change: A closure that takes the new selected value as its parameter.
     /// - Returns: The `PickerFieldViewModel` instance for method chaining.
     @discardableResult
-    public func onValueChanged(_ change: @escaping (Set<Property>) -> Void) -> Self {
+    public func onValueChanged(_ change: @escaping (Set<Property>) -> Void) -> Subscription {
         dispatcher.subscribe(handler: change)
-        return self
     }
 }
 

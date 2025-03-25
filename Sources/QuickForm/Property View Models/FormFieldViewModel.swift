@@ -1,6 +1,6 @@
 // FormFieldViewModel.swift
 // Copyright (c) 2025 Moroverse
-// Created by Daniel Moro on 2024-09-09 02:27 GMT.
+// Created by Daniel Moro on 2025-03-15 14:12 GMT.
 
 import Foundation
 import Observation
@@ -95,9 +95,8 @@ public final class FormFieldViewModel<Property>: ObservableValueEditor, Validata
     /// - Parameter change: A closure that takes the new value as its parameter.
     /// - Returns: The `FormFieldViewModel` instance for method chaining.
     @discardableResult
-    public func onValueChanged(_ change: @escaping (Property) -> Void) -> Self {
+    public func onValueChanged(_ change: @escaping (Property) -> Void) -> Subscription {
         dispatcher.subscribe(handler: change)
-        return self
     }
 
     /// Performs validation on the current value.

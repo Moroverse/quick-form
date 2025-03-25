@@ -57,7 +57,7 @@ final class PrescriptionEditModel: Validatable {
         placeholder: "Do not substitute"
     )
 
-    @PropertyEditor(keyPath: Never)
+    // @PropertyEditor(keyPath: Never)
     var info: String = ""
 
     @PostInit

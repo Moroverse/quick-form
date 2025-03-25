@@ -110,5 +110,5 @@ public protocol ObservableValueEditor: ValueEditor {
     /// - Parameter change: A closure that will be called whenever the value changes,
     ///   with the new value as its parameter.
     /// - Returns: The editor instance for method chaining.
-    func onValueChanged(_ change: @escaping (Value) -> Void) -> Self
+    func onValueChanged(_ change: @escaping (Value) -> Void) -> Subscription
 }

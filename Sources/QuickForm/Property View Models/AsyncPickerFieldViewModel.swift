@@ -1,6 +1,6 @@
 // AsyncPickerFieldViewModel.swift
 // Copyright (c) 2025 Moroverse
-// Created by Daniel Moro on 2025-03-02 09:51 GMT.
+// Created by Daniel Moro on 2025-03-15 14:12 GMT.
 
 import Foundation
 import Observation
@@ -93,9 +93,8 @@ public final class AsyncPickerFieldViewModel<Model: Collection, Query>:
     /// - Parameter change: A closure that takes the new value as its parameter.
     /// - Returns: The `FormattedFieldViewModel` instance for method chaining.
     @discardableResult
-    public func onValueChanged(_ change: @escaping (Model.Element?) -> Void) -> Self {
+    public func onValueChanged(_ change: @escaping (Model.Element?) -> Void) -> Subscription {
         dispatcher.subscribe(handler: change)
-        return self
     }
 }
 
