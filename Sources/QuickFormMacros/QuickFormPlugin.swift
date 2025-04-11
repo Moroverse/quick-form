@@ -10,6 +10,8 @@ struct QuickFormPlugin: CompilerPlugin {
     let providingMacros: [Macro.Type] = [
         QuickFormMacro.self,
         PropertyEditorMacro.self,
-        PostInitMacro.self
+        PostInitMacro.self,
+        OnInitMacro.self,
+        DependencyMacro.self
     ]
 }

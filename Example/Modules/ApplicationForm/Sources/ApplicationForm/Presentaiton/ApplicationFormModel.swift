@@ -24,7 +24,7 @@ public final class ApplicationFormModel {
         insertionTitle: "Add Education"
     )
     @PropertyEditor(keyPath: \Applicant.additionalInfo)
-    var additionalInfo = AdditionalInfoModel(value: .sample)
+    var additionalInfo: AdditionalInfoModel
 
     func didTapOnEducationInsert(education: Education?) async -> Education? {
         await router?.navigateToEducation(education)
@@ -32,5 +32,10 @@ public final class ApplicationFormModel {
 
     func didTaponNewSkill() async -> ExperienceSkill? {
         await router?.navigateToNewSkill()
+    }
+
+    @OnInit
+    func onInit() {
+        additionalInfo = AdditionalInfoModel(value: .sample, documentUploader: Container.shared.documentUploader())
     }
 }

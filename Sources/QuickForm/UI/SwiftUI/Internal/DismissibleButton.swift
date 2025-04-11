@@ -1,6 +1,6 @@
 // DismissibleButton.swift
 // Copyright (c) 2025 Moroverse
-// Created by Daniel Moro on 2025-03-09 20:05 GMT.
+// Created by Daniel Moro on 2025-03-09 20:26 GMT.
 
 import SwiftUI
 

@@ -1,6 +1,6 @@
 // CreditCardMask.swift
 // Copyright (c) 2025 Moroverse
-// Created by Daniel Moro on 2025-03-05 04:48 GMT.
+// Created by Daniel Moro on 2025-03-05 04:59 GMT.
 
 /// A mask for credit card numbers in the format XXXX XXXX XXXX XXXX
 public struct CreditCardMask: AutoMask {

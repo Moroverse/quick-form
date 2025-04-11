@@ -6,6 +6,10 @@ import QuickForm
 import Testing
 
 /// A simple implementation of ObservableValueEditor for testing purposes
+struct FakeSubscription: Subscription {
+    func unsubscribe() {}
+}
+
 class TestObservableEditor<T>: ObservableValueEditor {
     typealias Value = T
     private var callbacks: [(T) -> Void] = []
@@ -21,9 +25,9 @@ class TestObservableEditor<T>: ObservableValueEditor {
     }
 
     @discardableResult
-    func onValueChanged(_ change: @escaping (T) -> Void) -> Self {
+    func onValueChanged(_ change: @escaping (T) -> Void) -> any Subscription {
         callbacks.append(change)
-        return self
+        return FakeSubscription()
     }
 
     private func notifyCallbacks() {

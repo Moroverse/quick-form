@@ -47,9 +47,29 @@ public struct QuickFormMacro: MemberMacro, ExtensionMacro {
                 return nil
             }
             let keyPath = keyPaths.joined(separator: ".")
-
             return (identifier, "\\\(modelType).\(keyPath)")
         }
+
+        // Find all properties annotated with @Dependency
+        let dependencies = classDecl.memberBlock.members.compactMap { member -> (name: String, type: String)? in
+            guard let varDecl = member.decl.as(VariableDeclSyntax.self),
+                  let binding = varDecl.bindings.first,
+                  let identifier = binding.pattern.as(IdentifierPatternSyntax.self)?.identifier.text,
+                  let type = binding.typeAnnotation?.type,
+                  varDecl.attributes.first(where: {
+                      $0.as(AttributeSyntax.self)?
+                          .attributeName.as(IdentifierTypeSyntax.self)?
+                          .name.text == "Dependency"
+                  }) != nil
+            else {
+                return nil
+            }
+
+            return (identifier, type.description)
+        }
+
+        let dependencyParams = dependencies.isEmpty ? "" : ", " + dependencies.map { "\($0.name): \($0.type)" }.joined(separator: ", ")
+        let dependencyAssignments = dependencies.map { "self.\($0.name) = \($0.name)" }.joined(separator: "\n    ")
 
         // Find method annotated with @PostInit
         let funcDecls = classDecl.memberBlock.members.compactMap { $0.decl.as(FunctionDeclSyntax.self) }
@@ -62,7 +82,24 @@ public struct QuickFormMacro: MemberMacro, ExtensionMacro {
             return postInitAttribute != nil
         }
 
-        let onInitCall = postInitMethod.map { "\($0.name)()" } ?? ""
+        let postInitCall = postInitMethod.map { "\($0.name)()" } ?? ""
+
+        // Find methods annotated with @OnInit
+        let onInitMethods = funcDecls.filter {
+            $0.attributes.first(where: {
+                $0.as(AttributeSyntax.self)?
+                    .attributeName.as(IdentifierTypeSyntax.self)?
+                    .name.text == "OnInit"
+            }) != nil
+        }
+        // Extract the contents of these methods
+        let onInitContents = onInitMethods.compactMap { method -> String? in
+            guard let body = method.body else { return nil }
+            // Remove the outer braces and extract the content
+            let content = body.statements.description
+                .trimmingCharacters(in: .whitespacesAndNewlines)
+            return content
+        }
 
         let conformsToValidatable = classDecl.inheritanceClause?.inheritedTypes.contains { type in
             type.type.as(IdentifierTypeSyntax.self)?.name.text == "Validatable"
@@ -106,14 +143,16 @@ public struct QuickFormMacro: MemberMacro, ExtensionMacro {
 
         // Add initializer
         let initializer = """
-        \(classVisibility) init(value: \(modelType)) {
+        \(classVisibility) init(value: \(modelType)\(dependencyParams)) {
             self._value = value
             dispatcher = Dispatcher()
+            \(dependencyAssignments.isEmpty ? "" : dependencyAssignments + "\n")
+            \(onInitContents.joined(separator: "\n"))
             update()
             \(propertyEditors.map { identifier, keyPath in
                 makeTrack(identifier: identifier, keyPath: keyPath, shouldValidate: conformsToValidatable)
             }.joined(separator: "\n"))
-            \(onInitCall)
+            \(postInitCall)
         }
         """
         declarations.append(DeclSyntax(stringLiteral: initializer))

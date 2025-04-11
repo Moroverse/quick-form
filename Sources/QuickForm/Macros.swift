@@ -127,3 +127,7 @@ public macro PropertyEditor(keyPath: Any) = #externalMacro(module: "QuickFormMac
 
 @attached(peer)
 public macro PostInit() = #externalMacro(module: "QuickFormMacros", type: "PostInitMacro")
+@attached(peer)
+public macro OnInit() = #externalMacro(module: "QuickFormMacros", type: "OnInitMacro")
+@attached(peer)
+public macro Dependency() = #externalMacro(module: "QuickFormMacros", type: "DependencyMacro")

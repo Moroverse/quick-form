@@ -31,11 +31,39 @@ let canTestMacros: Bool = {
                 #"""
                 @QuickForm(Person.self)
                 class PersonFormController {
+                    @Dependency
+                    var loader: Loader
+                
+                    var expectedField: String
+                
+                    @onInit
+                    func onInit() {
+                        expectedField = "Hi"
+                    }
+                    
+                    @PostInit()
+                    func postInit() {
+                        expectedField = "Hi There"
+                    }
                 }
                 """#
             } expansion: {
                 #"""
                 class PersonFormController {
+                    @Dependency
+                    var loader: Loader
+
+                    var expectedField: String
+
+                    @onInit
+                    func onInit() {
+                        expectedField = "Hi"
+                    }
+                    
+                    @PostInit()
+                    func postInit() {
+                        expectedField = "Hi There"
+                    }
 
                     internal var value: Person {
                         get {
@@ -55,12 +83,15 @@ let canTestMacros: Bool = {
 
                     }
 
-                    internal init(value: Person) {
+                    internal init(value: Person, loader: Loader) {
                         self._value = value
                         dispatcher = Dispatcher()
+                        self.loader = loader
+
+
                         update()
 
-
+                        postInit()
                     }
 
                     private let _$observationRegistrar = Observation.ObservationRegistrar()
@@ -87,9 +118,8 @@ let canTestMacros: Bool = {
                     private var dispatcher: Dispatcher
 
                     @discardableResult
-                    internal func onValueChanged(_ change: @escaping (Person) -> Void) -> Self {
+                    internal func onValueChanged(_ change: @escaping (Person) -> Void) -> Subscription {
                         dispatcher.subscribe(handler: change)
-                        return self
                     }
                 }
 
@@ -115,6 +145,8 @@ let canTestMacros: Bool = {
                 class PersonFormController {
                     @PropertyEditor(keyPath: \Person.name)
                     var nameField = FormFieldViewModel(value: "", title: "Name")
+                    @PropertyEditor(keyPath: \Person.age)
+                    var ageField: FormFieldViewModel<Int>
                 }
                 """#
             } expansion: {
@@ -145,6 +177,31 @@ let canTestMacros: Bool = {
                     }
 
                     private var _nameField = FormFieldViewModel(value: "", title: "Name")
+                    var ageField: FormFieldViewModel<Int> {
+                        @storageRestrictions(initializes: _ageField)
+                        init(initialValue) {
+                            _ageField = initialValue
+                        }
+                        get {
+                            access(keyPath: \.ageField)
+                            return _ageField
+                        }
+                        set {
+                            withMutation(keyPath: \.ageField) {
+                                _ageField = newValue
+                            }
+                        }
+                        _modify {
+                            access(keyPath: \.ageField)
+                            _$observationRegistrar.willSet(self, keyPath: \.ageField)
+                            defer {
+                                _$observationRegistrar.didSet(self, keyPath: \.ageField)
+                            }
+                            yield &_ageField
+                        }
+                    }
+
+                    private var _ageField: FormFieldViewModel<Int>
                 }
                 """#
             }
@@ -216,6 +273,8 @@ let canTestMacros: Bool = {
                     internal init(value: Person) {
                         self._value = value
                         dispatcher = Dispatcher()
+
+
                         update()
                         func trackNamefield() {
                         withObservationTracking { [weak self] in
@@ -261,9 +320,8 @@ let canTestMacros: Bool = {
                     private var dispatcher: Dispatcher
 
                     @discardableResult
-                    internal func onValueChanged(_ change: @escaping (Person) -> Void) -> Self {
+                    internal func onValueChanged(_ change: @escaping (Person) -> Void) -> Subscription {
                         dispatcher.subscribe(handler: change)
-                        return self
                     }
                 }
 

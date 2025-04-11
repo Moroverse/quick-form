@@ -58,12 +58,19 @@ public struct PropertyEditorMacro: AccessorMacro, PeerMacro {
     ) throws -> [DeclSyntax] {
         guard let varDecl = declaration.as(VariableDeclSyntax.self),
               let binding = varDecl.bindings.first,
-              let identifier = binding.pattern.as(IdentifierPatternSyntax.self)?.identifier.text,
-              let initializer = binding.initializer?.value else {
+              let identifier = binding.pattern.as(IdentifierPatternSyntax.self)?.identifier.text else {
             throw MacroError.invalidDeclaration
         }
 
-        let peerDecl: DeclSyntax = "private var _\(raw: identifier) = \(initializer)"
+        let peerDecl: DeclSyntax
+        if let initializer = binding.initializer?.value {
+            peerDecl = "private var _\(raw: identifier) = \(initializer)"
+        } else if let type = binding.typeAnnotation?.type {
+            peerDecl = "private var _\(raw: identifier): \(type)"
+        } else {
+            throw MacroError.invalidDeclaration
+        }
+
         return [peerDecl]
     }
 }

@@ -9,7 +9,7 @@ import QuickForm
 
 @QuickForm(AdditionalInfo.self)
 final class AdditionalInfoModel {
-    @Injected(\.documentUploader)
+    @Dependency
     var documentUploader: DocumentUploader
 
     @Injected(\.documentDeleter)
@@ -19,11 +19,7 @@ final class AdditionalInfoModel {
     var router: AdditionalInfoRouting?
 
     @PropertyEditor(keyPath: \AdditionalInfo.resume)
-    var resume = FormFieldViewModel(
-        type: URL?.self,
-        title: "Resume:",
-        placeholder: "Tap to upload resume"
-    )
+    var resume: FormFieldViewModel<URL?>
 
     @PropertyEditor(keyPath: \AdditionalInfo.coverLetter)
     var coverLetter = FormFieldViewModel(
@@ -54,6 +50,15 @@ final class AdditionalInfoModel {
     )
 
     private var uploadErrorMessage: LocalizedStringResource?
+
+    @OnInit
+    func onInit() {
+        resume = FormFieldViewModel(
+            type: URL?.self,
+            title: "Resume:",
+            placeholder: "Tap to upload resume"
+        )
+    }
 
     @PostInit
     func configure() {
