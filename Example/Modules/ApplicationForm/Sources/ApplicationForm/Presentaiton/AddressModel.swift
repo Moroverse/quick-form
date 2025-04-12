@@ -2,17 +2,23 @@
 // Copyright (c) 2025 Moroverse
 // Created by Daniel Moro on 2025-03-09 06:05 GMT.
 
-import Factory
 import Observation
 import QuickForm
 
 @QuickForm(Address.self)
-final class AddressModel {
-    @Injected(\.stateLoader)
-    var stateLoader: StateLoader
+public final class AddressModel {
+    public struct Dependencies {
+        let stateLoader: StateLoader
+        let countryLoader: CountryLoader
 
-    @Injected(\.countryLoader)
-    var countryLoader: CountryLoader
+        public init(stateLoader: StateLoader, countryLoader: CountryLoader) {
+            self.stateLoader = stateLoader
+            self.countryLoader = countryLoader
+        }
+    }
+
+    @Dependency
+    let dependencies: Dependencies
 
     @PropertyEditor(keyPath: \Address.street)
     var street = FormFieldViewModel(
@@ -74,17 +80,17 @@ final class AddressModel {
     @PostInit
     func configure() {
         Task { [weak self] in
-            self?.hasStates = await self?.stateLoader.hasStates(country: self?.country.value ?? "") ?? false
+            self?.hasStates = await self?.dependencies.stateLoader.hasStates(country: self?.country.value ?? "") ?? false
         }
 
         state.valuesProvider = { [weak self] query in
             guard let self else { return [] }
-            return try await stateLoader.loadStates(country: query)
+            return try await dependencies.stateLoader.loadStates(country: query)
         }
 
         country.valuesProvider = { [weak self] query in
             guard let self else { return [] }
-            return try await countryLoader.loadCountries(query: query)
+            return try await dependencies.countryLoader.loadCountries(query: query)
         }
 
         country.onValueChanged { [weak self] newValue in
@@ -92,7 +98,7 @@ final class AddressModel {
             state.value = nil
             if let newValue {
                 Task { [weak self] in
-                    self?.hasStates = await self?.stateLoader.hasStates(country: newValue) ?? false
+                    self?.hasStates = await self?.dependencies.stateLoader.hasStates(country: newValue) ?? false
                 }
             }
         }

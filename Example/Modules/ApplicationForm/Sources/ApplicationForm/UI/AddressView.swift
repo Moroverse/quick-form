@@ -86,7 +86,15 @@ struct AddressView_Previews: PreviewProvider {
         let _ = Container.shared.stateLoader.register { Container.DummyStateLoader() }
         NavigationStack {
             Form {
-                AddressViewWrapper(model: AddressModel(value: .sample))
+                AddressViewWrapper(
+                    model: AddressModel(
+                        value: .sample,
+                        dependencies: .init(
+                            stateLoader: Container.shared.stateLoader(),
+                            countryLoader: Container.shared.countryLoader()
+                        )
+                    )
+                )
             }
         }
 
@@ -102,6 +110,10 @@ struct AddressView_Previews: PreviewProvider {
                             zipCode: "",
                             country: "Country #1",
                             state: nil
+                        ),
+                        dependencies: .init(
+                            stateLoader: Container.shared.stateLoader(),
+                            countryLoader: Container.shared.countryLoader()
                         )
                     )
                 )

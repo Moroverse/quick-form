@@ -35,8 +35,21 @@ struct ExampleApp: App {
             ),
             education: [],
             additionalInfo: .init(consentToBackgroundChecks: false)
+        ),
+        dependencies: .init(
+            additionalInfoDependencies: .init(
+                documentUploader: Container.shared.documentUploader(),
+                documentDeleter: Container.shared.documentDeleter(),
+                router: { Container.shared.additionalInfoRouting() }
+            ),
+            addressModelDependencies: .init(
+                stateLoader: Container.shared.stateLoader(),
+                countryLoader: Container.shared.countryLoader()
+            ),
+            router: { Container.shared.applicationFormRouting() }
         )
     )
+
     var body: some Scene {
         WindowGroup {
             RouterView(addNavigationView: true) { router in

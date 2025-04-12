@@ -2,21 +2,27 @@
 // Copyright (c) 2025 Moroverse
 // Created by Daniel Moro on 2025-03-14 03:00 GMT.
 
-import Factory
 import Foundation
 import Observation
 import QuickForm
 
 @QuickForm(AdditionalInfo.self)
-final class AdditionalInfoModel {
+public final class AdditionalInfoModel {
+    public struct Dependencies {
+        let documentUploader: DocumentUploader
+        let documentDeleter: DocumentDeleter
+        let _router: () -> AdditionalInfoRouting?
+        lazy var router: AdditionalInfoRouting? = _router()
+
+        public init(documentUploader: DocumentUploader, documentDeleter: DocumentDeleter, router: @escaping () -> AdditionalInfoRouting?) {
+            self.documentUploader = documentUploader
+            self.documentDeleter = documentDeleter
+            _router = router
+        }
+    }
+
     @Dependency
-    var documentUploader: DocumentUploader
-
-    @Injected(\.documentDeleter)
-    var documentDeleter: DocumentDeleter
-
-    @LazyInjected(\.additionalInfoRouting)
-    var router: AdditionalInfoRouting?
+    var dependencies: Dependencies
 
     @PropertyEditor(keyPath: \AdditionalInfo.resume)
     var resume: FormFieldViewModel<URL?>
@@ -56,7 +62,7 @@ final class AdditionalInfoModel {
         resume = FormFieldViewModel(
             type: URL?.self,
             title: "Resume:",
-            placeholder: "Tap to upload resume"
+            placeholder: "Tap to upload a resume"
         )
     }
 
@@ -73,7 +79,7 @@ final class AdditionalInfoModel {
 
     func uploadResume(from url: URL) async {
         do {
-            let url = try await documentUploader.upload(from: url)
+            let url = try await dependencies.documentUploader.upload(from: url)
             resume.value = url
         } catch {
             uploadErrorMessage = "Upload failed with message: \(error.localizedDescription)"
@@ -84,7 +90,7 @@ final class AdditionalInfoModel {
     func deleteResume() async {
         guard let value = resume.value else { return }
         do {
-            try await documentDeleter.deleteDocument(from: value)
+            try await dependencies.documentDeleter.deleteDocument(from: value)
             resume.value = nil
         } catch {
             uploadErrorMessage = "Delete failed with message: \(error.localizedDescription)"
@@ -94,9 +100,9 @@ final class AdditionalInfoModel {
 
     func didTapOnAdditionalInformationResume() async {
         if let url = resume.value {
-            await router?.navigateToPreview(at: url)
+            await dependencies.router?.navigateToPreview(at: url)
         } else {
-            if let url = await router?.navigateToResumeUpload() {
+            if let url = await dependencies.router?.navigateToResumeUpload() {
                 await uploadResume(from: url)
             }
         }

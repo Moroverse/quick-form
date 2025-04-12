@@ -2,7 +2,7 @@
 // Copyright (c) 2025 Moroverse
 // Created by Daniel Moro on 2025-03-09 05:00 GMT.
 
-@testable import Example
+@testable import ApplicationForm
 import Factory
 import Foundation
 import Testing
@@ -11,27 +11,18 @@ import Testing
 struct AdditionalInfoModelTests {
     @Test("Correct title on initialization")
     func configure() async throws {
-        let value = AdditionalInfo(resume: .missing)
-        let sut = AdditionalInfoModel(value: value)
+        let value = AdditionalInfo(resume: nil, consentToBackgroundChecks: false)
+        let sut = AdditionalInfoModel(
+            value: value,
+            dependencies: .init(
+                documentUploader: Container.shared.documentUploader(),
+                documentDeleter: Container.shared.documentDeleter(),
+                router: { Container.shared.additionalInfoRouting() }
+            )
+        )
 
-        #expect(sut.resume.title == "No Resume.")
-    }
-
-    @Test("Correct title is set on resume change")
-    func onResumeChange() async throws {
-        let value = AdditionalInfo(resume: .missing)
-        let sut = AdditionalInfoModel(value: value)
-
-        let anyURL = URL(string: "https://www.example.com")!
-        let anyError: Error = NSError(domain: "", code: 0, userInfo: nil)
-        sut.resume.value = .present(url: anyURL)
-        #expect(sut.resume.title == "Resume uploaded.")
-        sut.resume.value = .missing
-        #expect(sut.resume.title == "No Resume.")
-        sut.resume.value = .error(anyError)
-        var errorTitle = sut.resume.title
-        errorTitle.locale = Locale(identifier: "en_US_POSIX")
-        #expect(String(localized: errorTitle) == "Resume upload error The operation couldn’t be completed. ( error 0.)")
+        #expect(sut.resume.title == "Resume:")
+        #expect(sut.resume.placeholder == "Tap to upload a resume")
     }
 
     @Test("Tap on resume button starts upload if resume is selected")
@@ -39,8 +30,15 @@ struct AdditionalInfoModelTests {
         let spy = Spy()
         Container.shared.additionalInfoRouting.register { spy }
         Container.shared.documentUploader.register { spy }
-        let value = AdditionalInfo(resume: .missing)
-        let sut = AdditionalInfoModel(value: value)
+        let value = AdditionalInfo(resume: nil, consentToBackgroundChecks: false)
+        let sut = AdditionalInfoModel(
+            value: value,
+            dependencies: .init(
+                documentUploader: Container.shared.documentUploader(),
+                documentDeleter: Container.shared.documentDeleter(),
+                router: { Container.shared.additionalInfoRouting() }
+            )
+        )
 
         let anyURL = URL(string: "https://www.example.com")!
         spy.selectedURL = anyURL
@@ -58,8 +56,15 @@ struct AdditionalInfoModelTests {
     func onTap() async throws {
         let spy = Spy()
         Container.shared.additionalInfoRouting.register { spy }
-        let value = AdditionalInfo(resume: .missing)
-        let sut = AdditionalInfoModel(value: value)
+        let value = AdditionalInfo(resume: nil, consentToBackgroundChecks: false)
+        let sut = AdditionalInfoModel(
+            value: value,
+            dependencies: .init(
+                documentUploader: Container.shared.documentUploader(),
+                documentDeleter: Container.shared.documentDeleter(),
+                router: { Container.shared.additionalInfoRouting() }
+            )
+        )
 
         await sut.didTapOnAdditionalInformationResume()
 

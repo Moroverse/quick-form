@@ -7,6 +7,9 @@ import QuickForm
 
 @QuickForm(PersonalInformation.self)
 final class PersonalInformationModel {
+    @Dependency
+    let dependencies: AddressModel.Dependencies
+
     @PropertyEditor(keyPath: \PersonalInformation.givenName)
     var givenName = FormFieldViewModel(
         type: String.self,
@@ -40,5 +43,10 @@ final class PersonalInformationModel {
     )
 
     @PropertyEditor(keyPath: \PersonalInformation.address)
-    var address = AddressModel(value: .sample)
+    var address: AddressModel
+
+    @OnInit
+    func onInit() {
+        address = AddressModel(value: .sample, dependencies: dependencies)
+    }
 }

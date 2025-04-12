@@ -9,7 +9,7 @@ import UIKit
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
     var mainCoordinator: AppCoordinator?
-    var model = ApplicationFormModel(
+    lazy var model = ApplicationFormModel(
         value: .init(
             personalInformation: .init(
                 givenName: "",
@@ -35,6 +35,18 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             ),
             education: [],
             additionalInfo: .init(consentToBackgroundChecks: false)
+        ),
+        dependencies: .init(
+            additionalInfoDependencies: .init(
+                documentUploader: Container.shared.documentUploader(),
+                documentDeleter: Container.shared.documentDeleter(),
+                router: { Container.shared.additionalInfoRouting() }
+            ),
+            addressModelDependencies: .init(
+                stateLoader: Container.shared.stateLoader(),
+                countryLoader: Container.shared.countryLoader()
+            ),
+            router: { Container.shared.applicationFormRouting() }
         )
     )
 

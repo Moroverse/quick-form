@@ -2,6 +2,7 @@
 // Copyright (c) 2025 Moroverse
 // Created by Daniel Moro on 2025-03-09 05:25 GMT.
 
+import Factory
 import Foundation
 import QuickForm
 import SwiftUI
@@ -117,7 +118,21 @@ struct ApplicationFormView: View {
 
 struct ApplicationFormView_Previews: PreviewProvider {
     struct ApplicationFormViewWrapper: View {
-        @State var model = ApplicationFormModel(value: .sample)
+        @State var model = ApplicationFormModel(
+            value: .sample,
+            dependencies: .init(
+                additionalInfoDependencies: .init(
+                    documentUploader: Container.shared.documentUploader(),
+                    documentDeleter: Container.shared.documentDeleter(),
+                    router: { Container.shared.additionalInfoRouting() }
+                ),
+                addressModelDependencies: .init(
+                    stateLoader: Container.shared.stateLoader(),
+                    countryLoader: Container.shared.countryLoader()
+                ),
+                router: { Container.shared.applicationFormRouting() }
+            )
+        )
 
         var body: some View {
             ApplicationFormView(model: model)
