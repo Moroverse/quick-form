@@ -2,10 +2,72 @@
 // Copyright (c) 2025 Moroverse
 // Created by Daniel Moro on 2025-03-05 04:59 GMT.
 
-/// A mask for credit card numbers in the format XXXX XXXX XXXX XXXX
+import Foundation
+
+/// A mask for formatting credit card numbers as the user types.
+///
+/// `CreditCardMask` automatically formats input text to match standard credit card number
+/// formatting with spaces between each group of 4 digits (XXXX XXXX XXXX XXXX).
+///
+/// ## Features
+/// - Formats digits into groups of four separated by spaces
+/// - Automatically filters out non-numeric characters
+/// - Limits input to a valid credit card length (up to 19 digits)
+/// - Works with `FormFieldViewModel` for real-time formatting
+///
+/// ## Example
+///
+/// ```swift
+/// // Create a credit card field using the mask
+/// @QuickForm(PaymentForm.self)
+/// class PaymentFormModel: Validatable {
+///     @PropertyEditor(keyPath: \PaymentForm.cardNumber)
+///     var cardNumber = FormFieldViewModel(
+///         type: String.self,
+///         title: "Card Number:",
+///         placeholder: "XXXX XXXX XXXX XXXX",
+///         mask: .creditCard,
+///         validation: .of(.creditCardNumber)
+///     )
+/// }
+/// ```
+///
+/// ## Usage with Validation
+///
+/// For best results, pair with credit card validation:
+///
+/// ```swift
+/// FormFieldViewModel(
+///     type: String.self,
+///     title: "Card Number:",
+///     mask: .creditCard,
+///     validation: .combined(
+///         .notEmpty,
+///         .custom { value in
+///             // Additional validation logic
+///             let digits = value.filter(\.isNumber)
+///             return digits.count >= 13 && digits.count <= 19
+///         }
+///     )
+/// )
+/// ```
+///
+/// - SeeAlso: `AutoMask`, `FormFieldViewModel`, `USPhoneNumberFormatStyle`
 public struct CreditCardMask: AutoMask {
+    /// Initializes a new credit card mask.
     public init() {}
 
+    /// Applies formatting to convert raw input into a formatted credit card number.
+    ///
+    /// - Parameter text: The raw text input to format
+    /// - Returns: A formatted credit card number with spaces between groups of digits
+    ///
+    /// This method:
+    /// - Extracts only the numeric characters from input
+    /// - Groups digits with spaces after every 4 digits
+    /// - Limits the total number of digits to 19 (most cards are 16 digits)
+    ///
+    /// Example: "4111222233334444" becomes "4111 2222 3333 4444"
     public func apply(to text: String) -> String {
         let digits = text.filter(\.isNumber)
 
@@ -27,12 +89,30 @@ public struct CreditCardMask: AutoMask {
         return result
     }
 
+    /// Determines if a character is allowed to be entered in a credit card field.
+    ///
+    /// - Parameter character: The character to check
+    /// - Returns: `true` if the character is a digit, `false` otherwise
+    ///
+    /// This method ensures that only numeric characters can be entered,
+    /// filtering out letters, symbols, and other non-digit characters.
     public func isAllowed(character: Character) -> Bool {
         character.isNumber
     }
 }
 
+/// Extension providing a convenient static accessor for the credit card mask.
 public extension AutoMask where Self == CreditCardMask {
-    /// Creates a standard credit card number mask in format XXXX XXXX XXXX XXXX
+    /// Creates a standard credit card number mask in format XXXX XXXX XXXX XXXX.
+    ///
+    /// This static accessor makes it easy to add credit card masking to form fields:
+    ///
+    /// ```swift
+    /// FormFieldViewModel(
+    ///     type: String.self,
+    ///     title: "Card Number",
+    ///     mask: .creditCard
+    /// )
+    /// ```
     static var creditCard: CreditCardMask { CreditCardMask() }
 }

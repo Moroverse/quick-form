@@ -1,6 +1,6 @@
 // Workspace.swift
-// Copyright (c) 2025 EZDERM, LLC
-// Created by Daniel Moro on 2025-03-26 15:22 GMT.
+// Copyright (c) 2025 Moroverse
+// Created by Daniel Moro on 2025-04-12 07:43 GMT.
 
 import ProjectDescription
 

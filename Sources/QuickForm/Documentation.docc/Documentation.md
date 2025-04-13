@@ -19,7 +19,11 @@ Add the following dependency to your `Package.swift` file:
 ### Macros
 - ``QuickForm(_:)``
 - ``PropertyEditor(keyPath:)``
-### Form Filed Models
+- ``PostInit()``
+- ``OnInit()``
+- ``Dependency()``
+
+### Form Field Models
 - ``FormFieldViewModel``
 - ``FormattedFieldViewModel``
 - ``PickerFieldViewModel``
@@ -27,8 +31,11 @@ Add the following dependency to your `Package.swift` file:
 - ``MultiPickerFieldViewModel``
 - ``FormCollectionViewModel``
 - ``AsyncPickerFieldViewModel``
+- ``TokenSetViewModel``
 - ``ValueEditorTransformer``
-### Form Filed Editors
+- ``ModelTransformer``
+
+### Form Field Editors
 - ``FormTextField``
 - ``FormOptionalTextField``
 - ``FormFormattedTextField``
@@ -43,6 +50,11 @@ Add the following dependency to your `Package.swift` file:
 - ``FormMultiPickerSection``
 - ``FormAsyncPickerField``
 - ``FormSecureTextField``
+- ``FormTextEditor``
+- ``FormTokenSetField``
+- ``FormStepperField``
+- ``DismissibleButton``
+
 ### Validators
 - ``Validatable``
 - ``ValidationRule``
@@ -52,9 +64,13 @@ Add the following dependency to your `Package.swift` file:
 - ``NotEmptyRule``
 - ``RequiredRule``
 - ``AnyValidationRule``
-### Formaters
-- ``OptionalFormat``
+- ``combined(_:_:)``
 
+### Formatters
+- ``OptionalFormat``
+- ``PlainStringFormat``
+- ``AutoMask``
+- ``ClearValueMode``
 
 ## Usage Example
 

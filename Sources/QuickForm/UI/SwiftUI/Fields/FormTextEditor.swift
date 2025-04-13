@@ -4,10 +4,101 @@
 
 import SwiftUI
 
+/// A SwiftUI view that provides a multi-line text editor in a form.
+///
+/// `FormTextEditor` is designed to work with ``FormFieldViewModel<String?>`` to provide
+/// a multi-line text input field for entering larger text content such as descriptions,
+/// notes, or comments. The component intelligently handles optional string values, placeholder
+/// text display, and validation feedback.
+///
+/// ## Features
+/// - Displays a multi-line text editor with optional title
+/// - Shows placeholder text when value is empty and not focused
+/// - Handles optional string values
+/// - Supports validation and displays error messages
+/// - Adapts to read-only mode
+/// - Automatically adjusts minimum height for better usability
+///
+/// ## Examples
+///
+/// ### Basic Usage
+///
+/// ```swift
+/// struct NotesForm: View {
+///     @State private var notesModel = FormFieldViewModel(
+///         value: nil,
+///         title: "Notes:",
+///         placeholder: "Enter additional notes here..."
+///     )
+///
+///     var body: some View {
+///         Form {
+///             FormTextEditor(viewModel: notesModel)
+///         }
+///     }
+/// }
+/// ```
+///
+/// ### With Validation
+///
+/// ```swift
+/// @QuickForm(Feedback.self)
+/// class FeedbackFormModel: Validatable {
+///     @PropertyEditor(keyPath: \Feedback.comments)
+///     var comments = FormFieldViewModel<String?>(
+///         value: nil,
+///         title: "Your Comments:",
+///         placeholder: "Please share your thoughts...",
+///         validation: .of(.minLength(10, "Please provide at least 10 characters of feedback"))
+///     )
+/// }
+///
+/// struct FeedbackFormView: View {
+///     @Bindable var model: FeedbackFormModel
+///
+///     var body: some View {
+///         Form {
+///             FormTextEditor(viewModel: model.comments)
+///                 .validationState(model.comments.validationResult)
+///         }
+///     }
+/// }
+/// ```
+///
+/// ### Read-Only Display
+///
+/// ```swift
+/// struct ReviewDetailsView: View {
+///     let reviewText: String
+///
+///     var body: some View {
+///         Form {
+///             FormTextEditor(viewModel: FormFieldViewModel(
+///                 value: reviewText,
+///                 title: "Your Review",
+///                 isReadOnly: true
+///             ))
+///             .padding()
+///         }
+///     }
+/// }
+/// ```
+///
+/// - SeeAlso: ``FormFieldViewModel``, ``FormTextField``
 public struct FormTextEditor: View {
     @FocusState private var isFocused: Bool
     @Bindable private var viewModel: FormFieldViewModel<String?>
     @State private var hasError: Bool
+
+    /// The body of the `FormTextEditor` view.
+    ///
+    /// This view consists of:
+    /// - An optional title label
+    /// - A multi-line text editor
+    /// - An error message when validation fails
+    ///
+    /// The text editor shows the placeholder text when the value is empty and
+    /// the control is not focused.
     public var body: some View {
         VStack(alignment: .leading, spacing: 5) {
             if hasTitle {
@@ -64,11 +155,28 @@ public struct FormTextEditor: View {
 //        }
     }
 
+    /// Initializes a new `FormTextEditor`.
+    ///
+    /// - Parameter viewModel: The ``FormFieldViewModel`` that manages the state of this text editor.
+    ///   The view model should have a value of type `String?` (optional string).
+    ///
+    /// ## Example
+    ///
+    /// ```swift
+    /// FormTextEditor(
+    ///     viewModel: FormFieldViewModel(
+    ///         value: existingNotes,
+    ///         title: "Notes",
+    ///         placeholder: "Enter notes here..."
+    ///     )
+    /// )
+    /// ```
     public init(viewModel: FormFieldViewModel<String?>) {
         self.viewModel = viewModel
         hasError = viewModel.errorMessage != nil
     }
 
+    /// Checks if the view model has a non-empty title.
     private var hasTitle: Bool {
         let value = String(localized: viewModel.title)
         return value.isEmpty == false

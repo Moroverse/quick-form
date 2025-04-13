@@ -6,20 +6,27 @@ import SwiftUI
 
 /// A SwiftUI view that represents a formatted text field in a form.
 ///
-/// `FormFormattedTextField` is designed to work with `FormattedFieldViewModel` to provide
+/// `FormFormattedTextField` is designed to work with ``FormattedFieldViewModel`` to provide
 /// a text field that automatically formats its input and output according to a specified
-/// format style. This is particularly useful for fields like currency, numbers, or any other
-/// data that needs to be displayed in a specific format while storing a different underlying value.
+/// format style. This is particularly useful for fields like currency, numbers, percentages,
+/// or any other data that needs to be displayed in a specific format while storing a different underlying value.
+///
+/// When the field gains focus, it switches to an unformatted representation for easier editing.
+/// When it loses focus, the input is parsed and formatted according to the specified format style.
 ///
 /// ## Features
 /// - Displays a formatted text field with a title
-/// - Supports custom format styles
-/// - Handles focus state to adjust text alignment
-/// - Supports placeholder text
+/// - Supports various format styles through ``ParseableFormatStyle``
+/// - Handles focus state to adjust text alignment and formatting
+/// - Supports placeholder text for empty fields
+/// - Provides automatic input masking for common formats (phone numbers, credit cards, etc.)
 /// - Can be set to read-only mode
 /// - Preserves the underlying value type while displaying formatted text
+/// - Shows validation errors when validation fails
 ///
-/// ## Example
+/// ## Examples
+///
+/// ### Basic Currency Field
 ///
 /// ```swift
 /// struct EmployeeForm: View {
@@ -37,6 +44,64 @@ import SwiftUI
 ///     }
 /// }
 /// ```
+///
+/// ### Number Field with Custom Alignment
+///
+/// ```swift
+/// FormFormattedTextField(
+///     viewModel,
+///     alignment: .leading,
+///     clearValueMode: .whileEditing
+/// )
+/// ```
+///
+/// ### Phone Number with Auto-Masking
+///
+/// ```swift
+/// let phoneViewModel = FormattedFieldViewModel(
+///     value: "",
+///     format: PlainStringFormat(),
+///     title: "Phone Number:",
+///     placeholder: "(555) 555-5555",
+///     validation: .of(.usPhoneNumber)
+/// )
+///
+/// FormFormattedTextField(phoneViewModel, autoMask: .phone)
+///     .keyboardType(.phonePad)
+/// ```
+///
+/// ### Credit Card Field
+///
+/// ```swift
+/// let cardViewModel = FormattedFieldViewModel(
+///     value: "",
+///     format: PlainStringFormat(),
+///     title: "Credit Card:",
+///     placeholder: "1234 5678 9012 3456"
+/// )
+///
+/// FormFormattedTextField(cardViewModel, autoMask: .creditCard)
+///     .keyboardType(.numberPad)
+///     .trailingAccessories {
+///         Image(systemName: "creditcard")
+///             .foregroundColor(.secondary)
+///     }
+/// ```
+///
+/// ### Percentage with Validation
+///
+/// ```swift
+/// let percentViewModel = FormattedFieldViewModel(
+///     value: 0.25,
+///     format: .percent.precision(.fractionLength(2)),
+///     title: "Discount:",
+///     validation: .of(.range(0...1, "Discount must be between 0% and 100%"))
+/// )
+///
+/// FormFormattedTextField(percentViewModel)
+/// ```
+///
+/// - SeeAlso: ``FormattedFieldViewModel``, ``AutoMask``, ``ClearValueMode``, ``ParseableFormatStyle``
 public struct FormFormattedTextField<F, V>: View where F: ParseableFormatStyle, F.FormatOutput == String, F.FormatInput: Equatable, V: View {
     let alignment: TextAlignment
     let clearValueMode: ClearValueMode
@@ -52,6 +117,24 @@ public struct FormFormattedTextField<F, V>: View where F: ParseableFormatStyle, 
 
     private var trailingAccessoriesContent: (() -> V)?
 
+    /// Creates a new formatted text field with the specified view model and options.
+    ///
+    /// - Parameters:
+    ///   - viewModel: The ``FormattedFieldViewModel`` that manages the state of this field.
+    ///   - alignment: The text alignment to use when the field is not focused. Defaults to `.trailing`.
+    ///   - clearValueMode: Determines when the clear button should be visible. Defaults to `.never`.
+    ///   - autoMask: An optional mask to apply to the input text as the user types.
+    ///
+    /// ## Example
+    ///
+    /// ```swift
+    /// FormFormattedTextField(
+    ///     salaryViewModel,
+    ///     alignment: .trailing,
+    ///     clearValueMode: .whileEditing,
+    ///     autoMask: nil
+    /// )
+    /// ```
     public init(
         _ viewModel: FormattedFieldViewModel<F>,
         alignment: TextAlignment = .trailing,
@@ -67,6 +150,16 @@ public struct FormFormattedTextField<F, V>: View where F: ParseableFormatStyle, 
         isFocused = false
     }
 
+    /// Creates a new formatted text field with the specified view model, options, and trailing accessories.
+    ///
+    /// - Parameters:
+    ///   - viewModel: The ``FormattedFieldViewModel`` that manages the state of this field.
+    ///   - alignment: The text alignment to use when the field is not focused.
+    ///   - clearValueMode: Determines when the clear button should be visible.
+    ///   - autoMask: An optional mask to apply to the input text as the user types.
+    ///   - trailingAccessories: A view builder that returns content to display at the trailing edge of the field.
+    ///
+    /// This initializer is not typically called directly but through the `trailingAccessories(_:)` method.
     init(
         _ viewModel: FormattedFieldViewModel<F>,
         alignment: TextAlignment,
@@ -84,6 +177,14 @@ public struct FormFormattedTextField<F, V>: View where F: ParseableFormatStyle, 
         isFocused = false
     }
 
+    /// The body of the formatted text field.
+    ///
+    /// This view consists of:
+    /// - An optional title
+    /// - A text field that displays the formatted value when unfocused and the raw value when focused
+    /// - An optional clear button based on the clearValueMode
+    /// - Optional trailing accessories
+    /// - An error message when validation fails
     public var body: some View {
         VStack {
             HStack(spacing: 10) {
@@ -182,6 +283,12 @@ public struct FormFormattedTextField<F, V>: View where F: ParseableFormatStyle, 
         }
     }
 
+    /// Determines whether the clear button should be displayed.
+    ///
+    /// The visibility is controlled by:
+    /// - The `clearValueMode` parameter
+    /// - Whether the field is currently focused
+    /// - The `isReadOnly` property of the view model
     private var shouldDisplayClearButton: Bool {
         if viewModel.isReadOnly {
             return false
@@ -202,11 +309,32 @@ public struct FormFormattedTextField<F, V>: View where F: ParseableFormatStyle, 
         }
     }
 
+    /// Checks if the view model has a non-empty title.
     private var hasTitle: Bool {
         let value = String(localized: viewModel.title)
         return value.isEmpty == false
     }
 
+    /// Adds trailing accessories to the text field.
+    ///
+    /// This method returns a new `FormFormattedTextField` with the specified trailing accessories.
+    ///
+    /// - Parameter content: A view builder that returns the trailing accessories.
+    /// - Returns: A new `FormFormattedTextField` with the specified trailing accessories.
+    ///
+    /// ## Example
+    ///
+    /// ```swift
+    /// FormFormattedTextField(viewModel)
+    ///     .trailingAccessories {
+    ///         Button {
+    ///             // Show info about this field
+    ///         } label: {
+    ///             Image(systemName: "info.circle")
+    ///                 .foregroundColor(.blue)
+    ///         }
+    ///     }
+    /// ```
     public func trailingAccessories<Content: View>(_ content: @escaping () -> Content) -> FormFormattedTextField<F, Content> {
         .init(
             viewModel,

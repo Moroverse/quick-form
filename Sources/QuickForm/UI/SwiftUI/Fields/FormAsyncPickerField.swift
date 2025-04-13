@@ -6,7 +6,7 @@ import SwiftUI
 
 /// A SwiftUI view that represents an asynchronously-loaded picker field in a form.
 ///
-/// `FormAsyncPickerField` is designed to work with `AsyncPickerFieldViewModel` to provide
+/// `FormAsyncPickerField` is designed to work with ``AsyncPickerFieldViewModel`` to provide
 /// a picker interface for selecting values that are loaded asynchronously, such as from a network
 /// request or a database query. This view is particularly useful for fields where the available
 /// options need to be fetched on-demand rather than being statically defined.
@@ -20,35 +20,25 @@ import SwiftUI
 /// - Supports optional clearing of the selected value
 /// - Handles loading states and errors from asynchronous data sources
 ///
-/// ## Example
+/// ## Example Usage
+///
+/// ### Basic Medication Picker
 ///
 /// ```swift
 /// struct MedicationForm: View {
-///     @State private var viewModel = AsyncPickerFieldViewModel<[Medication], String>(
-///         type: Medication.self,
-///         title: "Medication:",
-///         valuesProvider: { query in
-///             // Fetch medications matching the query
-///             try await MedicationAPI.shared.search(query: query)
-///         },
-///         queryBuilder: { $0 ?? "" }
-///     )
+///     @Bindable var model: PatientFormModel
 ///
 ///     var body: some View {
 ///         Form {
 ///             FormAsyncPickerField(
-///                 viewModel,
+///                 model.medication,
 ///                 clearValueMode: .always,
 ///                 pickerStyle: .navigation,
 ///                 allowSearch: true
 ///             ) { medication in
 ///                 // How to display the selected value
-///                 HStack {
-///                     Text("Medication:")
-///                         .font(.headline)
-///                     Spacer()
-///                     Text(medication?.name ?? "None selected")
-///                 }
+///                 Text(medication?.name ?? "Select medication")
+///                     .foregroundColor(medication == nil ? .secondary : .primary)
 ///             } pickerContent: { medication in
 ///                 // How to display each item in the picker
 ///                 VStack(alignment: .leading) {
@@ -58,10 +48,91 @@ import SwiftUI
 ///                         .font(.caption)
 ///                 }
 ///             }
+///             .onAppear {
+///                 // Load initial data when view appears
+///                 Task {
+///                     await model.medication.search(model.medication.queryBuilder(""))
+///                 }
+///             }
 ///         }
 ///     }
 /// }
 /// ```
+///
+/// ### Country/State Picker Relationship
+///
+/// ```swift
+/// struct AddressForm: View {
+///     @Bindable var model: AddressFormModel
+///
+///     var body: some View {
+///         Form {
+///             // Country picker
+///             FormAsyncPickerField(
+///                 model.country,
+///                 pickerStyle: .menu,
+///                 allowSearch: true
+///             ) { country in
+///                 Text(country?.name ?? "Select country")
+///             } pickerContent: { country in
+///                 Text(country.name)
+///             }
+///             .onAppear {
+///                 Task {
+///                     await model.country.search(model.country.queryBuilder(""))
+///                 }
+///             }
+///
+///             // State picker - only enabled when country is selected
+///             if model.country.value != nil {
+///                 FormAsyncPickerField(
+///                     model.state,
+///                     pickerStyle: .menu,
+///                     allowSearch: true
+///                 ) { state in
+///                     Text(state?.name ?? "Select state/province")
+///                 } pickerContent: { state in
+///                     Text(state.name)
+///                 }
+///                 .disabled(model.country.value == nil)
+///             }
+///         }
+///     }
+/// }
+/// ```
+///
+/// ### Handling Different Loading States
+///
+/// ```swift
+/// FormAsyncPickerField(
+///     viewModel.products,
+///     clearValueMode: .whenNotEmpty,
+///     allowSearch: true
+/// ) { product in
+///     Text(product?.name ?? "Select product")
+/// } pickerContent: { product in
+///     // Display picker content based on ModelState
+///     switch viewModel.products.allValues {
+///     case .initial:
+///         Text("Search for products")
+///     case .loading:
+///         HStack {
+///             Text("Loading...")
+///             Spacer()
+///             ProgressView()
+///         }
+///     case .loaded(let products) where products.isEmpty:
+///         Text("No products found")
+///     case .loaded:
+///         Text(product.name)
+///     case .error(let error):
+///         Text("Error: \(error.localizedDescription)")
+///             .foregroundColor(.red)
+///     }
+/// }
+/// ```
+///
+/// - SeeAlso: ``AsyncPickerFieldViewModel``, ``ModelState``, ``ClearValueMode``, ``FieldActionStyleConfiguration``
 public struct FormAsyncPickerField<Model: RandomAccessCollection, Query, VContent: View, PContent: View>: View
     where Model: Sendable, Model.Element: Identifiable, Query: Sendable & Equatable {
     @Bindable private var viewModel: AsyncPickerFieldViewModel<Model, Query>
@@ -76,12 +147,36 @@ public struct FormAsyncPickerField<Model: RandomAccessCollection, Query, VConten
     /// Initializes a new `FormAsyncPickerField`.
     ///
     /// - Parameters:
-    ///   - viewModel: The view model that manages the state and data loading for this picker field.
+    ///   - viewModel: The ``AsyncPickerFieldViewModel`` that manages the state and data loading for this picker field.
     ///   - clearValueMode: Determines when the clear button should be displayed. Defaults to `.never`.
+    ///     - `.never`: Never show a clear button
+    ///     - `.always`: Always show a clear button when a value is selected
+    ///     - `.whenNotEmpty`: Show a clear button when a value is selected and the available values are not empty
     ///   - pickerStyle: The presentation style for the picker (navigation, popover, or inline). Defaults to `.popover`.
     ///   - allowSearch: Whether to include a search field for filtering the picker options. Defaults to `true`.
     ///   - valueContent: A closure that returns the view to display for the selected value.
     ///   - pickerContent: A closure that returns the view to display for each item in the picker.
+    ///
+    /// ## Example
+    ///
+    /// ```swift
+    /// FormAsyncPickerField(
+    ///     viewModel.country,
+    ///     clearValueMode: .always,
+    ///     pickerStyle: .navigation,
+    ///     allowSearch: true
+    /// ) { country in
+    ///     Text(country?.name ?? "Select country")
+    /// } pickerContent: { country in
+    ///     HStack {
+    ///         Text(country.name)
+    ///         Spacer()
+    ///         if country == viewModel.country.value {
+    ///             Image(systemName: "checkmark")
+    ///         }
+    ///     }
+    /// }
+    /// ```
     public init(
         _ viewModel: AsyncPickerFieldViewModel<Model, Query>,
         clearValueMode: ClearValueMode = .never,
@@ -150,6 +245,11 @@ public struct FormAsyncPickerField<Model: RandomAccessCollection, Query, VConten
         }
     }
 
+    /// Determines whether to display a placeholder text instead of the selected value.
+    ///
+    /// Returns `true` if:
+    /// - The current value is `nil`
+    /// - A placeholder is provided in the view model
     private var shouldDisplayPlaceholder: Bool {
         if case .none = viewModel.value {
             hasPlaceholder
@@ -158,6 +258,12 @@ public struct FormAsyncPickerField<Model: RandomAccessCollection, Query, VConten
         }
     }
 
+    /// Determines whether to display the clear button.
+    ///
+    /// The clear button visibility is controlled by:
+    /// - The `clearValueMode` parameter
+    /// - Whether a value is currently selected
+    /// - The `isReadOnly` property of the view model
     private var shouldDisplayClearButton: Bool {
         if viewModel.isReadOnly {
             return false
@@ -172,13 +278,59 @@ public struct FormAsyncPickerField<Model: RandomAccessCollection, Query, VConten
         }
     }
 
+    /// Checks if the view model has a non-empty title.
     private var hasTitle: Bool {
         let value = String(localized: viewModel.title)
         return value.isEmpty == false
     }
 
+    /// Checks if the view model has a non-empty placeholder.
     private var hasPlaceholder: Bool {
         let value = String(localized: viewModel.placeholder ?? "")
         return value.isEmpty == false
+    }
+}
+
+extension String: Identifiable {
+    public var id: String { self }
+}
+
+#Preview("Basic") {
+    @Previewable @State var picker = AsyncPickerFieldViewModel<[String], String>(
+        value: nil,
+        title: "Color",
+        valuesProvider: { _ in ["Red", "Green", "Blue", "Yellow", "Purple"] },
+        queryBuilder: { $0 ?? "" }
+    )
+
+    Form {
+        FormAsyncPickerField(picker) { value in
+            Text(value ?? "Select color")
+        } pickerContent: { value in
+            Text(value)
+        }
+    }
+}
+
+#Preview("With Search") {
+    @Previewable @State var picker = AsyncPickerFieldViewModel<[String], String>(
+        value: nil,
+        title: "Color",
+        valuesProvider: { query in
+            let colors = ["Red", "Green", "Blue", "Yellow", "Purple"]
+            if query.isEmpty {
+                return colors
+            }
+            return colors.filter { $0.localizedCaseInsensitiveContains(query) }
+        },
+        queryBuilder: { $0 ?? "" }
+    )
+
+    Form {
+        FormAsyncPickerField(picker, allowSearch: true) { value in
+            Text(value ?? "Select color")
+        } pickerContent: { value in
+            Text(value)
+        }
     }
 }

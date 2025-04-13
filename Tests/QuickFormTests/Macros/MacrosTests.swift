@@ -33,14 +33,14 @@ let canTestMacros: Bool = {
                 class PersonFormController {
                     @Dependency
                     var loader: Loader
-                
+
                     var expectedField: String
-                
+
                     @onInit
                     func onInit() {
                         expectedField = "Hi"
                     }
-                    
+
                     @PostInit()
                     func postInit() {
                         expectedField = "Hi There"
@@ -59,7 +59,7 @@ let canTestMacros: Bool = {
                     func onInit() {
                         expectedField = "Hi"
                     }
-                    
+
                     @PostInit()
                     func postInit() {
                         expectedField = "Hi There"

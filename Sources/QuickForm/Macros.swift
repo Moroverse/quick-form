@@ -15,46 +15,98 @@ import Observation
 /// - An `update()` method to synchronize the form fields with the model.
 /// - An initializer that sets up the initial state and bindings.
 /// - Methods for tracking changes and managing observations.
-/// - If the class conforms to `Validatable`, it also generates validation-related properties and methods.
+/// - If the class conforms to ``Validatable``, it also generates validation-related properties and methods.
 ///
 /// - Parameter type: The type of the data model that this form represents.
 ///
-/// - Note: The class decorated with `@QuickForm` should also conform to `Validatable`
+/// - Note: The class decorated with `@QuickForm` should also conform to ``Validatable``
 /// if you want to use the built-in validation features.
 ///
 /// ## Example Usage:
+///
+/// ### Basic Form Model
 ///
 /// ```swift
 /// @QuickForm(Person.self)
 /// class PersonEditModel: Validatable {
 ///     @PropertyEditor(keyPath: \Person.givenName)
 ///     var firstName = FormFieldViewModel(
-///         type: String.self,
+///         value: "",
 ///         title: "First Name:",
 ///         placeholder: "John",
-///         validation: .combined(.notEmpty, .minLength(2), .maxLength(50))
+///         validation: .of(.required("First name is required"))
 ///     )
 ///
 ///     @PropertyEditor(keyPath: \Person.familyName)
 ///     var lastName = FormFieldViewModel(
-///         type: String.self,
+///         value: "",
 ///         title: "Last Name:",
 ///         placeholder: "Doe",
-///         validation: .combined(.notEmpty, .minLength(2), .maxLength(50))
+///         validation: .of(.required("Last name is required"))
 ///     )
 ///
 ///     @PropertyEditor(keyPath: \Person.dateOfBirth)
 ///     var birthday = FormFieldViewModel(
-///         type: Date.self,
+///         value: Date(),
 ///         title: "Birthday:",
-///         placeholder: "1980-01-01"
+///         placeholder: "Select date"
 ///     )
 /// }
 /// ```
 ///
-/// In this example, `@QuickForm` is applied to `PersonEditModel`, generating the necessary code to manage a form
-/// for editing a `Person` object. The `@PropertyEditor` property wrapper is used in conjunction with `@QuickForm`
-/// to create bindings between individual form fields and properties of the `Person` model.
+/// ### Advanced Form with Dependencies and Custom Validation
+///
+/// ```swift
+/// @QuickForm(Employee.self)
+/// class EmployeeFormModel: Validatable {
+///     @PropertyEditor(keyPath: \Employee.name)
+///     var name = FormFieldViewModel<String>(
+///         value: "",
+///         title: "Name:",
+///         validation: .of(.required("Name is required"))
+///     )
+///
+///     @PropertyEditor(keyPath: \Employee.department)
+///     var department = PickerFieldViewModel(
+///         value: nil,
+///         allValues: [],
+///         title: "Department:"
+///     )
+///
+///     @PropertyEditor(keyPath: \Employee.position)
+///     var position = PickerFieldViewModel(
+///         value: nil,
+///         allValues: [],
+///         title: "Position:"
+///     )
+///
+///     @PostInit
+///     func setupDependencies() {
+///         // Load departments from a service
+///         department.allValues = DepartmentService.shared.getAllDepartments()
+///
+///         // When department changes, update available positions
+///         department.onValueChanged { [weak self] newDepartment in
+///             guard let self = self, let dept = newDepartment else { return }
+///             self.position.allValues = PositionService.shared.getPositions(forDepartment: dept)
+///             self.position.value = nil
+///         }
+///
+///         // Add custom validation rule
+///         addCustomValidationRule { [weak self] in
+///             guard let self = self else { return .success }
+///             if self.department.value != nil && self.position.value == nil {
+///                 return .failure("Please select a position for the chosen department")
+///             }
+///             return .success
+///         }
+///     }
+/// }
+/// ```
+///
+/// In this example, `@QuickForm` is applied to `PersonEditModel` and `EmployeeFormModel`, generating the necessary code to manage forms
+/// for editing `Person` and `Employee` objects respectively. The `@PropertyEditor` property wrapper is used in conjunction with `@QuickForm`
+/// to create bindings between individual form fields and properties of the model.
 @attached(
     member,
     names: named(init),
@@ -93,41 +145,212 @@ public macro QuickForm<T>(_ type: T.Type) = #externalMacro(module: "QuickFormMac
 ///
 /// ## Example Usage:
 ///
+/// ### Basic Property Binding
+///
 /// ```swift
 /// @QuickForm(Person.self)
 /// class PersonEditModel: Validatable {
 ///     @PropertyEditor(keyPath: \Person.givenName)
 ///     var firstName = FormFieldViewModel(
-///         type: String.self,
+///         value: "",
 ///         title: "First Name:",
 ///         placeholder: "John",
-///         validation: .combined(.notEmpty, .minLength(2), .maxLength(50))
+///         validation: .of(.required("First name is required"))
 ///     )
 ///
 ///     @PropertyEditor(keyPath: \Person.familyName)
 ///     var lastName = FormFieldViewModel(
-///         type: String.self,
+///         value: "",
 ///         title: "Last Name:",
 ///         placeholder: "Doe",
-///         validation: .combined(.notEmpty, .minLength(2), .maxLength(50))
+///         validation: .of(.required("Last name is required"))
 ///     )
 /// }
 /// ```
 ///
-/// In this example, `@PropertyEditor` is applied to `firstName` and `lastName` properties,
-/// creating bindings between these form fields and the corresponding properties of the `Person` model.
-/// The `keyPath` parameter specifies which property in the `Person` model each field is associated with.
+/// ### Working with Different Field Types
+///
+/// ```swift
+/// @QuickForm(Order.self)
+/// class OrderFormModel: Validatable {
+///     // Text field for string property
+///     @PropertyEditor(keyPath: \Order.orderNumber)
+///     var orderNumber = FormFieldViewModel<String>(
+///         value: "",
+///         title: "Order #:",
+///         validation: .of(.pattern("^ORD-\\d{6}$", "Must be in format ORD-123456"))
+///     )
+///
+///     // Toggle field for boolean property
+///     @PropertyEditor(keyPath: \Order.isPriority)
+///     var priority = FormFieldViewModel<Bool>(
+///         value: false,
+///         title: "Priority Order"
+///     )
+///
+///     // Picker field for enum property
+///     @PropertyEditor(keyPath: \Order.status)
+///     var status = PickerFieldViewModel<OrderStatus>(
+///         value: .pending,
+///         allValues: OrderStatus.allCases,
+///         title: "Status:"
+///     )
+///
+///     // Optional text field for optional property
+///     @PropertyEditor(keyPath: \Order.notes)
+///     var notes = FormFieldViewModel<String?>(
+///         value: nil,
+///         title: "Notes:",
+///         placeholder: "Optional notes"
+///     )
+/// }
+/// ```
+///
+/// In these examples, `@PropertyEditor` is applied to form field properties,
+/// creating bindings between these fields and the corresponding properties of the model.
+/// The `keyPath` parameter specifies which property in the model each field is associated with.
 ///
 /// - Important: The type of the property decorated with `@PropertyEditor` should be compatible with
-///   the type of the property it's binding to in the data model. Typically, this will be a `FormFieldViewModel`
-///   or another type that conforms to `ValueEditor`.
+///   the type of the property it's binding to in the data model. Typically, this will be a ``FormFieldViewModel``
+///   or another type that conforms to ``ValueEditor``.
 @attached(accessor, names: named(init), named(get), named(set), named(_modify))
 @attached(peer, names: prefixed(`_`))
 public macro PropertyEditor(keyPath: Any) = #externalMacro(module: "QuickFormMacros", type: "PropertyEditorMacro")
 
+/// A macro that marks a method to be executed after the class is initialized.
+///
+/// The `@PostInit` macro allows you to define a method that will be automatically called
+/// after all properties of a `@QuickForm` class have been initialized. This is useful for
+/// setting up dependencies between form fields, configuring validation rules, or performing
+/// other setup tasks that require all properties to be initialized first.
+///
+/// ## Example Usage:
+///
+/// ```swift
+/// @QuickForm(AdditionalInfo.self)
+/// class AdditionalInfoModel {
+///     @Dependency
+///     var dependencies: Dependencies
+///
+///     @PropertyEditor(keyPath: \AdditionalInfo.resume)
+///     var resume: FormFieldViewModel<URL?>
+///
+///     @PropertyEditor(keyPath: \AdditionalInfo.coverLetter)
+///     var coverLetter = FormFieldViewModel<String?>(
+///         value: nil,
+///         title: "Cover Letter",
+///         placeholder: "Enter your cover letter"
+///     )
+///
+///     @PostInit
+///     func configure() {
+///         // Set up validation that depends on other properties
+///         resume.validation = .of(.custom { [weak self] _ in
+///             if let uploadErrorMessage = self?.uploadErrorMessage {
+///                 .failure(uploadErrorMessage)
+///             } else {
+///                 .success
+///             }
+///         })
+///
+///         // Configure field dependencies and event handlers
+///         coverLetter.onValueChanged { [weak self] newValue in
+///             guard let self = self else { return }
+///             // Update other fields based on this change
+///             updateRelatedFields(basedOn: newValue)
+///         }
+///     }
+/// }
+/// ```
+///
+/// In this example, the `configure()` method is marked with `@PostInit` and
+/// will be called automatically after the `AdditionalInfoModel` instance is fully initialized.
+/// This allows setting up complex validation rules and field dependencies that require
+/// all properties to be properly initialized.
 @attached(peer)
 public macro PostInit() = #externalMacro(module: "QuickFormMacros", type: "PostInitMacro")
+
+/// A macro that marks a method to be executed during initialization.
+///
+/// The `@OnInit` macro allows you to define a method that will be automatically called
+/// during the initialization process of a `@QuickForm` class. This is useful for performing
+/// setup tasks that need to happen as part of the initialization, such as setting default values
+/// or configuring properties before the instance is fully initialized.
+///
+/// ## Example Usage:
+///
+/// ```swift
+/// @QuickForm(Reservation.self)
+/// class ReservationFormModel: Validatable {
+///     @PropertyEditor(keyPath: \Reservation.date)
+///     var date = FormFieldViewModel<Date>(
+///         value: Date(),
+///         title: "Date:",
+///         validation: .of(.future("Reservation must be for a future date"))
+///     )
+///
+///     @PropertyEditor(keyPath: \Reservation.time)
+///     var time = PickerFieldViewModel<TimeSlot>(
+///         value: nil,
+///         allValues: [],
+///         title: "Time:"
+///     )
+///
+///     @OnInit
+///     func setDefaultDateAndTimes() {
+///         // Set default date to next available day
+///         let nextAvailableDay = Calendar.current.date(byAdding: .day, value: 1, to: Date())!
+///         date.value = nextAvailableDay
+///
+///         // Initialize available time slots
+///         time.allValues = TimeSlotService.getAvailableSlots(for: nextAvailableDay)
+///     }
+/// }
+/// ```
+///
+/// In this example, the `setDefaultDateAndTimes()` method is marked with `@OnInit` and
+/// will be called during the initialization of the `ReservationFormModel` instance.
 @attached(peer)
 public macro OnInit() = #externalMacro(module: "QuickFormMacros", type: "OnInitMacro")
+
+/// A macro that marks a method to be executed after the class is initialized.
+///
+/// The `@PostInit` macro allows you to define a method that will be automatically called
+/// after all properties of a `@QuickForm` class have been initialized. This is useful for
+/// setting up dependencies between form fields, configuring initial values, or performing
+/// other setup tasks that require all properties to be initialized first.
+///
+/// ## Example Usage:
+///
+/// ```swift
+/// @QuickForm(Product.self)
+/// class ProductFormModel: Validatable {
+///     @PropertyEditor(keyPath: \Product.category)
+///     var category = PickerFieldViewModel<ProductCategory>(
+///         value: nil,
+///         allValues: ProductCategory.allCases,
+///         title: "Category:"
+///     )
+///
+///     @PropertyEditor(keyPath: \Product.subcategory)
+///     var subcategory = PickerFieldViewModel<ProductSubcategory>(
+///         value: nil,
+///         allValues: [],
+///         title: "Subcategory:"
+///     )
+///
+///     @PostInit
+///     func setupDependencies() {
+///         // Configure dependencies between form fields
+///         category.onValueChanged { [weak self] newCategory in
+///             guard let self = self, let category = newCategory else { return }
+///
+///             // Update subcategory options based on selected category
+///             self.subcategory.allValues = category.availableSubcategories
+///             self.subcategory.value = nil
+///         }
+///     }
+/// }
+/// ```
 @attached(peer)
 public macro Dependency() = #externalMacro(module: "QuickFormMacros", type: "DependencyMacro")

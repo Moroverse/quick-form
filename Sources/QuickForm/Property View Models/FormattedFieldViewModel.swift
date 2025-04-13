@@ -8,10 +8,10 @@ import Observation
 /// A view model for managing a form field with formatted input and output.
 ///
 /// `FormattedFieldViewModel` is a generic class that handles the data, validation, and formatting
-/// for a form field that requires specific input/output formatting. It conforms to both `ValueEditor`
-/// and `Validatable` protocols, providing a complete solution for formatted form field management.
+/// for a form field that requires specific input/output formatting. It conforms to both ``ObservableValueEditor``
+/// and ``Validatable`` protocols, providing a complete solution for formatted form field management.
 ///
-/// This class is particularly useful for fields like currency, numbers, or any other data that
+/// This class is particularly useful for fields like currency, numbers, percentages, or any other data that
 /// needs to be displayed in a specific format while storing a different underlying value.
 ///
 /// ## Features
@@ -21,7 +21,9 @@ import Observation
 /// - Applies formatting to the field's value for display
 /// - Allows for custom value change handling
 ///
-/// ## Example
+/// ## Examples
+///
+/// ### Currency Formatting
 ///
 /// ```swift
 /// @QuickForm(Person.self)
@@ -32,25 +34,93 @@ import Observation
 ///         format: .currency(code: "USD"),
 ///         title: "Salary:",
 ///         placeholder: "Enter annual salary",
-///         validation: AnyValidationRule { value in
-///             guard value >= 0 else {
-///                 return .failure("Salary must be non-negative")
-///             }
-///             return .success
-///         }
+///         validation: .of(.minimum(0, "Salary must be non-negative"))
 ///     )
 /// }
 /// ```
+///
+/// ### Phone Number Formatting
+///
+/// ```swift
+/// @PropertyEditor(keyPath: \ContactInfo.phoneNumber)
+/// var phoneNumber = FormattedFieldViewModel(
+///     value: "",
+///     format: .usPhoneNumber(.parentheses),
+///     title: "Phone:",
+///     placeholder: "(555) 555-5555",
+///     validation: .of(.usPhoneNumber)
+/// )
+/// ```
+///
+/// ### Percentage Formatting
+///
+/// ```swift
+/// @PropertyEditor(keyPath: \Investment.interestRate)
+/// var interestRate = FormattedFieldViewModel(
+///     type: Double.self,
+///     format: .percent.precision(.fractionLength(2)),
+///     title: "Interest Rate:",
+///     placeholder: "Enter rate (e.g. 5.25%)",
+///     validation: .of(.range(0...100))
+/// )
+/// ```
+///
+/// ### Using with FormFormattedTextField in SwiftUI
+///
+/// ```swift
+/// struct PersonFormView: View {
+///     @Bindable var model: PersonEditModel
+///
+///     var body: some View {
+///         Form {
+///             // Basic currency field
+///             FormFormattedTextField(model.salary)
+///
+///             // Phone number with mask
+///             FormFormattedTextField(model.phoneNumber, autoMask: .phone)
+///                 .keyboardType(.phonePad)
+///
+///             // Credit card with mask
+///             FormFormattedTextField(model.creditCard, autoMask: .creditCard)
+///                 .keyboardType(.numberPad)
+///         }
+///     }
+/// }
+/// ```
+///
+/// - SeeAlso: ``FormFormattedTextField``, ``ObservableValueEditor``, ``Validatable``, ``ParseableFormatStyle``
 @Observable
 public final class FormattedFieldViewModel<F>: ObservableValueEditor, Validatable
     where F: ParseableFormatStyle, F.FormatOutput == String {
     /// The title of the form field.
+    ///
+    /// This title is typically displayed as a label next to or above the form field
+    /// to describe what information the field is collecting.
     public var title: LocalizedStringResource
+
     /// An optional placeholder text for the form field.
+    ///
+    /// The placeholder is shown when the field is empty and provides guidance to the user
+    /// about what kind of information to enter.
     public var placeholder: LocalizedStringResource?
+
     /// The format style used to format the field's value.
+    ///
+    /// This property defines how the underlying value is formatted for display
+    /// and how user input is parsed back into the underlying value type.
+    ///
+    /// When used with ``FormFormattedTextField``, this format is automatically applied
+    /// to convert between the displayed text and the underlying value.
+    ///
+    /// - SeeAlso: ``ParseableFormatStyle``
     public var format: F
+
     /// The current value of the form field.
+    ///
+    /// When this value changes:
+    /// - All subscribers registered via `onValueChanged(_:)` are notified
+    /// - Validation is performed and `validationResult` is updated
+    /// - Any UI components bound to this value are updated
     public var value: F.FormatInput {
         didSet {
             dispatcher.publish(value)
@@ -60,14 +130,24 @@ public final class FormattedFieldViewModel<F>: ObservableValueEditor, Validatabl
 
     /// Returns the raw string representation of the current value.
     ///
-    /// This property provides a simple string representation of the underlying value,
+    /// This property provides a string representation of the underlying value
     /// without applying any formatting. It's useful when you need the unformatted value
     /// for editing purposes or raw display.
     ///
     /// - If the value conforms to `CustomStringConvertible`, uses its `description` property
     /// - Otherwise, falls back to Swift's default string representation using `String(describing:)`
     ///
-    /// - Returns: A string representation of the raw value
+    /// ## Example
+    ///
+    /// ```swift
+    /// let currency = FormattedFieldViewModel(
+    ///     value: 1234.56,
+    ///     format: .currency(code: "USD")
+    /// )
+    ///
+    /// print(currency.rawStringValue) // "1234.56"
+    /// print(format.format(currency.value)) // "$1,234.56"
+    /// ```
     public var rawStringValue: String {
         if let convertible = value as? CustomStringConvertible {
             convertible.description
@@ -77,12 +157,26 @@ public final class FormattedFieldViewModel<F>: ObservableValueEditor, Validatabl
     }
 
     /// A boolean indicating whether the field is read-only.
+    ///
+    /// When set to `true`, the field should not allow user interaction or changes.
+    /// When used with ``FormFormattedTextField``, this property automatically disables editing
+    /// and applies an appropriate visual style to indicate the read-only state.
     public var isReadOnly: Bool
 
+    /// The event dispatcher for value changes.
     private var dispatcher: Dispatcher
+
+    /// The validation rule to apply to the field's value.
     private let validation: AnyValidationRule<F.FormatInput?>?
+
+    /// The current validation state of the field.
+    ///
+    /// This property is updated whenever the `value` property changes or when `validate()`
+    /// is called explicitly. When used with ``FormFormattedTextField`` and `showValidation(true)`,
+    /// validation errors are displayed automatically in the UI.
     private(set) var validationResult: ValidationResult = .success
-    /// Initializes a new instance of `FormattedFieldViewModel`.
+
+    /// Initializes a new instance of ``FormattedFieldViewModel``.
     ///
     /// - Parameters:
     ///   - value: The initial value of the form field.
@@ -91,6 +185,24 @@ public final class FormattedFieldViewModel<F>: ObservableValueEditor, Validatabl
     ///   - placeholder: An optional placeholder text for the form field.
     ///   - isReadOnly: A boolean indicating whether the field is read-only. Defaults to `false`.
     ///   - validation: An optional validation rule for the field.
+    ///
+    /// ## Example
+    ///
+    /// ```swift
+    /// let phoneField = FormattedFieldViewModel(
+    ///     value: "",
+    ///     format: .usPhoneNumber(.parentheses),
+    ///     title: "Phone:",
+    ///     placeholder: "Enter phone number",
+    ///     validation: .of(.usPhoneNumber)
+    /// )
+    ///
+    /// // Use the field in a SwiftUI view
+    /// var body: some View {
+    ///     FormFormattedTextField(phoneField)
+    ///         .keyboardType(.phonePad)
+    /// }
+    /// ```
     public init(
         value: F.FormatInput,
         format: F,

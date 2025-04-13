@@ -6,18 +6,21 @@ import SwiftUI
 
 /// A SwiftUI view that represents a date picker in a form.
 ///
-/// `FormDatePickerField` is designed to work with `FormFieldViewModel<Date>` to provide
+/// `FormDatePickerField` is designed to work with ``FormFieldViewModel<Date>`` to provide
 /// an interface for selecting dates. This view is particularly useful for inputting
 /// birthdays, appointment dates, deadlines, or any other date-related information in a form.
 ///
 /// ## Features
 /// - Displays a date picker with a label
-/// - Supports customizable date picker styles
+/// - Supports customizable date picker styles (graphical, wheel, compact)
+/// - Allows restricting the selectable date range
 /// - Allows specifying which date components to display (date, time, or both)
 /// - Automatically binds to a Date value in the view model
-/// - Supports read-only mode
+/// - Supports read-only mode for displaying dates without allowing changes
 ///
-/// ## Example
+/// ## Examples
+///
+/// ### Basic Usage
 ///
 /// ```swift
 /// struct EventForm: View {
@@ -29,26 +32,97 @@ import SwiftUI
 ///
 ///     var body: some View {
 ///         Form {
+///             FormDatePickerField(viewModel)
+///         }
+///     }
+/// }
+/// ```
+///
+/// ### With Custom Style and Components
+///
+/// ```swift
+/// // A date and time picker with graphical style
+/// FormDatePickerField(
+///     viewModel,
+///     displayedComponents: [.date, .hourAndMinute],
+///     style: .graphical
+/// )
+///
+/// // A date-only picker with wheel style
+/// FormDatePickerField(
+///     viewModel,
+///     displayedComponents: [.date],
+///     style: .wheel
+/// )
+///
+/// // A time-only picker with automatic style
+/// FormDatePickerField(
+///     viewModel,
+///     displayedComponents: [.hourAndMinute]
+/// )
+/// ```
+///
+/// ### With Date Range Restriction
+///
+/// ```swift
+/// @QuickForm(Event.self)
+/// class EventFormModel: Validatable {
+///     @PropertyEditor(keyPath: \Event.date)
+///     var date = FormFieldViewModel(
+///         type: Date.self,
+///         title: "Event Date:"
+///     )
+/// }
+///
+/// struct EventFormView: View {
+///     @Bindable var model: EventFormModel
+///
+///     var body: some View {
+///         Form {
+///             // Restrict to dates from today forward only
 ///             FormDatePickerField(
-///                 viewModel,
-///                 displayedComponents: [.date, .hourAndMinute],
+///                 model.date,
+///                 range: Date()...Calendar.current.date(byAdding: .year, value: 1, to: Date())!,
+///                 displayedComponents: [.date],
 ///                 style: .graphical
 ///             )
 ///         }
 ///     }
 /// }
 /// ```
+///
+/// - SeeAlso: ``FormFieldViewModel``, ``DefaultDatePickerStyle``
 public struct FormDatePickerField<S: DatePickerStyle>: View {
     @Bindable private var viewModel: FormFieldViewModel<Date>
     private let displayedComponents: DatePickerComponents
     private let range: ClosedRange<Date>?
     private var style: S
+
     /// Initializes a new `FormDatePickerField`.
     ///
     /// - Parameters:
-    ///   - viewModel: The view model that manages the state of this date picker field.
-    ///   - displayedComponents: The components of the date to display in the picker. Defaults to `[.date]`.
-    ///   - style: The style to apply to the date picker. Defaults to `.automatic`.
+    ///   - viewModel: The ``FormFieldViewModel`` that manages the state of this date picker field.
+    ///   - range: An optional range that restricts which dates can be selected. When `nil` (default),
+    ///     any date can be selected.
+    ///   - displayedComponents: The components of the date to display in the picker. Defaults to `[.date]`,
+    ///     which shows only the calendar date without time. Use `[.date, .hourAndMinute]` to include time.
+    ///   - style: The style to apply to the date picker. Defaults to `.automatic`, which lets the system
+    ///     choose the most appropriate style for the current context.
+    ///
+    /// ## Example
+    ///
+    /// ```swift
+    /// // Create a date picker for selecting a future date within the next year
+    /// let calendar = Calendar.current
+    /// let nextYear = calendar.date(byAdding: .year, value: 1, to: Date())!
+    ///
+    /// FormDatePickerField(
+    ///     viewModel,
+    ///     range: Date()...nextYear,
+    ///     displayedComponents: [.date],
+    ///     style: .graphical
+    /// )
+    /// ```
     public init(
         _ viewModel: FormFieldViewModel<Date>,
         range: ClosedRange<Date>? = nil,
@@ -61,6 +135,11 @@ public struct FormDatePickerField<S: DatePickerStyle>: View {
         self.style = style
     }
 
+    /// The body of the `FormDatePickerField` view.
+    ///
+    /// This view creates a SwiftUI `DatePicker` bound to the view model's value.
+    /// The picker is configured with the specified date range (if provided),
+    /// displayed components, and styling.
     public var body: some View {
         stylized {
             if let range {
@@ -80,6 +159,10 @@ public struct FormDatePickerField<S: DatePickerStyle>: View {
         }
     }
 
+    /// Applies styling to the date picker content.
+    ///
+    /// - Parameter content: The content view to be styled.
+    /// - Returns: The styled content view.
     func stylized(@ViewBuilder content: @escaping () -> some View) -> some View {
         content()
             .font(.headline)

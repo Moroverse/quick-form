@@ -8,19 +8,21 @@ import Observation
 /// A view model for managing a single form field's state and behavior.
 ///
 /// `FormFieldViewModel` is a generic class that handles the data, validation, and interaction
-/// logic for a form field. It conforms to both `ValueEditor` and `Validatable` protocols,
+/// logic for a form field. It conforms to both ``ObservableValueEditor`` and ``Validatable`` protocols,
 /// providing a complete solution for form field management.
 ///
-/// You typically use this class in conjunction with the `@PropertyEditor` macro within a
-/// `@QuickForm`-annotated class.
+/// This is the primary view model for most form fields in QuickForm, supporting various field types like
+/// text fields, toggles, steppers, and more. You typically use this class in conjunction with the
+/// ``PropertyEditor`` macro within a ``QuickForm``-annotated class.
 ///
 /// ## Features
 /// - Manages the field's value, title, and placeholder
 /// - Handles read-only state
 /// - Provides built-in validation support
 /// - Allows for custom value change handling
+/// - Works with a wide range of UI components
 ///
-/// ## Example
+/// ## Basic Example
 ///
 /// ```swift
 /// @QuickForm(Person.self)
@@ -37,22 +39,106 @@ import Observation
 ///     var age = FormFieldViewModel(
 ///         type: Int.self,
 ///         title: "Age:",
-///         validation: AnyValidationRule { value in
-///             guard value >= 0 && value <= 120 else {
-///                 return .failure("Age must be between 0 and 120")
-///             }
-///             return .success
+///         validation: .custom { value in
+///             (value >= 0 && value <= 120) ? .success : .failure("Age must be between 0 and 120")
 ///         }
 ///     )
 /// }
 /// ```
+///
+/// ## Using With SwiftUI Form Components
+///
+/// `FormFieldViewModel` works with various SwiftUI form components:
+///
+/// ### Text Field
+///
+/// ```swift
+/// // In your view:
+/// FormTextField(model.name)
+/// ```
+///
+/// ### Toggle Field
+///
+/// ```swift
+/// // Boolean property
+/// @PropertyEditor(keyPath: \Settings.notifications)
+/// var notifications = FormFieldViewModel(
+///     value: true,
+///     title: "Enable Notifications"
+/// )
+///
+/// // In your view:
+/// FormToggleField(model.notifications)
+/// ```
+///
+/// ### Stepper Field
+///
+/// ```swift
+/// // Numeric property
+/// @PropertyEditor(keyPath: \Order.quantity)
+/// var quantity = FormFieldViewModel(
+///     value: 1,
+///     title: "Quantity:"
+/// )
+///
+/// // In your view:
+/// FormStepperField(viewModel: model.quantity, range: 1...10)
+/// ```
+///
+/// ### Date Picker Field
+///
+/// ```swift
+/// // Date property
+/// @PropertyEditor(keyPath: \Event.date)
+/// var date = FormFieldViewModel(
+///     value: Date(),
+///     title: "Event Date:"
+/// )
+///
+/// // In your view:
+/// FormDatePickerField(model.date)
+/// ```
+///
+/// ## Validation
+///
+/// The model supports validation through the ``AnyValidationRule`` type:
+///
+/// ```swift
+/// // Email validation
+/// @PropertyEditor(keyPath: \User.email)
+/// var email = FormFieldViewModel(
+///     type: String.self,
+///     title: "Email:",
+///     placeholder: "Enter your email",
+///     validation: .combined(
+///         .notEmpty,
+///         .custom { value in
+///             value.contains("@") ? .success : .failure("Invalid email format")
+///         }
+///     )
+/// )
+/// ```
+///
+/// - SeeAlso: ``ObservableValueEditor``, ``Validatable``, ``FormTextField``, ``FormToggleField``
 @Observable
 public final class FormFieldViewModel<Property>: ObservableValueEditor, Validatable {
     /// The title of the form field.
+    ///
+    /// This title is typically displayed as a label beside or above the form field
+    /// in the UI to identify the purpose of the field.
     public var title: LocalizedStringResource
+
     /// An optional placeholder text for the form field.
+    ///
+    /// The placeholder is displayed when the field is empty and provides guidance
+    /// to the user about what kind of information should be entered.
     public var placeholder: LocalizedStringResource?
+
     /// The current value of the form field.
+    ///
+    /// When this value changes:
+    /// - All subscribers registered via `onValueChanged(_:)` are notified
+    /// - Validation is performed and `validationResult` is updated
     public var value: Property {
         didSet {
             dispatcher.publish(value)
@@ -61,11 +147,26 @@ public final class FormFieldViewModel<Property>: ObservableValueEditor, Validata
     }
 
     /// A boolean indicating whether the field is read-only.
+    ///
+    /// When `true`, the field should not allow user edits. UI components using
+    /// this view model should respect this value and render accordingly.
     public var isReadOnly: Bool
 
+    /// The event dispatcher for value change notifications.
     private var dispatcher: Dispatcher
+
+    /// The validation rule to apply to the field's value.
+    ///
+    /// This rule is evaluated whenever the `value` property changes or when
+    /// `validate()` or `revalidate()` is called explicitly.
     public var validation: AnyValidationRule<Property>?
+
+    /// The current validation state of the field.
+    ///
+    /// This property indicates whether the current field value meets
+    /// the validation requirements.
     private(set) var validationResult: ValidationResult = .success
+
     /// Initializes a new instance of `FormFieldViewModel`.
     ///
     /// - Parameters:
@@ -74,6 +175,17 @@ public final class FormFieldViewModel<Property>: ObservableValueEditor, Validata
     ///   - placeholder: An optional placeholder text for the form field.
     ///   - isReadOnly: A boolean indicating whether the field is read-only. Defaults to `false`.
     ///   - validation: An optional validation rule for the field.
+    ///
+    /// ## Example
+    ///
+    /// ```swift
+    /// let nameField = FormFieldViewModel(
+    ///     value: "John",
+    ///     title: "Name:",
+    ///     placeholder: "Enter your full name",
+    ///     validation: .of(.notEmpty)
+    /// )
+    /// ```
     public init(
         value: Property,
         title: LocalizedStringResource = "",
@@ -81,7 +193,7 @@ public final class FormFieldViewModel<Property>: ObservableValueEditor, Validata
         isReadOnly: Bool = false,
         validation: AnyValidationRule<Property>? = nil
     ) {
-        _value = value
+        self.value = value
         self.title = title
         self.placeholder = placeholder
         self.isReadOnly = isReadOnly
@@ -92,8 +204,26 @@ public final class FormFieldViewModel<Property>: ObservableValueEditor, Validata
 
     /// Sets a closure to be called when the value changes.
     ///
+    /// This method allows you to respond to changes in the field's value,
+    /// which is useful for implementing dependencies between fields or
+    /// updating other parts of your UI in response to field changes.
+    ///
     /// - Parameter change: A closure that takes the new value as its parameter.
-    /// - Returns: The `FormFieldViewModel` instance for method chaining.
+    /// - Returns: A ``Subscription`` object that can be used to unsubscribe when needed.
+    ///
+    /// ## Example
+    ///
+    /// ```swift
+    /// let subscription = nameField.onValueChanged { newName in
+    ///     // Update UI or trigger other logic based on name changes
+    ///     print("Name changed to: \(newName)")
+    /// }
+    ///
+    /// // Later, when no longer needed:
+    /// subscription.unsubscribe()
+    /// ```
+    ///
+    /// - SeeAlso: ``Subscription``, ``Dispatcher``
     @discardableResult
     public func onValueChanged(_ change: @escaping (Property) -> Void) -> Subscription {
         dispatcher.subscribe(handler: change)
@@ -101,18 +231,68 @@ public final class FormFieldViewModel<Property>: ObservableValueEditor, Validata
 
     /// Performs validation on the current value.
     ///
-    /// - Returns: A `ValidationResult` indicating whether the validation succeeded or failed.
+    /// This method evaluates the field's value against the validation rule
+    /// provided during initialization. If no validation rule was provided,
+    /// it returns `.success`.
+    ///
+    /// - Returns: A ``ValidationResult`` indicating whether validation succeeded or failed.
+    ///
+    /// - SeeAlso: ``ValidationResult``, ``AnyValidationRule``
     public func validate() -> ValidationResult {
         validation?.validate(value) ?? .success
     }
 
+    /// Manually triggers validation and updates the validation result.
+    ///
+    /// This method is useful when you need to validate the field without
+    /// changing its value, for example when initially loading a form.
+    ///
+    /// ## Example
+    ///
+    /// ```swift
+    /// // Validate all fields in a form
+    /// func validateForm() {
+    ///     nameField.revalidate()
+    ///     emailField.revalidate()
+    ///     ageField.revalidate()
+    /// }
+    /// ```
+    ///
+    /// - Returns: The `FormFieldViewModel` instance for method chaining.
     @discardableResult
-    public func revalidate() {
+    public func revalidate() -> Self {
         validationResult = validation?.validate(value) ?? .success
+        return self
     }
 }
 
+/// Extension providing convenience initializers for types that conform to ``DefaultValueProvider``.
 public extension FormFieldViewModel where Property: DefaultValueProvider {
+    /// Convenience initializer that uses the default value of the property type.
+    ///
+    /// This initializer allows you to specify the type of property instead of providing
+    /// an explicit initial value. The default value is obtained from the type's implementation
+    /// of ``DefaultValueProvider``.
+    ///
+    /// - Parameters:
+    ///   - type: The type of property.
+    ///   - title: The title of the form field.
+    ///   - placeholder: An optional placeholder text for the form field.
+    ///   - isReadOnly: A boolean indicating whether the field is read-only. Defaults to `false`.
+    ///   - validation: An optional validation rule for the field.
+    ///
+    /// ## Example
+    ///
+    /// ```swift
+    /// // Creates a field with an empty string as the default value
+    /// let nameField = FormFieldViewModel(
+    ///     type: String.self,
+    ///     title: "Name:",
+    ///     placeholder: "Enter your name"
+    /// )
+    /// ```
+    ///
+    /// - SeeAlso: ``DefaultValueProvider``
     convenience init(
         type: Property.Type,
         title: LocalizedStringResource = "",

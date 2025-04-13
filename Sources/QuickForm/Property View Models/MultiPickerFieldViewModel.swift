@@ -5,47 +5,76 @@
 import Foundation
 import Observation
 
-/// A view model for managing a form field with a picker-style selection.
+/// A view model for managing a multi-selection form field with picker-style interaction.
 ///
 /// `MultiPickerFieldViewModel` is a generic class that handles the data and interaction logic
-/// for a form field that presents a set of options to pick a subset. It conforms to the
-/// `ValueEditor` protocol, providing a solution for picker-based form field management.
+/// for form fields where users need to select multiple items from a predefined set of options.
+/// It maintains a set of selected values and provides mechanisms for tracking changes.
 ///
-/// This class is particularly useful for fields where the user needs to select from a
-/// predefined set of options, such as categories, types, or any enumerable values.
+/// This class is primarily designed to be used with ``FormMultiPickerSection`` to create
+/// multi-selection interfaces like checkboxes, tags, or multi-select lists.
 ///
 /// ## Features
-/// - Manages the field's selected values and title
-/// - Provides a list of all available options
-/// - Handles read-only state
-/// - Allows for custom value change handling
+/// - Manages a set of selected values from available options
+/// - Provides a list of all available options to choose from
+/// - Handles read-only state for display-only scenarios
+/// - Enables change tracking through an observer pattern
+/// - Seamlessly integrates with ``FormMultiPickerSection`` for UI presentation
 ///
 /// ## Example
 ///
 /// ```swift
-/// enum Category: String, CaseIterable, CustomStringConvertible {
-///     case food, travel, entertainment
+/// // Define your selectable items
+/// enum Category: String, CaseIterable, CustomStringConvertible, Hashable {
+///     case food, travel, entertainment, utilities, shopping
 ///
 ///     var description: String { rawValue.capitalized }
 /// }
 ///
+/// // Use in a form model
 /// @QuickForm(Expense.self)
 /// class ExpenseEditModel: Validatable {
-///     @PropertyEditor(keyPath: \Expense.category)
-///     var category = PickerFieldViewModel(
-///         type: Category.self,
-///         allValues: Category.allCases,
-///         title: "Important:"
+///     @PropertyEditor(keyPath: \Expense.categories)
+///     var categories = MultiPickerFieldViewModel(
+///         value: [.food, .utilities],  // Initially selected categories
+///         allValues: Category.allCases.map { $0 },
+///         title: "Categories"
 ///     )
+/// }
+///
+/// // Create the UI using FormMultiPickerSection
+/// struct ExpenseCategoriesView: View {
+///     @Bindable var model: ExpenseEditModel
+///
+///     var body: some View {
+///         Form {
+///             FormMultiPickerSection(model.categories)
+///                 .onChange(of: model.categories.value) { oldValue, newValue in
+///                     print("Selected categories changed to: \(newValue)")
+///                 }
+///         }
+///     }
 /// }
 /// ```
 @Observable
 public final class MultiPickerFieldViewModel<Property: Hashable & CustomStringConvertible>: ObservableValueEditor {
     /// The title of the picker field.
+    ///
+    /// This title is typically displayed as a section header or label
+    /// when using ``FormMultiPickerSection``.
     public var title: LocalizedStringResource
-    /// An array of all available values for the picker.
+
+    /// An array of all available values for selection.
+    ///
+    /// These values are presented as options in the UI, and the user
+    /// can select any number of them to include in the `value` set.
     public var allValues: [Property]
-    /// The currently selected value.
+
+    /// The current set of selected values.
+    ///
+    /// When this set changes:
+    /// - All subscribers registered via `onValueChanged(_:)` are notified
+    /// - The UI will be updated to reflect the new selection state
     public var value: Set<Property> {
         didSet {
             dispatcher.publish(value)
@@ -53,16 +82,33 @@ public final class MultiPickerFieldViewModel<Property: Hashable & CustomStringCo
     }
 
     /// A boolean indicating whether the field is read-only.
+    ///
+    /// When `true`, the field should not allow user interaction or changes.
+    /// UI components using this view model should respect this property and
+    /// render the field in a read-only state.
     public var isReadOnly: Bool
 
+    /// The dispatcher for value change notifications.
     private var dispatcher: Dispatcher
-    /// Initializes a new instance of `PickerFieldViewModel`.
+
+    /// Initializes a new instance of `MultiPickerFieldViewModel`.
     ///
     /// - Parameters:
-    ///   - value: The initial selected value.
-    ///   - allValues: An array of all available values for the picker.
+    ///   - value: The initial set of selected values.
+    ///   - allValues: An array of all available values for selection.
     ///   - title: The title of the picker field.
     ///   - isReadOnly: A boolean indicating whether the field is read-only. Defaults to `false`.
+    ///
+    /// ## Example
+    ///
+    /// ```swift
+    /// // Create a multi-picker for selecting days of week
+    /// let weekdayPicker = MultiPickerFieldViewModel(
+    ///     value: [.monday, .wednesday, .friday],  // Initially selected
+    ///     allValues: DayOfWeek.allCases,
+    ///     title: "Working Days"
+    /// )
+    /// ```
     public init(
         value: Set<Property>,
         allValues: [Property],
@@ -76,10 +122,24 @@ public final class MultiPickerFieldViewModel<Property: Hashable & CustomStringCo
         dispatcher = Dispatcher()
     }
 
-    /// Sets a closure to be called when the selected value changes.
+    /// Sets a closure to be called when the set of selected values changes.
     ///
-    /// - Parameter change: A closure that takes the new selected value as its parameter.
-    /// - Returns: The `PickerFieldViewModel` instance for method chaining.
+    /// - Parameter change: A closure that takes the new set of selected values as its parameter.
+    /// - Returns: A ``Subscription`` that can be used to unsubscribe when needed.
+    ///
+    /// ## Example
+    ///
+    /// ```swift
+    /// let subscription = categoryPicker.onValueChanged { selectedCategories in
+    ///     // Update other dependent fields or perform actions
+    ///     updateAvailableOptions(based: selectedCategories)
+    /// }
+    ///
+    /// // Later, when no longer needed:
+    /// subscription.unsubscribe()
+    /// ```
+    ///
+    /// - SeeAlso: ``Subscription``, ``Dispatcher``
     @discardableResult
     public func onValueChanged(_ change: @escaping (Set<Property>) -> Void) -> Subscription {
         dispatcher.subscribe(handler: change)
@@ -87,13 +147,28 @@ public final class MultiPickerFieldViewModel<Property: Hashable & CustomStringCo
 }
 
 public extension MultiPickerFieldViewModel {
-    /// Convenience initializer that uses a set with a default value.
+    /// Convenience initializer that starts with an empty selection set.
     ///
     /// - Parameters:
-    ///   - type: The type of picker items.
-    ///   - allValues: An array of all available values for the picker.
+    ///   - type: The type of selectable items.
+    ///   - allValues: An array of all available values for selection.
+    ///   - includeDefaultValue: Unused parameter, kept for API compatibility.
     ///   - title: The title of the picker field.
     ///   - isReadOnly: A boolean indicating whether the field is read-only.
+    ///
+    /// ## Example
+    ///
+    /// ```swift
+    /// // Create a multi-picker with initially empty selection
+    /// let tagPicker = MultiPickerFieldViewModel(
+    ///     type: Tag.self,
+    ///     allValues: availableTags,
+    ///     title: "Select Tags"
+    /// )
+    ///
+    /// // Then use it with a FormMultiPickerSection
+    /// FormMultiPickerSection(tagPicker)
+    /// ```
     convenience init(
         type: Property.Type,
         allValues: [Property],
