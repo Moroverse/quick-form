@@ -12,7 +12,7 @@ struct AutoMaskTests {
 
     @Test("PhoneMask.apply formats phone number correctly")
     func phoneMaskFormatsCorrectly() {
-        let mask = PhoneMask()
+        let mask = USPhoneMask()
 
         // Test empty string
         #expect(mask.apply(to: "") == "")
@@ -39,7 +39,7 @@ struct AutoMaskTests {
 
     @Test("PhoneMask.isAllowed filters non-digits")
     func phoneMaskFiltersNonDigits() {
-        let mask = PhoneMask()
+        let mask = USPhoneMask()
 
         // Digits should be allowed
         for digit in "0123456789" {
@@ -158,7 +158,7 @@ struct AutoMaskTests {
     @Test("Mask formatting is idempotent")
     func maskFormattingIsIdempotent() {
         // Applying the same mask multiple times should yield the same result
-        let phoneMask = PhoneMask()
+        let phoneMask = USPhoneMask()
         let input = "1234567890"
 
         let firstApply = phoneMask.apply(to: input)
