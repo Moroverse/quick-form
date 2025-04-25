@@ -1,5 +1,9 @@
 # QuickForm
 
+@Metadata {
+    @TechnologyRoot
+}
+
 QuickForm is a Swift package that provides a declarative way to create form-based user interfaces with automatic data binding and validation.
 
 ## Overview
@@ -15,6 +19,8 @@ Add the following dependency to your `Package.swift` file:
 ```
 
 ## Main Components
+
+- ``/QuickForm``
 
 ### Macros
 - ``QuickForm(_:)``
@@ -72,6 +78,9 @@ Add the following dependency to your `Package.swift` file:
 - ``AutoMask``
 - ``ClearValueMode``
 
+## Essentials
+- <doc:GettingStarted>
+
 ## Usage Example
 
 Here's a basic example of how to use QuickForm to create a person editing form:
@@ -100,21 +109,21 @@ validation: .combined(.notEmpty, .minLength(2), .maxLength(50))
 
 @PropertyEditor(keyPath: \Person.dateOfBirth)
 var birthday = FormFieldViewModel(
-    type: Date.self,
-    title: "Birthday:",
-    placeholder: "1980-01-01"
-    )
+type: Date.self,
+title: "Birthday:",
+placeholder: "1980-01-01"
+)
 }
 
 struct PersonEditView: View {
 @Bindable var quickForm: PersonEditModel
 
 var body: some View {
-    Form {
-        FormTextField(quickForm.firstName)
-        FormTextField(quickForm.lastName)
-        FormDatePickerField(quickForm.birthday)
-    }
+Form {
+FormTextField(quickForm.firstName)
+FormTextField(quickForm.lastName)
+FormDatePickerField(quickForm.birthday)
+}
 }
 }
 ```
