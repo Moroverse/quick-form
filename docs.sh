@@ -1,5 +1,5 @@
 SCHEME="QuickForm"
-DOCC_BUNDLE_PATH="./Sources/Documentation.docc"
+DOCC_BUNDLE_PATH="./Sources/QuickForm/Documentation.docc"
 
 # Paths used in the script.
 DERIVED_DATA_DIR=".deriveddata"

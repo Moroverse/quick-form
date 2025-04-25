@@ -22,63 +22,63 @@ Add the following dependency to your `Package.swift` file:
 
 ### Frameworks
  
-- ``/QuickForm``
+- ``QuickForm``
 
 ### Macros
-- ``/QuickForm/QuickForm(_:)``
-- ``/QuickForm/PropertyEditor(keyPath:)``
-- ``/QuickForm/PostInit()``
-- ``/QuickForm/OnInit()``
-- ``/QuickForm/Dependency()``
+- ``QuickForm(_:)``
+- ``PropertyEditor(keyPath:)``
+- ``PostInit()``
+- ``OnInit()``
+- ``Dependency()``
 
 ### Form Field Models
-- ``/QuickForm/FormFieldViewModel``
-- ``/QuickForm/FormattedFieldViewModel``
-- ``/QuickForm/PickerFieldViewModel``
-- ``/QuickForm/OptionalPickerFieldViewModel``
-- ``/QuickForm/MultiPickerFieldViewModel``
-- ``/QuickForm/FormCollectionViewModel``
-- ``/QuickForm/AsyncPickerFieldViewModel``
-- ``/QuickForm/TokenSetViewModel``
-- ``/QuickForm/ValueEditorTransformer``
-- ``/QuickForm/ModelTransformer``
+- ``FormFieldViewModel``
+- ``FormattedFieldViewModel``
+- ``PickerFieldViewModel``
+- ``OptionalPickerFieldViewModel``
+- ``MultiPickerFieldViewModel``
+- ``FormCollectionViewModel``
+- ``AsyncPickerFieldViewModel``
+- ``TokenSetViewModel``
+- ``ValueEditorTransformer``
+- ``ModelTransformer``
 
 ### Form Field Editors
-- ``/QuickForm/FormTextField``
-- ``/QuickForm/FormOptionalTextField``
-- ``/QuickForm/FormFormattedTextField``
-- ``/QuickForm/FormPickerField``
-- ``/QuickForm/FormOptionalPickerField``
-- ``/QuickForm/FormValueUnitField``
-- ``/QuickForm/FormValueDimensionField``
-- ``/QuickForm/FormOptionalValueUnitField``
-- ``/QuickForm/FormToggleField``
-- ``/QuickForm/FormDatePickerField``
-- ``/QuickForm/FormCollectionSection``
-- ``/QuickForm/FormMultiPickerSection``
-- ``/QuickForm/FormAsyncPickerField``
-- ``/QuickForm/FormSecureTextField``
-- ``/QuickForm/FormTextEditor``
-- ``/QuickForm/FormTokenSetField``
-- ``/QuickForm/FormStepperField``
-- ``/QuickForm/DismissibleButton``
+- ``FormTextField``
+- ``FormOptionalTextField``
+- ``FormFormattedTextField``
+- ``FormPickerField``
+- ``FormOptionalPickerField``
+- ``FormValueUnitField``
+- ``FormValueDimensionField``
+- ``FormOptionalValueUnitField``
+- ``FormToggleField``
+- ``FormDatePickerField``
+- ``FormCollectionSection``
+- ``FormMultiPickerSection``
+- ``FormAsyncPickerField``
+- ``FormSecureTextField``
+- ``FormTextEditor``
+- ``FormTokenSetField``
+- ``FormStepperField``
+- ``DismissibleButton``
 
 ### Validators
-- ``/QuickForm/Validatable``
-- ``/QuickForm/ValidationRule``
-- ``/QuickForm/ValidationResult``
-- ``/QuickForm/MaxLengthRule``
-- ``/QuickForm/MinLengthRule``
-- ``/QuickForm/NotEmptyRule``
-- ``/QuickForm/RequiredRule``
-- ``/QuickForm/AnyValidationRule``
-- ``/QuickForm/combined(_:_:)``
+- ``Validatable``
+- ``ValidationRule``
+- ``ValidationResult``
+- ``MaxLengthRule``
+- ``MinLengthRule``
+- ``NotEmptyRule``
+- ``RequiredRule``
+- ``AnyValidationRule``
+- ``combined(_:_:)``
 
 ### Formatters
-- ``/QuickForm/OptionalFormat``
-- ``/QuickForm/PlainStringFormat``
-- ``/QuickForm/AutoMask``
-- ``/QuickForm/ClearValueMode``
+- ``OptionalFormat``
+- ``PlainStringFormat``
+- ``AutoMask``
+- ``ClearValueMode``
 
 ## Essentials
 - <doc:GettingStarted>
