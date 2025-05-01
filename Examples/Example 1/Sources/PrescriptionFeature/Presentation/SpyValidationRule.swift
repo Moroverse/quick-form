@@ -1,6 +1,6 @@
 // SpyValidationRule.swift
 // Copyright (c) 2025 Moroverse
-// Created by Daniel Moro on 2024-10-22 02:17 GMT.
+// Created by Daniel Moro on 2024-09-30 18:03 GMT.
 
 //
 //  AgeValidationRule.swift

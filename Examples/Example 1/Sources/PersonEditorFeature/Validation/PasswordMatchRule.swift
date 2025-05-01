@@ -1,6 +1,6 @@
 // PasswordMatchRule.swift
 // Copyright (c) 2025 Moroverse
-// Created by Daniel Moro on 2024-09-15 05:19 GMT.
+// Created by Daniel Moro on 2024-09-15 05:33 GMT.
 
 //
 //  AgeValidationRule 2.swift

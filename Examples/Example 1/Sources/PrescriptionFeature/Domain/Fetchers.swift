@@ -1,6 +1,6 @@
 // Fetchers.swift
 // Copyright (c) 2025 Moroverse
-// Created by Daniel Moro on 2024-09-22 04:54 GMT.
+// Created by Daniel Moro on 2024-09-18 03:29 GMT.
 
 final class SubstanceFetcher {
     static let shared = SubstanceFetcher()

@@ -1,6 +1,6 @@
 // AvatarFetcher.swift
 // Copyright (c) 2025 Moroverse
-// Created by Daniel Moro on 2024-09-15 18:18 GMT.
+// Created by Daniel Moro on 2024-09-15 16:46 GMT.
 
 final class AvatarFetcher {
     static let shared = AvatarFetcher()

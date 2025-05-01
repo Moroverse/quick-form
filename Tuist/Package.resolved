@@ -1,22 +1,22 @@
 {
-  "originHash" : "18d7723fe5d36f8c77a725ed1e266637a788ce0d6d18bd23d190dbe80ef8d56b",
+  "originHash" : "f743fc81f4fa07f587df29b7772c720f599bcc099573285998c48617551a3bc1",
   "pins" : [
     {
       "identity" : "factory",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/hmlongco/Factory.git",
       "state" : {
-        "revision" : "fb04a8918848e413d3921d346a23bae7f81088d9",
-        "version" : "2.4.3"
+        "revision" : "bc745a7766bdad645de4ee9528a5d320b1c4783f",
+        "version" : "2.4.7"
       }
     },
     {
       "identity" : "swift-syntax",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/swiftlang/swift-syntax",
+      "location" : "https://github.com/swiftlang/swift-syntax.git",
       "state" : {
-        "revision" : "515f79b522918f83483068d99c68daeb5116342d",
-        "version" : "600.0.0-prerelease-2024-09-04"
+        "revision" : "0687f71944021d616d34d922343dcef086855920",
+        "version" : "600.0.1"
       }
     },
     {
