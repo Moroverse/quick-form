@@ -23,7 +23,7 @@ Add QuickForm to your `Package.swift` file:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/moroverse/quick-form.git", from: "1.0.0")
+    .package(url: "https://github.com/moroverse/quick-form.git", from: "0.1.0")
 ]
 ```
 
@@ -39,4 +39,4 @@ The  [online documentation][Documentation] provides comprehensive guides, code e
 ## License
 MIT License - See [LICENSE.txt](LICENSE.txt) for details.
 
-[Documentation]: https://moroverse.github.io/quick-form
+[Documentation]: https://moroverse.github.io/quick-form/documentation/quickform/
