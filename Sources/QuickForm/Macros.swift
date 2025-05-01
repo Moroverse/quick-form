@@ -229,8 +229,6 @@ public macro PropertyEditor(keyPath: Any) = #externalMacro(module: "QuickFormMac
 /// ```swift
 /// @QuickForm(AdditionalInfo.self)
 /// class AdditionalInfoModel {
-///     @Dependency
-///     var dependencies: Dependencies
 ///
 ///     @PropertyEditor(keyPath: \AdditionalInfo.resume)
 ///     var resume: FormFieldViewModel<URL?>
@@ -265,7 +263,7 @@ public macro PropertyEditor(keyPath: Any) = #externalMacro(module: "QuickFormMac
 ///
 /// In this example, the `configure()` method is marked with `@PostInit` and
 /// will be called automatically after the `AdditionalInfoModel` instance is fully initialized.
-/// This allows setting up complex validation rules and field dependencies that require
+/// This allows setting up complex validation rules that require
 /// all properties to be properly initialized.
 @attached(peer)
 public macro PostInit() = #externalMacro(module: "QuickFormMacros", type: "PostInitMacro")
@@ -280,36 +278,33 @@ public macro PostInit() = #externalMacro(module: "QuickFormMacros", type: "PostI
 /// ## Example Usage:
 ///
 /// ```swift
-/// @QuickForm(Reservation.self)
-/// class ReservationFormModel: Validatable {
-///     @PropertyEditor(keyPath: \Reservation.date)
-///     var date = FormFieldViewModel<Date>(
-///         value: Date(),
-///         title: "Date:",
-///         validation: .of(.future("Reservation must be for a future date"))
-///     )
+/// @QuickForm(Product.self)
+/// class ProductFormModel: Validatable {
+///     @Dependency
+///     var dependencies: Dependencies
 ///
-///     @PropertyEditor(keyPath: \Reservation.time)
-///     var time = PickerFieldViewModel<TimeSlot>(
-///         value: nil,
-///         allValues: [],
-///         title: "Time:"
-///     )
+///     @PropertyEditor(keyPath: \Address.country)
+///     var country: AsyncPickerFieldViewModel<String?>
 ///
 ///     @OnInit
-///     func setDefaultDateAndTimes() {
-///         // Set default date to next available day
-///         let nextAvailableDay = Calendar.current.date(byAdding: .day, value: 1, to: Date())!
-///         date.value = nextAvailableDay
-///
-///         // Initialize available time slots
-///         time.allValues = TimeSlotService.getAvailableSlots(for: nextAvailableDay)
-///     }
+///     func onInit() {
+///         // Configure dependencies
+///         country = AsyncPickerFieldViewModel(
+///             type: String?.self,
+///             placeholder: "Select Country...",
+///             validation: .of(.required()),
+///             valuesProvider: { [weak self] query in
+///                 guard let self else { return [] }
+///                 return try await dependencies.countryLoader.loadCountries(query: query)
+///             },
+///             queryBuilder: { $0 ?? "" }
+///         )
 /// }
 /// ```
 ///
-/// In this example, the `setDefaultDateAndTimes()` method is marked with `@OnInit` and
-/// will be called during the initialization of the `ReservationFormModel` instance.
+/// In this example, the `onInit()` method is marked with `@OnInit` and
+/// will be called during the initialization of the `ProductFormModel` instance. `ProductFormModel.country` property is
+/// initialized inside this method using provided dependencies.
 @attached(peer)
 public macro OnInit() = #externalMacro(module: "QuickFormMacros", type: "OnInitMacro")
 
@@ -325,32 +320,30 @@ public macro OnInit() = #externalMacro(module: "QuickFormMacros", type: "OnInitM
 /// ```swift
 /// @QuickForm(Product.self)
 /// class ProductFormModel: Validatable {
-///     @PropertyEditor(keyPath: \Product.category)
-///     var category = PickerFieldViewModel<ProductCategory>(
-///         value: nil,
-///         allValues: ProductCategory.allCases,
-///         title: "Category:"
-///     )
+///     @Dependency
+///     var dependencies: Dependencies
 ///
-///     @PropertyEditor(keyPath: \Product.subcategory)
-///     var subcategory = PickerFieldViewModel<ProductSubcategory>(
-///         value: nil,
-///         allValues: [],
-///         title: "Subcategory:"
-///     )
+///     @PropertyEditor(keyPath: \Address.country)
+///     var country: AsyncPickerFieldViewModel<String?>
 ///
-///     @PostInit
-///     func setupDependencies() {
-///         // Configure dependencies between form fields
-///         category.onValueChanged { [weak self] newCategory in
-///             guard let self = self, let category = newCategory else { return }
-///
-///             // Update subcategory options based on selected category
-///             self.subcategory.allValues = category.availableSubcategories
-///             self.subcategory.value = nil
-///         }
-///     }
+///     @OnInit
+///     func onInit() {
+///         // Configure dependencies
+///         country = AsyncPickerFieldViewModel(
+///             type: String?.self,
+///             placeholder: "Select Country...",
+///             validation: .of(.required()),
+///             valuesProvider: { [weak self] query in
+///                 guard let self else { return [] }
+///                 return try await dependencies.countryLoader.loadCountries(query: query)
+///             },
+///             queryBuilder: { $0 ?? "" }
+///         )
 /// }
 /// ```
+/// In this example, the `ProductFormModel.dependencies` property is marked with `@Dependency`.
+/// This will modify init method of `ProductFormModel` to look like: `init(value: Product, dependencies: Dependencies)`
+/// Dependencies will be injected during init, so other properties depending on them can be initialized inside method marked
+/// with `@OnInit`.
 @attached(peer)
 public macro Dependency() = #externalMacro(module: "QuickFormMacros", type: "DependencyMacro")
