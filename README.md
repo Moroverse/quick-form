@@ -33,10 +33,10 @@ Add it directly through Xcode: File → Add Packages → Search for "https://git
 ## Examples
 Run the following command to build and run example applications:
 
-Documentation
+## Documentation
 The  [online documentation][Documentation] provides comprehensive guides, code examples, and API reference.
 
-License
+## License
 MIT License - See [LICENSE.txt](LICENSE.txt) for details.
 
 [Documentation]: https://moroverse.github.io/quick-form
