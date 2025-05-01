@@ -14,16 +14,6 @@ QuickForm is a declarative Swift framework for building sophisticated form UIs w
 - **Reactive Relationships**: Build interdependent fields with automatic value propagation
 - **SwiftUI Integration**: Native SwiftUI components for a seamless development experience
 
-## Installation
-
-Add QuickForm to your Swift Package Manager dependencies:
-
-```swift
-dependencies: [
-    .package(url: "https://github.com/yourusername/quick-form.git", from: "0..0")
-]
-```
-
 ## Basic Concepts
 
 QuickForm uses several core concepts to create a seamless form development experience:

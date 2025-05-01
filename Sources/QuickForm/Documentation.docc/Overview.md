@@ -1,8 +1,4 @@
-# QuickForm
-
-@Metadata {
-    @TechnologyRoot
-}
+# ``QuickForm``
 
 QuickForm is a Swift package that provides a declarative way to create form-based user interfaces with automatic data binding and validation.
 
@@ -18,11 +14,59 @@ Add the following dependency to your `Package.swift` file:
 .package(url: "https://github.com/Moroverse/quick-form.git", from: "0.1.0")
 ```
 
-## Main Components
+## Usage Example
 
-### Frameworks
- 
-- ``QuickForm``
+Here's a basic example of how to use QuickForm to create a person editing form:
+
+```swift
+import SwiftUI
+import QuickForm
+
+@QuickForm(Person.self)
+class PersonEditModel: Validatable {
+    @PropertyEditor(keyPath: \Person.givenName)
+    var firstName = FormFieldViewModel(
+        type: String.self,
+        title: "First Name:",
+        placeholder: "John",
+        validation: .combined(.notEmpty, .minLength(2), .maxLength(50))
+    )
+
+    @PropertyEditor(keyPath: \Person.familyName)
+    var lastName = FormFieldViewModel(
+        type: String.self,
+        title: "Last Name:",
+        placeholder: "Doe",
+        validation: .combined(.notEmpty, .minLength(2), .maxLength(50))
+    )
+
+    @PropertyEditor(keyPath: \Person.dateOfBirth)
+    var birthday = FormFieldViewModel(
+        type: Date.self,
+        title: "Birthday:",
+        placeholder: "1980-01-01"
+    )
+}
+
+struct PersonEditView: View {
+    @Bindable var quickForm: PersonEditModel
+
+    var body: some View {
+        Form {
+            FormTextField(quickForm.firstName)
+            FormTextField(quickForm.lastName)
+            FormDatePickerField(quickForm.birthday)
+        }
+    }
+}
+```
+
+This example creates a form for editing a person's first name, last name, and birthday. The `@QuickForm` macro generates the necessary boilerplate code for managing the form data, while the `@PropertyEditor` property wrapper creates bindings between the form fields and the underlying data model.
+
+## Topics
+
+### Essentials
+- <doc:GettingStarted>
 
 ### Macros
 - ``QuickForm(_:)``
@@ -61,7 +105,6 @@ Add the following dependency to your `Package.swift` file:
 - ``FormTextEditor``
 - ``FormTokenSetField``
 - ``FormStepperField``
-- ``DismissibleButton``
 
 ### Validators
 - ``Validatable``
@@ -72,7 +115,6 @@ Add the following dependency to your `Package.swift` file:
 - ``NotEmptyRule``
 - ``RequiredRule``
 - ``AnyValidationRule``
-- ``combined(_:_:)``
 
 ### Formatters
 - ``OptionalFormat``
@@ -80,58 +122,3 @@ Add the following dependency to your `Package.swift` file:
 - ``AutoMask``
 - ``ClearValueMode``
 
-## Essentials
-- <doc:GettingStarted>
-
-## Usage Example
-
-Here's a basic example of how to use QuickForm to create a person editing form:
-
-```swift
-import SwiftUI
-import QuickForm
-
-@QuickForm(Person.self)
-class PersonEditModel: Validatable {
-@PropertyEditor(keyPath: \Person.givenName)
-var firstName = FormFieldViewModel(
-type: String.self,
-title: "First Name:",
-placeholder: "John",
-validation: .combined(.notEmpty, .minLength(2), .maxLength(50))
-)
-
-@PropertyEditor(keyPath: \Person.familyName)
-var lastName = FormFieldViewModel(
-type: String.self,
-title: "Last Name:",
-placeholder: "Doe",
-validation: .combined(.notEmpty, .minLength(2), .maxLength(50))
-)
-
-@PropertyEditor(keyPath: \Person.dateOfBirth)
-var birthday = FormFieldViewModel(
-type: Date.self,
-title: "Birthday:",
-placeholder: "1980-01-01"
-)
-}
-
-struct PersonEditView: View {
-@Bindable var quickForm: PersonEditModel
-
-var body: some View {
-Form {
-FormTextField(quickForm.firstName)
-FormTextField(quickForm.lastName)
-FormDatePickerField(quickForm.birthday)
-}
-}
-}
-```
-
-This example creates a form for editing a person's first name, last name, and birthday. The `@QuickForm` macro generates the necessary boilerplate code for managing the form data, while the `@PropertyEditor` property wrapper creates bindings between the form fields and the underlying data model.
-
-## Conclusion
-
-QuickForm provides a powerful set of tools for creating forms in SwiftUI with automatic data binding and validation. By leveraging property wrappers, custom view models, and SwiftUI views, it simplifies the process of building complex forms while maintaining a clean and declarative codebase.
