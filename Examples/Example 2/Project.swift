@@ -28,13 +28,13 @@ let infoPlistSwiftUIAdditions: [String: Plist.Value] = [
 ]
 
 let project = Project(
-    name: "Example",
+    name: "ApplicationFormExample",
     targets: [
         .target(
-            name: "Example-SwiftUI",
+            name: "ApplicationFormExample-SwiftUI",
             destinations: .iOS,
             product: .app,
-            bundleId: "io.moroverse.job-example",
+            bundleId: "com.moroverse.ApplicationFormExample-SwiftUI",
             infoPlist: .extendingDefault(
                 with: infoPlistSwiftUIAdditions
             ),
@@ -70,10 +70,10 @@ let project = Project(
             )
         ),
         .target(
-            name: "Example-UIKit",
+            name: "ApplicationFormExample-UIKit",
             destinations: .iOS,
             product: .app,
-            bundleId: "io.moroverse.job-example",
+            bundleId: "com.moroverse.ApplicationFormExample-UIKit",
             infoPlist: .extendingDefault(
                 with: infoPlistUIKitAdditions
             ),
@@ -106,14 +106,14 @@ let project = Project(
             )
         ),
         .target(
-            name: "Example-SwiftUITests",
+            name: "ApplicationFormExample-SwiftUITests",
             destinations: .iOS,
             product: .unitTests,
-            bundleId: "io.tuist.Tests",
+            bundleId: "com.moroverse.ApplicationFormExample-SwiftUITests",
             infoPlist: .default,
             sources: ["Tests/**"],
             resources: [],
-            dependencies: [.target(name: "Example-SwiftUI")]
+            dependencies: [.target(name: "ApplicationFormExample-SwiftUI")]
         )
     ]
 )

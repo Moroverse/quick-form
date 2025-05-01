@@ -1,5 +1,4 @@
 # Makefile for project setup and generation
-APP_NAME ?= QuickFormDemo
 
 # Default target
 .PHONY: all
@@ -27,7 +26,7 @@ tuist-install:
 .PHONY: generate
 generate:
 	@echo "Generating project with Tuist..."
-	@tuist generate -p $(APP_NAME)
+	@tuist generate
 
 # Combined target for Tuist operations
 .PHONY: tuist
@@ -50,7 +49,7 @@ help:
 	@echo "  upgrade                   - Upgrade mise"
 	@echo "  install                   - Install dependencies with mise"
 	@echo "  tuist-install             - Install Tuist"
-	@echo "  generate APP_NAME=<path>      - Generate project with Tuist"
+	@echo "  generate      			   - Generate project with Tuist"
 	@echo "  tuist                     - Run both tuist-install and generate"
 	@echo "  clean                     - Run tuist clean and git clean"
 	@echo "  help                      - Show this help message"

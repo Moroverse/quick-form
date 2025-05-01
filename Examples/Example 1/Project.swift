@@ -6,13 +6,13 @@ import ProjectDescription
 import ProjectDescriptionHelpers
 
 let project = Project(
-    name: "QuickFormDemo",
+    name: "PersonAndMedicationExample",
     targets: [
         .target(
-            name: "QuickFormDemo",
+            name: "PersonAndMedicationExample",
             destinations: [.iPad, .iPhone, .macCatalyst],
             product: .app,
-            bundleId: "com.moroverse.quick-form",
+            bundleId: "com.moroverse.PersonAndMedicationExample",
             infoPlist: .extendingDefault(
                 with: [
                     "UILaunchScreen": [
@@ -40,7 +40,6 @@ let project = Project(
             ],
             settings: .settings(
                 base: [
-                    //                    "SWIFT_STRICT_CONCURRENCY": "complete",
                     "LOCALIZATION_PREFERS_STRING_CATALOGS": "YES",
                     "SWIFT_EMIT_LOC_STRINGS": "YES",
                     "TARGETED_DEVICE_FAMILY": "1,2"
