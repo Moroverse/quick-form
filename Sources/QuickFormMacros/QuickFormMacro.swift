@@ -5,6 +5,7 @@
 import SwiftSyntax
 import SwiftSyntaxBuilder
 import SwiftSyntaxMacros
+import Foundation
 
 // QuickFormMacro.swift
 // Copyright (c) 2024 Moroverse
