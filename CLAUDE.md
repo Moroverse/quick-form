@@ -20,6 +20,7 @@ The project heavily relies on Swift macros defined in `Sources/QuickFormMacros/`
 - `@PostInit`: Marks methods to run after initialization (for setup that requires all properties initialized)
 - `@OnInit`: Marks methods to run during initialization
 - `@Dependency`: Marks properties for dependency injection
+- `@StateObserved`: Generates observation tracking code for properties with initializers, providing custom state observation capabilities
 
 ### Form Field ViewModels
 Located in `Sources/QuickForm/Property View Models/`:

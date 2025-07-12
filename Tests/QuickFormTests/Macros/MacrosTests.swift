@@ -333,5 +333,99 @@ let canTestMacros: Bool = {
                 """#
             }
         }
+
+        @Test(
+            .enabled(if: canTestMacros),
+            .macros(
+                record: .missing,
+                macros: ["StateObserved": StateObservedMacro.self]
+            )
+        )
+        func testStateObservedMacro() {
+            assertMacro {
+                #"""
+                class FormModel {
+                    @StateObserved
+                    var formState: FormState = .idle
+                }
+                """#
+            } expansion: {
+                #"""
+                class FormModel {
+                    var formState: FormState {
+                        init(initialValue) {
+                            _formState = initialValue
+                        }
+                        get {
+                            access(keyPath: \.formState)
+                            return _formState
+                        }
+                        set {
+                            withMutation(keyPath: \.formState) {
+                                _formState = newValue
+                            }
+                        }
+                        _modify {
+                            access(keyPath: \.formState)
+                            _$observationRegistrar.willSet(self, keyPath: \.formState)
+                            defer {
+                                _$observationRegistrar.didSet(self, keyPath: \.formState)
+                            }
+                            yield &_formState
+                        }
+                    }
+
+                    private var _formState: FormState  = .idle
+                }
+                """#
+            }
+        }
+
+        @Test(
+            .enabled(if: canTestMacros),
+            .macros(
+                record: .missing,
+                macros: ["StateObserved": StateObservedMacro.self]
+            )
+        )
+        func testStateObservedMacroWithBooleanType() {
+            assertMacro {
+                #"""
+                class FormModel {
+                    @StateObserved
+                    var isLoading: Bool = false
+                }
+                """#
+            } expansion: {
+                #"""
+                class FormModel {
+                    var isLoading: Bool {
+                        init(initialValue) {
+                            _isLoading = initialValue
+                        }
+                        get {
+                            access(keyPath: \.isLoading)
+                            return _isLoading
+                        }
+                        set {
+                            withMutation(keyPath: \.isLoading) {
+                                _isLoading = newValue
+                            }
+                        }
+                        _modify {
+                            access(keyPath: \.isLoading)
+                            _$observationRegistrar.willSet(self, keyPath: \.isLoading)
+                            defer {
+                                _$observationRegistrar.didSet(self, keyPath: \.isLoading)
+                            }
+                            yield &_isLoading
+                        }
+                    }
+
+                    private var _isLoading: Bool  = false
+                }
+                """#
+            }
+        }
     }
 #endif

@@ -347,3 +347,101 @@ public macro OnInit() = #externalMacro(module: "QuickFormMacros", type: "OnInitM
 /// with `@OnInit`.
 @attached(peer)
 public macro Dependency() = #externalMacro(module: "QuickFormMacros", type: "DependencyMacro")
+
+/// A macro that generates observation tracking code for a property.
+///
+/// `@StateObserved` transforms a simple property declaration into a fully observable property
+/// with proper observation tracking. This macro provides custom state observation capabilities
+/// for QuickForm properties that need fine-grained change tracking.
+///
+/// The macro generates:
+/// - A private backing storage property with underscore prefix
+/// - Custom accessors with observation tracking
+/// - Proper initialization, getter, setter, and `_modify` accessors
+/// - Integration with the observation registrar for change notifications
+///
+/// ## Example Usage:
+///
+/// ### Basic Property Tracking
+///
+/// ```swift
+/// @Observable
+/// class FormModel {
+///     @StateObserved
+///     var formState: FormState = .idle
+///     
+///     @StateObserved
+///     var isLoading: Bool = false
+/// }
+/// ```
+///
+/// ### Generated Code
+///
+/// For the property `var formState: FormState = .idle`, the macro generates:
+///
+/// ```swift
+/// var formState: FormState {
+///     @storageRestrictions(initializes: _formState)
+///     init(initialValue) {
+///         _formState = initialValue
+///     }
+///     get {
+///         access(keyPath: \.formState)
+///         return _formState
+///     }
+///     set {
+///         withMutation(keyPath: \.formState) {
+///             _formState = newValue
+///         }
+///     }
+///     _modify {
+///         access(keyPath: \.formState)
+///         _$observationRegistrar.willSet(self, keyPath: \.formState)
+///         defer {
+///             _$observationRegistrar.didSet(self, keyPath: \.formState)
+///         }
+///         yield &_formState
+///     }
+/// }
+/// 
+/// private var _formState: FormState = .idle
+/// ```
+///
+/// ### With Form Models
+///
+/// ```swift
+/// @QuickForm(User.self)
+/// class UserFormModel: Validatable {
+///     @StateObserved
+///     var submissionState: SubmissionState = .idle
+///     
+///     @StateObserved
+///     var validationState: ValidationState = .valid
+///     
+///     @PropertyEditor(keyPath: \User.name)
+///     var name = FormFieldViewModel(
+///         value: "",
+///         title: "Name:",
+///         validation: .of(.required("Name is required"))
+///     )
+/// }
+/// ```
+///
+/// ## Requirements
+///
+/// - The property must have an initial value
+/// - The containing type should be marked with `@Observable` for full observation support
+/// - The property type should be a concrete type (not a protocol or generic placeholder)
+///
+/// ## Notes
+///
+/// - This macro is particularly useful for tracking form state, submission status, or other
+///   observable properties that need fine-grained change tracking
+/// - The generated code integrates seamlessly with SwiftUI's observation system
+/// - Multiple properties can be tracked independently within the same type
+///
+/// - Important: This macro generates accessors that depend on `access()`, `withMutation()`,
+///   and `_$observationRegistrar` being available in the containing type's scope.
+@attached(accessor, names: named(init), named(get), named(set), named(_modify))
+@attached(peer, names: prefixed(`_`))
+public macro StateObserved() = #externalMacro(module: "QuickFormMacros", type: "StateObservedMacro")

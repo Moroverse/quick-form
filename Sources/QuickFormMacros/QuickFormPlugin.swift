@@ -12,6 +12,7 @@ struct QuickFormPlugin: CompilerPlugin {
         PropertyEditorMacro.self,
         PostInitMacro.self,
         OnInitMacro.self,
-        DependencyMacro.self
+        DependencyMacro.self,
+        StateObservedMacro.self
     ]
 }
