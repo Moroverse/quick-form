@@ -123,6 +123,7 @@ public protocol AllValues {
 public struct FormValueDimensionField<T: Dimension, S: PickerStyle>: View where T: AllValues, T.Unit == T {
     @Bindable private var viewModel: FormFieldViewModel<Measurement<T>>
     @FocusState private var isFocused: Bool
+    @State private var hasError: Bool
     private let pickerStyle: S
 
     /// The body of the `FormValueDimensionField` view.
@@ -135,31 +136,43 @@ public struct FormValueDimensionField<T: Dimension, S: PickerStyle>: View where 
     /// When the unit is changed, the value is automatically converted to maintain
     /// the same measurement quantity.
     public var body: some View {
-        HStack {
-            Text(viewModel.title)
-                .font(.headline)
-            TextField(String(localized: viewModel.placeholder ?? ""), value: $viewModel.value.value, format: .number)
-                .focused($isFocused)
-                .multilineTextAlignment(.trailing)
+        VStack(alignment: .leading, spacing: 5) {
+            HStack {
+                Text(viewModel.title)
+                    .font(.headline)
+                TextField(String(localized: viewModel.placeholder ?? ""), value: $viewModel.value.value, format: .number)
+                    .focused($isFocused)
+                    .multilineTextAlignment(.trailing)
+                    .disabled(viewModel.isReadOnly)
+                    .onSubmit {
+                        isFocused = false
+                    }
+                let binding = Binding(get: {
+                    viewModel.value.unit
+                }, set: { newUnit, _ in
+                    viewModel.value.convert(to: newUnit)
+                })
+                Picker("", selection: binding) {
+                    let allCases = T.allCases
+                    ForEach(allCases) {
+                        Text($0.symbol)
+                            .tag($0)
+                    }
+                }
+                .pickerStyle(pickerStyle)
+                .fixedSize()
                 .disabled(viewModel.isReadOnly)
-                .onSubmit {
-                    isFocused = false
-                }
-            let binding = Binding(get: {
-                viewModel.value.unit
-            }, set: { newUnit, _ in
-                viewModel.value.convert(to: newUnit)
-            })
-            Picker("", selection: binding) {
-                let allCases = T.allCases
-                ForEach(allCases) {
-                    Text($0.symbol)
-                        .tag($0)
-                }
             }
-            .pickerStyle(pickerStyle)
-            .fixedSize()
-            .disabled(viewModel.isReadOnly)
+            if hasError {
+                Text(viewModel.errorMessage ?? "Invalid input")
+                    .font(.caption)
+                    .foregroundColor(.red)
+            }
+        }
+        .onChange(of: viewModel.validationResult) { _, newValue in
+            withAnimation {
+                hasError = newValue != .success
+            }
         }
     }
 
@@ -193,6 +206,7 @@ public struct FormValueDimensionField<T: Dimension, S: PickerStyle>: View where 
     ) {
         self.viewModel = viewModel
         self.pickerStyle = pickerStyle
+        hasError = viewModel.errorMessage != nil
         isFocused = false
     }
 }

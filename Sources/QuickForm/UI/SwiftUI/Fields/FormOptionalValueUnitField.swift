@@ -91,6 +91,7 @@ import SwiftUI
 public struct FormOptionalValueUnitField<T: Unit, S: PickerStyle>: View where T: AllValues, T.Unit == T {
     @Bindable private var viewModel: FormFieldViewModel<Measurement<T>?>
     @FocusState private var isFocused: Bool
+    @State private var hasError: Bool
     private let pickerStyle: S
     private let defaultValue: Measurement<T>
 
@@ -101,31 +102,43 @@ public struct FormOptionalValueUnitField<T: Unit, S: PickerStyle>: View where T:
     /// - A numeric text field for the measurement value
     /// - A picker for selecting the unit of measure
     public var body: some View {
-        HStack {
-            Text(viewModel.title)
-                .font(.headline)
-            TextField(String(localized: viewModel.placeholder ?? ""), value: $viewModel.value.unwrapped(defaultValue: defaultValue).value, format: .number)
-                .focused($isFocused)
-                .multilineTextAlignment(.trailing)
+        VStack(alignment: .leading, spacing: 5) {
+            HStack {
+                Text(viewModel.title)
+                    .font(.headline)
+                TextField(String(localized: viewModel.placeholder ?? ""), value: $viewModel.value.unwrapped(defaultValue: defaultValue).value, format: .number)
+                    .focused($isFocused)
+                    .multilineTextAlignment(.trailing)
+                    .disabled(viewModel.isReadOnly)
+                    .onSubmit {
+                        isFocused = false
+                    }
+                let binding = Binding(get: {
+                    viewModel.value?.unit ?? defaultValue.unit
+                }, set: { newUnit, _ in
+                    viewModel.value = Measurement<T>(value: viewModel.value?.value ?? defaultValue.value, unit: newUnit)
+                })
+                Picker("", selection: binding) {
+                    let allCases = T.allCases
+                    ForEach(allCases) {
+                        Text($0.symbol)
+                            .tag($0)
+                    }
+                }
+                .pickerStyle(pickerStyle)
+                .fixedSize()
                 .disabled(viewModel.isReadOnly)
-                .onSubmit {
-                    isFocused = false
-                }
-            let binding = Binding(get: {
-                viewModel.value?.unit ?? defaultValue.unit
-            }, set: { newUnit, _ in
-                viewModel.value = Measurement<T>(value: viewModel.value?.value ?? defaultValue.value, unit: newUnit)
-            })
-            Picker("", selection: binding) {
-                let allCases = T.allCases
-                ForEach(allCases) {
-                    Text($0.symbol)
-                        .tag($0)
-                }
             }
-            .pickerStyle(pickerStyle)
-            .fixedSize()
-            .disabled(viewModel.isReadOnly)
+            if hasError {
+                Text(viewModel.errorMessage ?? "Invalid input")
+                    .font(.caption)
+                    .foregroundColor(.red)
+            }
+        }
+        .onChange(of: viewModel.validationResult) { _, newValue in
+            withAnimation {
+                hasError = newValue != .success
+            }
         }
     }
 
@@ -161,6 +174,7 @@ public struct FormOptionalValueUnitField<T: Unit, S: PickerStyle>: View where T:
         self.viewModel = viewModel
         self.defaultValue = defaultValue
         self.pickerStyle = pickerStyle
+        hasError = viewModel.errorMessage != nil
         isFocused = false
     }
 }

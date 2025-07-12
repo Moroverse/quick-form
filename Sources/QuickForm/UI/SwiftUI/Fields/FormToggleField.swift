@@ -112,6 +112,7 @@ import SwiftUI
 /// - SeeAlso: ``FormFieldViewModel``, ``FormTextField``, ``Validatable``
 public struct FormToggleField: View {
     @Bindable private var viewModel: FormFieldViewModel<Bool>
+    @State private var hasError: Bool
 
     /// The body of the toggle field view.
     ///
@@ -119,9 +120,21 @@ public struct FormToggleField: View {
     /// The toggle's label is set to the title from the view model and uses consistent
     /// system styling to match other form elements.
     public var body: some View {
-        Toggle(String(localized: viewModel.title), isOn: $viewModel.value)
-            .font(.headline)
-            .disabled(viewModel.isReadOnly)
+        VStack(alignment: .leading, spacing: 5) {
+            Toggle(String(localized: viewModel.title), isOn: $viewModel.value)
+                .font(.headline)
+                .disabled(viewModel.isReadOnly)
+            if hasError {
+                Text(viewModel.errorMessage ?? "Invalid input")
+                    .font(.caption)
+                    .foregroundColor(.red)
+            }
+        }
+        .onChange(of: viewModel.validationResult) { _, newValue in
+            withAnimation {
+                hasError = newValue != .success
+            }
+        }
     }
 
     /// Initializes a new `FormToggleField`.
@@ -143,6 +156,7 @@ public struct FormToggleField: View {
     /// ```
     public init(_ viewModel: FormFieldViewModel<Bool>) {
         self.viewModel = viewModel
+        hasError = viewModel.errorMessage != nil
     }
 }
 

@@ -78,6 +78,7 @@ import SwiftUI
 /// - SeeAlso: ``FormFieldViewModel``, ``FormTextField``, ``FormToggleField``
 public struct FormStepperField<Value: Strideable>: View {
     @Bindable private var viewModel: FormFieldViewModel<Value>
+    @State private var hasError: Bool
     private let range: ClosedRange<Value>?
     private let step: Value.Stride
 
@@ -87,19 +88,31 @@ public struct FormStepperField<Value: Strideable>: View {
     /// If a range is provided, the stepper's values are constrained to that range.
     /// The stepper's label displays the field title and current value.
     public var body: some View {
-        if let range {
-            Stepper(
-                value: $viewModel.value,
-                in: range,
-                step: step,
-                label: label
-            )
-        } else {
-            Stepper(
-                value: $viewModel.value,
-                step: step,
-                label: label
-            )
+        VStack(alignment: .leading, spacing: 5) {
+            if let range {
+                Stepper(
+                    value: $viewModel.value,
+                    in: range,
+                    step: step,
+                    label: label
+                )
+            } else {
+                Stepper(
+                    value: $viewModel.value,
+                    step: step,
+                    label: label
+                )
+            }
+            if hasError {
+                Text(viewModel.errorMessage ?? "Invalid input")
+                    .font(.caption)
+                    .foregroundColor(.red)
+            }
+        }
+        .onChange(of: viewModel.validationResult) { _, newValue in
+            withAnimation {
+                hasError = newValue != .success
+            }
         }
     }
 
@@ -132,6 +145,7 @@ public struct FormStepperField<Value: Strideable>: View {
         self.viewModel = viewModel
         self.range = range
         self.step = step
+        hasError = viewModel.errorMessage != nil
     }
 
     /// Creates the label view for the stepper.

@@ -94,6 +94,7 @@ import SwiftUI
 /// - SeeAlso: ``FormFieldViewModel``, ``DefaultDatePickerStyle``
 public struct FormDatePickerField<S: DatePickerStyle>: View {
     @Bindable private var viewModel: FormFieldViewModel<Date>
+    @State private var hasError: Bool
     private let displayedComponents: DatePickerComponents
     private let range: ClosedRange<Date>?
     private var style: S
@@ -133,6 +134,7 @@ public struct FormDatePickerField<S: DatePickerStyle>: View {
         self.range = range
         self.displayedComponents = displayedComponents
         self.style = style
+        hasError = viewModel.errorMessage != nil
     }
 
     /// The body of the `FormDatePickerField` view.
@@ -141,20 +143,32 @@ public struct FormDatePickerField<S: DatePickerStyle>: View {
     /// The picker is configured with the specified date range (if provided),
     /// displayed components, and styling.
     public var body: some View {
-        stylized {
-            if let range {
-                DatePicker(
-                    String(localized: viewModel.title),
-                    selection: $viewModel.value,
-                    in: range,
-                    displayedComponents: displayedComponents
-                )
-            } else {
-                DatePicker(
-                    String(localized: viewModel.title),
-                    selection: $viewModel.value,
-                    displayedComponents: displayedComponents
-                )
+        VStack(alignment: .leading, spacing: 5) {
+            stylized {
+                if let range {
+                    DatePicker(
+                        String(localized: viewModel.title),
+                        selection: $viewModel.value,
+                        in: range,
+                        displayedComponents: displayedComponents
+                    )
+                } else {
+                    DatePicker(
+                        String(localized: viewModel.title),
+                        selection: $viewModel.value,
+                        displayedComponents: displayedComponents
+                    )
+                }
+            }
+            if hasError {
+                Text(viewModel.errorMessage ?? "Invalid input")
+                    .font(.caption)
+                    .foregroundColor(.red)
+            }
+        }
+        .onChange(of: viewModel.validationResult) { _, newValue in
+            withAnimation {
+                hasError = newValue != .success
             }
         }
     }
