@@ -32,15 +32,15 @@ import Foundation
 /// let parsedValue = try? currencyFormat.parseStrategy.parse("$5,000.00") // Optional(5000.0)
 /// let parsedEmpty = try? currencyFormat.parseStrategy.parse("") // nil
 ///
-/// // Usage in a form field
-/// @QuickForm(EmployeeForm.self)
-/// class EmployeeFormModel: Validatable {
-///     @PropertyEditor(keyPath: \EmployeeForm.salary)
-///     var salary = FormattedFieldViewModel(
-///         type: Double?.self,
-///         format: OptionalFormat(format: .currency(code: "USD")),
-///         title: "Salary:",
-///         placeholder: "Enter salary (optional)"
+/// // Usage in a form field (actual usage from codebase)
+/// @QuickForm(Person.self)
+/// class PersonEditModel: Validatable {
+///     @PropertyEditor(keyPath: \Person.phone)
+///     var phone = FormattedFieldViewModel(
+///         type: String?.self,
+///         format: OptionalFormat(format: .usPhoneNumber(.parentheses)),
+///         title: "Phone",
+///         placeholder: "(123) 456-7890"
 ///     )
 /// }
 /// ```

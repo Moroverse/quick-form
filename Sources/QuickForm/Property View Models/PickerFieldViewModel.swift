@@ -27,19 +27,13 @@ import Observation
 /// ### Basic Usage
 ///
 /// ```swift
-/// enum Category: String, CaseIterable, CustomStringConvertible {
-///     case food, travel, entertainment
-///
-///     var description: String { rawValue.capitalized }
-/// }
-///
-/// @QuickForm(Expense.self)
-/// class ExpenseEditModel: Validatable {
-///     @PropertyEditor(keyPath: \Expense.category)
-///     var category = PickerFieldViewModel(
-///         type: Category.self,
-///         allValues: Category.allCases,
-///         title: "Category:"
+/// @QuickForm(Person.self)
+/// class PersonEditModel: Validatable {
+///     @PropertyEditor(keyPath: \Person.sex)
+///     var sex = PickerFieldViewModel(
+///         type: Person.Sex.self,
+///         allValues: Person.Sex.allCases,
+///         title: "Sex:"
 ///     )
 /// }
 /// ```
@@ -47,19 +41,19 @@ import Observation
 /// ### Using with FormPickerField in SwiftUI
 ///
 /// ```swift
-/// struct ExpenseFormView: View {
-///     @Bindable var model: ExpenseEditModel
+/// struct PersonEditView: View {
+///     @StateObject var model = PersonEditModel()
 ///
 ///     var body: some View {
 ///         Form {
-///             // Basic picker with default wheel style
-///             FormPickerField(model.category)
+///             // Basic picker
+///             FormPickerField(model.sex)
 ///
 ///             // Picker with menu style
-///             FormPickerField(model.category, pickerStyle: .menu)
+///             FormPickerField(model.sex, pickerStyle: .menu)
 ///
-///             // Picker with segmented style for few options
-///             FormPickerField(model.category, pickerStyle: .segmented)
+///             // Picker with segmented style
+///             FormPickerField(model.sex, pickerStyle: .segmented)
 ///         }
 ///     }
 /// }
@@ -68,18 +62,16 @@ import Observation
 /// ### Handling Value Changes
 ///
 /// ```swift
-/// // Subscribe to value changes
-/// let subscription = category.onValueChanged { newCategory in
-///     // Update dependent fields or perform actions
-///     if newCategory == .travel {
-///         transportType.isReadOnly = false
-///     } else {
-///         transportType.isReadOnly = true
+/// @PostInit
+/// func configure() {
+///     // Subscribe to value changes in a form model
+///     sex.onValueChanged { newSex in
+///         // Update dependent fields or perform actions
+///         if newSex == .female {
+///             // Update validation or other fields
+///         }
 ///     }
 /// }
-///
-/// // Later, when no longer needed:
-/// subscription.unsubscribe()
 /// ```
 ///
 /// - SeeAlso: ``FormPickerField``, ``ObservableValueEditor``, ``Dispatcher``

@@ -19,17 +19,19 @@ import Foundation
 ///
 /// ```swift
 /// // Create a phone number field using the mask
-/// @QuickForm(ContactForm.self)
-/// class ContactFormModel: Validatable {
-///     @PropertyEditor(keyPath: \ContactForm.phoneNumber)
-///     var phoneNumber = FormFieldViewModel(
-///         type: String.self,
-///         title: "Phone:",
-///         placeholder: "(555) 555-5555",
-///         mask: .usPhone,
-///         validation: .of(.usPhoneNumber)
+/// @QuickForm(Person.self)
+/// class PersonEditModel: Validatable {
+///     @PropertyEditor(keyPath: \Person.phone)
+///     var phone = FormattedFieldViewModel(
+///         type: String?.self,
+///         format: OptionalFormat(format: .usPhoneNumber(.parentheses)),
+///         title: "Phone",
+///         placeholder: "(555) 555-5555"
 ///     )
 /// }
+///
+/// // Usage in SwiftUI view (actual pattern from examples)
+/// FormFormattedTextField(quickForm.phone, autoMask: .usPhone)
 /// ```
 ///
 /// ## Format Details
@@ -104,11 +106,14 @@ public extension AutoMask where Self == USPhoneMask {
     /// This static accessor makes it easy to add US phone number masking to form fields:
     ///
     /// ```swift
+    /// // Usage with autoMask parameter (actual usage pattern)
+    /// FormFormattedTextField(model.phoneNumber, autoMask: .usPhone)
+    ///
+    /// // Or when creating the field model
     /// FormFieldViewModel(
     ///     type: String.self,
     ///     title: "Phone Number",
-    ///     mask: .usPhone,
-    ///     validation: .of(.usPhoneNumber)
+    ///     mask: .usPhone
     /// )
     /// ```
     static var usPhone: USPhoneMask { USPhoneMask() }

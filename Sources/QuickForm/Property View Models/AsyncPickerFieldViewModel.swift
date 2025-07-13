@@ -74,7 +74,7 @@ public enum ModelState<Model> {
 ///     validation: .of(.required()),
 ///     valuesProvider: { [weak self] query in
 ///         guard let self else { return [] }
-///         return try await countryLoader.loadCountries(query: query)
+///         return try await dependencies.countryLoader.loadCountries(query: query)
 ///     },
 ///     queryBuilder: { $0 ?? "" }
 /// )
@@ -86,20 +86,16 @@ public enum ModelState<Model> {
 /// @PostInit
 /// func configure() {
 ///     // When country changes, update states
-///     country.onValueChanged { [weak self] newValue in
+///     country.onValueChanged { [weak self] newCountry in
 ///         guard let self else { return }
 ///         // Clear state selection
 ///         state.value = nil
 ///
 ///         Task { [weak self] in
-///             self?.hasStates = await self?.stateLoader.hasStates(country: self?.country.value ?? "") ?? false
+///             if let country = newCountry {
+///                 await self?.state.search(self?.state.queryBuilder(country) ?? "")
+///             }
 ///         }
-///     }
-///
-///     // Set up state values provider to use the selected country
-///     state.valuesProvider = { [weak self] query in
-///         guard let self else { return [] }
-///         return try await stateLoader.loadStates(country: query)
 ///     }
 /// }
 /// ```

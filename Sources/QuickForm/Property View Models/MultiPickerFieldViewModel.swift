@@ -37,7 +37,7 @@ import Observation
 ///     @PropertyEditor(keyPath: \Expense.categories)
 ///     var categories = MultiPickerFieldViewModel(
 ///         value: [.food, .utilities],  // Initially selected categories
-///         allValues: Category.allCases.map { $0 },
+///         allValues: Category.allCases,
 ///         title: "Categories"
 ///     )
 /// }

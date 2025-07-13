@@ -33,8 +33,7 @@ import Observation
 ///         type: Decimal.self,
 ///         format: .currency(code: "USD"),
 ///         title: "Salary:",
-///         placeholder: "Enter annual salary",
-///         validation: .of(.minimum(0, "Salary must be non-negative"))
+///         placeholder: "$100,000"
 ///     )
 /// }
 /// ```
@@ -42,26 +41,12 @@ import Observation
 /// ### Phone Number Formatting
 ///
 /// ```swift
-/// @PropertyEditor(keyPath: \ContactInfo.phoneNumber)
-/// var phoneNumber = FormattedFieldViewModel(
-///     value: "",
-///     format: .usPhoneNumber(.parentheses),
+/// @PropertyEditor(keyPath: \Person.phone)
+/// var phone = FormattedFieldViewModel(
+///     type: String?.self,
+///     format: OptionalFormat(format: .usPhoneNumber(.parentheses)),
 ///     title: "Phone:",
-///     placeholder: "(555) 555-5555",
-///     validation: .of(.usPhoneNumber)
-/// )
-/// ```
-///
-/// ### Percentage Formatting
-///
-/// ```swift
-/// @PropertyEditor(keyPath: \Investment.interestRate)
-/// var interestRate = FormattedFieldViewModel(
-///     type: Double.self,
-///     format: .percent.precision(.fractionLength(2)),
-///     title: "Interest Rate:",
-///     placeholder: "Enter rate (e.g. 5.25%)",
-///     validation: .of(.range(0...100))
+///     placeholder: "(123) 456-7890"
 /// )
 /// ```
 ///
@@ -69,20 +54,16 @@ import Observation
 ///
 /// ```swift
 /// struct PersonFormView: View {
-///     @Bindable var model: PersonEditModel
+///     @StateObject var model = PersonEditModel()
 ///
 ///     var body: some View {
 ///         Form {
-///             // Basic currency field
+///             // Currency field
 ///             FormFormattedTextField(model.salary)
 ///
-///             // Phone number with mask
-///             FormFormattedTextField(model.phoneNumber, autoMask: .phone)
+///             // Phone number field
+///             FormFormattedTextField(model.phone)
 ///                 .keyboardType(.phonePad)
-///
-///             // Credit card with mask
-///             FormFormattedTextField(model.creditCard, autoMask: .creditCard)
-///                 .keyboardType(.numberPad)
 ///         }
 ///     }
 /// }
@@ -194,7 +175,7 @@ public final class FormattedFieldViewModel<F>: ObservableValueEditor, Validatabl
     ///     format: .usPhoneNumber(.parentheses),
     ///     title: "Phone:",
     ///     placeholder: "Enter phone number",
-    ///     validation: .of(.usPhoneNumber)
+    ///     validation: nil
     /// )
     ///
     /// // Use the field in a SwiftUI view

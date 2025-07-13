@@ -27,21 +27,20 @@ import Observation
 /// ```swift
 /// @QuickForm(Person.self)
 /// class PersonEditModel: Validatable {
-///     @PropertyEditor(keyPath: \Person.name)
-///     var name = FormFieldViewModel(
+///     @PropertyEditor(keyPath: \Person.givenName)
+///     var firstName = FormFieldViewModel(
 ///         type: String.self,
-///         title: "Name:",
-///         placeholder: "Enter your name",
-///         validation: .combined(.notEmpty, .maxLength(50))
+///         title: "First Name:",
+///         placeholder: "John",
+///         validation: .combined(.notEmpty, .minLength(2), .maxLength(50))
 ///     )
 ///
-///     @PropertyEditor(keyPath: \Person.age)
-///     var age = FormFieldViewModel(
-///         type: Int.self,
-///         title: "Age:",
-///         validation: .custom { value in
-///             (value >= 0 && value <= 120) ? .success : .failure("Age must be between 0 and 120")
-///         }
+///     @PropertyEditor(keyPath: \Person.familyName)
+///     var lastName = FormFieldViewModel(
+///         type: String.self,
+///         title: "Last Name:",
+///         placeholder: "Anderson",
+///         validation: .combined(.notEmpty, .minLength(2), .maxLength(50))
 ///     )
 /// }
 /// ```
@@ -54,49 +53,36 @@ import Observation
 ///
 /// ```swift
 /// // In your view:
-/// FormTextField(model.name)
+/// FormTextField(model.firstName)
 /// ```
 ///
 /// ### Toggle Field
 ///
 /// ```swift
 /// // Boolean property
-/// @PropertyEditor(keyPath: \Settings.notifications)
-/// var notifications = FormFieldViewModel(
-///     value: true,
-///     title: "Enable Notifications"
+/// @PropertyEditor(keyPath: \Person.isEstablished)
+/// var isEstablished = FormFieldViewModel(
+///     type: Bool.self,
+///     title: "Established:"
 /// )
 ///
 /// // In your view:
-/// FormToggleField(model.notifications)
-/// ```
-///
-/// ### Stepper Field
-///
-/// ```swift
-/// // Numeric property
-/// @PropertyEditor(keyPath: \Order.quantity)
-/// var quantity = FormFieldViewModel(
-///     value: 1,
-///     title: "Quantity:"
-/// )
-///
-/// // In your view:
-/// FormStepperField(viewModel: model.quantity, range: 1...10)
+/// FormToggleField(model.isEstablished)
 /// ```
 ///
 /// ### Date Picker Field
 ///
 /// ```swift
 /// // Date property
-/// @PropertyEditor(keyPath: \Event.date)
-/// var date = FormFieldViewModel(
-///     value: Date(),
-///     title: "Event Date:"
+/// @PropertyEditor(keyPath: \Person.dateOfBirth)
+/// var birthday = FormFieldViewModel(
+///     type: Date.self,
+///     title: "Birthday:",
+///     placeholder: "1980-01-01"
 /// )
 ///
 /// // In your view:
-/// FormDatePickerField(model.date)
+/// FormDatePickerField(model.birthday)
 /// ```
 ///
 /// ## Validation
@@ -104,18 +90,13 @@ import Observation
 /// The model supports validation through the ``AnyValidationRule`` type:
 ///
 /// ```swift
-/// // Email validation
-/// @PropertyEditor(keyPath: \User.email)
+/// // Email validation (using built-in rule)
+/// @PropertyEditor(keyPath: \Person.email)
 /// var email = FormFieldViewModel(
 ///     type: String.self,
-///     title: "Email:",
-///     placeholder: "Enter your email",
-///     validation: .combined(
-///         .notEmpty,
-///         .custom { value in
-///             value.contains("@") ? .success : .failure("Invalid email format")
-///         }
-///     )
+///     title: "Email",
+///     placeholder: "johndoe@example.com",
+///     validation: .of(.email)
 /// )
 /// ```
 ///

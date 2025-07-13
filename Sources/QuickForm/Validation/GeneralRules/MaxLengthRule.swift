@@ -20,30 +20,31 @@
 /// ```swift
 /// @QuickForm(PostForm.self)
 /// class PostFormModel: Validatable {
-///     @PropertyEditor(keyPath: \PostForm.title)
-///     var title = FormFieldViewModel(
+///     @PropertyEditor(keyPath: \PostForm.givenName)
+///     var firstName = FormFieldViewModel(
 ///         type: String.self,
-///         title: "Post Title:",
-///         validation: .combined(.notEmpty, .maxLength(100))
+///         title: "First Name:",
+///         placeholder: "John",
+///         validation: .combined(.notEmpty, .minLength(2), .maxLength(50))
 ///     )
 ///
-///     @PropertyEditor(keyPath: \PostForm.content)
-///     var content = FormFieldViewModel(
+///     @PropertyEditor(keyPath: \PostForm.familyName)
+///     var lastName = FormFieldViewModel(
 ///         type: String.self,
-///         title: "Post Content:",
-///         validation: .combined(.notEmpty, .minLength(10), .maxLength(1000))
+///         title: "Last Name:",
+///         placeholder: "Anderson",
+///         validation: .combined(.notEmpty, .minLength(2), .maxLength(50))
 ///     )
 /// }
 ///
 /// let model = PostFormModel(model: PostForm())
-/// model.title.value = "This is a very long title that exceeds the maximum
-/// allowed length for a post title in our system"
-/// let titleResult = model.title.validate()
-/// // titleResult will be .failure("This field must not exceed 100 characters")
+/// model.firstName.value = "This is a very long first name that exceeds the maximum allowed length"
+/// let firstNameResult = model.firstName.validate()
+/// // firstNameResult will be .failure("This field must not exceed 50 characters")
 ///
-/// model.title.value = "A Perfect Title"
-/// let updatedTitleResult = model.title.validate()
-/// // updatedTitleResult will be .success
+/// model.firstName.value = "John"
+/// let updatedFirstNameResult = model.firstName.validate()
+/// // updatedFirstNameResult will be .success
 /// ```
 public struct MaxLengthRule: ValidationRule {
     /// The maximum length allowed for the string to be valid.

@@ -19,34 +19,106 @@ private struct ConcreteSubscription: Subscription {
 /// A type-safe event dispatcher that enables publish-subscribe communication between components.
 ///
 /// `Dispatcher` provides a decoupled way for components to communicate through events.
-/// Publishers can dispatch events of any type, and subscribers can listen for events of specific types.
+/// In QuickForm, it's primarily used internally by form view models to notify subscribers
+/// when field values change, enabling reactive form behaviors and field dependencies.
 ///
 /// ## Features
 /// - Type-safe event publishing and subscription
 /// - Memory-safe subscription management (prevents retain cycles)
 /// - Support for multiple subscribers for the same event type
+/// - Used internally by QuickForm for value change notifications
 ///
-/// ## Example
+/// ## QuickForm Usage
+///
+/// In QuickForm, you typically interact with `Dispatcher` indirectly through the
+/// `onValueChanged` method on form view models:
+///
+/// ```swift
+/// @QuickForm(Address.self)
+/// class AddressEditModel: Validatable {
+///     @PropertyEditor(keyPath: \Address.country)
+///     var country = PickerFieldViewModel(
+///         type: Country.self,
+///         allValues: Country.allCases,
+///         title: "Country"
+///     )
+///
+///     @PropertyEditor(keyPath: \Address.state)
+///     var state = OptionalPickerFieldViewModel(
+///         type: CountryState?.self,
+///         allValues: [],
+///         title: "State"
+///     )
+///
+///     @PostInit
+///     func configure() {
+///         // Set up field dependencies using onValueChanged
+///         country.onValueChanged { [weak self] newCountry in
+///             self?.state.allValues = newCountry.states
+///             self?.state.value = nil
+///         }
+///     }
+/// }
+/// ```
+///
+/// ## Advanced Field Dependencies
+///
+/// Complex form logic with multiple field dependencies:
+///
+/// ```swift
+/// @QuickForm(Prescription.self)
+/// class PrescriptionEditModel: Validatable {
+///     @PropertyEditor(keyPath: \Prescription.medication)
+///     var medication: MedicationBuilder
+///
+///     @PropertyEditor(keyPath: \Prescription.dispensePackage)
+///     var dispensePackage = OptionalPickerFieldViewModel<DispensePackage>(
+///         type: DispensePackage?.self,
+///         allValues: [],
+///         title: "Package"
+///     )
+///
+///     @PropertyEditor(keyPath: \Prescription.dispense)
+///     var dispense = FormattedFieldViewModel(
+///         type: Int?.self,
+///         format: OptionalFormat(format: .number),
+///         title: "Dispense"
+///     )
+///
+///     @PostInit
+///     func configure() {
+///         // When dosage form changes, update the dispense format
+///         medication.dosageForm.onValueChanged { [weak self] newValue in
+///             if let form = newValue?.form {
+///                 self?.dispense.format = OptionalFormat(format: .dosageForm(form))
+///             }
+///         }
+///
+///         // When package changes, update dispense value
+///         dispensePackage.onValueChanged { [weak self] newValue in
+///             self?.dispense.value = newValue
+///         }
+///     }
+/// }
+/// ```
+///
+/// ## Direct Usage Example
+///
+/// While typically used internally, you can also use `Dispatcher` directly:
 ///
 /// ```swift
 /// // Create a dispatcher
 /// let dispatcher = Dispatcher()
 ///
-/// // Define an event type
-/// struct UserLoggedInEvent {
-///     let userId: String
-///     let timestamp: Date
+/// // Subscribe to value changes
+/// let subscription = dispatcher.subscribe { (newValue: String) in
+///     print("Value changed to: \(newValue)")
 /// }
 ///
-/// // Subscribe to events
-/// let subscription = dispatcher.subscribe { (event: UserLoggedInEvent) in
-///     print("User \(event.userId) logged in at \(event.timestamp)")
-/// }
+/// // Publish a change
+/// dispatcher.publish("New Value")
 ///
-/// // Publish an event
-/// dispatcher.publish(UserLoggedInEvent(userId: "user123", timestamp: Date()))
-///
-/// // Later, when no longer needed
+/// // Clean up when done
 /// subscription.unsubscribe()
 /// ```
 public class Dispatcher {

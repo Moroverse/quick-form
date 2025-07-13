@@ -65,27 +65,22 @@ import SwiftUI
 /// ### With Date Range Restriction
 ///
 /// ```swift
-/// @QuickForm(Event.self)
-/// class EventFormModel: Validatable {
-///     @PropertyEditor(keyPath: \Event.date)
-///     var date = FormFieldViewModel(
+/// @QuickForm(Person.self)
+/// class PersonEditModel: Validatable {
+///     @PropertyEditor(keyPath: \Person.dateOfBirth)
+///     var birthday = FormFieldViewModel(
 ///         type: Date.self,
-///         title: "Event Date:"
+///         title: "Birthday:",
+///         placeholder: "1980-01-01"
 ///     )
 /// }
 ///
-/// struct EventFormView: View {
-///     @Bindable var model: EventFormModel
+/// struct PersonEditView: View {
+///     @Bindable var model: PersonEditModel
 ///
 ///     var body: some View {
 ///         Form {
-///             // Restrict to dates from today forward only
-///             FormDatePickerField(
-///                 model.date,
-///                 range: Date()...Calendar.current.date(byAdding: .year, value: 1, to: Date())!,
-///                 displayedComponents: [.date],
-///                 style: .graphical
-///             )
+///             FormDatePickerField(model.birthday, style: .compact)
 ///         }
 ///     }
 /// }

@@ -39,45 +39,21 @@ import SwiftUI
 /// ### Integration with QuickForm Models
 ///
 /// ```swift
-/// @QuickForm(UserSettings.self)
-/// class SettingsFormModel: Validatable {
-///     @PropertyEditor(keyPath: \UserSettings.receiveNotifications)
-///     var notifications = FormFieldViewModel(
-///         value: false,
-///         title: "Receive Notifications"
-///     )
-///
-///     @PropertyEditor(keyPath: \UserSettings.darkMode)
-///     var darkMode = FormFieldViewModel(
-///         value: false,
-///         title: "Dark Mode"
-///     )
-///
-///     @PropertyEditor(keyPath: \UserSettings.locationServices)
-///     var locationServices = FormFieldViewModel(
-///         value: false,
-///         title: "Enable Location Services"
+/// @QuickForm(Person.self)
+/// class PersonEditModel: Validatable {
+///     @PropertyEditor(keyPath: \Person.isEstablished)
+///     var isEstablished = FormFieldViewModel(
+///         type: Bool.self,
+///         title: "Established:"
 ///     )
 /// }
 ///
-/// struct SettingsFormView: View {
-///     @Bindable var model: SettingsFormModel
+/// struct PersonEditView: View {
+///     @Bindable var model: PersonEditModel
 ///
 ///     var body: some View {
 ///         Form {
-///             Section("App Settings") {
-///                 FormToggleField(model.notifications)
-///                 FormToggleField(model.darkMode)
-///
-///                 // Toggle with reactive dependencies
-///                 FormToggleField(model.locationServices)
-///
-///                 if model.locationServices.value {
-///                     // These controls only appear when location services are enabled
-///                     FormToggleField(model.backgroundLocation)
-///                     FormToggleField(model.preciseLocation)
-///                 }
-///             }
+///             FormToggleField(model.isEstablished)
 ///         }
 ///     }
 /// }

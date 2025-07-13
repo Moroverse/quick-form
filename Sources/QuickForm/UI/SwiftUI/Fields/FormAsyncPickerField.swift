@@ -22,36 +22,48 @@ import SwiftUI
 ///
 /// ## Example Usage
 ///
-/// ### Basic Medication Picker
+/// ### Basic Avatar Picker
 ///
 /// ```swift
-/// struct MedicationForm: View {
-///     @Bindable var model: PatientFormModel
+/// @QuickForm(Person.self)
+/// class PersonEditModel: Validatable {
+///     @PropertyEditor(keyPath: \Person.avatar)
+///     var avatar = AsyncPickerFieldViewModel(value: nil, title: "Avatar:") { query in
+///         try await AvatarFetcher.shared.fetchAvatar(query: query)
+///     } queryBuilder: { text in
+///         text ?? ""
+///     }
+/// }
+///
+/// struct PersonEditView: View {
+///     @Bindable var model: PersonEditModel
 ///
 ///     var body: some View {
 ///         Form {
 ///             FormAsyncPickerField(
-///                 model.medication,
+///                 model.avatar,
 ///                 clearValueMode: .always,
-///                 pickerStyle: .navigation,
-///                 allowSearch: true
-///             ) { medication in
-///                 // How to display the selected value
-///                 Text(medication?.name ?? "Select medication")
-///                     .foregroundColor(medication == nil ? .secondary : .primary)
-///             } pickerContent: { medication in
-///                 // How to display each item in the picker
-///                 VStack(alignment: .leading) {
-///                     Text(medication.name)
-///                         .font(.headline)
-///                     Text(medication.description)
-///                         .font(.caption)
+///                 pickerStyle: .navigation
+///             ) { selection in
+///                 if let selection {
+///                     Image(selection.imageName)
+///                         .resizable()
+///                         .frame(width: 88, height: 88)
+///                         .clipShape(Circle())
+///                 } else {
+///                     VStack {
+///                         Image(systemName: "person.crop.circle")
+///                             .resizable()
+///                             .frame(width: 88, height: 88)
+///                         Text("No Person Avatar Selected")
+///                     }
 ///                 }
-///             }
-///             .onAppear {
-///                 // Load initial data when view appears
-///                 Task {
-///                     await model.medication.search(model.medication.queryBuilder(""))
+///             } pickerContent: { avatar in
+///                 HStack {
+///                     Image(avatar.imageName)
+///                         .resizable()
+///                         .frame(width: 88, height: 88)
+///                     Text(avatar.id.formatted())
 ///                 }
 ///             }
 ///         }

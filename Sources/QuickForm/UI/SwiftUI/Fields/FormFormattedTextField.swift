@@ -29,17 +29,23 @@ import SwiftUI
 /// ### Basic Currency Field
 ///
 /// ```swift
-/// struct EmployeeForm: View {
-///     @State private var viewModel = FormattedFieldViewModel(
-///         value: 50000.0,
+/// @QuickForm(Person.self)
+/// class PersonEditModel: Validatable {
+///     @PropertyEditor(keyPath: \Person.salary)
+///     var salary = FormattedFieldViewModel(
+///         type: Decimal.self,
 ///         format: .currency(code: "USD"),
 ///         title: "Salary:",
-///         placeholder: "Enter annual salary"
+///         placeholder: "$100,000"
 ///     )
+/// }
+///
+/// struct PersonEditView: View {
+///     @Bindable var model: PersonEditModel
 ///
 ///     var body: some View {
 ///         Form {
-///             FormFormattedTextField(viewModel)
+///             FormFormattedTextField(model.salary)
 ///         }
 ///     }
 /// }
@@ -58,16 +64,15 @@ import SwiftUI
 /// ### Phone Number with Auto-Masking
 ///
 /// ```swift
-/// let phoneViewModel = FormattedFieldViewModel(
-///     value: "",
-///     format: PlainStringFormat(),
-///     title: "Phone Number:",
-///     placeholder: "(555) 555-5555",
-///     validation: .of(.usPhoneNumber)
+/// @PropertyEditor(keyPath: \Person.phone)
+/// var phone = FormattedFieldViewModel(
+///     type: String?.self,
+///     format: OptionalFormat(format: .usPhoneNumber(.parentheses)),
+///     title: "Phone:",
+///     placeholder: "(123) 456-7890"
 /// )
 ///
-/// FormFormattedTextField(phoneViewModel, autoMask: .phone)
-///     .keyboardType(.phonePad)
+/// FormFormattedTextField(phone, autoMask: .phone)
 /// ```
 ///
 /// ### Credit Card Field

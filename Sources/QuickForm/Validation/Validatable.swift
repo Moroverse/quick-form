@@ -22,14 +22,16 @@ import Foundation
 ///     var firstName = FormFieldViewModel(
 ///         type: String.self,
 ///         title: "First Name:",
-///         validation: .notEmpty
+///         placeholder: "John",
+///         validation: .combined(.notEmpty, .minLength(2), .maxLength(50))
 ///     )
 ///
 ///     @PropertyEditor(keyPath: \Person.familyName)
 ///     var lastName = FormFieldViewModel(
 ///         type: String.self,
 ///         title: "Last Name:",
-///         validation: .notEmpty
+///         placeholder: "Anderson",
+///         validation: .combined(.notEmpty, .minLength(2), .maxLength(50))
 ///     )
 ///
 ///     func validate() -> ValidationResult {

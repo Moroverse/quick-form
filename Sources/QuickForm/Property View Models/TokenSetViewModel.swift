@@ -54,30 +54,23 @@ import Observation
 /// // The FormTokenSetField automatically handles adding/removing tokens
 /// ```
 ///
-/// ### User Assignment with Selection Handling
+/// ### Skills Management (Real Example)
 ///
 /// ```swift
-/// @QuickForm(Task.self)
-/// class TaskEditModel: Validatable {
-///     @PropertyEditor(keyPath: \Task.assignees)
-///     var assignees = TokenSetViewModel<User>(
-///         value: [],
-///         title: "Assignees",
-///         insertionPlaceholder: "Add user...",
-///         insertionMapper: { username in
-///             userRepository.findUser(byUsername: username)
-///         }
-///     )
-///     .onSelect { selectedUser in
-///         if let user = selectedUser {
-///             showUserProfile(user)
-///         }
+/// @QuickForm(Experience.self)
+/// class ExperienceViewModel: Validatable {
+///     @PropertyEditor(keyPath: \Experience.skills)
+///     var skills = TokenSetViewModel(
+///         value: [ExperienceSkill](),
+///         title: "Skills",
+///         insertionPlaceholder: "Enter a new skill"
+///     ) { newString in
+///         ExperienceSkill(id: UUID(), name: newString, level: 1)
 ///     }
 /// }
 ///
 /// // In your view
-/// FormTokenSetField(model.assignees)
-/// // The FormTokenSetField handles all token operations automatically
+/// FormTokenSetField(model.skills)
 /// ```
 ///
 /// - SeeAlso: ``FormTokenSetField``, ``ObservableValueEditor``, ``Dispatcher``

@@ -48,11 +48,12 @@ import Foundation
 ///     var phoneNumber = FormFieldViewModel(
 ///         type: String.self,
 ///         title: "Phone:",
-///         placeholder: "Enter phone number",
-///         mask: PhoneNumberMask(),
-///         validation: .of(.usPhoneNumber)
+///         placeholder: "Enter phone number"
 ///     )
 /// }
+///
+/// // Usage in SwiftUI view
+/// FormFormattedTextField(model.phoneNumber, autoMask: PhoneNumberMask())
 /// ```
 ///
 /// ## Common Implementations

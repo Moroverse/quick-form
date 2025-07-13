@@ -60,33 +60,22 @@ import SwiftUI
 /// ### Integration with QuickForm Models
 ///
 /// ```swift
-/// @QuickForm(Expense.self)
-/// class ExpenseFormModel: Validatable {
-///     @PropertyEditor(keyPath: \Expense.category)
-///     var category = PickerFieldViewModel(
-///         value: Category.food,
-///         allValues: Category.allCases,
-///         title: "Category:",
-///         validation: .of(.required("Please select a category"))
-///     )
-///
-///     @PropertyEditor(keyPath: \Expense.priority)
-///     var priority = PickerFieldViewModel(
-///         value: Priority.medium,
-///         allValues: Priority.allCases,
-///         title: "Priority:"
+/// @QuickForm(Person.self)
+/// class PersonEditModel: Validatable {
+///     @PropertyEditor(keyPath: \Person.sex)
+///     var sex = PickerFieldViewModel(
+///         type: Person.Sex.self,
+///         allValues: Person.Sex.allCases,
+///         title: "Sex:"
 ///     )
 /// }
 ///
-/// struct ExpenseEditView: View {
-///     @Bindable var model: ExpenseFormModel
+/// struct PersonEditView: View {
+///     @Bindable var model: PersonEditModel
 ///
 ///     var body: some View {
 ///         Form {
-///             FormPickerField(model.category)
-///                 .validationState(model.category.validationResult)
-///
-///             FormPickerField(model.priority, pickerStyle: .segmented)
+///             FormPickerField(model.sex)
 ///         }
 ///     }
 /// }

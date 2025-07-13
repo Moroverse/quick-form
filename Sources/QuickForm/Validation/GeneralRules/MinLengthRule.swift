@@ -19,28 +19,30 @@
 /// ```swift
 /// @QuickForm(UserForm.self)
 /// class UserFormModel: Validatable {
-///     @PropertyEditor(keyPath: \UserForm.username)
-///     var username = FormFieldViewModel(
+///     @PropertyEditor(keyPath: \UserForm.givenName)
+///     var firstName = FormFieldViewModel(
 ///         type: String.self,
-///         title: "Username:",
-///         validation: .combined(.notEmpty, .minLength(5))
+///         title: "First Name:",
+///         placeholder: "John",
+///         validation: .combined(.notEmpty, .minLength(2), .maxLength(50))
 ///     )
 ///
 ///     @PropertyEditor(keyPath: \UserForm.password)
 ///     var password = FormFieldViewModel(
 ///         type: String.self,
 ///         title: "Password:",
-///         validation: .combined(.notEmpty, .minLength(8), .containsUppercase, .containsNumber)
+///         placeholder: "P@$$w0rd",
+///         validation: .combined(.notEmpty, .minLength(8))
 ///     )
 /// }
 ///
 /// let model = UserFormModel(model: UserForm())
-/// let usernameResult = model.username.validate()
-/// // usernameResult will be .failure("This field must be at least 5 characters long")
+/// let firstNameResult = model.firstName.validate()
+/// // firstNameResult will be .failure("This field must be at least 2 characters long")
 ///
-/// model.username.value = "johndoe"
-/// let updatedUsernameResult = model.username.validate()
-/// // updatedUsernameResult will be .success
+/// model.firstName.value = "John"
+/// let updatedFirstNameResult = model.firstName.validate()
+/// // updatedFirstNameResult will be .success
 /// ```
 public struct MinLengthRule: ValidationRule {
     /// The minimum length required for the string to be valid.

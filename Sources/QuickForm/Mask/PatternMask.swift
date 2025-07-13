@@ -38,11 +38,12 @@ import Foundation
 ///     var ssn = FormFieldViewModel(
 ///         type: String.self,
 ///         title: "SSN:",
-///         placeholder: "XXX-XX-XXXX",
-///         mask: .ssn,
-///         validation: .of(.ssn)
+///         placeholder: "XXX-XX-XXXX"
 ///     )
 /// }
+///
+/// // Usage in SwiftUI view
+/// FormFormattedTextField(model.ssn, autoMask: .ssn)
 /// ```
 ///
 /// - SeeAlso: `AutoMask`, `CreditCardMask`, `FormFieldViewModel`
@@ -153,11 +154,14 @@ public extension AutoMask where Self == PatternMask {
     /// ## Example
     ///
     /// ```swift
+    /// // Usage with autoMask parameter
+    /// FormFormattedTextField(model.ssn, autoMask: .ssn)
+    ///
+    /// // Or when creating the field model
     /// FormFieldViewModel(
     ///     type: String.self,
     ///     title: "Social Security Number:",
-    ///     mask: .ssn,
-    ///     validation: .of(.ssn)
+    ///     mask: .ssn
     /// )
     /// ```
     static var ssn: PatternMask { PatternMask(pattern: "XXX-XX-XXXX") }
@@ -170,11 +174,14 @@ public extension AutoMask where Self == PatternMask {
     /// ## Example
     ///
     /// ```swift
+    /// // Usage with autoMask parameter
+    /// FormFormattedTextField(model.zipCode, autoMask: .zipCode)
+    ///
+    /// // Or when creating the field model
     /// FormFieldViewModel(
     ///     type: String.self,
     ///     title: "ZIP Code:",
-    ///     mask: .zipCode,
-    ///     validation: .of(.usZipCode)
+    ///     mask: .zipCode
     /// )
     /// ```
     static var zipCode: PatternMask {

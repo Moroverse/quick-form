@@ -27,16 +27,15 @@ import Foundation
 /// // Parsing
 /// let parsed = try? formatter.parseStrategy.parse("(123) 456-7890") // "1234567890"
 ///
-/// // Usage in a form field
-/// @QuickForm(ContactForm.self)
-/// class ContactFormModel: Validatable {
-///     @PropertyEditor(keyPath: \ContactForm.phoneNumber)
-///     var phoneNumber = FormattedFieldViewModel(
-///         type: String.self,
-///         format: .usPhoneNumber(.parentheses),
-///         title: "Phone:",
-///         placeholder: "(555) 555-5555",
-///         validation: .of(.usPhoneNumber)
+/// // Usage in a form field (actual usage from codebase)
+/// @QuickForm(Person.self)
+/// class PersonEditModel: Validatable {
+///     @PropertyEditor(keyPath: \Person.phone)
+///     var phone = FormattedFieldViewModel(
+///         type: String?.self,
+///         format: OptionalFormat(format: .usPhoneNumber(.parentheses)),
+///         title: "Phone",
+///         placeholder: "(123) 456-7890"
 ///     )
 /// }
 /// ```

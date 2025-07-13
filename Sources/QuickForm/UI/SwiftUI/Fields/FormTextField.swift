@@ -26,10 +26,10 @@ import SwiftUI
 /// ```swift
 /// struct NameForm: View {
 ///     @State private var nameModel = FormFieldViewModel(
-///         value: "",
-///         title: "Name:",
-///         placeholder: "Enter your name",
-///         validation: .of(.required("Name is required"))
+///         type: String.self,
+///         title: "First Name:",
+///         placeholder: "John",
+///         validation: .combined(.notEmpty, .minLength(2), .maxLength(50))
 ///     )
 ///
 ///     var body: some View {
@@ -53,38 +53,32 @@ import SwiftUI
 /// ### Integrated with Form Validation
 ///
 /// ```swift
-/// @QuickForm(User.self)
-/// class UserFormModel: Validatable {
-///     @PropertyEditor(keyPath: \User.email)
-///     var email = FormFieldViewModel(
-///         value: "",
-///         title: "Email:",
-///         placeholder: "example@email.com",
-///         validation: .of(.email)
+/// @QuickForm(Person.self)
+/// class PersonEditModel: Validatable {
+///     @PropertyEditor(keyPath: \Person.givenName)
+///     var firstName = FormFieldViewModel(
+///         type: String.self,
+///         title: "First Name:",
+///         placeholder: "John",
+///         validation: .combined(.notEmpty, .minLength(2), .maxLength(50))
 ///     )
 ///
-///     @PropertyEditor(keyPath: \User.username)
-///     var username = FormFieldViewModel(
-///         value: "",
-///         title: "Username:",
-///         placeholder: "Enter username",
-///         validation: .of(.minLength(4, "Username must be at least 4 characters"))
+///     @PropertyEditor(keyPath: \Person.familyName)
+///     var lastName = FormFieldViewModel(
+///         type: String.self,
+///         title: "Last Name:",
+///         placeholder: "Anderson",
+///         validation: .combined(.notEmpty, .minLength(2), .maxLength(50))
 ///     )
 /// }
 ///
-/// struct UserFormView: View {
-///     @Bindable var model: UserFormModel
+/// struct PersonEditView: View {
+///     @Bindable var model: PersonEditModel
 ///
 ///     var body: some View {
 ///         Form {
-///             FormTextField(model.username)
-///                 .validationState(model.username.validationResult)
-///
-///             FormTextField(model.email,
-///                 alignment: .leading,
-///                 clearValueMode: .always)
-///                 .validationState(model.email.validationResult)
-///                 .keyboardType(.emailAddress)
+///             FormTextField(model.firstName, autocapitalizationType: .words)
+///             FormTextField(model.lastName, autocapitalizationType: .words)
 ///         }
 ///     }
 /// }

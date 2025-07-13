@@ -25,28 +25,28 @@ import Foundation
 ///     var cardNumber = FormFieldViewModel(
 ///         type: String.self,
 ///         title: "Card Number:",
-///         placeholder: "XXXX XXXX XXXX XXXX",
-///         mask: .creditCard,
-///         validation: .of(.creditCardNumber)
+///         placeholder: "XXXX XXXX XXXX XXXX"
 ///     )
 /// }
+///
+/// // Usage in SwiftUI view (actual pattern)
+/// FormFormattedTextField(model.cardNumber, autoMask: .creditCard)
 /// ```
 ///
 /// ## Usage with Validation
 ///
-/// For best results, pair with credit card validation:
+/// For best results, pair with validation:
 ///
 /// ```swift
 /// FormFieldViewModel(
 ///     type: String.self,
 ///     title: "Card Number:",
-///     mask: .creditCard,
 ///     validation: .combined(
 ///         .notEmpty,
 ///         .custom { value in
 ///             // Additional validation logic
 ///             let digits = value.filter(\.isNumber)
-///             return digits.count >= 13 && digits.count <= 19
+///             return digits.count >= 13 && digits.count <= 19 ? .success : .failure("Invalid card number")
 ///         }
 ///     )
 /// )
@@ -108,6 +108,10 @@ public extension AutoMask where Self == CreditCardMask {
     /// This static accessor makes it easy to add credit card masking to form fields:
     ///
     /// ```swift
+    /// // Usage with autoMask parameter
+    /// FormFormattedTextField(model.cardNumber, autoMask: .creditCard)
+    ///
+    /// // Or when creating the field model
     /// FormFieldViewModel(
     ///     type: String.self,
     ///     title: "Card Number",
