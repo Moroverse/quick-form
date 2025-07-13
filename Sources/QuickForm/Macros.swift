@@ -369,7 +369,7 @@ public macro Dependency() = #externalMacro(module: "QuickFormMacros", type: "Dep
 /// class FormModel {
 ///     @StateObserved
 ///     var formState: FormState = .idle
-///     
+///
 ///     @StateObserved
 ///     var isLoading: Bool = false
 /// }
@@ -403,7 +403,7 @@ public macro Dependency() = #externalMacro(module: "QuickFormMacros", type: "Dep
 ///         yield &_formState
 ///     }
 /// }
-/// 
+///
 /// private var _formState: FormState = .idle
 /// ```
 ///
@@ -414,10 +414,10 @@ public macro Dependency() = #externalMacro(module: "QuickFormMacros", type: "Dep
 /// class UserFormModel: Validatable {
 ///     @StateObserved
 ///     var submissionState: SubmissionState = .idle
-///     
+///
 ///     @StateObserved
 ///     var validationState: ValidationState = .valid
-///     
+///
 ///     @PropertyEditor(keyPath: \User.name)
 ///     var name = FormFieldViewModel(
 ///         value: "",

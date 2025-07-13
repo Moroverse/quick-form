@@ -1,6 +1,6 @@
-// ObservationTrackedMacro.swift
+// StateObservedMacro.swift
 // Copyright (c) 2025 Moroverse
-// Created by Daniel Moro on 2025-01-12 15:30 GMT.
+// Created by Daniel Moro on 2025-07-12 20:55 GMT.
 
 import SwiftSyntax
 import SwiftSyntaxMacros
@@ -25,45 +25,26 @@ public struct StateObservedMacro: AccessorMacro, PeerMacro {
         let propertyName = identifier.text
         let backingPropertyName = "_\(propertyName)"
 
-        return [
-            // init(initialValue) {
-            //   _propertyName = initialValue
-            // }
-            try AccessorDeclSyntax("init(initialValue)") {
+        return try [
+            AccessorDeclSyntax("@storageRestrictions(initializes: \(raw: backingPropertyName))"),
+            AccessorDeclSyntax("init(initialValue)") {
                 ExprSyntax("\(raw: backingPropertyName) = initialValue")
             },
-            
-            // get {
-            //   access(keyPath: \.propertyName)
-            //   return _propertyName
-            // }
-            try AccessorDeclSyntax("get") {
+
+            AccessorDeclSyntax("get") {
                 ExprSyntax("access(keyPath: \\.\(raw: propertyName))")
                 ReturnStmtSyntax(expression: ExprSyntax("\(raw: backingPropertyName)"))
             },
-            
-            // set {
-            //   withMutation(keyPath: \.propertyName) {
-            //     _propertyName = newValue
-            //   }
-            // }
-            try AccessorDeclSyntax("set") {
+
+            AccessorDeclSyntax("set") {
                 ExprSyntax("""
                 withMutation(keyPath: \\.\(raw: propertyName)) {
                     \(raw: backingPropertyName) = newValue
                 }
                 """)
             },
-            
-            // _modify {
-            //   access(keyPath: \.propertyName)
-            //   _$observationRegistrar.willSet(self, keyPath: \.propertyName)
-            //   defer {
-            //       _$observationRegistrar.didSet(self, keyPath: \.propertyName)
-            //   }
-            //   yield &_propertyName
-            // }
-            try AccessorDeclSyntax("_modify") {
+
+            AccessorDeclSyntax("_modify") {
                 ExprSyntax("access(keyPath: \\.\(raw: propertyName))")
                 ExprSyntax("_$observationRegistrar.willSet(self, keyPath: \\.\(raw: propertyName))")
                 DeferStmtSyntax {
@@ -73,7 +54,7 @@ public struct StateObservedMacro: AccessorMacro, PeerMacro {
             }
         ]
     }
-    
+
     public static func expansion(
         of node: AttributeSyntax,
         providingPeersOf declaration: some DeclSyntaxProtocol,
@@ -93,14 +74,12 @@ public struct StateObservedMacro: AccessorMacro, PeerMacro {
 
         // Create the backing storage property
         // private var _propertyName: Type = initialValue
-        let backingProperty: DeclSyntax
-        
-        if let typeAnnotation = typeAnnotation {
-            backingProperty = """
+        let backingProperty: DeclSyntax = if let typeAnnotation {
+            """
             private var \(raw: backingPropertyName)\(raw: typeAnnotation) = \(initializerValue)
             """
         } else {
-            backingProperty = """
+            """
             private var \(raw: backingPropertyName) = \(initializerValue)
             """
         }
@@ -108,4 +87,3 @@ public struct StateObservedMacro: AccessorMacro, PeerMacro {
         return [backingProperty]
     }
 }
-

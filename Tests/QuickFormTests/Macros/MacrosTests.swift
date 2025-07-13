@@ -26,7 +26,7 @@ let canTestMacros: Bool = {
                 macros: ["QuickForm": QuickFormMacro.self]
             )
         )
-        func testQuickFormMacro() {
+        func quickFormMacro() {
             assertMacro {
                 #"""
                 @QuickForm(Person.self)
@@ -139,7 +139,7 @@ let canTestMacros: Bool = {
                 macros: ["PropertyEditor": PropertyEditorMacro.self]
             )
         )
-        func testPropertyEditorMacro() {
+        func propertyEditorMacro() {
             assertMacro {
                 #"""
                 class PersonFormController {
@@ -214,7 +214,7 @@ let canTestMacros: Bool = {
                 macros: ["QuickForm": QuickFormMacro.self, "PropertyEditor": PropertyEditorMacro.self]
             )
         )
-        func testQuickFormMacroAndPropertyEditorMacro() {
+        func quickFormMacroAndPropertyEditorMacro() {
             assertMacro {
                 #"""
                 @QuickForm(Person.self)
@@ -341,18 +341,19 @@ let canTestMacros: Bool = {
                 macros: ["StateObserved": StateObservedMacro.self]
             )
         )
-        func testStateObservedMacro() {
+        func stateObservedMacro() {
             assertMacro {
                 #"""
                 class FormModel {
                     @StateObserved
-                    var formState: FormState = .idle
+                    var formState  = FormState.idle
                 }
                 """#
             } expansion: {
                 #"""
                 class FormModel {
-                    var formState: FormState {
+                    var formState  {
+                        @storageRestrictions(initializes: _formState)
                         init(initialValue) {
                             _formState = initialValue
                         }
@@ -375,7 +376,7 @@ let canTestMacros: Bool = {
                         }
                     }
 
-                    private var _formState: FormState  = .idle
+                    private var _formState = FormState.idle
                 }
                 """#
             }
@@ -388,7 +389,7 @@ let canTestMacros: Bool = {
                 macros: ["StateObserved": StateObservedMacro.self]
             )
         )
-        func testStateObservedMacroWithBooleanType() {
+        func stateObservedMacroWithBooleanType() {
             assertMacro {
                 #"""
                 class FormModel {
@@ -400,6 +401,7 @@ let canTestMacros: Bool = {
                 #"""
                 class FormModel {
                     var isLoading: Bool {
+                        @storageRestrictions(initializes: _isLoading)
                         init(initialValue) {
                             _isLoading = initialValue
                         }
