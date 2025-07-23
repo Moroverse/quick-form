@@ -150,11 +150,16 @@ public struct QuickFormMacro: MemberMacro, ExtensionMacro {
             \(dependencyAssignments.isEmpty ? "" : dependencyAssignments + "\n")
             \(onInitContents.joined(separator: "\n"))
             update()
+        
             \(propertyEditors.map { identifier, keyPath in
-                makeTrack(identifier: identifier, keyPath: keyPath, shouldValidate: conformsToValidatable)
+                "track\(identifier.capitalized)()"
             }.joined(separator: "\n"))
             \(postInitCall)
         }
+        
+        \(propertyEditors.map { identifier, keyPath in
+                makeTrack(identifier: identifier, keyPath: keyPath, shouldValidate: conformsToValidatable)
+            }.joined(separator: "\n"))
         """
         declarations.append(DeclSyntax(stringLiteral: initializer))
 
@@ -277,7 +282,7 @@ public struct QuickFormMacro: MemberMacro, ExtensionMacro {
         let validation = shouldValidate ? "validationResult = validate()" : ""
         let track =
             """
-            func track\(CapitalizedIdentifier)() {
+            private func track\(CapitalizedIdentifier)() {
                 withObservationTracking { [weak self] in
                         _ = self?.\(identifier).value
                     } onChange: { [weak self] in
@@ -285,13 +290,10 @@ public struct QuickFormMacro: MemberMacro, ExtensionMacro {
                             guard let self else { return }
                             self.value[keyPath: \(keyPath)] = \(identifier).value
                             \(validation)
-                            track\(CapitalizedIdentifier)()
+                            self.track\(CapitalizedIdentifier)()
                         }
                     }
                 }
-
-                track\(CapitalizedIdentifier)()
-
             """
 
         return track
