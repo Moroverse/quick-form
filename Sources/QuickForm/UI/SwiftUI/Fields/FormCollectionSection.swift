@@ -204,7 +204,7 @@ public extension FormCollectionSection {
 }
 
 struct SimplePerson: Identifiable {
-    let id = UUID()
+    nonisolated let id = UUID()
     let name: String
 }
 

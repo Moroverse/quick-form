@@ -1,8 +1,8 @@
-// swift-tools-version: 6.0
-@preconcurrency import PackageDescription
+// swift-tools-version: 6.2
+import PackageDescription
 
 #if TUIST
-    @preconcurrency import ProjectDescription
+    import ProjectDescription
 
     let packageSettings = PackageSettings(
         productTypes: [:]
