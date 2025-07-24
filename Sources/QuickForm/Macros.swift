@@ -110,8 +110,7 @@ import Observation
     named(customValidationRules),
     named(addCustomValidationRule),
     named(dispatcher),
-    named(onValueChanged),
-    arbitrary
+    named(onValueChanged)
 )
 @attached(extension, conformances: Observable, ObservableValueEditor)
 public macro QuickForm<T>(_ type: T.Type) = #externalMacro(module: "QuickFormMacros", type: "QuickFormMacro")

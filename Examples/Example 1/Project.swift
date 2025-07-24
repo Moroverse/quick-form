@@ -40,10 +40,6 @@ let project = Project(
             ],
             settings: .settings(
                 base: [
-                    "SWIFT_VERSION": "6.0",
-                    "SWIFT_APPROACHABLE_CONCURRENCY": true,
-                    "SWIFT_DEFAULT_ACTOR_ISOLATION": "MainActor",
-                    "SWIFT_STRICT_CONCURRENCY": "Complete",
                     "LOCALIZATION_PREFERS_STRING_CATALOGS": "YES",
                     "SWIFT_EMIT_LOC_STRINGS": "YES",
                     "TARGETED_DEVICE_FAMILY": "1,2"

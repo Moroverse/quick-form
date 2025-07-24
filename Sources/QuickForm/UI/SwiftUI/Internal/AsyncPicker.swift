@@ -149,7 +149,7 @@ struct AsyncPicker<Model: RandomAccessCollection, Query, Content>: View
 }
 
 struct Weekday: Identifiable, Hashable {
-    nonisolated let id: Int
+    let id: Int
     let name: String
 }
 

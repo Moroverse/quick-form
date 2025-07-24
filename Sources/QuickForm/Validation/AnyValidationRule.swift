@@ -51,7 +51,6 @@ import Foundation
 /// ```
 public struct AnyValidationRule<Value>: ValidationRule {
     private let _validate: (Value) -> ValidationResult
-
     /// Initializes a new `AnyValidationRule` wrapping the given validation rule.
     ///
     /// - Parameter rule: The validation rule to wrap.
@@ -115,9 +114,3 @@ public struct AnyValidationRule<Value>: ValidationRule {
         Self(rule)
     }
 }
-
-// SAFETY: This type is @unchecked Sendable because it only stores an
-// existential function reference, and relies on the underlying rule to
-// behave correctly when used in concurrent contexts.
-extension AnyValidationRule: @unchecked Sendable where Value: Sendable {}
-

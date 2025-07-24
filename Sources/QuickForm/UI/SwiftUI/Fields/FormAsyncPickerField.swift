@@ -303,8 +303,8 @@ public struct FormAsyncPickerField<Model: RandomAccessCollection, Query, VConten
     }
 }
 
-extension String: @retroactive Identifiable {
-    nonisolated public var id: String { self }
+extension String: Identifiable {
+    public var id: String { self }
 }
 
 #Preview("Basic") {

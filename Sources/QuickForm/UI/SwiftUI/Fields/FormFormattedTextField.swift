@@ -420,7 +420,7 @@ public struct FormFormattedTextField<F, V>: View where F: ParseableFormatStyle, 
     )
 
     Form {
-        FormFormattedTextField(viewModel, autoMask: .usPhone)
+        FormFormattedTextField(viewModel, autoMask: .phone)
     }
 }
 

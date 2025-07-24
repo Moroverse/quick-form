@@ -1,4 +1,4 @@
-// swift-tools-version: 6.2
+// swift-tools-version: 6.0
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import CompilerPluginSupport
@@ -28,22 +28,12 @@ let package = Package(
             dependencies: [
                 .product(name: "SwiftSyntaxMacros", package: "swift-syntax"),
                 .product(name: "SwiftCompilerPlugin", package: "swift-syntax")
-            ],
-            swiftSettings: [
-                .defaultIsolation(MainActor.self),
-                .enableUpcomingFeature("NonisolatedNonsendingByDefault"),
-                .enableUpcomingFeature("InferIsolatedConformances")
             ]
         ),
         .target(
             name: "QuickForm",
             dependencies: [
                 "QuickFormMacros"
-            ],
-            swiftSettings: [
-                .defaultIsolation(MainActor.self),
-                .enableUpcomingFeature("NonisolatedNonsendingByDefault"),
-                .enableUpcomingFeature("InferIsolatedConformances")
             ]
         ),
         .testTarget(
@@ -54,12 +44,8 @@ let package = Package(
                 .product(name: "SwiftSyntaxMacrosTestSupport", package: "swift-syntax"),
                 .product(name: "MacroTesting", package: "swift-macro-testing"),
                 .product(name: "ViewInspector", package: "viewinspector")
-            ],
-            swiftSettings: [
-                .defaultIsolation(MainActor.self),
-                .enableUpcomingFeature("NonisolatedNonsendingByDefault"),
-                .enableUpcomingFeature("InferIsolatedConformances")
             ]
         )
-    ]
+    ],
+    swiftLanguageModes: [.v5]
 )

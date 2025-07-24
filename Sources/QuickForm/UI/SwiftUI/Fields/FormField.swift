@@ -3,6 +3,7 @@
 // Created by Daniel Moro on 2025-03-06 08:02 GMT.
 
 import Foundation
+import QuickForm
 import SwiftUI
 
 /// A property wrapper that connects a value with a `FormFieldViewModel`.
