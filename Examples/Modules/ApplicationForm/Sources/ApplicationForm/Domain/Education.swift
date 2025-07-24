@@ -5,7 +5,7 @@
 import Foundation
 
 public struct Education: Identifiable {
-    public var id: UUID
+    nonisolated public var id: UUID
     public var institution: String
     public var startDate: Date
     public var endDate: Date

@@ -307,7 +307,7 @@ public struct QuickFormMacro: MemberMacro, ExtensionMacro {
         in context: some MacroExpansionContext
     ) throws -> [ExtensionDeclSyntax] {
         let observableConformance = try ExtensionDeclSyntax("extension \(type): Observable { }")
-        let valueEditorConformance = try ExtensionDeclSyntax("extension \(type): ObservableValueEditor { }")
+        let valueEditorConformance = try ExtensionDeclSyntax("extension \(type): @MainActor ObservableValueEditor { }")
         return [observableConformance, valueEditorConformance]
     }
 }

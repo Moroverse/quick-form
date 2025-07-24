@@ -7,6 +7,9 @@ import ProjectDescriptionHelpers
 
 let project = Project(
     name: "PersonAndMedicationExample",
+    packages: [
+        .package(path: "../../.")
+    ],
     targets: [
         .target(
             name: "PersonAndMedicationExample",
@@ -36,7 +39,7 @@ let project = Project(
                 )
             ],
             dependencies: [
-                .external(name: "QuickForm")
+                .package(product: "QuickForm"),
             ],
             settings: .settings(
                 base: [

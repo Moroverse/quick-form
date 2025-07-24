@@ -5,7 +5,7 @@
 import Foundation
 
 public struct ExperienceSkill: Identifiable {
-    public var id: UUID
+    nonisolated public var id: UUID
     public var name: String
     public var level: Double
 

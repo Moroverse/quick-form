@@ -2,7 +2,7 @@
 // Copyright (c) 2025 Moroverse
 // Created by Daniel Moro on 2025-03-09 06:05 GMT.
 
-import Factory
+import FactoryKit
 import QuickForm
 import SwiftUI
 

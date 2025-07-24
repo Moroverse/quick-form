@@ -1,4 +1,4 @@
-// swift-tools-version: 6.0
+// swift-tools-version: 6.2
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
@@ -19,7 +19,7 @@ let package = Package(
     ],
     dependencies: [
         .package(path: "../../../."),
-        .package(url: "https://github.com/hmlongco/Factory.git", from: "2.4.3")
+        .package(url: "https://github.com/hmlongco/Factory.git", branch: "develop"),
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
@@ -27,13 +27,18 @@ let package = Package(
         .target(
             name: "ApplicationForm",
             dependencies: [
-                "Factory",
+                .product(name: "FactoryKit", package: "Factory"),
                 .product(name: "QuickForm", package: "quick-form")
             ],
             resources: [
                 .process("Resources/Preview Content")
+            ],
+            swiftSettings: [
+                .defaultIsolation(MainActor.self),
+                .enableUpcomingFeature("NonisolatedNonsendingByDefault"),
+                .enableUpcomingFeature("InferIsolatedConformances")
             ]
         )
     ],
-    swiftLanguageModes: [.v5]
+    swiftLanguageVersions: [.v6]
 )
