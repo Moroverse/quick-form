@@ -137,6 +137,11 @@ public final class TokenSetViewModel<Property: Identifiable & CustomStringConver
     /// - The UI is updated to reflect the new collection
     public var value: [Property] {
         didSet {
+            if let oldH = oldValue as? AnyHashable,
+               let newH = value as? AnyHashable,
+               oldH == newH {
+                return
+            }
             dispatcher.publish(value)
         }
     }

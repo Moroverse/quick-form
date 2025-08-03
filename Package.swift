@@ -43,7 +43,10 @@ let package = Package(
             swiftSettings: [
                 .defaultIsolation(MainActor.self),
                 .enableUpcomingFeature("NonisolatedNonsendingByDefault"),
-                .enableUpcomingFeature("InferIsolatedConformances")
+                .enableUpcomingFeature("InferIsolatedConformances"),
+                .enableUpcomingFeature("DisableOutwardActorInference"),
+                .enableUpcomingFeature("GlobalActorIsolatedTypesUsability"),
+                .enableUpcomingFeature("InferSendableFromCaptures")
             ]
         ),
         .testTarget(
@@ -58,7 +61,10 @@ let package = Package(
             swiftSettings: [
                 .defaultIsolation(MainActor.self),
                 .enableUpcomingFeature("NonisolatedNonsendingByDefault"),
-                .enableUpcomingFeature("InferIsolatedConformances")
+                .enableUpcomingFeature("InferIsolatedConformances"),
+                .enableUpcomingFeature("DisableOutwardActorInference"),
+                .enableUpcomingFeature("GlobalActorIsolatedTypesUsability"),
+                .enableUpcomingFeature("InferSendableFromCaptures")
             ]
         )
     ]

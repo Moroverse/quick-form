@@ -81,6 +81,11 @@ public final class ModelTransformer<SourceEditor, DestinationEditor>: ValueEdito
             return new.value
         }
         set {
+            if let oldH = newValue as? AnyHashable,
+               let newH = value as? AnyHashable,
+               oldH == newH {
+                return
+            }
             new.value = newValue
             original.value = mapTo(new.value)
         }

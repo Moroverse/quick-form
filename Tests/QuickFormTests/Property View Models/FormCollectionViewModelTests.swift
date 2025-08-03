@@ -6,13 +6,17 @@ import Foundation
 import QuickForm
 import Testing
 
+private struct TestItem: Sendable, Equatable {
+    let id = UUID()
+    var name: String
+    var value: Int
+}
+
+extension TestItem: nonisolated Identifiable {}
+
 @Suite("FormCollectionViewModel Tests")
 struct FormCollectionViewModelTests {
-    struct TestItem: Identifiable, Sendable, Equatable {
-        let id = UUID()
-        var name: String
-        var value: Int
-    }
+
 
     @Test("Initializes with correct properties")
     func modelInit() {

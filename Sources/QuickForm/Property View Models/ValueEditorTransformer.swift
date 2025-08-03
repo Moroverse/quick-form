@@ -81,6 +81,11 @@ public final class ValueEditorTransformer<SourceEditor, Transformed>: Observable
     public var value: Transformed {
         didSet {
             if settingValue == true { return }
+            if let oldH = oldValue as? AnyHashable,
+               let newH = value as? AnyHashable,
+               oldH == newH {
+                return
+            }
             settingValue = true
             sourceEditor.value = transformToSource(value)
             settingValue = false
@@ -171,7 +176,7 @@ public final class ValueEditorTransformer<SourceEditor, Transformed>: Observable
         value = transformFromSource(original.value)
         dispatcher = Dispatcher()
 
-        sourceEditor.onValueChanged { [weak self] in
+        _ = sourceEditor.onValueChanged { [weak self] in
             if self?.settingValue == true { return }
             self?.settingValue = true
             let transformed = transformFromSource($0)

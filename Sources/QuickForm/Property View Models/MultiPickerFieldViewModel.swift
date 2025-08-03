@@ -77,6 +77,9 @@ public final class MultiPickerFieldViewModel<Property: Hashable & CustomStringCo
     /// - The UI will be updated to reflect the new selection state
     public var value: Set<Property> {
         didSet {
+            if oldValue == value {
+                return
+            }
             dispatcher.publish(value)
         }
     }

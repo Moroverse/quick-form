@@ -168,6 +168,11 @@ public final class AsyncPickerFieldViewModel<Model: Collection, Query>:
     /// - The UI displaying this picker is automatically updated
     public var value: Model.Element? {
         didSet {
+            if let oldH = oldValue as? AnyHashable,
+               let newH = value as? AnyHashable,
+               oldH == newH {
+                return
+            }
             dispatcher.publish(value)
             validationResult = validate()
         }

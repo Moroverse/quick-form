@@ -104,6 +104,11 @@ public final class FormattedFieldViewModel<F>: ObservableValueEditor, Validatabl
     /// - Any UI components bound to this value are updated
     public var value: F.FormatInput {
         didSet {
+            if let oldH = oldValue as? AnyHashable,
+               let newH = value as? AnyHashable,
+               oldH == newH {
+                return
+            }
             dispatcher.publish(value)
             validationResult = validate()
         }
