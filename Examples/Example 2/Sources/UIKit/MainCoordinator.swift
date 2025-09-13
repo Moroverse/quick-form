@@ -31,7 +31,7 @@ class AppCoordinator: NSObject {
 extension AppCoordinator: ApplicationFormRouting, AdditionalInfoRouting {
     // MARK: - ApplicationFormRouting Implementation
 
-    public func navigateToNewSkill() async -> ExperienceSkill? {
+    func navigateToNewSkill() async -> ExperienceSkill? {
         await withCheckedContinuation { [weak self] continuation in
             guard let self else {
                 continuation.resume(returning: nil)
@@ -55,7 +55,7 @@ extension AppCoordinator: ApplicationFormRouting, AdditionalInfoRouting {
         }
     }
 
-    public func navigateToEducation(_ selection: Education?) async -> Education? {
+    func navigateToEducation(_ selection: Education?) async -> Education? {
         await withCheckedContinuation { [weak self] continuation in
             guard let self else {
                 continuation.resume(returning: nil)
@@ -91,7 +91,7 @@ extension AppCoordinator: ApplicationFormRouting, AdditionalInfoRouting {
 
     // MARK: - AdditionalInfoRouting Implementation
 
-    public func navigateToResumeUpload() async -> URL? {
+    func navigateToResumeUpload() async -> URL? {
         await withCheckedContinuation { [weak self] continuation in
             guard let self else {
                 continuation.resume(returning: nil)
@@ -129,7 +129,7 @@ extension AppCoordinator: ApplicationFormRouting, AdditionalInfoRouting {
     }
 
     @MainActor
-    public func navigateToPreview(at url: URL) {
+    func navigateToPreview(at url: URL) {
         let previewVC = PreviewComposer.composeController(with: url)
         previewVC.modalPresentationStyle = .fullScreen
 

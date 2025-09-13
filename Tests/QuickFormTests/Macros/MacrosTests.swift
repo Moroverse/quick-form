@@ -2,14 +2,14 @@
 // Copyright (c) 2025 Moroverse
 // Created by Daniel Moro on 2025-03-03 05:18 GMT.
 
-import MacroTesting
-import SwiftSyntaxMacrosTestSupport
-import Testing
 #if canImport(QuickFormMacros)
     import QuickFormMacros
+    import MacroTesting
+    import SwiftSyntaxMacrosTestSupport
+    import Testing
 #endif
 
-let canTestMacros: Bool = {
+nonisolated let canTestMacros: Bool = {
     #if canImport(QuickFormMacros)
         return true
     #else
@@ -22,8 +22,8 @@ let canTestMacros: Bool = {
         @Test(
             .enabled(if: canTestMacros),
             .macros(
-                record: .missing,
-                macros: ["QuickForm": QuickFormMacro.self]
+                ["QuickForm": QuickFormMacro.self],
+                record: .missing
             )
         )
         func quickFormMacro() {
@@ -91,6 +91,7 @@ let canTestMacros: Bool = {
 
                         update()
 
+
                         postInit()
                     }
 
@@ -126,7 +127,7 @@ let canTestMacros: Bool = {
                 extension PersonFormController: Observable {
                 }
 
-                extension PersonFormController: ObservableValueEditor {
+                extension PersonFormController: @MainActor ObservableValueEditor {
                 }
                 """#
             }
@@ -135,8 +136,8 @@ let canTestMacros: Bool = {
         @Test(
             .enabled(if: canTestMacros),
             .macros(
-                record: .missing,
-                macros: ["PropertyEditor": PropertyEditorMacro.self]
+                ["PropertyEditor": PropertyEditorMacro.self],
+                record: .missing
             )
         )
         func propertyEditorMacro() {
@@ -210,8 +211,8 @@ let canTestMacros: Bool = {
         @Test(
             .enabled(if: canTestMacros),
             .macros(
-                record: .missing,
-                macros: ["QuickForm": QuickFormMacro.self, "PropertyEditor": PropertyEditorMacro.self]
+                ["QuickForm": QuickFormMacro.self, "PropertyEditor": PropertyEditorMacro.self],
+                record: .missing
             )
         )
         func quickFormMacroAndPropertyEditorMacro() {
@@ -276,25 +277,23 @@ let canTestMacros: Bool = {
 
 
                         update()
-                        func trackNamefield() {
+
+                        trackNamefield()
+
+                    }
+
+                    private func trackNamefield() {
                         withObservationTracking { [weak self] in
                                 _ = self?.nameField.value
                             } onChange: { [weak self] in
                                 Task { @MainActor [weak self] in
-                                    guard let self else {
-                                        return
-                                    }
+                                    guard let self else { return }
                                     self.value[keyPath: \Person.name] = nameField.value
-
-                                    trackNamefield()
+                                    
+                                    self.trackNamefield()
                                 }
                             }
                         }
-
-                        trackNamefield()
-
-
-                    }
 
                     private let _$observationRegistrar = Observation.ObservationRegistrar()
 
@@ -328,7 +327,7 @@ let canTestMacros: Bool = {
                 extension PersonFormController: Observable {
                 }
 
-                extension PersonFormController: ObservableValueEditor {
+                extension PersonFormController: @MainActor ObservableValueEditor {
                 }
                 """#
             }
@@ -337,8 +336,8 @@ let canTestMacros: Bool = {
         @Test(
             .enabled(if: canTestMacros),
             .macros(
-                record: .missing,
-                macros: ["StateObserved": StateObservedMacro.self]
+                ["StateObserved": StateObservedMacro.self],
+                record: .missing
             )
         )
         func stateObservedMacro() {

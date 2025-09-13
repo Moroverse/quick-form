@@ -10,7 +10,7 @@ struct FakeSubscription: Subscription {
     func unsubscribe() {}
 }
 
-class TestObservableEditor<T>: ObservableValueEditor {
+class TestObservableEditor<T>: @MainActor ObservableValueEditor {
     typealias Value = T
     private var callbacks: [(T) -> Void] = []
 

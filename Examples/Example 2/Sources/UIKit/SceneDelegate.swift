@@ -3,7 +3,7 @@
 // Created by Daniel Moro on 2025-02-15 16:05 GMT.
 
 import ApplicationForm
-import Factory
+import FactoryKit
 import UIKit
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {

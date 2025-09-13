@@ -3,7 +3,7 @@
 // Created by Daniel Moro on 2025-03-15 14:12 GMT.
 
 @testable import ApplicationForm
-import Factory
+import FactoryKit
 import Foundation
 import Testing
 

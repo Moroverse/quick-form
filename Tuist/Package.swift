@@ -1,8 +1,8 @@
-// swift-tools-version: 6.0
-@preconcurrency import PackageDescription
+// swift-tools-version: 6.2
+import PackageDescription
 
 #if TUIST
-    @preconcurrency import ProjectDescription
+    import ProjectDescription
 
     let packageSettings = PackageSettings(
         productTypes: [:]
@@ -12,9 +12,8 @@
 let package = Package(
     name: "Demo",
     dependencies: [
-        .package(path: "../."),
+        //.package(path: "../."),
         .package(url: "https://github.com/SwiftfulThinking/SwiftfulRouting.git", from: "5.3.6"),
-        .package(url: "https://github.com/hmlongco/Factory.git", from: "2.4.3"),
-        .package(path: "../Examples/Modules/ApplicationForm")
+        //.package(url: "https://github.com/hmlongco/Factory.git", from: "2.4.3"),
     ]
 )

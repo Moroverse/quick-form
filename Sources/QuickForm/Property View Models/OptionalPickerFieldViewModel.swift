@@ -119,6 +119,9 @@ public final class OptionalPickerFieldViewModel<Property: Hashable & CustomStrin
     /// - Validation is performed and `validationResult` is updated
     public var value: Property? {
         didSet {
+            if oldValue == value {
+                return
+            }
             dispatcher.publish(value)
             validationResult = validate()
         }

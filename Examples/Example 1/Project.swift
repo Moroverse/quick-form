@@ -7,6 +7,9 @@ import ProjectDescriptionHelpers
 
 let project = Project(
     name: "PersonAndMedicationExample",
+    packages: [
+        .package(path: "../../.")
+    ],
     targets: [
         .target(
             name: "PersonAndMedicationExample",
@@ -36,10 +39,14 @@ let project = Project(
                 )
             ],
             dependencies: [
-                .external(name: "QuickForm")
+                .package(product: "QuickForm"),
             ],
             settings: .settings(
                 base: [
+                    "SWIFT_VERSION": "6.0",
+                    "SWIFT_APPROACHABLE_CONCURRENCY": true,
+                    "SWIFT_DEFAULT_ACTOR_ISOLATION": "MainActor",
+                    "SWIFT_STRICT_CONCURRENCY": "Complete",
                     "LOCALIZATION_PREFERS_STRING_CATALOGS": "YES",
                     "SWIFT_EMIT_LOC_STRINGS": "YES",
                     "TARGETED_DEVICE_FAMILY": "1,2"

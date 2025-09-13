@@ -3,7 +3,7 @@
 // Created by Daniel Moro on 2025-03-16 15:44 GMT.
 
 import ApplicationForm
-import Factory
+import FactoryKit
 import SwiftfulRouting
 import SwiftUI
 

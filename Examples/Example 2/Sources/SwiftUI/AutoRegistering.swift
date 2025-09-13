@@ -3,9 +3,10 @@
 // Created by Daniel Moro on 2025-03-16 15:44 GMT.
 
 import ApplicationForm
-import Factory
+import FactoryKit
 
-extension Container: @retroactive AutoRegistering {
+extension Container: @retroactive @MainActor AutoRegistering {
+    @MainActor
     public func autoRegister() {
         documentDeleter.register { DefaultDocumentDeleter() }
         documentUploader.register { DefaultDocumentUploader() }

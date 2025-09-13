@@ -122,6 +122,11 @@ public final class FormFieldViewModel<Property>: ObservableValueEditor, Validata
     /// - Validation is performed and `validationResult` is updated
     public var value: Property {
         didSet {
+            if let oldH = oldValue as? AnyHashable,
+               let newH = value as? AnyHashable,
+               oldH == newH {
+                return
+            }
             dispatcher.publish(value)
             validationResult = validate()
         }

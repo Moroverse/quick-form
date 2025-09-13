@@ -6,7 +6,7 @@ import Foundation
 import QuickForm
 import Testing
 
-struct TestItem: Identifiable {
+private struct TestItem: Identifiable {
     let id: Int
     let name: String
 }

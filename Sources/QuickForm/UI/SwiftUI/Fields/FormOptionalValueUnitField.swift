@@ -215,7 +215,8 @@ public struct FormOptionalValueUnitField<T: Unit, S: PickerStyle>: View where T:
     }
 }
 
-extension UnitTemperature: @retroactive Identifiable {}
+
+nonisolated extension UnitTemperature: @retroactive Identifiable {}
 extension UnitTemperature: AllValues {
     public static var allCases: [UnitTemperature] = [
         .celsius,

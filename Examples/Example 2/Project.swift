@@ -1,6 +1,6 @@
 // Project.swift
 // Copyright (c) 2025 Moroverse
-// Created by Daniel Moro on 2025-03-16 15:44 GMT.
+// Created by Daniel Moro on 2025-07-24 06:14 GMT.
 
 import ProjectDescription
 import ProjectDescriptionHelpers
@@ -29,6 +29,11 @@ let infoPlistSwiftUIAdditions: [String: Plist.Value] = [
 
 let project = Project(
     name: "ApplicationFormExample",
+    packages: [
+        .package(path: "../../."),
+        .package(path: "../../Examples/Modules/ApplicationForm"),
+        .package(url: "https://github.com/hmlongco/Factory.git", .branch("develop"))
+    ],
     targets: [
         .target(
             name: "ApplicationFormExample-SwiftUI",
@@ -55,13 +60,17 @@ let project = Project(
                 )
             ],
             dependencies: [
-                .external(name: "ApplicationForm"),
-                .external(name: "QuickForm"),
+                .package(product: "ApplicationForm"),
+                .package(product: "QuickForm"),
                 .external(name: "SwiftfulRouting"),
-                .external(name: "Factory")
+                .package(product: "FactoryKit")
             ],
             settings: .settings(
                 base: [
+                    "SWIFT_VERSION": "6.0",
+                    "SWIFT_APPROACHABLE_CONCURRENCY": true,
+                    "SWIFT_DEFAULT_ACTOR_ISOLATION": "MainActor",
+                    "SWIFT_STRICT_CONCURRENCY": "Complete",
                     "LOCALIZATION_PREFERS_STRING_CATALOGS": "YES",
                     "SWIFT_EMIT_LOC_STRINGS": "YES",
                     "TARGETED_DEVICE_FAMILY": "1,2"
@@ -92,12 +101,16 @@ let project = Project(
                 )
             ],
             dependencies: [
-                .external(name: "ApplicationForm"),
-                .external(name: "QuickForm"),
-                .external(name: "Factory")
+                .package(product: "ApplicationForm"),
+                .package(product: "QuickForm"),
+                .package(product: "Factory")
             ],
             settings: .settings(
                 base: [
+                    "SWIFT_VERSION": "6.0",
+                    "SWIFT_APPROACHABLE_CONCURRENCY": true,
+                    "SWIFT_DEFAULT_ACTOR_ISOLATION": "MainActor",
+                    "SWIFT_STRICT_CONCURRENCY": "Complete",
                     "LOCALIZATION_PREFERS_STRING_CATALOGS": "YES",
                     "SWIFT_EMIT_LOC_STRINGS": "YES",
                     "TARGETED_DEVICE_FAMILY": "1,2"
@@ -113,7 +126,16 @@ let project = Project(
             infoPlist: .default,
             sources: ["Tests/**"],
             resources: [],
-            dependencies: [.target(name: "ApplicationFormExample-SwiftUI")]
+            dependencies: [.target(name: "ApplicationFormExample-SwiftUI")],
+            settings: .settings(
+                base: [
+                    "SWIFT_VERSION": "6.0",
+                    "SWIFT_APPROACHABLE_CONCURRENCY": true,
+                    "SWIFT_DEFAULT_ACTOR_ISOLATION": "MainActor",
+                    "SWIFT_STRICT_CONCURRENCY": "Complete"
+                ],
+                defaultSettings: .essential(excluding: [])
+            )
         )
     ]
 )

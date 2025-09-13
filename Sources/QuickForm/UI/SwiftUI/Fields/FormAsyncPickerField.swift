@@ -303,12 +303,22 @@ public struct FormAsyncPickerField<Model: RandomAccessCollection, Query, VConten
     }
 }
 
-extension String: Identifiable {
-    public var id: String { self }
+struct IdentifiableString: Identifiable, Sendable {
+    nonisolated var id: String {
+        value
+    }
+
+    let value: String
+}
+
+extension IdentifiableString: ExpressibleByStringLiteral {
+    init(stringLiteral value: String) {
+        self.value = value
+    }
 }
 
 #Preview("Basic") {
-    @Previewable @State var picker = AsyncPickerFieldViewModel<[String], String>(
+    @Previewable @State var picker = AsyncPickerFieldViewModel<[IdentifiableString], String>(
         value: nil,
         title: "Color",
         valuesProvider: { _ in ["Red", "Green", "Blue", "Yellow", "Purple"] },
@@ -317,32 +327,32 @@ extension String: Identifiable {
 
     Form {
         FormAsyncPickerField(picker) { value in
-            Text(value ?? "Select color")
+            Text(value?.value ?? "Select color")
         } pickerContent: { value in
-            Text(value)
+            Text(value.value)
         }
     }
 }
 
 #Preview("With Search") {
-    @Previewable @State var picker = AsyncPickerFieldViewModel<[String], String>(
+    @Previewable @State var picker = AsyncPickerFieldViewModel<[IdentifiableString], String>(
         value: nil,
         title: "Color",
         valuesProvider: { query in
-            let colors = ["Red", "Green", "Blue", "Yellow", "Purple"]
+            let colors: [IdentifiableString] = ["Red", "Green", "Blue", "Yellow", "Purple"]
             if query.isEmpty {
                 return colors
             }
-            return colors.filter { $0.localizedCaseInsensitiveContains(query) }
+            return colors.filter { $0.value.localizedCaseInsensitiveContains(query) }
         },
         queryBuilder: { $0 ?? "" }
     )
 
     Form {
         FormAsyncPickerField(picker, allowSearch: true) { value in
-            Text(value ?? "Select color")
+            Text(value?.value ?? "Select color")
         } pickerContent: { value in
-            Text(value)
+            Text(value.value)
         }
     }
 }

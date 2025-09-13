@@ -163,7 +163,7 @@ public class Dispatcher {
     ///
     /// - Note: The dispatcher holds a weak reference to `self` in the returned subscription
     ///   to avoid retain cycles.
-    public func subscribe<T>(handler: @escaping @Sendable (T) -> Void) -> Subscription {
+    public func subscribe<T>(handler: @escaping (T) -> Void) -> Subscription {
         let key = UUID()
 
         let typedHandler = TypedHandler(id: key, handler: handler)

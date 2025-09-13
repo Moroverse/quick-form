@@ -2,7 +2,7 @@
 // Copyright (c) 2025 Moroverse
 // Created by Daniel Moro on 2025-03-09 05:25 GMT.
 
-import Factory
+import FactoryKit
 import Foundation
 import QuickForm
 import SwiftUI
@@ -30,7 +30,7 @@ struct ApplicationFormView: View {
             FormTextField(model.personalInformation.givenName)
             FormTextField(model.personalInformation.familyName)
             FormTextField(model.personalInformation.emailName)
-            FormFormattedTextField(model.personalInformation.phoneNumber, autoMask: .phone)
+            FormFormattedTextField(model.personalInformation.phoneNumber, autoMask: .usPhone)
             AddressView(model: model.personalInformation.address)
         }
     }

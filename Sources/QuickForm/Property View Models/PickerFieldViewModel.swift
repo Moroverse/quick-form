@@ -96,6 +96,9 @@ public final class PickerFieldViewModel<Property: Hashable & CustomStringConvert
     /// are notified of the change.
     public var value: Property {
         didSet {
+            if oldValue == value {
+                return
+            }
             dispatcher.publish(value)
         }
     }
