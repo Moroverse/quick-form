@@ -44,9 +44,6 @@ let package = Package(
                 .defaultIsolation(MainActor.self),
                 .enableUpcomingFeature("NonisolatedNonsendingByDefault"),
                 .enableUpcomingFeature("InferIsolatedConformances"),
-                .enableUpcomingFeature("DisableOutwardActorInference"),
-                .enableUpcomingFeature("GlobalActorIsolatedTypesUsability"),
-                .enableUpcomingFeature("InferSendableFromCaptures")
             ]
         ),
         .testTarget(
@@ -59,12 +56,8 @@ let package = Package(
                 .product(name: "ViewInspector", package: "viewinspector")
             ],
             swiftSettings: [
-                .defaultIsolation(MainActor.self),
                 .enableUpcomingFeature("NonisolatedNonsendingByDefault"),
-                .enableUpcomingFeature("InferIsolatedConformances"),
-                .enableUpcomingFeature("DisableOutwardActorInference"),
-                .enableUpcomingFeature("GlobalActorIsolatedTypesUsability"),
-                .enableUpcomingFeature("InferSendableFromCaptures")
+                .enableUpcomingFeature("InferIsolatedConformances")
             ]
         )
     ]

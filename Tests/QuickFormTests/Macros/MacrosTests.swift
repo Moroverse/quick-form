@@ -2,11 +2,11 @@
 // Copyright (c) 2025 Moroverse
 // Created by Daniel Moro on 2025-03-03 05:18 GMT.
 
-import MacroTesting
-import SwiftSyntaxMacrosTestSupport
-import Testing
 #if canImport(QuickFormMacros)
     import QuickFormMacros
+    import MacroTesting
+    import SwiftSyntaxMacrosTestSupport
+    import Testing
 #endif
 
 nonisolated let canTestMacros: Bool = {
