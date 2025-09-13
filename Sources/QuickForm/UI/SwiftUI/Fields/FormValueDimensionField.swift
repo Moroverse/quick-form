@@ -212,7 +212,7 @@ public struct FormValueDimensionField<T: Dimension, S: PickerStyle>: View where 
 }
 
 /// Extension to make UnitMass identifiable for use in ForEach.
-extension UnitMass: @retroactive Identifiable {}
+nonisolated extension UnitMass: @retroactive Identifiable {}
 
 /// Extension to provide all available mass units for UnitMass.
 extension UnitMass: AllValues {
