@@ -6,9 +6,9 @@ import FactoryKit
 import QuickForm
 import SwiftUI
 
-// extension String: @retroactive Identifiable {
-//    public var id: String { self }
-// }
+ nonisolated extension String: @retroactive Identifiable {
+    public var id: String { self }
+ }
 
 struct AddressView: View {
     @Bindable private var model: AddressModel

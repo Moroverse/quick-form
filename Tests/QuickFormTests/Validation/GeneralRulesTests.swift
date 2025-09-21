@@ -10,6 +10,7 @@ import Testing
 struct GeneralRulesTests {
     // MARK: - NotEmptyRule Tests
 
+    @MainActor
     @Test("NotEmptyRule validates non-empty strings as valid")
     func notEmptyRule_ValidatesNonEmptyStrings() {
         let rule = NotEmptyRule()
@@ -20,6 +21,7 @@ struct GeneralRulesTests {
         #expect(rule.validate("\n").isSuccessful) // Newline is not empty
     }
 
+    @MainActor
     @Test("NotEmptyRule validates empty strings as invalid")
     func notEmptyRule_ValidatesEmptyStringsAsInvalid() {
         let rule = NotEmptyRule()
@@ -34,6 +36,7 @@ struct GeneralRulesTests {
         }
     }
 
+    @MainActor
     @Test("NotEmptyRule static property creates a valid rule")
     func notEmptyRule_StaticProperty() {
         let rule: NotEmptyRule = .notEmpty
@@ -44,6 +47,7 @@ struct GeneralRulesTests {
 
     // MARK: - MaxLengthRule Tests
 
+    @MainActor
     @Test("MaxLengthRule validates strings under maximum length as valid")
     func maxLengthRule_ValidatesStringsUnderMaximumLength() {
         let rule = MaxLengthRule(length: 5)
@@ -53,6 +57,7 @@ struct GeneralRulesTests {
         #expect(rule.validate("Hello").isSuccessful) // Exactly 5 characters
     }
 
+    @MainActor
     @Test("MaxLengthRule validates strings over maximum length as invalid")
     func maxLengthRule_ValidatesStringsOverMaximumLengthAsInvalid() {
         let rule: MaxLengthRule = .maxLength(5)
@@ -68,6 +73,7 @@ struct GeneralRulesTests {
         }
     }
 
+    @MainActor
     @Test("MaxLengthRule static factory method creates a valid rule")
     func maxLengthRule_StaticFactoryMethod() {
         let rule: MaxLengthRule = .maxLength(5)
@@ -78,6 +84,7 @@ struct GeneralRulesTests {
 
     // MARK: - MinLengthRule Tests
 
+    @MainActor
     @Test("MinLengthRule validates strings over minimum length as valid")
     func minLengthRule_ValidatesStringsOverMinimumLength() {
         let rule = MinLengthRule(length: 5)
@@ -86,6 +93,7 @@ struct GeneralRulesTests {
         #expect(rule.validate("Hello World").isSuccessful)
     }
 
+    @MainActor
     @Test("MinLengthRule validates strings under minimum length as invalid")
     func minLengthRule_ValidatesStringsUnderMinimumLengthAsInvalid() {
         let rule: MinLengthRule = .minLength(5)
@@ -100,6 +108,7 @@ struct GeneralRulesTests {
         }
     }
 
+    @MainActor
     @Test("MinLengthRule static factory method creates a valid rule")
     func minLengthRule_StaticFactoryMethod() {
         let rule: MinLengthRule = .minLength(5)
@@ -110,6 +119,7 @@ struct GeneralRulesTests {
 
     // MARK: - RequiredRule Tests
 
+    @MainActor
     @Test("RequiredRule validates non-nil values as valid")
     func requiredRule_ValidatesNonNilValues() {
         let rule = RequiredRule<String>()
@@ -118,6 +128,7 @@ struct GeneralRulesTests {
         #expect(rule.validate("").isSuccessful) // Empty string is not nil
     }
 
+    @MainActor
     @Test("RequiredRule validates nil values as invalid")
     func requiredRule_ValidatesNilValuesAsInvalid() {
         let rule = RequiredRule<String>()
@@ -132,6 +143,7 @@ struct GeneralRulesTests {
         }
     }
 
+    @MainActor
     @Test("RequiredRule factory method creates a valid rule")
     func requiredRule_FactoryMethod() {
         let rule: AnyValidationRule<String?> = .required()
@@ -142,6 +154,7 @@ struct GeneralRulesTests {
 
     // MARK: - Combining Rules Tests
 
+    @MainActor
     @Test("Combined rules all pass when conditions are met")
     func combinedRules_AllPass() {
         let combinedRule = AnyValidationRule<String>.combined(
@@ -155,6 +168,7 @@ struct GeneralRulesTests {
         #expect(combinedRule.validate("HelloWorld").isSuccessful)
     }
 
+    @MainActor
     @Test("Combined rules fail with first failure")
     func combinedRules_FailWithFirstFailure() {
         let combinedRule = AnyValidationRule<String>.combined(

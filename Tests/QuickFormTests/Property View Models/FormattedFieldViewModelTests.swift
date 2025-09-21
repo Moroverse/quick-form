@@ -8,6 +8,8 @@ import Testing
 
 @Suite("FormattedFieldViewModel Tests")
 struct FormattedFieldViewModelTests {
+
+    @MainActor
     @Test("Initializes with correct properties")
     func modelInit() {
         let sut = FormattedFieldViewModel(
@@ -24,6 +26,7 @@ struct FormattedFieldViewModelTests {
         #expect(sut.isReadOnly == false)
     }
 
+    @MainActor
     @Test("Formats value according to format style")
     func valueFormatting() {
         let locale = Locale(identifier: "en_US")
@@ -37,6 +40,7 @@ struct FormattedFieldViewModelTests {
         #expect(formatted == "$1,234.56")
     }
 
+    @MainActor
     @Test("Calls all registered callbacks when value changes")
     func onValueChange() {
         let sut = FormattedFieldViewModel(
@@ -67,6 +71,7 @@ struct FormattedFieldViewModelTests {
         #expect(secondRecordedValue == 250.0)
     }
 
+    @MainActor
     @Test("Returns raw string value without formatting")
     func rawStringValue() {
         let sut = FormattedFieldViewModel(
@@ -81,6 +86,7 @@ struct FormattedFieldViewModelTests {
         #expect(sut.rawStringValue == "99.99")
     }
 
+    @MainActor
     @Test("Validates model values according to validation rules")
     func validation() {
         struct LessThan20Rule: ValidationRule {
@@ -105,6 +111,7 @@ struct FormattedFieldViewModelTests {
         #expect(sut.isValid == false)
     }
 
+    @MainActor
     @Test("Provides proper error message when validation fails")
     func validationErrorMessage() {
         struct Rule: ValidationRule {

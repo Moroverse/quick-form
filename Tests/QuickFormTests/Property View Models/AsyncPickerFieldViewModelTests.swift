@@ -13,6 +13,7 @@ private struct TestItem: Identifiable {
 
 @Suite("AsyncPickerFieldViewModel Tests")
 struct AsyncPickerFieldViewModelTests {
+    @MainActor
     @Test("Initializes with correct properties")
     func modelInit() {
         let sut = AsyncPickerFieldViewModel<[TestItem], String>(
@@ -37,6 +38,7 @@ struct AsyncPickerFieldViewModelTests {
         }
     }
 
+    @MainActor
     @Test("Defaults to empty title, nil placeholder, and non-read-only state")
     func defaultParameters() {
         let sut = AsyncPickerFieldViewModel<[TestItem], String>(
@@ -50,6 +52,7 @@ struct AsyncPickerFieldViewModelTests {
         #expect(sut.isReadOnly == false)
     }
 
+    @MainActor
     @Test("Calls all registered callbacks when value changes")
     func onValueChange() {
         let item1 = TestItem(id: 1, name: "Item 1")
@@ -99,6 +102,7 @@ struct AsyncPickerFieldViewModelTests {
         #expect(secondRecordedValue == nil)
     }
 
+    @MainActor
     @Test("Validates value according to validation rules")
     func validation() {
         let sut = AsyncPickerFieldViewModel<[TestItem], String>(
@@ -123,8 +127,8 @@ struct AsyncPickerFieldViewModelTests {
         #expect(sut.errorMessage == "This field is required")
     }
 
-    @Test("Search function updates allValues state")
     @MainActor
+    @Test("Search function updates allValues state")
     func searchFunction() async {
         let searchableItems = [
             "": [

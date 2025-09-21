@@ -8,6 +8,7 @@ import Testing
 
 @Suite("OptionalFormat Tests")
 struct OptionalFormatTests {
+    @MainActor
     @Test("Formats non-nil values using the wrapped format")
     func formatsNonNilValues() {
         let locale = Locale(identifier: "en_US")
@@ -32,6 +33,7 @@ struct OptionalFormatTests {
         #expect(formattedDate == "Jan 1, 1970")
     }
 
+    @MainActor
     @Test("Formats nil values as empty strings")
     func formatsNilAsEmptyString() {
         // Test with various format types
@@ -48,6 +50,7 @@ struct OptionalFormatTests {
         #expect(stringFormat.format(String?.none) == "")
     }
 
+    @MainActor
     @Test("Parses non-empty strings correctly")
     func parsesNonEmptyStrings() {
         let locale = Locale(identifier: "en_US")
@@ -85,6 +88,7 @@ struct OptionalFormatTests {
         }
     }
 
+    @MainActor
     @Test("Parses empty strings as nil")
     func parsesEmptyStringAsNil() {
         let currencyFormat = OptionalFormat(format: .currency(code: "USD"))
@@ -105,6 +109,7 @@ struct OptionalFormatTests {
         }
     }
 
+    @MainActor
     @Test("Parses whitespace-only strings as empty strings (non-nil)")
     func parsesWhitespaceStrings() {
         let stringFormat = OptionalFormat(format: PlainStringFormat())
@@ -118,6 +123,7 @@ struct OptionalFormatTests {
         }
     }
 
+    @MainActor
     @Test("Throws error when parsing invalid format")
     func throwsErrorForInvalidFormat() throws {
         let numberFormat = OptionalFormat(format: .number)
@@ -126,6 +132,7 @@ struct OptionalFormatTests {
         }
     }
 
+    @MainActor
     @Test("Round-trip formatting and parsing")
     func roundTripFormattingAndParsing() throws {
         let currencyFormat = OptionalFormat(format: .currency(code: "USD"))

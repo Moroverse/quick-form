@@ -37,6 +37,7 @@ class TestObservableEditor<T>: @MainActor ObservableValueEditor {
 
 @Suite("ValueEditorTransformer Tests")
 struct ValueEditorTransformerTests {
+    @MainActor
     @Test("Initializes with correct transformed value")
     func initialization() {
         let sourceEditor = TestObservableEditor<String>(value: "42")
@@ -49,6 +50,7 @@ struct ValueEditorTransformerTests {
         #expect(transformer.value == 42)
     }
 
+    @MainActor
     @Test("Updates source editor when transformed value changes")
     func updateSourceOnValueChange() {
         let sourceEditor = TestObservableEditor<String>(value: "10")
@@ -66,6 +68,7 @@ struct ValueEditorTransformerTests {
         #expect(transformer.value == 50)
     }
 
+    @MainActor
     @Test("Updates transformer when source editor changes")
     func updateTransformerOnSourceChange() {
         let sourceEditor = TestObservableEditor<String>(value: "100")
@@ -82,6 +85,7 @@ struct ValueEditorTransformerTests {
         #expect(transformer.value == 250)
     }
 
+    @MainActor
     @Test("Notifies callbacks when transformed value changes directly")
     func notifyCallbacksOnDirectChange() {
         let sourceEditor = TestObservableEditor<String>(value: "42")
@@ -104,6 +108,7 @@ struct ValueEditorTransformerTests {
         #expect(callbackValue == 100)
     }
 
+    @MainActor
     @Test("Notifies callbacks when transformed value changes via source")
     func notifyCallbacksOnIndirectChange() {
         let sourceEditor = TestObservableEditor<String>(value: "42")
@@ -126,6 +131,7 @@ struct ValueEditorTransformerTests {
         #expect(callbackValue == 200)
     }
 
+    @MainActor
     @Test("Prevents infinite recursion during updates")
     func preventInfiniteRecursion() {
         let sourceEditor = TestObservableEditor<String>(value: "42")
@@ -153,6 +159,7 @@ struct ValueEditorTransformerTests {
         #expect(transformerCallbacks == 1)
     }
 
+    @MainActor
     @Test("Extension method `map` creates same transformer as direct init")
     func extensionMethod() {
         let sourceEditor = TestObservableEditor<String>(value: "42")

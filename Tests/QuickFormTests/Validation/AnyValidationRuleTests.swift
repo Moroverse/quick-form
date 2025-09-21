@@ -31,6 +31,7 @@ struct EvenNumberRule: ValidationRule {
 
 @Suite("AnyValidationRule Tests")
 struct AnyValidationRuleTests {
+    @MainActor
     @Test("Type-erases validation rules correctly")
     func typeErases() {
         let minRule = MinValueRule(minimumValue: 5)
@@ -57,6 +58,7 @@ struct AnyValidationRuleTests {
         #expect(minErrorMessage == anyErrorMessage)
     }
 
+    @MainActor
     @Test("Creates rule with static 'of' method")
     func staticOfMethod() {
         let minRule = MinValueRule(minimumValue: 5)
@@ -66,6 +68,7 @@ struct AnyValidationRuleTests {
         #expect(!anyRule.validate(3).isSuccessful)
     }
 
+    @MainActor
     @Test("Combines multiple rules correctly")
     func combinesRules() {
         let combinedRule = AnyValidationRule<Int>.combined(
@@ -89,6 +92,7 @@ struct AnyValidationRuleTests {
         #expect(!combinedRule.validate(7).isSuccessful)
     }
 
+    @MainActor
     @Test("Combined rule returns first failure")
     func returnsFirstFailure() {
         let combinedRule = AnyValidationRule<Int>.combined(
@@ -123,6 +127,7 @@ struct AnyValidationRuleTests {
         }
     }
 
+    @MainActor
     @Test("Handles empty combined rules")
     func handlesCombinedEmpty() {
         // Empty combined rule should always succeed

@@ -122,7 +122,13 @@ public struct FormAsyncActionField<Property, Label: View>: View {
                 hasError = newValue != .success
             }
         }
-        .registerForInspection(inspection, in: self)
+        .registerForInspection(in: self) {
+            #if DEBUG
+                inspection
+            #else
+                nil
+            #endif
+        }
     }
 
     /// Creates a form field that performs an asynchronous action when tapped.

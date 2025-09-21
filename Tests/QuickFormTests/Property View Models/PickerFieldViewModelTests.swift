@@ -22,6 +22,7 @@ enum TestEnum: String, Hashable, CustomStringConvertible, CaseIterable {
 
 @Suite("PickerFieldViewModel Tests")
 struct PickerFieldViewModelTests {
+    @MainActor
     @Test("Initializes with correct properties")
     func modelInit() {
         let allValues = TestEnum.allCases
@@ -41,6 +42,7 @@ struct PickerFieldViewModelTests {
         #expect(sut.isReadOnly == true)
     }
 
+    @MainActor
     @Test("Defaults to empty title and non-read-only state")
     func defaultParameters() {
         let sut = PickerFieldViewModel(
@@ -52,6 +54,7 @@ struct PickerFieldViewModelTests {
         #expect(sut.isReadOnly == false)
     }
 
+    @MainActor
     @Test("Calls all registered callbacks when value changes")
     func onValueChange() {
         let sut = PickerFieldViewModel(

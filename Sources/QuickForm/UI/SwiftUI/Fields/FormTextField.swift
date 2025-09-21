@@ -213,7 +213,13 @@ public struct FormTextField: View {
                 hasError = newValue != .success
             }
         }
-        .registerForInspection(inspection, in: self)
+        .registerForInspection(in: self) {
+            #if DEBUG
+                inspection
+            #else
+                nil
+            #endif
+        }
 
         if shouldDisplayClearButton {
             Button {

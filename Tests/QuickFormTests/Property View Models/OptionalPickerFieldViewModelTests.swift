@@ -22,6 +22,8 @@ enum TestOption: String, Hashable, CustomStringConvertible {
 
 @Suite("OptionalPickerFieldViewModel Tests")
 struct OptionalPickerFieldViewModelTests {
+
+    @MainActor
     @Test("Initializes with correct properties")
     func modelInit() {
         let allValues: [TestOption] = [.first, .second, .third]
@@ -44,6 +46,7 @@ struct OptionalPickerFieldViewModelTests {
         #expect(sut.isReadOnly == true)
     }
 
+    @MainActor
     @Test("Initializes with nil value")
     func modelInitWithNil() {
         let allValues: [TestOption] = [.first, .second, .third]
@@ -57,6 +60,7 @@ struct OptionalPickerFieldViewModelTests {
         #expect(sut.allValues.count == 3)
     }
 
+    @MainActor
     @Test("Defaults to empty title, nil placeholder, and non-read-only state")
     func defaultParameters() {
         let sut = OptionalPickerFieldViewModel(
@@ -69,6 +73,7 @@ struct OptionalPickerFieldViewModelTests {
         #expect(sut.isReadOnly == false)
     }
 
+    @MainActor
     @Test("Calls all registered callbacks when value changes")
     func onValueChange() {
         let sut = OptionalPickerFieldViewModel(
@@ -114,6 +119,7 @@ struct OptionalPickerFieldViewModelTests {
         #expect(secondRecordedValue == .third)
     }
 
+    @MainActor
     @Test("Validates value according to validation rules")
     func validation() {
         let sut = OptionalPickerFieldViewModel(
@@ -137,6 +143,7 @@ struct OptionalPickerFieldViewModelTests {
         #expect(sut.errorMessage == nil)
     }
 
+    @MainActor
     @Test("Handles no validation rules properly")
     func noValidation() {
         let sut = OptionalPickerFieldViewModel<TestOption>(

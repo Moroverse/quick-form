@@ -26,6 +26,7 @@ enum TestCategory: String, Hashable, CustomStringConvertible {
 
 @Suite("MultiPickerFieldViewModel Tests")
 struct MultiPickerFieldViewModelTests {
+    @MainActor
     @Test("Initializes with correct properties")
     func modelInit() {
         let initialSelection: Set<TestCategory> = [.food, .travel]
@@ -45,6 +46,7 @@ struct MultiPickerFieldViewModelTests {
         #expect(sut.isReadOnly == true)
     }
 
+    @MainActor
     @Test("Defaults to empty title and non-read-only state")
     func defaultParameters() {
         let sut = MultiPickerFieldViewModel(
@@ -56,6 +58,7 @@ struct MultiPickerFieldViewModelTests {
         #expect(sut.isReadOnly == false)
     }
 
+    @MainActor
     @Test("Calls all registered callbacks when value changes")
     func onValueChange() {
         let sut = MultiPickerFieldViewModel(
