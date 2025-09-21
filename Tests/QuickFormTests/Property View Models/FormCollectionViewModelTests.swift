@@ -17,7 +17,7 @@ extension TestItem: nonisolated Identifiable {}
 @Suite("FormCollectionViewModel Tests")
 struct FormCollectionViewModelTests {
 
-
+    @MainActor
     @Test("Initializes with correct properties")
     func modelInit() {
         let items = [
@@ -40,6 +40,7 @@ struct FormCollectionViewModelTests {
         #expect(sut.isReadOnly == true)
     }
 
+    @MainActor
     @Test("Defaults to empty title, default insertion title, and non-read-only state")
     func defaultParameters() {
         let sut = FormCollectionViewModel<TestItem>(
@@ -51,6 +52,7 @@ struct FormCollectionViewModelTests {
         #expect(sut.isReadOnly == false)
     }
 
+    @MainActor
     @Test("canDelete message onCanDelete")
     func deleteWithCanDelete() {
         let items = [
@@ -110,6 +112,7 @@ struct FormCollectionViewModelTests {
         #expect(sut.value.count == 2)
     }
 
+    @MainActor
     @Test("Selection behavior with canSelect")
     func selectionBehavior() async {
         let items = [
@@ -147,6 +150,7 @@ struct FormCollectionViewModelTests {
         #expect(selectedItem == oldSelection)
     }
 
+    @MainActor
     @Test("Move behavior with canMove")
     func moveWithCanMove() {
         let items = [
@@ -172,6 +176,7 @@ struct FormCollectionViewModelTests {
         #expect(!sut.canMove(from: invalidSource, to: 0))
     }
 
+    @MainActor
     @Test("Track collection changes with onChange")
     func trackChanges() {
         let sut = FormCollectionViewModel<TestItem>(

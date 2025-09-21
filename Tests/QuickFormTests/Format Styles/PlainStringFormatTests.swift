@@ -8,6 +8,7 @@ import Testing
 
 @Suite("PlainStringFormat Tests")
 struct PlainStringFormatTests {
+    @MainActor
     @Test("Formats values without modification")
     func formatsWithoutModification() {
         let format = PlainStringFormat()
@@ -29,6 +30,7 @@ struct PlainStringFormatTests {
         #expect(format.format("Tab\tCharacter") == "Tab\tCharacter")
     }
 
+    @MainActor
     @Test("Parses strings without modification")
     func parsesWithoutModification() throws {
         let format = PlainStringFormat()
@@ -51,6 +53,7 @@ struct PlainStringFormatTests {
         #expect(try strategy.parse("Tab\tCharacter") == "Tab\tCharacter")
     }
 
+    @MainActor
     @Test("Round-trip formatting and parsing")
     func roundTripFormattingAndParsing() throws {
         let format = PlainStringFormat()

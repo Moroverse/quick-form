@@ -23,6 +23,7 @@ class TestValidatable: Validatable {
 
 @Suite("Validatable Protocol Extensions Tests")
 struct ValidatableTests {
+    @MainActor
     @Test("isValid returns true when validation succeeds")
     func isValidWithSuccess() {
         let sut = TestValidatable(shouldSucceed: true)
@@ -30,6 +31,7 @@ struct ValidatableTests {
         #expect(sut.isValid == true)
     }
 
+    @MainActor
     @Test("isValid returns false when validation fails")
     func isValidWithFailure() {
         let sut = TestValidatable(shouldSucceed: false)
@@ -37,6 +39,7 @@ struct ValidatableTests {
         #expect(sut.isValid == false)
     }
 
+    @MainActor
     @Test("errorMessage returns nil when validation succeeds")
     func errorMessageWithSuccess() {
         let sut = TestValidatable(shouldSucceed: true)
@@ -44,6 +47,7 @@ struct ValidatableTests {
         #expect(sut.errorMessage == nil)
     }
 
+    @MainActor
     @Test("errorMessage returns the failure message when validation fails")
     func errorMessageWithFailure() {
         let customMessage: LocalizedStringResource = "Custom error message"
@@ -52,6 +56,7 @@ struct ValidatableTests {
         #expect(sut.errorMessage == customMessage)
     }
 
+    @MainActor
     @Test("validate and isValid are consistent")
     func consistencyBetweenValidateAndIsValid() {
         let successCase = TestValidatable(shouldSucceed: true)
@@ -74,6 +79,7 @@ struct ValidatableTests {
         }
     }
 
+    @MainActor
     @Test("validate and errorMessage are consistent")
     func consistencyBetweenValidateAndErrorMessage() {
         let customMessage: LocalizedStringResource = "Custom error message"

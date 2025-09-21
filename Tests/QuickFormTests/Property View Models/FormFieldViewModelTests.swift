@@ -7,6 +7,7 @@ import Testing
 
 @Suite("FormFieldViewModelTests")
 struct FormFieldViewModelTests {
+    @MainActor
     @Test("Initializes with correct properties")
     func modelInit() {
         let sut = FormFieldViewModel<String>(
@@ -22,6 +23,7 @@ struct FormFieldViewModelTests {
         #expect(sut.isReadOnly == false)
     }
 
+    @MainActor
     @Test("Calls all registered callbacks when value changes")
     func onValueChange() {
         let sut = FormFieldViewModel<String>(value: "banana")
@@ -47,6 +49,7 @@ struct FormFieldViewModelTests {
         #expect(secondRecordedValue == "apple")
     }
 
+    @MainActor
     @Test("Validates model values according to validation rules")
     func validation() {
         let sut = FormFieldViewModel<String>(

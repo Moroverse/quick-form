@@ -1,6 +1,6 @@
 // Project.swift
 // Copyright (c) 2025 Moroverse
-// Created by Daniel Moro on 2025-07-24 06:14 GMT.
+// Created by Daniel Moro on 2025-09-13 08:03 GMT.
 
 import ProjectDescription
 import ProjectDescriptionHelpers
@@ -32,7 +32,7 @@ let project = Project(
     packages: [
         .package(path: "../../."),
         .package(path: "../../Examples/Modules/ApplicationForm"),
-        .package(url: "https://github.com/hmlongco/Factory.git", .branch("develop"))
+        .package(url: "https://github.com/hmlongco/Factory.git", from: "2.5.3")
     ],
     targets: [
         .target(

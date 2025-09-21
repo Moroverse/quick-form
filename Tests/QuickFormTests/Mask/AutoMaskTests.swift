@@ -10,6 +10,7 @@ import Testing
 struct AutoMaskTests {
     // MARK: - Phone Mask Tests
 
+    @MainActor
     @Test("PhoneMask.apply formats phone number correctly")
     func phoneMaskFormatsCorrectly() {
         let mask = USPhoneMask()
@@ -37,6 +38,7 @@ struct AutoMaskTests {
         #expect(mask.apply(to: "(123) 456-7890") == "(123) 456-7890")
     }
 
+    @MainActor
     @Test("PhoneMask.isAllowed filters non-digits")
     func phoneMaskFiltersNonDigits() {
         let mask = USPhoneMask()
@@ -54,6 +56,7 @@ struct AutoMaskTests {
 
     // MARK: - Credit Card Mask Tests
 
+    @MainActor
     @Test("CreditCardMask.apply formats credit card number correctly")
     func creditCardMaskFormatsCorrectly() {
         let mask = CreditCardMask()
@@ -79,6 +82,7 @@ struct AutoMaskTests {
         #expect(mask.apply(to: "1234 ABCD 9012 WXYZ") == "1234 9012")
     }
 
+    @MainActor
     @Test("CreditCardMask.isAllowed filters non-digits")
     func creditCardMaskFiltersNonDigits() {
         let mask = CreditCardMask()
@@ -96,6 +100,7 @@ struct AutoMaskTests {
 
     // MARK: - Pattern Mask Tests
 
+    @MainActor
     @Test("PatternMask.apply formats text according to pattern")
     func patternMaskFormatsCorrectly() {
         // SSN pattern: XXX-XX-XXXX
@@ -124,6 +129,7 @@ struct AutoMaskTests {
         #expect(licenseMask.apply(to: "!@#123$%^XYZ") == "AB-123-XYZ")
     }
 
+    @MainActor
     @Test("PatternMask.isAllowed enforces allowed characters")
     func patternMaskFiltersCharacters() {
         // Default mask only allows digits
@@ -155,6 +161,7 @@ struct AutoMaskTests {
 
     // MARK: - Integration Tests
 
+    @MainActor
     @Test("Mask formatting is idempotent")
     func maskFormattingIsIdempotent() {
         // Applying the same mask multiple times should yield the same result
@@ -177,6 +184,7 @@ struct AutoMaskTests {
         #expect(secondLicenseApply == "AB-123-XYZ")
     }
 
+    @MainActor
     @Test("Mask handles international format")
     func maskHandlesInternationalFormat() {
         // Create a custom international phone mask

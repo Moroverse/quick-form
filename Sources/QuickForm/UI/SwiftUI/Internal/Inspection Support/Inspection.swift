@@ -37,9 +37,14 @@ struct InspectionModifier<V: View>: ViewModifier {
 #endif
 
 extension View {
-    func registerForInspection<V: View>(_ inspection: Inspection<V>, in view: V) -> some View {
+    @ViewBuilder
+    func registerForInspection<V: View>(in view: V, _ inspection: () -> Inspection<V>?) -> some View {
         #if DEBUG
+        if let inspection = inspection() {
             modifier(InspectionModifier(inspection: inspection, in: view))
+        } else {
+            self
+        }
         #else
             self
         #endif
