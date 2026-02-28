@@ -487,6 +487,12 @@ public final class FormCollectionViewModel<Property: Identifiable & Sendable>: O
         _onInsert = action
         return self
     }
+    
+    @discardableResult
+    public func onEdit(action: @escaping (() async -> CollectionDifference<Property>?)) -> Self {
+        _onEdit = action
+        return self
+    }
 
     /// Sets the closure to be called when the collection changes.
     ///
