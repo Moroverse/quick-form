@@ -1,0 +1,22 @@
+{
+	"mcpServers": {
+		"xcode": {
+			"type": "stdio",
+			"command": "xcrun",
+			"args": ["mcpbridge"],
+			"env": {}
+		},
+		"cupertino": {
+			"type": "stdio",
+			"command": "/opt/homebrew/bin/cupertino",
+			"args": [],
+			"env": {}
+		},
+		"tuist": {
+			"type": "stdio",
+			"command": "/opt/homebrew/bin/mise",
+			"args": ["exec", "--cd", "/Volumes/Ex_Machina/Developer/Moroverse/RiseOfShadow", "--", "tuist", "mcp", "start"],
+			"env": {}
+		}
+	}
+}
