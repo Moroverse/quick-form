@@ -152,6 +152,13 @@ public final class FormCollectionViewModel<Property: Identifiable & Sendable>: O
     /// adding, removing, or reordering items.
     public var isReadOnly: Bool
 
+    /// Placeholder text displayed when the collection is empty.
+    ///
+    /// When set and `value.isEmpty`, `FormCollectionSection` renders this text
+    /// as a secondary, italic label in place of the (empty) item list.
+    /// Set to `nil` (the default) to show no placeholder.
+    public var emptyPlaceholder: LocalizedStringResource?
+
     /// A predicate that determines if a specific item can be selected.
     ///
     /// This closure is called by the `canSelect(item:)` method and allows
@@ -237,13 +244,15 @@ public final class FormCollectionViewModel<Property: Identifiable & Sendable>: O
         title: LocalizedStringResource = "",
         insertionTitle: LocalizedStringResource = "Add",
         editTitle: LocalizedStringResource = "Edit",
-        isReadOnly: Bool = false
+        isReadOnly: Bool = false,
+        emptyPlaceholder: LocalizedStringResource? = nil
     ) {
         self.value = value
         self.title = title
         self.insertionTitle = insertionTitle
         self.editTitle = editTitle
         self.isReadOnly = isReadOnly
+        self.emptyPlaceholder = emptyPlaceholder
         dispatcher = Dispatcher()
 
         subscribeToPropertyChange()
@@ -623,13 +632,15 @@ public extension FormCollectionViewModel {
         type: Property.Type,
         title: LocalizedStringResource = "",
         insertionTitle: LocalizedStringResource = "Add",
-        isReadOnly: Bool = false
+        isReadOnly: Bool = false,
+        emptyPlaceholder: LocalizedStringResource? = nil
     ) {
         self.init(
             value: [],
             title: title,
             insertionTitle: insertionTitle,
-            isReadOnly: isReadOnly
+            isReadOnly: isReadOnly,
+            emptyPlaceholder: emptyPlaceholder
         )
     }
 }
