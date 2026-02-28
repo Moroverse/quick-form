@@ -632,6 +632,7 @@ public extension FormCollectionViewModel {
         type: Property.Type,
         title: LocalizedStringResource = "",
         insertionTitle: LocalizedStringResource = "Add",
+        editTitle: LocalizedStringResource = "Edit",
         isReadOnly: Bool = false,
         emptyPlaceholder: LocalizedStringResource? = nil
     ) {
@@ -639,6 +640,7 @@ public extension FormCollectionViewModel {
             value: [],
             title: title,
             insertionTitle: insertionTitle,
+            editTitle: editTitle,
             isReadOnly: isReadOnly,
             emptyPlaceholder: emptyPlaceholder
         )
