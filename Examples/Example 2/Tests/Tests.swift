@@ -1,6 +1,6 @@
 // Tests.swift
-// Copyright (c) 2025 Moroverse
-// Created by Daniel Moro on 2025-09-13 08:03 GMT.
+// Copyright (c) 2026 Moroverse
+// Created by Daniel Moro on 2025-03-09 05:00 GMT.
 
 @testable import ApplicationForm
 import FactoryKit
@@ -10,7 +10,7 @@ import Testing
 @Suite("AdditionalInfoModel Tests")
 struct AdditionalInfoModelTests {
     @Test("Correct title on initialization")
-    func configure() async throws {
+    func configure() {
         let value = AdditionalInfo(resume: nil, consentToBackgroundChecks: false)
         let sut = AdditionalInfoModel(
             value: value,
@@ -40,7 +40,7 @@ struct AdditionalInfoModelTests {
             )
         )
 
-        let anyURL = URL(string: "https://www.example.com")!
+        let anyURL = try #require(URL(string: "https://www.example.com"))
         spy.selectedURL = anyURL
         spy.uploadResult = .failure(NSError(domain: "", code: 0, userInfo: nil))
         await sut.didTapOnAdditionalInformationResume()
@@ -53,7 +53,7 @@ struct AdditionalInfoModelTests {
     }
 
     @Test("Tap on resume button navigates to upload if resume is missing")
-    func onTap() async throws {
+    func onTap() async {
         let spy = Spy()
         Container.shared.additionalInfoRouting.register { spy }
         let value = AdditionalInfo(resume: nil, consentToBackgroundChecks: false)

@@ -1,6 +1,6 @@
 // MainCoordinator.swift
-// Copyright (c) 2025 Moroverse
-// Created by Daniel Moro on 2025-09-13 08:03 GMT.
+// Copyright (c) 2026 Moroverse
+// Created by Daniel Moro on 2025-03-17 15:16 GMT.
 
 //
 //  MainCoordinator.swift
@@ -152,7 +152,6 @@ class CoordinatorFactory {
         window.rootViewController = navigationController
         window.makeKeyAndVisible()
 
-        let coordinator = AppCoordinator(navigationController: navigationController)
-        return coordinator
+        return AppCoordinator(navigationController: navigationController)
     }
 }
