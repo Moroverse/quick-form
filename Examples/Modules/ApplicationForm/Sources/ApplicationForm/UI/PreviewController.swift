@@ -31,14 +31,14 @@ import SwiftUI
 
         let url: URL
 
-        func makeUIViewController(context: Context) -> QLPreviewController {
+        func makeUIViewController(context: Context) -> UINavigationController {
             let controller = QLPreviewController()
             controller.dataSource = context.coordinator
-            return controller
+            return UINavigationController(rootViewController: controller)
         }
 
         func updateUIViewController(
-            _ uiViewController: QLPreviewController, context: Context
+            _ uiViewController: UINavigationController, context: Context
         ) {}
 
         func makeCoordinator() -> Coordinator {

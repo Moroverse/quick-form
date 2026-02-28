@@ -1,6 +1,6 @@
 // AutoRegistering.swift
-// Copyright (c) 2025 Moroverse
-// Created by Daniel Moro on 2025-09-13 08:03 GMT.
+// Copyright (c) 2026 Moroverse
+// Created by Daniel Moro on 2025-03-16 08:02 GMT.
 
 import ApplicationForm
 import FactoryKit
