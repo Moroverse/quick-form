@@ -134,7 +134,21 @@ public struct FormCollectionSection<Property: Identifiable & Sendable, Content: 
                 }
             }
         } header: {
-            Text(viewModel.title)
+            if viewModel.canEdit() {
+                HStack {
+                    Text(viewModel.title)
+                    Spacer()
+                    Button {
+                        Task {
+                            await viewModel.edit()
+                        }
+                    } label: {
+                        Text(viewModel.editTitle)
+                    }
+                }
+            } else {
+                Text(viewModel.title)
+            }
         }
     }
 

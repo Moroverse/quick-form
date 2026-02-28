@@ -124,6 +124,7 @@ public final class FormCollectionViewModel<Property: Identifiable & Sendable>: O
     /// This text is typically used for buttons or menu items that trigger
     /// the insertion of new items into the collection.
     public var insertionTitle: LocalizedStringResource
+    public var editTitle: LocalizedStringResource
 
     /// The current collection of items.
     ///
@@ -167,6 +168,7 @@ public final class FormCollectionViewModel<Property: Identifiable & Sendable>: O
     ///
     /// - Returns: `true` if insertion is allowed, `false` otherwise
     public var onCanInsert: () -> Bool = { true }
+    public var onCanEdit: () -> Bool = { true }
 
     /// A predicate that determines if items at specific offsets can be deleted.
     ///
@@ -193,6 +195,8 @@ public final class FormCollectionViewModel<Property: Identifiable & Sendable>: O
     /// This optional async closure is responsible for creating and returning a new
     /// item when the `insert()` method is called.
     private var _onInsert: (() async -> Property?)?
+    
+    private var _onEdit: (() async -> CollectionDifference<Property>?)?
 
     /// The closure called when the collection changes.
     ///
@@ -232,11 +236,13 @@ public final class FormCollectionViewModel<Property: Identifiable & Sendable>: O
         value: [Property],
         title: LocalizedStringResource = "",
         insertionTitle: LocalizedStringResource = "Add",
+        editTitle: LocalizedStringResource = "Edit",
         isReadOnly: Bool = false
     ) {
         self.value = value
         self.title = title
         self.insertionTitle = insertionTitle
+        self.editTitle = editTitle
         self.isReadOnly = isReadOnly
         dispatcher = Dispatcher()
 
@@ -266,6 +272,10 @@ public final class FormCollectionViewModel<Property: Identifiable & Sendable>: O
     public func canInsert() -> Bool {
         onCanInsert()
     }
+    
+    public func canEdit() -> Bool {
+        onCanEdit()
+    }
 
     /// Attempts to insert a new item into the collection.
     ///
@@ -293,6 +303,17 @@ public final class FormCollectionViewModel<Property: Identifiable & Sendable>: O
         if canInsert(), let insertion = _onInsert {
             if let newValue = await insertion() {
                 value.append(newValue)
+            }
+        }
+    }
+    
+    @MainActor
+    public func edit() async {
+        if canEdit(), let insertion = _onEdit {
+            if let changes = await insertion() {
+                if let newValue = value.applying(changes) {
+                    value = newValue
+                }
             }
         }
     }
