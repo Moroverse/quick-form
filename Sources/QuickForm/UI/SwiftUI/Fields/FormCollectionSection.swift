@@ -106,6 +106,12 @@ public struct FormCollectionSection<Property: Identifiable & Sendable, Content: 
     /// - An optional "add" button when insertion is enabled
     public var body: some View {
         Section {
+            if viewModel.value.isEmpty, let emptyPlaceholder = viewModel.emptyPlaceholder {
+                Text(emptyPlaceholder)
+                    .foregroundStyle(.secondary)
+                    .italic()
+            }
+
             ForEach($viewModel.value) { $item in
                 content($item)
                     .frame(maxWidth: .infinity)
