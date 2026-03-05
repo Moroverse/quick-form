@@ -50,7 +50,7 @@ public struct FormCompoundField<T: CompoundValue, S: PickerStyle>: View {
             HStack {
                 Text(viewModel.title)
                     .font(.headline)
-                TextField(String(localized: viewModel.placeholder ?? ""), value: $viewModel.value.value, format: .number)
+                TextField(String(localized: viewModel.placeholder ?? ""), value: $viewModel.value.value, format: T.ValueType.compoundNumberFormat)
                     .focused($isFocused)
                     .multilineTextAlignment(.trailing)
                     .disabled(viewModel.isReadOnly)

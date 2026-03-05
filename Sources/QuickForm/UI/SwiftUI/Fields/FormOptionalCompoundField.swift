@@ -47,7 +47,7 @@ public struct FormOptionalCompoundField<T: CompoundValue, S: PickerStyle>: View 
             HStack {
                 Text(viewModel.title)
                     .font(.headline)
-                TextField(String(localized: viewModel.placeholder ?? ""), value: $viewModel.value.unwrapped(defaultValue: defaultValue).value, format: .number)
+                TextField(String(localized: viewModel.placeholder ?? ""), value: $viewModel.value.unwrapped(defaultValue: defaultValue).value, format: T.ValueType.compoundNumberFormat)
                     .focused($isFocused)
                     .multilineTextAlignment(.trailing)
                     .disabled(viewModel.isReadOnly)

@@ -6,9 +6,21 @@ import Foundation
 
 /// A protocol for types that represent a numeric value paired with a unit.
 ///
-/// `CompoundValue` abstracts the pattern of a `Double` value associated with a selectable unit,
+/// `CompoundValue` abstracts the pattern of a numeric value associated with a selectable unit,
 /// enabling generic form fields that work with any value+unit pair — not just Foundation's
 /// `Measurement<Unit>`.
+///
+/// The ``ValueType`` associated type defaults to `Double`, so existing conformers require no
+/// changes. To use a different numeric type, specify it explicitly:
+///
+/// ```swift
+/// struct Quantity: CompoundValue {
+///     typealias ValueType = Int
+///     var value: Int
+///     var unit: MyUnit
+///     // ...
+/// }
+/// ```
 ///
 /// ## Conformance Requirements
 ///
@@ -33,12 +45,13 @@ import Foundation
 ///
 /// - SeeAlso: ``FormCompoundField``, ``FormOptionalCompoundField``
 public protocol CompoundValue {
+    associatedtype ValueType: CompoundNumeric = Double
     associatedtype UnitType: Identifiable & Hashable
-    var value: Double { get set }
+    var value: ValueType { get set }
     var unit: UnitType { get }
     static var allUnits: [UnitType] { get }
     static func displayString(for unit: UnitType) -> String
-    init(value: Double, unit: UnitType)
+    init(value: ValueType, unit: UnitType)
 }
 
 extension CompoundValue where UnitType: CustomStringConvertible {
